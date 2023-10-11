@@ -4,9 +4,9 @@ export type Location = {
 };
 
 export type MapProps = {
-  Center?: Location;
-  Level?: number;
-  type?: string; //plan, sharePlan, region, search
+  center: Location;
+  level?: number;
+  type: string; //plan, sharePlan, region, search
   markerList?: MarkerProps[];
 };
 

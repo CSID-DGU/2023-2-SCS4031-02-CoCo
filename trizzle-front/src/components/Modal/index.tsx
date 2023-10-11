@@ -9,7 +9,7 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
       <S.ModalHeader>
         <S.ModalTitle>{props.title}</S.ModalTitle>
         <S.ModalCloseButton onClick={props.onCloseClick}>
-          <AiOutlineClose />
+          <AiOutlineClose className={S.Icon}/>
         </S.ModalCloseButton>
       </S.ModalHeader>
       {props.children}
