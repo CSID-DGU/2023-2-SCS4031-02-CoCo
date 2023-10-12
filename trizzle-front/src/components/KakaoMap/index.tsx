@@ -4,6 +4,8 @@ import { MapProps } from "./Map.type";
 import MapMarkers from "./MapMarkers";
 
 const Maps: React.FC<MapProps> = (props: MapProps) => {
+  console.log(props.markerList);
+
   switch (props.type) {
     case "search":
       if(props.markerList && props.markerList.length === 0) {
@@ -15,9 +17,9 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
               />
           </S.MapWrapper>
         )
-      } else if (props.markerList){
+      } else if (props.markerList && props.markerList.length !== 0){
         return (
-          <S.MapWrapper>
+          <S.SearchMapWrapper>
             <S.SearchMap
               center={props.center}
               level={props.level}
@@ -33,7 +35,7 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
                   />
                 ))}
               </S.SearchMap>
-          </S.MapWrapper>
+          </S.SearchMapWrapper>
         )
       }
       break;

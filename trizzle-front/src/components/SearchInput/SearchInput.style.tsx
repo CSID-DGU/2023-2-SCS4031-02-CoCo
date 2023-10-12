@@ -1,16 +1,16 @@
 import styled from '@emotion/styled'
 
 export const MapSearchWrapper = styled.div`
-  width : 100%;
-  height: 4rem;
+  width : auto;
+  height: 2.5rem;
   display : flex;
   justify-content : space-between;
   align-items : center;
 `
 
 export const MapSearchInput = styled.input`
-  width : 65rem;
-  height : 4rem;
-  background-color : #f0f0f0;
+  width : 42rem;
+  height : 2.5rem;
+  border : 2px solid #939393;
   color : #444444;
 `

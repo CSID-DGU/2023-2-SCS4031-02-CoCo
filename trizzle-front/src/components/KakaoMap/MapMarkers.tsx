@@ -3,6 +3,7 @@ import { MarkerProps } from "./Map.type";
 import { MapMarker } from "react-kakao-maps-sdk";
 
 const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
+
   return (
     <>
       {props.markerType === "plan" && props.day &&
@@ -15,20 +16,22 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
             options: {
               alt: `${props.day}일차`}
             }}
-          onClick={() => props.onClick}
+          onClick={props.onClick}
         />
         }
-      {props.markerType === "search" && props.selected &&
+      {props.markerType === "search" &&
       <MapMarker
         key={props.placeInfo.id}
         position={{ lat: props.position.lat, lng: props.position.lng }}
+
         image={{
-          src: props.selected ? `/markers/selected.png` : `/markers/unselect.png`,
-          size: { width: 35, height: 35 },
+          src: props.selected ? `/markers/selected.svg` : `/markers/unselect.svg`,
+          size: props.selected ? {width:20, height:24.3}:{ width: 20, height: 24.3 },
           options: {
             alt: `${props.placeInfo.place_name}`}
           }}
-        onClick={() => props.onClick}
+        onClick={props.onClick}
+        zIndex={props.selected ? 1 : 0}
     />
       }
     </>

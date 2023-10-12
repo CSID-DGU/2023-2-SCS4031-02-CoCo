@@ -1,6 +1,6 @@
 export type ModalProps = {
   styleProps: StyleProps;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title: string;
   onCloseClick: () => void;
 }

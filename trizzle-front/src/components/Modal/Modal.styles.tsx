@@ -45,4 +45,6 @@ export const Icon = css`
   &:hover {
     color: #BA1A1A; /* 마우스를 올렸을 때 색상 */
   }
+  width: auto;
+  height: 80%;
 `

@@ -11,7 +11,6 @@ export const SearchMapWrapper = styled.div`
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
   border: 2px solid #FFDC61;
-  border-right: none;
 `
 export const MapWrapper = styled.div`
   width: 100%;
