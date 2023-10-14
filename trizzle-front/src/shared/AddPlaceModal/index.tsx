@@ -10,6 +10,7 @@ import { PlaceInfoList } from "../../components/KakaoMap/Map.type";
 type props = {
   onAddButtonClick: (selectedPlace:any) => void;
   center: {lat: number, lng: number};
+  onCloseClick: () => void;
 }
 
 const AddPlaceModal = (props: props) => {
@@ -104,14 +105,14 @@ const AddPlaceModal = (props: props) => {
 
 
   return (
-    <Modal title="장소 추가" onCloseClick={() => {}} styleProps={{width: "80%", height: "80%"}}>
+    <Modal id="addModal" title="장소 추가" onCloseClick={props.onCloseClick} styleProps={{width: "80%", height: "80%"}}>
       <S.InputWrapper>
         <SearchInput
           value={value}
           onChange={handleInputChange}
           onKeyPress={(e) => handleEnter(e, value)}
         />
-        <S.SearchButton onClick={() => handleSearchClick(value)}>검색</S.SearchButton>
+        <S.SearchButton onClick={() => handleSearchClick(value)} id="searchButton">검색</S.SearchButton>
       </S.InputWrapper>
       {placeList.length === 0 ? (
         <S.MapWrapper>
@@ -148,7 +149,7 @@ const AddPlaceModal = (props: props) => {
                   <S.ButtonsWrapper>
                     <S.Buttons onClick={() => props.onAddButtonClick(place.id)}>일정에 추가</S.Buttons>
                     <S.Buttons>
-                      <a href={place.place_url} target="_blank" rel="noreferrer">
+                      <a href={place.place_url} target="_blank" rel="noreferrer" id={place.id}>
                         상세페이지
                       </a>
                     </S.Buttons>

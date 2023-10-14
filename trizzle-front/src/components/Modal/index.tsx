@@ -5,10 +5,10 @@ import { ModalProps } from './Modal.types'
 
 const Modal: React.FC<ModalProps> = (props: ModalProps) => {
   return (
-    <S.ModalWrapper width={props.styleProps.width} height={props.styleProps.height}>
+    <S.ModalWrapper width={props.styleProps.width} height={props.styleProps.height} id={props.id}>
       <S.ModalHeader>
         <S.ModalTitle>{props.title}</S.ModalTitle>
-        <S.ModalCloseButton onClick={props.onCloseClick}>
+        <S.ModalCloseButton onClick={props.onCloseClick} id='closeButton'>
           <AiOutlineClose className={S.Icon}/>
         </S.ModalCloseButton>
       </S.ModalHeader>
