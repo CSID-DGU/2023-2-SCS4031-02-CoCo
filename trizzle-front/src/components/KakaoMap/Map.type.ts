@@ -8,6 +8,7 @@ export type MapProps = {
   level?: number;
   type: string; //plan, sharePlan, region, search
   markerList?: MarkerProps[];
+  children?: React.ReactNode;
 };
 
 export type MarkerProps = {
@@ -17,6 +18,7 @@ export type MarkerProps = {
   selected?: boolean;
   day?: number;
   onClick?: () => void;
+
 };
 
 export type InfoWindowProps = {

@@ -20,6 +20,7 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
       } else if (props.markerList && props.markerList.length !== 0){
         return (
           <S.SearchMapWrapper>
+            {props.children}
             <S.SearchMap
               center={props.center}
               level={props.level}
@@ -28,6 +29,7 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
                   <MapMarkers
                     key={index}
                     markerType="search"
+                    day={marker.day}
                     position={marker.position}
                     placeInfo={marker.placeInfo}
                     selected={marker.selected}
@@ -38,6 +40,27 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
           </S.SearchMapWrapper>
         )
       }
+      break;
+    case "plan":
+      return (
+        <S.PlanMapWrapper>
+          <S.PlanMap
+            center={props.center}
+            level={props.level}
+            >
+              {props.markerList && props.markerList.map((marker, index) => (
+                <MapMarkers
+                  key={index}
+                  markerType="plan"
+                  position={marker.position}
+                  placeInfo={marker.placeInfo}
+                  day={marker.day}
+                  onClick={marker.onClick}
+                />
+              ))}
+            </S.PlanMap>
+        </S.PlanMapWrapper>
+      )
       break;
     //case 추후 추가
   }

@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import Page from "../Page";
 
 const Home = () => {
   return (
-    <Link to={"/addPlan"}>이동</Link>
+    <Page headersProps={{isLogin: true, isHome: true}}>
+      
+    </Page>
   )
 
 };

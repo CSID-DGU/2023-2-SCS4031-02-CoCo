@@ -18,3 +18,23 @@ export const categoryCode = [
   {code: "HP8", name: ["병원"]},
   {code: "PM9", name: ["약국"]},
 ];
+
+export const koreaRegions = [
+  { name: '서울특별시', center: { lat: 37.5665, lng: 126.9780 } },
+  { name: '부산광역시', center: { lat: 35.1796, lng: 129.0756 } },
+  { name: '대구광역시', center: { lat: 35.8714, lng: 128.6014 } },
+  { name: '인천광역시', center: { lat: 37.4563, lng: 126.7052 } },
+  { name: '광주광역시', center: { lat: 35.1605, lng: 126.8515 } },
+  { name: '대전광역시', center: { lat: 36.3504, lng: 127.3845 } },
+  { name: '울산광역시', center: { lat: 35.5384, lng: 129.3114 } },
+  { name: '세종특별자치시', center: { lat: 36.4801, lng: 127.2892 } },
+  { name: '경기도', center: { lat: 37.2636, lng: 127.0286 } },
+  { name: '강원도', center: { lat: 37.8859, lng: 127.7116 } },
+  { name: '충청북도', center: { lat: 36.6372, lng: 127.4910 } },
+  { name: '충청남도', center: { lat: 36.8067, lng: 127.1521 } },
+  { name: '전라북도', center: { lat: 35.8242, lng: 127.1489 } },
+  { name: '전라남도', center: { lat: 34.8119, lng: 126.3928 } },
+  { name: '경상북도', center: { lat: 36.5748, lng: 128.5363 } },
+  { name: '경상남도', center: { lat: 35.2281, lng: 128.6811 } },
+  { name: '제주특별자치도', center: { lat: 33.4996, lng: 126.5312 } },
+];

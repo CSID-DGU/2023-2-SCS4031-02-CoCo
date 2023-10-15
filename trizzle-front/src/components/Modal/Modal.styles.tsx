@@ -1,6 +1,16 @@
 import styled from "@emotion/styled";
 import { css } from '@emotion/react';
 
+export const Blur = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+`
+
 export const ModalWrapper = styled.div<{width: string, height: string}>`
   background-color: white;
   border-radius: 1.3rem;
@@ -14,6 +24,7 @@ export const ModalWrapper = styled.div<{width: string, height: string}>`
   width: ${props => props.width};
   height: ${props => props.height};
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
+  z-index: 100;
 `
 
 export const ModalHeader = styled.div`

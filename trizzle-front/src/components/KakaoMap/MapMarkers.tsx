@@ -1,9 +1,12 @@
 import React from "react";
 import { MarkerProps } from "./Map.type";
 import { MapMarker } from "react-kakao-maps-sdk";
+import selected from "../../assets/markers/selected.svg"
+import unselect from "../../assets/markers/unselect.svg"
+import day from "../../assets/markers/day.svg"
 
 const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
-
+  console.log(props);
   return (
     <>
       {props.markerType === "plan" && props.day &&
@@ -11,8 +14,8 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
           key={props.placeInfo.id}
           position={{ lat: props.position.lat, lng: props.position.lng }}
           image={{
-            src: `/markers/day${props.day % 3}.png`,
-            size: { width: 31, height: 31 },
+            src: day,
+            size: { width: 20, height: 20 },
             options: {
               alt: `${props.day}일차`}
             }}
@@ -25,7 +28,7 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
         position={{ lat: props.position.lat, lng: props.position.lng }}
 
         image={{
-          src: props.selected ? `/markers/selected.svg` : `/markers/unselect.svg`,
+          src: props.selected ? selected : unselect,
           size: props.selected ? {width:20, height:24.3}:{ width: 20, height: 24.3 },
           options: {
             alt: `${props.placeInfo.place_name}`}

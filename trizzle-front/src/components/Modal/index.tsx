@@ -5,7 +5,10 @@ import { ModalProps } from './Modal.types'
 
 const Modal: React.FC<ModalProps> = (props: ModalProps) => {
   return (
-    <S.ModalWrapper width={props.styleProps.width} height={props.styleProps.height} id={props.id}>
+    <>
+    <S.Blur onClick={props.onCloseClick}/>
+    <S.ModalWrapper width={props.styleProps.width} height={props.styleProps.height}>
+      
       <S.ModalHeader>
         <S.ModalTitle>{props.title}</S.ModalTitle>
         <S.ModalCloseButton onClick={props.onCloseClick} id='closeButton'>
@@ -14,6 +17,7 @@ const Modal: React.FC<ModalProps> = (props: ModalProps) => {
       </S.ModalHeader>
       {props.children}
     </S.ModalWrapper>
+    </>
   );
 };
 
