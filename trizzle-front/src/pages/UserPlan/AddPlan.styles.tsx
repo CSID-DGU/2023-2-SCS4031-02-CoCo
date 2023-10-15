@@ -55,7 +55,7 @@ export const MapContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 1rem 0 2rem 0;
+  margin: 1rem 0 4rem 0;
   position: relative;
 `
 

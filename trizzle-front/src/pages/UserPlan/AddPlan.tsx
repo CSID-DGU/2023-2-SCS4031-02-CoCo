@@ -9,6 +9,7 @@ import DropdownMenu from "../../components/DropdownMenu";
 import { koreaRegions } from "../../utils/mapData";
 import {AiOutlinePlus} from "react-icons/ai";
 import DayPlan from "../../shared/DayPlan";
+import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 
 
 type dayPlan = {
@@ -156,6 +157,12 @@ const AddPlanPage = () => {
                 </S.OverlayButton>
               </S.OverlayButtonContainer>
           </S.MapContainer>
+
+          <HorizontalScrollContainer moveDistance={100}>
+            {placeList.map((dayPlan, index) => (
+              <DayPlan key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan}/>
+            ))}
+          </HorizontalScrollContainer>
       </form>
 
       <div style={{height:"50rem"}}/>

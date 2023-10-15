@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./DayPlan.style";
+import logo from "../../assets/logo/nonTextLogo.svg"
 
 type DayPlanProps = {
   onPlaceClick: (day:number) => void;
@@ -20,7 +21,7 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
         place.hasOwnProperty('y') && place.hasOwnProperty('x') ? (
           <S.PlaceContainer key={index}>
             <S.PlaceLogo>
-
+              <img src={logo} alt="logo" style={{width:"2.2rem", height:"auto"}}/>
             </S.PlaceLogo>
             <S.PlaceInfo>
               <S.PlaceName>{place.place_name}</S.PlaceName>
@@ -29,13 +30,14 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
           </S.PlaceContainer>
         ) : (
           <S.PlaceContainer>
-            <img src={place.src} alt="keywordImg"/>
+            <img src={place.src} alt="keywordImg" style={{width:"3.2rem", height:"auto"}}/>
+            <S.PlaceAddress style={{width:"auto", marginLeft:"0.4rem"}}>{place.name}</S.PlaceAddress>
           </S.PlaceContainer>
         )
       ))}
       <S.PlusButtonContainer>
-        <S.AddButton onClick={() => props.onPlaceClick(props.dayPlan.day)}>장소 추가</S.AddButton>
-        <S.AddButton onClick={() => props.onKeywordClick(props.dayPlan.day)}>키워드 추가</S.AddButton>
+        <S.AddButton onClick={() => props.onPlaceClick(props.dayPlan.day)} type="button">장소 추가</S.AddButton>
+        <S.AddButton onClick={() => props.onKeywordClick(props.dayPlan.day)} type="button">키워드 추가</S.AddButton>
       </S.PlusButtonContainer>
     </S.DayPlanContainer>
   )
