@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import * as S from "./AddPlaceModal.style";
+import * as S from "./SearchPlaceModal.style";
 import Maps from "../../components/KakaoMap";
 import SearchInput from "../../components/SearchInput";
 import { searchKeyword } from "../../utils/kakaoMap";
@@ -8,7 +8,7 @@ import { PlaceInfoList } from "../../components/KakaoMap/Map.type";
 
 
 type props = {
-  onAddButtonClick: (selectedPlace:any) => void;
+  onAddButtonClick: (selectedPlace:any, day:any) => void;
   center: {lat: number, lng: number};
   onCloseClick: () => void;
 }
@@ -22,9 +22,8 @@ const AddPlaceModal = (props: props) => {
   const [markerList, setMarkerList] = useState<any[]>([]);
 
   const handleSearch = async (keyword: string) => {
-    for (let i = 1; i < 2; i++) {
-      const result:any = await searchKeyword(keyword, i);
-      setPlaceList((prev) => [...prev, ...(result as Array<PlaceInfoList>)]);
+      const result:any = await searchKeyword(keyword, 1);
+      setPlaceList(result);
       result.map((place:any) => {
         console.log(place);
       setMarkerList((prev) => [...prev, {
@@ -34,7 +33,8 @@ const AddPlaceModal = (props: props) => {
         onClick: () => setSelectedPlace(place.id),
       }])
     })
-    }
+    setCenter({lat: result[0].y, lng: result[0].x});
+    
   }
 
   function handleSelectPlace(place: any) {
@@ -105,7 +105,7 @@ const AddPlaceModal = (props: props) => {
 
 
   return (
-    <Modal id="addModal" title="장소 추가" onCloseClick={props.onCloseClick} styleProps={{width: "80%", height: "80%"}}>
+    <Modal title="장소 추가" onCloseClick={props.onCloseClick} styleProps={{width: "80%", height: "80%"}}>
       <S.InputWrapper>
         <SearchInput
           value={value}
@@ -147,7 +147,7 @@ const AddPlaceModal = (props: props) => {
                   </S.PlaceNameConatiner>
                   <S.PlaceAdress>{place.address_name}</S.PlaceAdress>
                   <S.ButtonsWrapper>
-                    <S.Buttons onClick={() => props.onAddButtonClick(place.id)}>일정에 추가</S.Buttons>
+                    <S.Buttons onClick={(day) => props.onAddButtonClick(place, day)}>일정에 추가</S.Buttons>
                     <S.Buttons>
                       <a href={place.place_url} target="_blank" rel="noreferrer" id={place.id}>
                         상세페이지
