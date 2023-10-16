@@ -54,14 +54,11 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
                   markerType="plan"
                   position={marker.position}
                   placeInfo={marker.placeInfo}
-                  day={marker.day}
-                  onClick={marker.onClick}
                 />
               ))}
             </S.PlanMap>
         </S.PlanMapWrapper>
       )
-      break;
     //case 추후 추가
   }
 };

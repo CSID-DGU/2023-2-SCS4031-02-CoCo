@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 
 export const DayPlanContainer = styled.div`
-  width: 15%;
+  width: 12rem;
+  min-width: 12rem;
   height: auto;
   background-color: #ffffff;
   display: flex;

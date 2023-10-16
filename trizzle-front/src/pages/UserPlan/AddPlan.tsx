@@ -10,6 +10,7 @@ import { koreaRegions } from "../../utils/mapData";
 import {AiOutlinePlus} from "react-icons/ai";
 import DayPlan from "../../shared/DayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
+import { tripThema } from "../../utils/tripThema";
 
 
 type dayPlan = {
@@ -24,10 +25,11 @@ const AddPlanPage = () => {
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
   const [region, setRegion] = useState<any>({name: "서울특별시", center: {lat: 37.55767200694191, lng: 127.000260306464}});
-  const [thema, setThema] = useState<string>("");
+  const [thema, setThema] = useState<any[]>([]);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [markerList, setMarkerList] = useState<any[]>([]);
   const [addClickDay, setAddClickDay] = useState<number>(0);
+  const [center, setCenter] = useState<any>(region.center);
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     const updatedPlaceList = placeList.map((dayPlan) => {
@@ -50,6 +52,7 @@ const AddPlanPage = () => {
     })
     setPlaceList(updatedPlaceList);
     setIsSearchModalOpen(!isSearchModalOpen);
+    setCenter({lat: place.y, lng: place.x});
   }
 
   const onKeywordAddButtonClick = (keyword:string, day:number) => {
@@ -105,6 +108,7 @@ const AddPlanPage = () => {
       const markerList = filteredPlaces.map((place) => {
         return {
           position: { lat: place.y, lng: place.x },
+          day: selectDay,
           placeInfo: place,
           selected: false,
           type: "plan",
@@ -115,6 +119,20 @@ const AddPlanPage = () => {
     }
   }, [placeList, selectDay]);
   
+  const onThemaBadgeClick = (select: any) => {
+    // 선택한 아이템이 thema 배열에 이미 존재하는지 확인
+    const itemExists = thema.some((item) => item.id === select.id);
+  
+    if (itemExists) {
+      // 이미 선택한 아이템이 있는 경우, 해당 아이템을 제거
+      setThema((prev) => prev.filter((item) => item.id !== select.id));
+    } else {
+      // 선택한 아이템이 없는 경우, 해당 아이템을 추가
+      setThema((prev) => [...prev, select]);
+    }
+  };
+  
+
 
   return (
     <Page headersProps={{isHome:false, isLogin:true}}>
@@ -135,7 +153,10 @@ const AddPlanPage = () => {
             <DropdownMenu name={region.name} items={koreaRegions} onClick={(region) => {setRegion(region)}}/>
             <S.SelectTitle style={{marginLeft:"15rem"}}>여행기간</S.SelectTitle>
           </S.HorizontalContainer>
-          <TextInput name="thema" title="테마" placeholder="테마를 입력해주세요." styleProps={{width: "100%"}} id="thema" onChange={(event) => setThema(event.target.value)} value={thema}/>
+          <S.HorizontalContainer>
+            <S.SelectTitle>여행테마</S.SelectTitle>
+            <DropdownMenu type="badge" name="여행테마를 선택해주세요" items={tripThema} selectedItem={thema} onClick={(thema) => onThemaBadgeClick(thema)} />
+          </S.HorizontalContainer>
           <S.HorizontalLine/>
           </S.FormContainer>
 
@@ -147,18 +168,18 @@ const AddPlanPage = () => {
               ))}
               <S.Day onClick={() => onDayPlusButtonClick()} isClicked={false} >추가</S.Day>
             </S.DaysContainer>
-            <Maps markerList={markerList} center={region.center} type="plan"/>
+            <Maps markerList={markerList} center={center} type="plan"/>
             <S.OverlayButtonContainer>
-                <S.OverlayButton onClick={() => setIsSearchModalOpen(!isSearchModalOpen) } type="button">장소 추가
+                <S.OverlayButton onClick={() => {setIsSearchModalOpen(!isSearchModalOpen); setAddClickDay(selectDay)} } type="button">장소 추가
                   <AiOutlinePlus color="#FCC400"/>
                 </S.OverlayButton>
-                <S.OverlayButton onClick={() => setIsKeywordModalOpen(!isKeywordModalOpen) } type="button">키워드 추가
+                <S.OverlayButton onClick={() => {setIsKeywordModalOpen(!isKeywordModalOpen); setAddClickDay(selectDay)} } type="button">키워드 추가
                   <AiOutlinePlus color="#FCC400"/>
                 </S.OverlayButton>
               </S.OverlayButtonContainer>
           </S.MapContainer>
 
-          <HorizontalScrollContainer moveDistance={100}>
+          <HorizontalScrollContainer moveDistance={200}>
             {placeList.map((dayPlan, index) => (
               <DayPlan key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan}/>
             ))}

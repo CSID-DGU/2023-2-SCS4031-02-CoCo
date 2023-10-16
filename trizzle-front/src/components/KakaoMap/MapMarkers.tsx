@@ -9,7 +9,7 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
   console.log(props);
   return (
     <>
-      {props.markerType === "plan" && props.day &&
+      {props.markerType === "plan" &&
         <MapMarker
           key={props.placeInfo.id}
           position={{ lat: props.position.lat, lng: props.position.lng }}
