@@ -22,7 +22,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props: DropdownMenuProps) => 
         {isDropdownOpen && (
           <S.DropdownMenuContainer>
             {props.items.map((menu, index) => (
-              <S.DropdownMenuItem key={index} onClick={() => props.onClick(menu)}>{menu.name}</S.DropdownMenuItem>
+              <S.DropdownMenuItem key={index} onClick={() => {props.onClick(menu); toggleDropdown()}}>{menu.name}</S.DropdownMenuItem>
             ))}
           </S.DropdownMenuContainer>
         )}

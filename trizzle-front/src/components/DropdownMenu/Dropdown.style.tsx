@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 
 export const DropdownContainer = styled.div`
   width: 10rem;
-  height: 1.5rem;
+  height: 2.5rem;
   position: relative;
 `
 
 export const DropdownButton = styled.button`
   width: 10rem;
-  height: 2rem;
+  height: 2.5rem;
   border: 1px solid #9e9e9e;
   border-radius: 0.5rem;
   background-color: #ffffff;
@@ -59,9 +59,9 @@ export const BadgeDropdownContainer = styled.div`
   position: relative;
 `
 export const BadgeDropdownInput = styled.div<{selectedItem:boolean}>`
-  width: 100%;
+  width: ${props => props.selectedItem ? "100%" : "20rem"};
   height: 2.5rem;
-  border: none;
+  border: ${props => props.selectedItem ? "none" : "1px solid #9e9e9e"};
   border-radius: 0.5rem;
   font-size: 0.8rem;
   font-weight: 400;
@@ -69,6 +69,9 @@ export const BadgeDropdownInput = styled.div<{selectedItem:boolean}>`
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  justify-content: ${props => props.selectedItem ? "flex-start" : "space-between"};
+  padding: 0 0.5rem;
+  
 `
 export const BadgeDropdownMenuContainer = styled.div`
   width: auto;
