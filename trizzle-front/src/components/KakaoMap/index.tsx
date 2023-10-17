@@ -54,6 +54,7 @@ const Maps: React.FC<MapProps> = (props: MapProps) => {
                   markerType="plan"
                   position={marker.position}
                   placeInfo={marker.placeInfo}
+                  day={marker.day}
                 />
               ))}
             </S.PlanMap>

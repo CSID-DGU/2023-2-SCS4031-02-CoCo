@@ -92,13 +92,14 @@ const AddPlanPage = () => {
         .map((dayPlan) => dayPlan.placeList)
         .reduce((acc, cur) => acc.concat(cur), [])
         .filter((place) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
-  
+      
       const allMarkerList = filteredPlaces.map((place) => {
         return {
           position: { lat: place.y, lng: place.x },
           placeInfo: place,
           selected: false,
           type: "plan",
+          day: placeList.findIndex((dayPlan) => dayPlan.placeList.includes(place)) + 1,
         };
       });
   
@@ -117,6 +118,33 @@ const AddPlanPage = () => {
   
       setMarkerList(markerList);
     }
+
+    setMarkerList((prevMarkerList) => {
+      if (selectDay === 0) {
+        const allMarkerList = prevMarkerList.map((marker) => {
+          // 여기서 각 마커의 day 속성을 업데이트합니다.
+          return {
+            ...marker,
+            day: placeList.findIndex((dayPlan) => dayPlan.placeList.includes(marker.placeInfo)) + 1,
+          };
+        });
+        return allMarkerList;
+      } else {
+        const markerList = prevMarkerList.filter((marker) => {
+          return (
+            marker.day === selectDay &&
+            typeof marker.placeInfo === 'object' &&
+            marker.placeInfo.hasOwnProperty('y') &&
+            marker.placeInfo.hasOwnProperty('x')
+          );
+        });
+        // 여기서 각 마커의 day 속성을 업데이트합니다.
+        markerList.forEach((marker) => {
+          marker.day = selectDay;
+        });
+        return markerList;
+      }
+    });
   }, [placeList, selectDay]);
   
   const onThemaBadgeClick = (select: any) => {
@@ -150,7 +178,7 @@ const AddPlanPage = () => {
             <S.SelectTitle>
               지역
             </S.SelectTitle>
-            <DropdownMenu name={region.name} items={koreaRegions} onClick={(region) => {setRegion(region)}}/>
+            <DropdownMenu name={region.name} items={koreaRegions} onClick={(region) => {setRegion(region); setCenter(region.center)}}/>
             <S.SelectTitle style={{marginLeft:"15rem"}}>여행기간</S.SelectTitle>
           </S.HorizontalContainer>
           <S.HorizontalContainer>
@@ -186,7 +214,7 @@ const AddPlanPage = () => {
           </HorizontalScrollContainer>
       </form>
 
-      <div style={{height:"50rem"}}/>
+      <div style={{height:"10rem"}}/>
       {isSearchModalOpen && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace, addClickDay)} center={region.center} onCloseClick={() => setIsSearchModalOpen(!isSearchModalOpen)}/>
       }
       {isKeywordModalOpen && <KeywordModal onAddButtonClick={(seletedKeyword) => onKeywordAddButtonClick(seletedKeyword, addClickDay)} onCloseClick={() => setIsKeywordModalOpen(!isKeywordModalOpen)}/>
