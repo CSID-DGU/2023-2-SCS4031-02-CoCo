@@ -95,6 +95,7 @@ export const HorizontalContainer = styled.div`
   display: flex;
   gap: 1rem;
   align-items: center;
+  position: relative;
 `
 
 export const SelectTitle = styled.div`
@@ -102,6 +103,16 @@ export const SelectTitle = styled.div`
   font-size: 1.2rem;
   font-weight: 500;
   margin-right: 1rem;
+`
+
+export const PlanDateContainer = styled.div`
+  display: flex;
+  width: auto;
+  gap: 1rem;
+  left: 50%;
+  align-items: center;
+  position:absolute;
+  justify-content: flex-start;
 `
 
 export const OverlayButtonContainer = styled.div`

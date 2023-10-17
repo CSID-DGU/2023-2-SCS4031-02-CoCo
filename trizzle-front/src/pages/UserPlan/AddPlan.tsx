@@ -11,6 +11,8 @@ import {AiOutlinePlus} from "react-icons/ai";
 import DayPlan from "../../shared/DayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 import { tripThema } from "../../utils/tripThema";
+import DatePicker from "../../components/DatePicker";
+import ReactDatePicker from "react-datepicker";
 
 
 type dayPlan = {
@@ -30,6 +32,7 @@ const AddPlanPage = () => {
   const [markerList, setMarkerList] = useState<any[]>([]);
   const [addClickDay, setAddClickDay] = useState<number>(0);
   const [center, setCenter] = useState<any>(region.center);
+  const [startDate, setStartDate] = useState<any>(new Date());
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     const updatedPlaceList = placeList.map((dayPlan) => {
@@ -175,11 +178,12 @@ const AddPlanPage = () => {
         <S.FormContainer>
           <TextInput name="title" title="제목" placeholder="일정 제목을 입력해주세요." styleProps={{width: "100%"}} id="title" onChange={(event) => setTitle(event.target.value)} value={title}/>
           <S.HorizontalContainer>
-            <S.SelectTitle>
-              지역
-            </S.SelectTitle>
+            <S.SelectTitle>지역</S.SelectTitle>
             <DropdownMenu name={region.name} items={koreaRegions} onClick={(region) => {setRegion(region); setCenter(region.center)}}/>
-            <S.SelectTitle style={{marginLeft:"15rem"}}>여행기간</S.SelectTitle>
+            <S.PlanDateContainer>
+            <S.SelectTitle >여행기간</S.SelectTitle>
+            <DatePicker setStartDate={setStartDate} startDate={startDate}/>
+            </S.PlanDateContainer>
           </S.HorizontalContainer>
           <S.HorizontalContainer>
             <S.SelectTitle>여행테마</S.SelectTitle>
