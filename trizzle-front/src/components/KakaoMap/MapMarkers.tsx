@@ -1,16 +1,18 @@
 import React from "react";
 import { MarkerProps } from "./Map.type";
-import { MapMarker } from "react-kakao-maps-sdk";
+import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import selected from "../../assets/markers/selected.svg"
 import unselect from "../../assets/markers/unselect.svg"
 import day from "../../assets/markers/day.svg"
+import DayMarker from "./DayMarker";
 
 const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
-  console.log(props);
+  console.log(props.day, props);
   return (
     <>
-      {props.markerType === "plan" && props.day &&
-        <MapMarker
+      {props.markerType === "plan"  && props.day && 
+      <>
+        {/* <MapMarker
           key={props.placeInfo.id}
           position={{ lat: props.position.lat, lng: props.position.lng }}
           image={{
@@ -20,7 +22,15 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
               alt: `${props.day}일차`}
             }}
           onClick={props.onClick}
-        />
+        /> */}
+        <CustomOverlayMap
+          key={props.placeInfo.id}
+          position={{ lat: props.position.lat, lng: props.position.lng }}
+          zIndex={1}
+        >
+          <DayMarker day={props.day} onClick={props.onClick}/>
+        </CustomOverlayMap>
+        </>
         }
       {props.markerType === "search" &&
       <MapMarker

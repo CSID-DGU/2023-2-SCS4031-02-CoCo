@@ -71,7 +71,7 @@ export const Day = styled.div<{isClicked:boolean}>`
   border-top-right-radius: 0.5rem;
   border-top-left-radius: 0.5rem;
   background-color: ${({isClicked}) => isClicked ? "#FFF7DA" : "#ffffff"};
-  border: ${({isClicked}) => isClicked ? "2px solid #FFDC61" : "1px solid #BDBDBD"};
+  border: ${({isClicked}) => isClicked ? "2px solid #FCC400" : "1px solid #BDBDBD"};
   color: ${({isClicked}) => isClicked ? "#000" : "#BDBDBD"};
   font-size: 1rem;
   font-weight: ${({isClicked}) => isClicked ? "500" : "400"};
@@ -127,4 +127,7 @@ export const OverlayButton = styled.button`
   justify-content: center;
   gap: 0.8rem;
   align-items: center;
+  &:hover {
+    background-color: #FFF7DA;
+  }
 `
