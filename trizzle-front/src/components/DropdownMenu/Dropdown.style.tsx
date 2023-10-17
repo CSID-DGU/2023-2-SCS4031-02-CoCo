@@ -12,9 +12,9 @@ export const DropdownButton = styled.button`
   border: 1px solid #9e9e9e;
   border-radius: 0.5rem;
   background-color: #ffffff;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 400;
-  color: #9e9e9e;
+  color: #000;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -63,7 +63,7 @@ export const BadgeDropdownInput = styled.div<{selectedItem:boolean}>`
   height: 2.5rem;
   border: ${props => props.selectedItem ? "none" : "1px solid #9e9e9e"};
   border-radius: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 400;
   color: #9e9e9e;
   display: flex;

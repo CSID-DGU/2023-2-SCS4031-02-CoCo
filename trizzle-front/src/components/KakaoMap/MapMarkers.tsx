@@ -3,7 +3,6 @@ import { MarkerProps } from "./Map.type";
 import { MapMarker, CustomOverlayMap } from "react-kakao-maps-sdk";
 import selected from "../../assets/markers/selected.svg"
 import unselect from "../../assets/markers/unselect.svg"
-import day from "../../assets/markers/day.svg"
 import DayMarker from "./DayMarker";
 
 const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {

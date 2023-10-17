@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { DropdownMenuProps } from "./Dropdown.type";
 import * as S from "./Dropdown.style";
-import {AiOutlineDown, AiOutlineClose} from "react-icons/ai";
+import {AiOutlineDown} from "react-icons/ai";
 
 const DropdownMenu: React.FC<DropdownMenuProps> = (props: DropdownMenuProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
