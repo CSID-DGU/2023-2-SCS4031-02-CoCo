@@ -11,8 +11,7 @@ import {AiOutlinePlus} from "react-icons/ai";
 import DayPlan from "../../shared/DayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 import { tripThema } from "../../utils/tripThema";
-import DatePicker from "../../components/DatePicker";
-import ReactDatePicker from "react-datepicker";
+import DatePicker, {CustomInput} from "../../components/DatePicker";
 
 
 type dayPlan = {
@@ -33,6 +32,7 @@ const AddPlanPage = () => {
   const [addClickDay, setAddClickDay] = useState<number>(0);
   const [center, setCenter] = useState<any>(region.center);
   const [startDate, setStartDate] = useState<any>(new Date());
+  const [endDate, setEndDate] = useState<any>();
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     const updatedPlaceList = placeList.map((dayPlan) => {
@@ -57,6 +57,14 @@ const AddPlanPage = () => {
     setIsSearchModalOpen(!isSearchModalOpen);
     setCenter({lat: place.y, lng: place.x});
   }
+
+  useEffect(() => {
+    const furturDate = new Date(startDate);
+    furturDate.setDate(furturDate.getDate() + allDay);
+    const formattedDate = furturDate.toISOString().slice(0, 10);
+    setEndDate(formattedDate);
+    console.log(endDate);
+  }, [startDate]);
 
   const onKeywordAddButtonClick = (keyword:string, day:number) => {
     const updatedPlaceList = placeList.map((dayPlan) => {
@@ -183,6 +191,8 @@ const AddPlanPage = () => {
             <S.PlanDateContainer>
             <S.SelectTitle >여행기간</S.SelectTitle>
             <DatePicker setStartDate={setStartDate} startDate={startDate}/>
+            <div style={{color:"#7e7e7e", margin:"0 0.5rem 0 0.3rem", fontSize:"1.3rem"}}>~</div>
+            <CustomInput value={endDate} onClick={() => console.log("please")}/>
             </S.PlanDateContainer>
           </S.HorizontalContainer>
           <S.HorizontalContainer>

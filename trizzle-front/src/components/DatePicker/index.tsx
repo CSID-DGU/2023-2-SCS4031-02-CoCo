@@ -2,7 +2,7 @@ import React from "react";
 import * as S from "./DatePicker.style";
 import {AiOutlineCalendar} from "react-icons/ai";
 
-const CustomInput:React.FC<{value: any, onClick:()=>void}> = ({value, onClick}) => {
+export const CustomInput:React.FC<{value: any, onClick:()=>void}> = ({value, onClick}) => {
   return(
     <S.Box onClick={onClick}>
       <S.DatePickerInput value={value} readOnly/>
