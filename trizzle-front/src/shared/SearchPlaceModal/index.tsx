@@ -47,7 +47,7 @@ const AddPlaceModal = (props: props) => {
 
 
   useEffect(() => {
-    console.log(selectedPlace);
+
     const updatedMarkerList = markerList.map((marker) => {
       return {
         position: marker.position,
@@ -98,7 +98,6 @@ const AddPlaceModal = (props: props) => {
   useEffect(() => {
     if(keyword !== "") {
       handleSearch(keyword);
-      console.log(markerList);
     }
   }
   , [keyword]);

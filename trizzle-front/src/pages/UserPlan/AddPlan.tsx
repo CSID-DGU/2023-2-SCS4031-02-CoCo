@@ -63,8 +63,8 @@ const AddPlanPage = () => {
     furturDate.setDate(furturDate.getDate() + allDay);
     const formattedDate = furturDate.toISOString().slice(0, 10);
     setEndDate(formattedDate);
-    console.log(endDate);
-  }, [startDate]);
+  
+  }, [startDate, allDay]);
 
   const onKeywordAddButtonClick = (keyword:string, day:number) => {
     const updatedPlaceList = placeList.map((dayPlan) => {
@@ -171,6 +171,25 @@ const AddPlanPage = () => {
     }
   };
   
+  const onDeleteButtonClick = (place:any, day:number) => {
+    const updatePlaceList = placeList.map((dayPlan) => {
+      if(dayPlan.day === day) {
+        return {
+          day: dayPlan.day,
+          placeList: dayPlan.placeList.filter((placeInfo) => {
+            if(placeInfo.hasOwnProperty('y') && placeInfo.hasOwnProperty('x')) {
+              return placeInfo.id !== place.id
+            } else {
+              return placeInfo.name !== place.name
+            }
+          }),
+        }
+      } else {
+        return dayPlan;
+      }
+    });
+    setPlaceList(updatePlaceList);
+  }
 
 
   return (
@@ -192,7 +211,7 @@ const AddPlanPage = () => {
             <S.SelectTitle >여행기간</S.SelectTitle>
             <DatePicker setStartDate={setStartDate} startDate={startDate}/>
             <div style={{color:"#7e7e7e", margin:"0 0.5rem 0 0.3rem", fontSize:"1.3rem"}}>~</div>
-            <CustomInput value={endDate} onClick={() => console.log("please")}/>
+            <CustomInput value={endDate} onClick={() => {}}/>
             </S.PlanDateContainer>
           </S.HorizontalContainer>
           <S.HorizontalContainer>
@@ -223,7 +242,7 @@ const AddPlanPage = () => {
 
           <HorizontalScrollContainer moveDistance={200}>
             {placeList.map((dayPlan, index) => (
-              <DayPlan key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan}/>
+              <DayPlan isPlan={false} key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan} onDeleteClick={(place, day) => onDeleteButtonClick(place, day)}/>
             ))}
           </HorizontalScrollContainer>
       </form>
