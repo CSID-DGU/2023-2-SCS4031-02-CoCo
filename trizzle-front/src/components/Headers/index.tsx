@@ -10,8 +10,7 @@ import homeLogo from "../../assets/logo/homeLogo.svg"
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const isLogin = props.isLogin || true;
   const isHome = props.isHome || false;
-  const publicUrl = import.meta.env.VITE_PUBLIC_URL;
-  console.log(publicUrl);
+
 
   return (
     <>
@@ -27,7 +26,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       <S.RightWrapper>
         <S.HeaderIconText>
           <AiOutlinePlus size="1.1rem"/>
-          <Link to="/id/plan/addPlan">
+          <Link to="/mypage/plans/add">
             <S.HeaderText>일정추가</S.HeaderText>
           </Link>
         </S.HeaderIconText>

@@ -7,8 +7,6 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props: DropdownMenuProps) => 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownType = props.type? props.type : "default";
 
-  console.log(props.type);
-
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   }
