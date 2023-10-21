@@ -156,6 +156,7 @@ const AddPlanPage = () => {
         return markerList;
       }
     });
+    console.log(JSON.parse(JSON.stringify(placeList)));
   }, [placeList, selectDay]);
   
   const onThemaBadgeClick = (select: any) => {

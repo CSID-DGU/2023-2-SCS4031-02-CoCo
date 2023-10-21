@@ -4,6 +4,7 @@ import logo from "../../assets/logo/nonTextLogo.svg"
 import {AiOutlineEllipsis} from "react-icons/ai";
 import DayPlace from "./DayPlace";
 
+
 type DayPlanProps = {
   onPlaceClick: (day:number) => void;
   onKeywordClick: (day:number) => void;

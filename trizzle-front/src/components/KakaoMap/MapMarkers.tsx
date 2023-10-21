@@ -17,6 +17,7 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
           key={props.placeInfo.id}
           position={{ lat: props.position.lat, lng: props.position.lng }}
           zIndex={1}
+          
         >
           <DayMarker day={props.day} onClick={() => setOpen(!open)} />
           {open && (

@@ -37,7 +37,9 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
             <S.AlarmBadge>{props.alarmCount}</S.AlarmBadge>
     )}
         </S.HeaderIconText>
+        <Link to="/myfeed">
         <S.Avatar src={props.avatarSrc? props.avatarSrc : avatar} alt="avatar"/>
+        </Link>
       </S.RightWrapper>
     </S.Header>
     ):(
