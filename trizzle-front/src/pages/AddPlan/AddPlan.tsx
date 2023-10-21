@@ -12,6 +12,7 @@ import DayPlan from "../../shared/DayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 import { tripThema } from "../../utils/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
+import { useNavigate } from "react-router-dom";
 
 
 type dayPlan = {
@@ -25,7 +26,7 @@ const AddPlanPage = () => {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
-  const [region, setRegion] = useState<any>({name: "서울특별시", center: {lat: 37.55767200694191, lng: 127.000260306464}});
+  const [region, setRegion] = useState<any>(koreaRegions[0]);
   const [thema, setThema] = useState<any[]>([]);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [markerList, setMarkerList] = useState<any[]>([]);
@@ -33,6 +34,8 @@ const AddPlanPage = () => {
   const [center, setCenter] = useState<any>(region.center);
   const [startDate, setStartDate] = useState<any>(new Date());
   const [endDate, setEndDate] = useState<any>();
+  const navigate = useNavigate();
+
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     const updatedPlaceList = placeList.map((dayPlan) => {
@@ -172,19 +175,12 @@ const AddPlanPage = () => {
     }
   };
   
-  const onDeleteButtonClick = (place:any, day:number) => {
+  const onDeleteButtonClick = (place:any, day:number, index:number) => {
     const updatePlaceList = placeList.map((dayPlan) => {
       if(dayPlan.day === day) {
         return {
           day: dayPlan.day,
-          placeList: dayPlan.placeList.filter((placeInfo) => {
-            if(placeInfo.hasOwnProperty('y') && placeInfo.hasOwnProperty('x')) {
-              return placeInfo.id !== place.id
-            } else {
-              return placeInfo.name !== place.name
-            }
-          }),
-        }
+          placeList: dayPlan.placeList.filter((_, idx) => idx !== index),}
       } else {
         return dayPlan;
       }
@@ -192,16 +188,38 @@ const AddPlanPage = () => {
     setPlaceList(updatePlaceList);
   }
 
+  const onSubmitButtonClick = () => {
+    if(title === "") {
+      alert("제목을 입력해주세요.");
+      return;
+    } else if(thema.length === 0) {
+      alert("여행 테마를 선택해주세요.");
+      return;
+    };
+
+    const submitData = {
+      plan_id:Math.floor(Math.random() * 1000000000) + 1,
+      plan_name: title,
+      plan_start_date: startDate,
+      plan_end_date: endDate,
+      plan_location: region.name,
+      plan_theme: thema,
+      content: placeList
+    }
+    localStorage.setItem("submitData", JSON.stringify(submitData));
+    navigate(`/myfeed/plans/${submitData.plan_id}}`);
+  };
+
 
   return (
     <Page headersProps={{isHome:false, isLogin:true}}>
       <S.PageTitleContainer>
         <S.PageTitle>나만의 일정 등록</S.PageTitle>
       </S.PageTitleContainer>
-      <form>
+      {/* <form> */}
         <S.ButtonContainer>
-          <S.Button>임시저장</S.Button>
-          <S.Button>저장</S.Button>
+          {/* <S.Button>임시저장</S.Button> */}
+          <S.Button onClick={onSubmitButtonClick}>저장</S.Button>
         </S.ButtonContainer>
         <S.FormContainer>
           <TextInput name="title" title="제목" placeholder="일정 제목을 입력해주세요." styleProps={{width: "100%"}} id="title" onChange={(event) => setTitle(event.target.value)} value={title}/>
@@ -243,10 +261,10 @@ const AddPlanPage = () => {
 
           <HorizontalScrollContainer moveDistance={200}>
             {placeList.map((dayPlan, index) => (
-              <DayPlan isPlan={false} key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan} onDeleteClick={(place, day) => onDeleteButtonClick(place, day)}/>
+              <DayPlan isPlan={false} key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)}/>
             ))}
           </HorizontalScrollContainer>
-      </form>
+      {/* </form> */}
 
       <div style={{height:"10rem"}}/>
       {isSearchModalOpen && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace, addClickDay)} center={region.center} onCloseClick={() => setIsSearchModalOpen(!isSearchModalOpen)}/>
