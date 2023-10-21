@@ -3,6 +3,7 @@ import AddPlanPage from '../pages/UserPlan/AddPlan';
 import Home from '../pages/Home';
 import AddPlacePage from '../pages/UesrPlace/AddPlace';
 
+
 const Router = () => {
   return (
     <BrowserRouter>
