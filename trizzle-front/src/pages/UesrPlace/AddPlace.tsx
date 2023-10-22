@@ -33,6 +33,7 @@ export default function AddPlacePage({ userContent }: AddPlacePageProps) {
   const [contents, setContents] = useState<string>(userContents.review_content);
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
   const [region, setRegion] = useState<any>({ name: "서울특별시", center: { lat: 37.55767200694191, lng: 127.000260306464 } });
+  const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
 
   // 모달 열고 닫기
   const openCloseModal = () => {
@@ -97,7 +98,7 @@ export default function AddPlacePage({ userContent }: AddPlacePageProps) {
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
-          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} />
+          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)}/>
 
         </S.FormContainer>
       </form>
