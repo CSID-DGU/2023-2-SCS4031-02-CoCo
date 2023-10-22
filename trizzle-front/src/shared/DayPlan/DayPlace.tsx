@@ -11,7 +11,7 @@ type DayPlaceProps = {
   isPost?: boolean;
   index: number;
   onPostClick?: () => void;
-  onDeleteClick: (place:any, day:number, index:number) => void;
+  onDeleteClick?: (place:any, day:number, index:number) => void;
 }
 
 const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
@@ -24,10 +24,11 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
         <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)}/>
         {open && (
           <S.MenuContainer>
-            {!props.isPlan && props.onPostClick && (
+            {!props.isPlan && props.onPostClick ? (
               <S.MenuItem delete={false}>{props.isPost? "게시글 바로가기" : "게시글 등록"}</S.MenuItem>
-            )}
+            ) : (
             <S.MenuItem delete={true} onClick={()=>{props.onDeleteClick(props.place, props.day, props.index); setOpen(!open)}}>삭제</S.MenuItem>
+            )}
           </S.MenuContainer>
 
         )}
@@ -45,11 +46,15 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
     return(
     <S.PlaceContainer>
     <S.MenuButtonContainer>
+      {props.isPlan && (
+        <>
       <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)}/>
-      {open && (
-        <S.MenuContainer>
-          <S.MenuItem delete={true} onClick={()=>{props.onDeleteClick(props.place, props.day, props.index); console.log(props.index);setOpen(!open);}}>삭제</S.MenuItem>
-        </S.MenuContainer>
+        {open && (
+          <S.MenuContainer>
+            <S.MenuItem delete={true} onClick={()=>{props.onDeleteClick(props.place, props.day, props.index); console.log(props.index);setOpen(!open);}}>삭제</S.MenuItem>
+          </S.MenuContainer>
+        )}
+      </>
       )}
     </S.MenuButtonContainer>
       <img src={props.place.src} alt="keywordImg" style={{width:"3.2rem", height:"auto"}}/>

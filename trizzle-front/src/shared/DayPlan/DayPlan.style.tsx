@@ -164,4 +164,14 @@ export const MenuItem = styled.div<{delete:boolean}>`
 `
 
 
+export const HorizontalContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  position: relative;
+`
+
+
 

@@ -4,6 +4,7 @@ import logo from "../../assets/logo/nonTextLogo.svg"
 import {AiOutlineEllipsis} from "react-icons/ai";
 import DayPlace from "./DayPlace";
 
+//Drag & Drop 가능하도록 수정 예정
 
 type DayPlanProps = {
   onPlaceClick: (day:number) => void;

@@ -2,17 +2,16 @@ import React,{useState, useEffect} from "react";
 import AddPlaceModal from "../../shared/SearchPlaceModal";
 import Page from "../Page";
 import * as S from "./AddPlan.styles";
-import Maps from "../../components/KakaoMap";
 import KeywordModal from "../../shared/KeywordModal";
 import TextInput from "../../components/TextInput";
 import DropdownMenu from "../../components/DropdownMenu";
 import { koreaRegions } from "../../utils/mapData";
-import {AiOutlinePlus} from "react-icons/ai";
 import DayPlan from "../../shared/DayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 import { tripThema } from "../../utils/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
 import { useNavigate } from "react-router-dom";
+import PlanMap from "../../shared/PlanMap";
 
 
 type dayPlan = {
@@ -29,7 +28,6 @@ const AddPlanPage = () => {
   const [region, setRegion] = useState<any>(koreaRegions[0]);
   const [thema, setThema] = useState<any[]>([]);
   const [selectDay, setSelectDay] = useState<number>(0);
-  const [markerList, setMarkerList] = useState<any[]>([]);
   const [addClickDay, setAddClickDay] = useState<number>(0);
   const [center, setCenter] = useState<any>(region.center);
   const [startDate, setStartDate] = useState<any>(new Date());
@@ -100,67 +98,6 @@ const AddPlanPage = () => {
   };
 
 
-  useEffect(() => {
-    if (selectDay === 0) {
-      const filteredPlaces = placeList
-        .map((dayPlan) => dayPlan.placeList)
-        .reduce((acc, cur) => acc.concat(cur), [])
-        .filter((place) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
-      
-      const allMarkerList = filteredPlaces.map((place) => {
-        return {
-          position: { lat: place.y, lng: place.x },
-          placeInfo: place,
-          selected: false,
-          type: "plan",
-          day: placeList.findIndex((dayPlan) => dayPlan.placeList.includes(place)) + 1,
-        };
-      });
-  
-      setMarkerList(allMarkerList);
-    } else {
-      const filteredPlaces = placeList[selectDay - 1].placeList.filter((place) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
-      const markerList = filteredPlaces.map((place) => {
-        return {
-          position: { lat: place.y, lng: place.x },
-          day: selectDay,
-          placeInfo: place,
-          selected: false,
-          type: "plan",
-        };
-      });
-  
-      setMarkerList(markerList);
-    }
-
-    setMarkerList((prevMarkerList) => {
-      if (selectDay === 0) {
-        const allMarkerList = prevMarkerList.map((marker) => {
-          // 여기서 각 마커의 day 속성을 업데이트합니다.
-          return {
-            ...marker,
-            day: placeList.findIndex((dayPlan) => dayPlan.placeList.includes(marker.placeInfo)) + 1,
-          };
-        });
-        return allMarkerList;
-      } else {
-        const markerList = prevMarkerList.filter((marker) => {
-          return (
-            marker.day === selectDay &&
-            typeof marker.placeInfo === 'object' &&
-            marker.placeInfo.hasOwnProperty('y') &&
-            marker.placeInfo.hasOwnProperty('x')
-          );
-        });
-        // 여기서 각 마커의 day 속성을 업데이트합니다.
-        markerList.forEach((marker) => {
-          marker.day = selectDay;
-        });
-        return markerList;
-      }
-    });
-    console.log(JSON.parse(JSON.stringify(placeList)));
-  }, [placeList, selectDay]);
   
   const onThemaBadgeClick = (select: any) => {
     // 선택한 아이템이 thema 배열에 이미 존재하는지 확인
@@ -239,25 +176,7 @@ const AddPlanPage = () => {
           </S.HorizontalContainer>
           <S.HorizontalLine/>
           </S.FormContainer>
-
-          <S.MapContainer>
-            <S.DaysContainer>
-              <S.Day isClicked={selectDay === 0? true : false} onClick={() => setSelectDay(0)}>전체</S.Day>
-              {placeList.map((dayPlan, index) => (
-                <S.Day key={index} isClicked={selectDay === dayPlan.day ? true : false} onClick={() => setSelectDay(dayPlan.day)}>{dayPlan.day}일차</S.Day>
-              ))}
-              <S.Day onClick={() => onDayPlusButtonClick()} isClicked={false} >추가</S.Day>
-            </S.DaysContainer>
-            <Maps markerList={markerList} center={center} type="plan"/>
-            <S.OverlayButtonContainer>
-                <S.OverlayButton onClick={() => {setIsSearchModalOpen(!isSearchModalOpen); setAddClickDay(selectDay)} } type="button">장소 추가
-                  <AiOutlinePlus color="#FCC400"/>
-                </S.OverlayButton>
-                <S.OverlayButton onClick={() => {setIsKeywordModalOpen(!isKeywordModalOpen); setAddClickDay(selectDay)} } type="button">키워드 추가
-                  <AiOutlinePlus color="#FCC400"/>
-                </S.OverlayButton>
-              </S.OverlayButtonContainer>
-          </S.MapContainer>
+          <PlanMap selectDay={selectDay} setSelectDay={setSelectDay} placeList={placeList} center={center} isSearchModalOpen={isSearchModalOpen} setIsSearchModalOpen={setIsSearchModalOpen} isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} onDayPlusButtonClick={onDayPlusButtonClick} setAddClickDay={setAddClickDay} page="add"/>
 
           <HorizontalScrollContainer moveDistance={200}>
             {placeList.map((dayPlan, index) => (
