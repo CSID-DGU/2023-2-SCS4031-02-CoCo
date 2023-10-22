@@ -26,7 +26,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       <S.RightWrapper>
         <S.HeaderIconText>
           <AiOutlinePlus size="1.1rem"/>
-          <Link to="/mypage/plans/add">
+          <Link to="/myfeed/plans/add">
             <S.HeaderText>일정추가</S.HeaderText>
           </Link>
         </S.HeaderIconText>
