@@ -1,13 +1,11 @@
 import React,{useState} from "react";
 import { DropdownMenuProps } from "./Dropdown.type";
 import * as S from "./Dropdown.style";
-import {AiOutlineDown, AiOutlineClose} from "react-icons/ai";
+import {AiOutlineDown} from "react-icons/ai";
 
 const DropdownMenu: React.FC<DropdownMenuProps> = (props: DropdownMenuProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownType = props.type? props.type : "default";
-
-  console.log(props.type);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -22,7 +20,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props: DropdownMenuProps) => 
         {isDropdownOpen && (
           <S.DropdownMenuContainer>
             {props.items.map((menu, index) => (
-              <S.DropdownMenuItem key={index} onClick={() => props.onClick(menu)}>{menu.name}</S.DropdownMenuItem>
+              <S.DropdownMenuItem key={index} onClick={() => {props.onClick(menu); toggleDropdown()}}>{menu.name}</S.DropdownMenuItem>
             ))}
           </S.DropdownMenuContainer>
         )}

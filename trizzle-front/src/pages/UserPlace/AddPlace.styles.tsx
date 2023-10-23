@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 
+<<<<<<<< HEAD:trizzle-front/src/pages/UserPlace/AddPlace.styles.tsx
 export const PageTitleContainer = styled.div`
   width: 100%;
   height: 9rem;
@@ -61,6 +62,8 @@ export const Option = styled.option`
   fontSize: 1rem;
 `
 
+========
+>>>>>>>> 841ec111974be036f755e4ae8c67466d12c76213:trizzle-front/src/shared/PlanMap/PlanMap.style.tsx
 export const MapContainer = styled.div`
   width: 100%;
   height: auto;
@@ -94,6 +97,7 @@ export const Day = styled.div<{ isClicked: boolean }>`
   border-bottom: none;
 `
 
+<<<<<<<< HEAD:trizzle-front/src/pages/UserPlace/AddPlace.styles.tsx
 export const FormContainer = styled.div`
   width: 100%;
   height: auto;
@@ -126,6 +130,8 @@ export const SelectTitle = styled.div`
   margin-right: 1rem;
 `
 
+========
+>>>>>>>> 841ec111974be036f755e4ae8c67466d12c76213:trizzle-front/src/shared/PlanMap/PlanMap.style.tsx
 export const OverlayButtonContainer = styled.div`
   width: auto;
   height: auto;

@@ -4,7 +4,7 @@ import { MapProps } from "./Map.type";
 import MapMarkers from "./MapMarkers";
 
 const Maps: React.FC<MapProps> = (props: MapProps) => {
-  console.log(props.markerList);
+
 
   switch (props.type) {
     case "search":

@@ -19,7 +19,6 @@ const KeywordModal:React.FC<modalProps> = (props: modalProps) => {
     {name:"쇼핑", src: shopping},
   ];
   
-  console.log(res);
   return (
     <Modal onCloseClick={props.onCloseClick} styleProps={{width:"47rem", height:"30rem"}} title="키워드 추가">
       <S.KeywordsContainer>
