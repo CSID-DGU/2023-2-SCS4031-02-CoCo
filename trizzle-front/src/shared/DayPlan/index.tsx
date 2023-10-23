@@ -1,8 +1,7 @@
 import React,{useState} from "react";
 import * as S from "./DayPlan.style";
-import logo from "../../assets/logo/nonTextLogo.svg"
-import {AiOutlineEllipsis} from "react-icons/ai";
 import DayPlace from "./DayPlace";
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
 
 //Drag & Drop 가능하도록 수정 예정
 

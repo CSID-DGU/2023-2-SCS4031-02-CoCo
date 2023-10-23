@@ -12,6 +12,7 @@ import { tripThema } from "../../utils/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
 import { useNavigate } from "react-router-dom";
 import PlanMap from "../../shared/PlanMap";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 
 type dayPlan = {
@@ -177,12 +178,69 @@ const AddPlanPage = () => {
           <S.HorizontalLine/>
           </S.FormContainer>
           <PlanMap selectDay={selectDay} setSelectDay={setSelectDay} placeList={placeList} center={center} isSearchModalOpen={isSearchModalOpen} setIsSearchModalOpen={setIsSearchModalOpen} isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} onDayPlusButtonClick={onDayPlusButtonClick} setAddClickDay={setAddClickDay} page="add"/>
-
+          <DragDropContext onDragEnd={(result) => {
+            if (!result.destination) return;
+            const { source, destination } = result;
+            const sourceDay = source.droppableId; // source에서 dayPlan의 day를 얻음
+            const destDay = destination.droppableId; // destination에서 dayPlan의 day를 얻음
+          
+            const updatePlaceList = placeList.map((dayPlan) => {
+              if (dayPlan.day === Number(sourceDay)) {
+                // source의 dayPlan 찾기
+                const placeList = [...dayPlan.placeList];
+                const [removed] = placeList.splice(source.index, 1);
+                // source에서 아이템 제거
+          
+                if (dayPlan.day === Number(destDay)) {
+                  // 같은 dayPlan으로 이동하는 경우
+                  placeList.splice(destination.index, 0, removed);
+                  // 해당 위치에 아이템 삽입
+                }
+          
+                return {
+                  day: dayPlan.day,
+                  placeList: placeList,
+                };
+              } else if (dayPlan.day === Number(destDay)) {
+                // destination의 dayPlan 찾기
+                const placeList = [...dayPlan.placeList];
+                placeList.splice(destination.index, 0, removed);
+                // 해당 위치에 아이템 삽입
+          
+                return {
+                  day: dayPlan.day,
+                  placeList: placeList,
+                };
+              } else {
+                return dayPlan;
+              }
+            });
+          
+            setPlaceList(updatePlaceList);
+          }
+          }>
           <HorizontalScrollContainer moveDistance={200}>
             {placeList.map((dayPlan, index) => (
-              <DayPlan isPlan={false} key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)}/>
+              <Droppable key={index} droppableId={`${dayPlan.day}`}>
+                {(provided) => (
+                  <div ref={provided.innerRef}>
+                    <Draggable draggableId={`${dayPlan.day}`} index={index}>
+                      {(dragProvided) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                          {...dragProvided.dragHandleProps} 
+                        >
+                          <DayPlan isPlan={true} key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)} />
+                          </div>
+                      )}
+                    </Draggable>
+              </div>
+                )}
+              </Droppable>
             ))}
           </HorizontalScrollContainer>
+          </DragDropContext>
       {/* </form> */}
 
       <div style={{height:"10rem"}}/>
