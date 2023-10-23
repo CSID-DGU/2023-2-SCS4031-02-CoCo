@@ -39,7 +39,7 @@ export default function PostInput({ onChangeContents, onThumbnailImages, prevDat
     toolbar: {
       container: [
         [{ 'font': [] }],
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+        [{ 'size': ['small', false, 'large', 'huge'] }],
         [{ 'align': [] }, 'bold', 'italic', 'underline', 'strike', { 'color': [] }, { 'background': [] }],
         ['image'],
         ['blockquote', 'code-block'],
