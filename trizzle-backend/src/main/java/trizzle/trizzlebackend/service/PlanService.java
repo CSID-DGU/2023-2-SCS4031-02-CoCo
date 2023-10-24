@@ -50,11 +50,17 @@ public class PlanService {
 
         return mongoRepository.save(plan);
     }
-    
+
     /*일정 가져오기*/
     public Plan searchPlan(String _id) {
         Optional <Plan> planOptional = mongoRepository.findById(_id);
         return planOptional.orElse(null);
+    }
+
+    /*일정 수정하기*/
+    public Plan updatePlan(Plan plan, String id){
+        plan.setId(id);
+        return insertPlan(plan);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
     }
 
 }

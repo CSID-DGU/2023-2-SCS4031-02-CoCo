@@ -28,4 +28,10 @@ public class PlanController {
     public Plan searchPlan(@PathVariable("plan_id") String id) {
         return planService.searchPlan(id);
     }
+
+    @PutMapping("/{plan_id}")
+    public ResponseEntity<String> updatePlan(@RequestBody Plan plan, @PathVariable("plan_id") String id) {
+        planService.updatePlan(plan, id);
+        return new ResponseEntity<>("{\"message\":\"success\"}", HttpStatus.OK);
+    }
 }
