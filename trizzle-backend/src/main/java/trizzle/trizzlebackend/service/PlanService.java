@@ -50,6 +50,11 @@ public class PlanService {
 
         return mongoRepository.save(plan);
     }
-
+    
+    /*일정 가져오기*/
+    public Plan searchPlan(String _id) {
+        Optional <Plan> planOptional = mongoRepository.findById(_id);
+        return planOptional.orElse(null);
+    }
 
 }

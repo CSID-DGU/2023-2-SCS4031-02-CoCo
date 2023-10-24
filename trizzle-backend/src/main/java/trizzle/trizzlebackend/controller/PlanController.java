@@ -23,5 +23,9 @@ public class PlanController {
         planService.insertPlan(plan);
         return new ResponseEntity<>("{\"message\":\"success\"}", HttpStatus.OK);
     }
-    
+
+    @GetMapping("/{plan_id}")
+    public Plan searchPlan(@PathVariable("plan_id") String id) {
+        return planService.searchPlan(id);
+    }
 }
