@@ -59,13 +59,33 @@ export const useDeletePlaceFromPlan = () => {
 
 const onPlaceDragEnd = (result:any, planList:any) => {
   
-  if(!result.destination) return;
+  if(!result.destination) return planList;
   const {source, destination} = result;
   const sourceDay = source.droppableId.split('-')[0];
   const destinationDay = destination.droppableId.split('-')[0];
   const sourceIndex = source.droppableId.split('-')[1];
   const destinationIndex = destination.droppableId.split('-')[1];
   const place = planList[Number(sourceDay)-1].placeList[sourceIndex];
+
+  if(sourceDay === destinationDay && sourceIndex === destinationIndex) {
+    return planList;
+  };
+
+  if(sourceDay === destinationDay && sourceIndex !== destinationIndex) {
+    const updatedPlaceList = planList.map((dayPlan:any) => {
+      if(dayPlan.day === Number(sourceDay)){
+        const newPlaceList = [...dayPlan.placeList];
+        newPlaceList.splice(Number(destinationIndex), 0, newPlaceList.splice(Number(sourceIndex), 1)[0]);
+        return {
+          day: dayPlan.day,
+          placeList: newPlaceList,
+        }
+      } else {
+        return dayPlan;
+      }
+    });
+    return updatedPlaceList;
+  }
 
   const updatedPlaceList = planList.map((dayPlan:any) => {
     if(dayPlan.day === Number(sourceDay)){
