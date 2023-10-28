@@ -1,0 +1,104 @@
+import {  useSetRecoilState } from "recoil";
+import { PlanListState } from "./selector";
+
+
+const addPlaceToPlan = (place:any, day:number, planList:any, allDay:number) => {
+  const updatedPlaceList = planList.map((dayPlan:any) => {
+    if(day === 0) {
+      if(dayPlan.day === allDay) {
+        return {
+          day: allDay,
+          placeList: [...dayPlan.placeList, place],
+        }} else {
+        return dayPlan;
+        }
+    }else if(dayPlan.day === day) {
+      return {
+        day: dayPlan.day,
+        placeList: [...dayPlan.placeList, place],
+      }
+    } else {
+      return dayPlan;
+    }
+  })
+  return updatedPlaceList;
+};
+
+export const useAddPlaceToPlan = () => {
+  const setPlanList = useSetRecoilState(PlanListState);
+  const addPlace = (place:any, day:number, planList:any, allDay:number) => {
+    const updatedPlaceList = addPlaceToPlan(place, day, planList, allDay);
+    setPlanList(updatedPlaceList);
+  };
+  return addPlace;
+};
+
+
+const deletePlaceFromPlan = (place:any, day:number, planList:any, index:number) => {
+  const updatedPlaceList = planList.map((dayPlan:any) => {
+    if(dayPlan.day === day) {
+      return {
+        day: dayPlan.day,
+        placeList: dayPlan.placeList.filter((placeItem:any, idx:any) => idx !== index),
+      }
+    } else {
+      return dayPlan;
+    }
+  })
+  return updatedPlaceList;
+}
+
+export const useDeletePlaceFromPlan = () => {
+  const setPlanList = useSetRecoilState(PlanListState);
+  const deletePlace = (place:any, day:number, planList:any, index:number) => {
+    const updatedPlaceList = deletePlaceFromPlan(place, day, planList, index);
+    setPlanList(updatedPlaceList);
+  };
+  return deletePlace;
+};
+
+const onPlaceDragEnd = (result:any, planList:any) => {
+  
+  if(!result.destination) return;
+  const {source, destination} = result;
+  const sourceDay = source.droppableId.split('-')[0];
+  const destinationDay = destination.droppableId.split('-')[0];
+  const sourceIndex = source.droppableId.split('-')[1];
+  const destinationIndex = destination.droppableId.split('-')[1];
+  const place = planList[Number(sourceDay)-1].placeList[sourceIndex];
+
+  const updatedPlaceList = planList.map((dayPlan:any) => {
+    if(dayPlan.day === Number(sourceDay)){
+      return {
+        day: dayPlan.day,
+        placeList: dayPlan.placeList.filter((placeItem:any, idx:any) => {return idx !== Number(sourceIndex)}),
+      }
+    } else if(dayPlan.day === Number(destinationDay)) {
+      console.log(dayPlan.placeList);
+      if(dayPlan.placeList.length === 0) {
+        return {
+          day: dayPlan.day,
+          placeList: [place],
+        }
+      }
+      const newPlaceList = [...dayPlan.placeList];
+      newPlaceList.splice(Number(destinationIndex), 0, place);
+      return {
+        day: dayPlan.day,
+        placeList: newPlaceList,
+      }
+    } else {
+      return dayPlan;
+    }
+  });
+  return updatedPlaceList;
+};
+
+export const useOnPlaceDragEnd = () => {
+  const setPlanList = useSetRecoilState(PlanListState);
+  const onDragEnd = (result:any, planList:any[]) => {
+    const updatedPlaceList = onPlaceDragEnd(result, planList);
+    setPlanList(updatedPlaceList);
+  };
+  return onDragEnd;
+};
