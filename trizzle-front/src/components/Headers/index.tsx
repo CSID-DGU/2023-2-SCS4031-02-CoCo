@@ -3,6 +3,7 @@ import * as S from "./Headers.style";
 import { HeadersProps } from "./Headers.type";
 import {AiOutlineBell, AiOutlinePlus} from "react-icons/ai";
 import { Link } from "react-router-dom";
+import ProfileImage from "../ProfileImage";
 import avatar from "../../assets/images/default_avatar.png"
 import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
@@ -38,7 +39,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     )}
         </S.HeaderIconText>
         <Link to="/myfeed">
-        <S.Avatar src={props.avatarSrc? props.avatarSrc : avatar} alt="avatar"/>
+          <ProfileImage type="small" margin="0 0 0 1.5rem"/>
         </Link>
       </S.RightWrapper>
     </S.Header>
