@@ -53,10 +53,3 @@ export const AlarmBadge = styled.div`
   font-weight: 600;
   color: #fff;
 `
-
-export const Avatar = styled.img`
-  width: 2.7rem;
-  height: 2.7rem;
-  border-radius: 50%;
-  margin-left: 1.5rem;
-`

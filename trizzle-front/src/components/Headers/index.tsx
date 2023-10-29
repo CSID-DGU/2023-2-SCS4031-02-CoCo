@@ -4,7 +4,6 @@ import { HeadersProps } from "./Headers.type";
 import {AiOutlineBell, AiOutlinePlus} from "react-icons/ai";
 import { Link } from "react-router-dom";
 import ProfileImage from "../ProfileImage";
-import avatar from "../../assets/images/default_avatar.png"
 import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
 
