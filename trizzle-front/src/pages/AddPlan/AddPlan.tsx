@@ -12,17 +12,15 @@ import { tripThema } from "../../utils/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
 import { useNavigate } from "react-router-dom";
 import PlanMap from "../../shared/PlanMap";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
-
-type dayPlan = {
-  day: number;
-  placeList: any[];
-}
+import { useDeletePlaceFromPlan, useAddPlaceToPlan, useOnPlaceDragEnd } from "../../recoil/PlanList";
+import { useRecoilState } from "recoil";
+import { PlanState } from "../../recoil/PlanList/atoms";
+import { DragDropContext} from "react-beautiful-dnd";
 
 const AddPlanPage = () => {
   const [allDay, setDay] = useState(3); //기본으로 3일 지정
-  const [placeList, setPlaceList] = useState<dayPlan[]>([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]); //기본 3일이기 때문에
+  // const [placeList, setPlaceList] = useState<dayPlan[]>([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]); //기본 3일이기 때문에
+  const [placeList, setPlaceList] = useRecoilState<any[]>(PlanState);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState<boolean>(false);
   const [title, setTitle] = useState<string>("");
@@ -34,28 +32,12 @@ const AddPlanPage = () => {
   const [startDate, setStartDate] = useState<any>(new Date());
   const [endDate, setEndDate] = useState<any>();
   const navigate = useNavigate();
-
+  const deletePlaceFromPlan = useDeletePlaceFromPlan();
+  const addPlaceToPlan = useAddPlaceToPlan();
+  const onPlaceDragEnd = useOnPlaceDragEnd();
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
-    const updatedPlaceList = placeList.map((dayPlan) => {
-      if(day === 0) {
-        if(dayPlan.day === allDay) {
-          return {
-            day: allDay,
-            placeList: [...dayPlan.placeList, place],
-          }} else {
-          return dayPlan;
-          }
-      }else if(dayPlan.day === day) {
-        return {
-          day: dayPlan.day,
-          placeList: [...dayPlan.placeList, place],
-        }
-      } else {
-        return dayPlan;
-      }
-    })
-    setPlaceList(updatedPlaceList);
+    addPlaceToPlan(place, day, placeList, allDay);
     setIsSearchModalOpen(!isSearchModalOpen);
     setCenter({lat: place.y, lng: place.x});
   }
@@ -69,26 +51,7 @@ const AddPlanPage = () => {
   }, [startDate, allDay]);
 
   const onKeywordAddButtonClick = (keyword:string, day:number) => {
-    const updatedPlaceList = placeList.map((dayPlan) => {
-      if(day === 0) {
-        if(dayPlan.day === allDay){
-        return {
-          day: allDay,
-          placeList: [...dayPlan.placeList, keyword],
-        }
-      } else {
-        return dayPlan;
-      }
-      } else if(dayPlan.day === day) {
-        return {
-          day: dayPlan.day,
-          placeList: [...dayPlan.placeList, keyword],
-        }
-      } else {
-        return dayPlan;
-      }
-    })
-    setPlaceList(updatedPlaceList);
+    addPlaceToPlan(keyword, day, placeList, allDay);
     setIsKeywordModalOpen(!isKeywordModalOpen);
   };
 
@@ -114,16 +77,7 @@ const AddPlanPage = () => {
   };
   
   const onDeleteButtonClick = (place:any, day:number, index:number) => {
-    const updatePlaceList = placeList.map((dayPlan) => {
-      if(dayPlan.day === day) {
-        return {
-          day: dayPlan.day,
-          placeList: dayPlan.placeList.filter((_, idx) => idx !== index),}
-      } else {
-        return dayPlan;
-      }
-    });
-    setPlaceList(updatePlaceList);
+    deletePlaceFromPlan(place, day, placeList, index);
   }
 
   const onSubmitButtonClick = () => {
@@ -178,69 +132,10 @@ const AddPlanPage = () => {
           <S.HorizontalLine/>
           </S.FormContainer>
           <PlanMap selectDay={selectDay} setSelectDay={setSelectDay} placeList={placeList} center={center} isSearchModalOpen={isSearchModalOpen} setIsSearchModalOpen={setIsSearchModalOpen} isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} onDayPlusButtonClick={onDayPlusButtonClick} setAddClickDay={setAddClickDay} page="add"/>
-          <DragDropContext onDragEnd={(result) => {
-            if (!result.destination) return;
-            const { source, destination } = result;
-            const sourceDay = source.droppableId; // source에서 dayPlan의 day를 얻음
-            const destDay = destination.droppableId; // destination에서 dayPlan의 day를 얻음
           
-            const updatePlaceList = placeList.map((dayPlan) => {
-              if (dayPlan.day === Number(sourceDay)) {
-                // source의 dayPlan 찾기
-                const placeList = [...dayPlan.placeList];
-                const [removed] = placeList.splice(source.index, 1);
-                // source에서 아이템 제거
-          
-                if (dayPlan.day === Number(destDay)) {
-                  // 같은 dayPlan으로 이동하는 경우
-                  placeList.splice(destination.index, 0, removed);
-                  // 해당 위치에 아이템 삽입
-                }
-          
-                return {
-                  day: dayPlan.day,
-                  placeList: placeList,
-                };
-              } else if (dayPlan.day === Number(destDay)) {
-                // destination의 dayPlan 찾기
-                const placeList = [...dayPlan.placeList];
-                placeList.splice(destination.index, 0, removed);
-                // 해당 위치에 아이템 삽입
-          
-                return {
-                  day: dayPlan.day,
-                  placeList: placeList,
-                };
-              } else {
-                return dayPlan;
-              }
-            });
-          
-            setPlaceList(updatePlaceList);
-          }
-          }>
-          <HorizontalScrollContainer moveDistance={200}>
-            {placeList.map((dayPlan, index) => (
-              <Droppable key={index} droppableId={`${dayPlan.day}`}>
-                {(provided) => (
-                  <div ref={provided.innerRef}>
-                    <Draggable draggableId={`${dayPlan.day}`} index={index}>
-                      {(dragProvided) => (
-                        <div
-                          ref={dragProvided.innerRef}
-                          {...dragProvided.draggableProps}
-                          {...dragProvided.dragHandleProps} 
-                        >
-                          <DayPlan isPlan={true} key={index} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} dayPlan={dayPlan} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)} />
-                          </div>
-                      )}
-                    </Draggable>
-              </div>
-                )}
-              </Droppable>
-            ))}
-          </HorizontalScrollContainer>
-          </DragDropContext>
+          <DayPlan isPlan={true} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)} />
+      
+
       {/* </form> */}
 
       <div style={{height:"10rem"}}/>
