@@ -30,8 +30,8 @@ public class OauthController {
 
     @GetMapping("/kakao")
     public ResponseEntity kakaoLogin(@RequestParam String code) {
-        String token = kakaoOauthService.getAccessToken(code);
+        User userInfo = kakaoOauthService.getUserInfo(code);
         return ResponseEntity.ok()
-                .body(token);
+                .body(userInfo);
     }
 }
