@@ -15,7 +15,7 @@ export const loginModalWrapper = styled.div`
   border-radius: 1.3rem;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-start;
   position: fixed;
   top: 50%;
@@ -60,16 +60,22 @@ export const loginContainer = styled.div`
   border-radius: 1.5rem;
 `;
 
+export const LogoImage = styled.img`
+  margin: 1.5rem 0 0 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+`
+
 export const title = styled.div`
-  margin: 2rem 0 0 1rem;
-  font-size: 3rem;
+  margin: 1rem 0 0 1rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  text-align: center;
 `;
 
 export const content = styled.div`
   margin: 1.5rem 0 0 1rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  line-height: 1.2;
 `;
 
 export const ButtonContainer = styled.div`
@@ -77,9 +83,9 @@ export const ButtonContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  gap: 2rem;
-  margin: 4rem 0 0 1rem;
-  padding: 0 0 3rem 0;
+  gap: 1rem;
+  margin: 2rem 0 0 1rem;
+  padding: 0 0 4rem 0;
   border-bottom: 1px solid #747474;
 `;
 
@@ -131,4 +137,10 @@ export const checkButton = styled.button`
   background-color: #FFECAA;
   font-size: 1.2rem;
   font-weight: 500;
+`;
+
+export const Text3 = styled.div`
+  margin: 1rem 1rem 2rem 1rem;
+  font-size: 0.8rem;
+  text-align: center;
 `;

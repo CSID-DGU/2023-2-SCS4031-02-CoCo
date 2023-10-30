@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Page from "../Page";
 import * as S from './MainLogin.styles';
-import { GoogleLogin, KakaoLogin } from "./SnsLoginButton";
+import { GoogleLogin, KakaoLogin } from "../../shared/SnsLoginButton/SnsLoginButton";
 
 import { tripThema } from "../../utils/tripThema";
 import DropdownMenu from "../../components/DropdownMenu";
+import LogoImg from '../../assets/logo/nonTextLogo.svg'
 
 export default function MainLogin({ onClose }) {
   const [isStart, setIsStart] = useState('');
@@ -34,6 +35,7 @@ export default function MainLogin({ onClose }) {
           justifyContent: 'flex-start',
           alignItems: 'flex-start'
         }}>
+          <S.LogoImage src={LogoImg} />
           <S.title>회원정보 입력</S.title>
           <S.content>
             가입되지 않은 회원이기에 <br />회원으로 등록하시려면 정보를 입력해주세요
@@ -57,6 +59,7 @@ export default function MainLogin({ onClose }) {
           justifyContent: 'flex-start',
           alignItems: 'flex-start'
         }}>
+          <S.LogoImage src={LogoImg} />
           <S.title>회원 정보 확인</S.title>
           <S.content>
             이메일로 본인 정보 확인 부탁드립니다.
@@ -76,15 +79,27 @@ export default function MainLogin({ onClose }) {
   } else {
     components = (
       <S.loginModalWrapper>
-        <S.title>로그인</S.title>
-        <S.content>Trizzle에 방문해 주셔서 감사합니다</S.content>
-        <S.ButtonContainer>
-          <KakaoLogin onLogin={() => setIsStart('회원가입')} />
-          <GoogleLogin onLogin={() => setIsStart('회원가입')} />
-        </S.ButtonContainer>
-        <S.findContainer>
-          <S.findContents onClick={() => setIsStart('회원 정보 검색')}>소셜회원정보확인</S.findContents>
-        </S.findContainer>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+          alignItems: 'flex-start'
+        }}>
+          <S.LogoImage src={LogoImg} />
+          <S.title>로그인</S.title>
+          <S.content>회원으로 Trizzle을 이용해보세요 </S.content>
+          <S.ButtonContainer>
+            <KakaoLogin onLogin={() => setIsStart('회원가입')} />
+            <GoogleLogin onLogin={() => setIsStart('회원가입')} />
+          </S.ButtonContainer>
+          <S.findContainer>
+            <S.findContents onClick={() => setIsStart('회원 정보 검색')}>소셜회원정보확인</S.findContents>
+          </S.findContainer>
+        </div>
+        <S.Text3>
+          계속 진행할 경우, Trizzle의 개인정보 취급방침 및 쿠키 정책에 동의한 것으로 간주됩니다.
+          <br />
+          이 사이트는 reCAPTCHA에 의해 보호되며 Google 개인정보 취급방침 및 이용 약관이 적용됩니다.</S.Text3>
       </S.loginModalWrapper >
     );
   }
