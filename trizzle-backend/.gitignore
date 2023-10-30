@@ -17,6 +17,7 @@ bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 application-mongodb.properties
+application-oauth.properties
 
 ### IntelliJ IDEA ###
 .idea
