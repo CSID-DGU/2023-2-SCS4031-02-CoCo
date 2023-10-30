@@ -3,8 +3,8 @@ import Page from "../Page";
 import * as S from "./AddPlace.styles";
 import TextInput from "../../components/TextInput";
 import AddPlaceModal from "../../shared/SearchPlaceModal";
-import PostInput from "./PostEditor";
-import ScretDropdown from "./ScretDropdown";
+import PostInput from "../../shared/PostEditor";
+import ScretDropdown from "../../shared/ScretDropdown";
 import DatePicker from "../../components/DatePicker";
 import { useLocation, useNavigate } from "react-router-dom";
 
