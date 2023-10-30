@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./Headers.style";
 import { HeadersProps } from "./Headers.type";
 import { AiOutlineBell, AiOutlinePlus } from "react-icons/ai";
@@ -6,11 +6,13 @@ import { Link, useLocation } from "react-router-dom";
 import avatar from "../../assets/images/default_avatar.png"
 import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
+import MainLogin from "../../pages/LoginPage/MainLogin";
 
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const location = useLocation();
-  const isLogin = props.isLogin || true;
+  const isLogin = false;
   const isHome = props.isHome || false;
+  const [isLoginModal, setIsLoginModal] = useState(false);
   let headerContent;
 
   if (isLogin) {
@@ -64,10 +66,23 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
           </S.RightWrapper>
         </S.Header>
       ) : (
-
-        <>
-        </>
+        <S.Header isHome={isHome}>
+          <S.LogoImg>
+            {isHome ? (
+              <img src={homeLogo} alt="logo" width="100%" height="100%" />
+            ) : (
+              <img src={logo} alt="logo" width="100%" height="100%" />
+            )}
+          </S.LogoImg>
+          <S.RightWrapper>
+            <button onClick={() => setIsLoginModal(!isLoginModal)}>로그인</button>
+          </S.RightWrapper>
+        </S.Header>
       )}
+
+      {
+        isLoginModal && <MainLogin onClose={() => setIsLoginModal(!isLoginModal)} />
+      }
     </>
 
 
