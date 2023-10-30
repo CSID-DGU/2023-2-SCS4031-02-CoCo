@@ -17,7 +17,7 @@ import { useRecoilState } from "recoil";
 import { PlanState } from "../../recoil/PlanList/atoms";
 import { DragDropContext} from "react-beautiful-dnd";
 
-const AddPlanPage = () => {
+const AddPlanPage:React.FC = () => {
   const [allDay, setDay] = useState(3); //기본으로 3일 지정
   // const [placeList, setPlaceList] = useState<dayPlan[]>([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]); //기본 3일이기 때문에
   const [placeList, setPlaceList] = useRecoilState<any[]>(PlanState);

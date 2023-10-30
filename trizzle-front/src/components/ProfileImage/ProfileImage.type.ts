@@ -1,6 +1,7 @@
 
 export type ProfileImageProps = {
-  src: string;
+  src?: string;
   type: string; // small, medium, large
   isMe?: boolean;
+  margin?: string;
 };
