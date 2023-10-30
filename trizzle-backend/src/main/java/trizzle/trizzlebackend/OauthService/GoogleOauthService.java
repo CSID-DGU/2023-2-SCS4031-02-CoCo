@@ -15,15 +15,15 @@ public class GoogleOauthService {
     private final RestTemplate restTemplate = new RestTemplate();   // REST API 요청 후 응답받기 위해
 
     @Value("${oauth.google.client-id}")
-    String clientId;
+    private String clientId;
     @Value("${oauth.google.client-secret}")
-    String clientSecret;
+    private String clientSecret;
     @Value("${oauth.google.redirect-uri}")
-    String redirectUri;
+    private String redirectUri;
     @Value("${oauth.google.token-uri}")
-    String tokenUri;
+    private String tokenUri;
     @Value("${oauth.google.resource-uri}")
-    String resourceUri;
+    private String resourceUri;
 
     public User getUserInfo(String code) {
         String accessToken = getAccessToken(code);
