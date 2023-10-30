@@ -35,8 +35,8 @@ export const ImageButton = styled.button`
 `
 
 export const ImageComponent = styled.img`
-  width: 4rem;
-  height: 4rem;
+  width: 100%;
+  height: 100%;
   border-radius: 0.5rem;
   display: block;
 `

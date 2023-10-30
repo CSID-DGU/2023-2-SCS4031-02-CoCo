@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./Headers.style";
 import { HeadersProps } from "./Headers.type";
-import {AiOutlineBell, AiOutlinePlus} from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { AiOutlineBell, AiOutlinePlus } from "react-icons/ai";
+import { Link, useLocation } from "react-router-dom";
 import ProfileImage from "../ProfileImage";
+
 import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
 
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
+  const location = useLocation();
   const isLogin = props.isLogin || true;
   const isHome = props.isHome || false;
+  let headerContent;
 
+  if (isLogin) {
+    if (location.pathname.includes('/myfeed/plans/')) {
+      headerContent = (
+        <Link to="/myfeed/plans/add">
+          <S.HeaderText>일정추가</S.HeaderText>
+        </Link>
+      );
+    } else if (location.pathname.includes('/post/places/')) {
+      headerContent = (
+        <Link to="/post/places/add">
+          <S.HeaderText>장소추가</S.HeaderText>
+        </Link>
+      );
+    } else {
+      headerContent = (
+        <Link to="/myfeed/plans/add">
+          <S.HeaderText>일정추가</S.HeaderText>
+        </Link>
+      );
+    }
+  }
 
   return (
     <>
@@ -26,9 +50,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       <S.RightWrapper>
         <S.HeaderIconText>
           <AiOutlinePlus size="1.1rem"/>
-          <Link to="/myfeed/plans/add">
-            <S.HeaderText>일정추가</S.HeaderText>
-          </Link>
+          {headerContent}
         </S.HeaderIconText>
         <S.HeaderIconText>
           <AiOutlineBell size="1.1rem"/>
@@ -44,11 +66,12 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     </S.Header>
     ):(
 
-      <>
-      </>
-    )}
+
+        <>
+        </>
+      )}
     </>
-    
+
 
   )
 };

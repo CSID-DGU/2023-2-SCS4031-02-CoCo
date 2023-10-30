@@ -40,9 +40,66 @@ export const PageTitle = styled.div`
   z-index: 1;
 `
 
+export const PageTitleContainer2 = styled.div`
+  width: 100%;
+  height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #FFF7DA;
+  position:absolute;
+  top: 9.5rem;
+  left: 0;
+`;
+
+export const PageTitle2 = styled.div`
+  font-size: 2rem;
+  font-weight: 600;
+`
+
+export const ModifiedButton = styled.button`
+  margin-left: 1rem;
+  width: 7rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #BEBEBE;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #BEBEBE;
+  cursor: pointer;
+  &:hover {
+    border:2px solid #EBB700;    
+    color: #EBB700;
+  }
+`
+
+export const BookmarkButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const BookmarkButtonInnerText = styled.div`
+  margin: 0 0 0 0.3rem; 
+  font-size: 1rem;
+  font-weight: 400;
+  &:hover {
+    font-weight: 700;
+  }
+  ${props => props.isBookmark && `
+    font-weight: 700;
+  `}
+`
+
+
 export const InforFirstContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-top: 16rem;
   margin-bottom: 1.5rem;
+
   font-size: 2rem;
   font-weight: bold;
 `

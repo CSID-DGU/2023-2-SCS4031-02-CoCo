@@ -3,7 +3,9 @@ import { BiCameraOff } from "react-icons/bi";
 import ReactQuill from 'react-quill';
 import DOMPurify from "dompurify";
 import 'react-quill/dist/quill.snow.css';
+import QuillImageUploader from 'quill-image-uploader';
 
+ReactQuill.Quill.register('modules/imageUploader', QuillImageUploader);
 
 import * as S from "./PostEditor.styles";
 
@@ -31,8 +33,8 @@ export default function PostInput({ onChangeContents, onThumbnailImages, prevDat
   const setSelectImage = (idx: number) => {
     const selectedImage = thumbnailImages[idx]; // 선택한 이미지 URL 가져오기
     setClickedImage(selectedImage);
-    const imgTag = `<img src="${selectedImage}" alt="Image ${idx}" />`; // 이미지 태그 생성
-    setClickedImageHtml(imgTag); // 선택한 이미지를 상태에 저장
+    // const imgTag = `<img src="${selectedImage}" alt="Image ${idx}" />`; // 이미지 태그 생성
+    setClickedImageHtml(selectedImage); // 선택한 이미지를 상태에 저장
   }
 
   const modules = {
@@ -45,6 +47,7 @@ export default function PostInput({ onChangeContents, onThumbnailImages, prevDat
         ['blockquote', 'code-block'],
         [{ 'list': 'ordered' }, { 'list': 'bullet' }, { indent: "-1" }, { indent: "+1" }],
         ['clean'],
+        
       ],
     },
   };
