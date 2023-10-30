@@ -6,6 +6,7 @@ import PostPlace from '../pages/PostPlace/PostPlace';
 import Myfeed from '../pages/Myfeed';
 import PlanList from '../pages/PlanList';
 import PlanDetail from '../pages/PlanDetail';
+import MainLogin from '../pages/LoginPage/MainLogin';
 
 
 const Router = () => {
@@ -13,6 +14,7 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/login" element={<MainLogin />} />
         <Route path="/:id/plan/addPlan" element={<AddPlanPage />} />
         <Route path="/post/places/add/" element={<AddPlacePage />} />
       

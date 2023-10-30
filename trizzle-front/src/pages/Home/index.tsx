@@ -3,7 +3,7 @@ import Page from "../Page";
 
 const Home = () => {
   return (
-    <Page headersProps={{isLogin: true, isHome: true}}>
+    <Page headersProps={{isLogin: false, isHome: true}}>
       
     </Page>
   )
