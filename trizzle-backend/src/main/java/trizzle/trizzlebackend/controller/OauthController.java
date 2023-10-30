@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import trizzle.trizzlebackend.OauthService.GoogleOauthService;
+import trizzle.trizzlebackend.domain.User;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,8 +20,8 @@ public class OauthController {
 
     @GetMapping("/google")  // google oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
     public ResponseEntity googleLogin(@RequestParam String code) {
-        String token = googleOauthService.getAccessToken(code);
+        User userInfo = googleOauthService.getUserInfo(code);
         return ResponseEntity.ok()
-                .body(token);
+                .body(userInfo);
     }
 }

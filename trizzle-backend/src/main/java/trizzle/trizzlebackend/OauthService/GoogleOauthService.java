@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import trizzle.trizzlebackend.domain.User;
 
 @Service
 public class GoogleOauthService {
@@ -24,8 +25,28 @@ public class GoogleOauthService {
     @Value("${oauth.google.resource-uri}")
     String resourceUri;
 
+    public User getUserInfo(String code) {
+        String accessToken = getAccessToken(code);
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + accessToken);  // Authorization Bearer 에 accesToken담아서 user정보 google에 요청
+        HttpEntity httpEntity = new HttpEntity<>(headers);
+
+        JsonNode userResourceNode = restTemplate.exchange(resourceUri, HttpMethod.GET, httpEntity, JsonNode.class).getBody();
+        String id = userResourceNode.get("id").asText();
+        String email = userResourceNode.get("email").asText();
+        String nickname = userResourceNode.get("name").asText();
+
+        User user = new User();
+        user.setRegistrationId("google");      // google로 로그인한 것을 표시
+        user.setSocial_id(id);
+        user.setEmail(email);
+        user.setName(nickname);
+
+        return user;
+    }
+
     /* 인가코드를 통해 google에서 access_token 얻어오는 메소드 */
-    public String getAccessToken(String authorizationCode) {
+    private String getAccessToken(String authorizationCode) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
         params.add("client_id", clientId);
