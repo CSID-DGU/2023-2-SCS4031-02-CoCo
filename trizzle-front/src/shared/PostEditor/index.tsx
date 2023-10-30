@@ -3,9 +3,6 @@ import { BiCameraOff } from "react-icons/bi";
 import ReactQuill from 'react-quill';
 import DOMPurify from "dompurify";
 import 'react-quill/dist/quill.snow.css';
-import QuillImageUploader from 'quill-image-uploader';
-
-ReactQuill.Quill.register('modules/imageUploader', QuillImageUploader);
 
 import * as S from "./PostEditor.styles";
 

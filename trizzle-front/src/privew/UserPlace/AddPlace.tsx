@@ -3,10 +3,8 @@ import Page from "../Page";
 import * as S from "./AddPlace.styles";
 import TextInput from "../../components/TextInput";
 import AddPlaceModal from "../../shared/SearchPlaceModal";
-import PostInput from "../../shared/PostEditor";
-import ScretDropdown from "../../shared/ScretDropdown";
-import DatePicker from "../../components/DatePicker";
-import { useLocation, useNavigate } from "react-router-dom";
+import PostInput from "./PostEditor";
+import ScretDropdown from "./ScretDropdown";
 
 interface AddPlacePageProps {
   userContent: any;
@@ -17,63 +15,47 @@ const currentDate: Date = new Date();
 const SampleData = {
   user_id: 0,
   review_title: '',
-  review_registration_date: currentDate,
-  visit_date: currentDate,
+  review_registration_date: currentDate.toLocaleString(),
+  visit_date: currentDate.toLocaleString(),
   place_id: '',
   review_content: '',
   secret: true,
 }
 
 export default function AddPlacePage({ userContent }: AddPlacePageProps) {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
   const [userContents, setUserContents] = useState(userContent ? userContent : SampleData);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(userContents.title);
   const [secretValue, setSecretValue] = useState<boolean>(false);
-  const [reviewRegistrationDate, setReviewRegistrationDate] = useState<string>(userContents.review_registration_date.toLocaleString());
+  const [reviewRegistrationDate, setReviewRegistrationDate] = useState<string>(userContents.review_registration_date);
   const [visitDate, setVisitDate] = useState<string>(userContents.visit_date);
-  const [placeId, setPlaceId] = useState<string>(searchParams.get('place_id'));
-  const [placeName, setPlaceName] = useState<string>(searchParams.get('place_name'));
+  const [placeName, setPlaceName] = useState<string>('');
+  const [placeId, setPlaceId] = useState<string>(userContents.place_id);
   const [contents, setContents] = useState<string>(userContents.review_content);
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
   const [region, setRegion] = useState<any>({ name: "서울특별시", center: { lat: 37.55767200694191, lng: 127.000260306464 } });
-  const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
-  const navigate = useNavigate();
 
   // 모달 열고 닫기
   const openCloseModal = () => {
     setIsPlusPlaceModal(!isPlusPlaceModal);
   };
 
-  const onSave = () => {
-    if (title === '') {
-      alert("제목을 입력해주세요.");
-      return;
-    } else if (userContents.review_registration_date < visitDate) {
-      alert("아직 지나지 않은 날짜입니다");
-      return;
-    }
+  const onPlaceAddButtonClick = (place: any) => {
+    console.log('장소', place.place_name, place.place_id);
+    setPlaceName(place.place_name);
+    setPlaceId(place.place_id);
+    setIsPlusPlaceModal(!isPlusPlaceModal);
+  }
 
+  const onSave = () => {
     // 정보 보내기
     const ResultData = {
       user_id: 0,
-      post_id: Math.floor(Math.random() * 1000000000) + 1,
       review_title: title,
       review_registration_date: currentDate,
       visit_date: visitDate,
       place_id: placeId,
-      place_name: placeName,
       review_content: contents,
-      secret: secretValue,
-      reImg: representImage,
-      plan_title: '',
-    }
-
-    localStorage.setItem("postData", JSON.stringify(ResultData));
-    if (secretValue) {
-      navigate(`/post/places/${ResultData.post_id}}`);
-    } else {
-      navigate(`/post/places/secret/${ResultData.post_id}}`);
+      secret: Value,
     }
   }
 
@@ -111,16 +93,15 @@ export default function AddPlacePage({ userContent }: AddPlacePageProps) {
             <S.HorizontalFirstStartContainer>
               <S.SelectTitle>방문날짜</S.SelectTitle>
               {/* 데이터 피커 자리인데 우선 input 태그로 */}
-              <DatePicker setStartDate={setVisitDate} startDate={visitDate} />
+              <input onChange={(e) => setVisitDate(e.target.value)} value={visitDate}/>
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
-          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} />
+          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} />
 
         </S.FormContainer>
       </form>
-      {
-        isPlusPlaceModal && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace)} center={region.center} onCloseClick={openCloseModal} />
+      {isPlusPlaceModal && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace)} center={region.center} onCloseClick={openCloseModal} />
       }
     </Page>
   );
