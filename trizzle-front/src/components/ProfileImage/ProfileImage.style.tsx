@@ -1,0 +1,36 @@
+import styled from "@emotion/styled";
+
+export const SmallContainer = styled.div<{margin?:string}>`
+  width: 2.7rem;
+  height: 2.7rem;
+  border-radius: 50%;
+  margin: ${({margin}) => margin? margin : "0"};
+`
+
+export const BigContainer = styled.div<{margin?:string}>`
+  width: 15rem;
+  height: 15rem;
+  border-radius: 50%;
+  margin: ${({margin}) => margin? margin : "0"};
+  position: relative;
+`
+
+export const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+`
+
+export const CameraContainer = styled.div`
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  background-color: #dadada;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+`
