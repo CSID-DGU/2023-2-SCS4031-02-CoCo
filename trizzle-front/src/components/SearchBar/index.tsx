@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as S from './SearchBar.style'
 import { BsMap } from 'react-icons/bs';
 import { BiSolidDownArrow } from 'react-icons/bi';
-import { koreaRegions } from '../../utils/mapData';
+import { koreaRegions } from '../../utils/Data/mapData';
 
 export default function SearchBar() {
   const [searchField, setSearchField] = useState<string>('일정');

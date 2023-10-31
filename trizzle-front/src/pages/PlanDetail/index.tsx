@@ -3,7 +3,7 @@ import { MyfeedLayout } from "../Page"
 import * as S from "./PlanDetail.style"
 import { useParams, useNavigate } from "react-router-dom";
 import PlanMap from "../../shared/PlanMap";
-import { koreaRegions } from "../../utils/mapData";
+import { koreaRegions } from "../../utils/Data/mapData";
 import DetailDayPlan from "../../shared/DayPlan/DetailDayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 

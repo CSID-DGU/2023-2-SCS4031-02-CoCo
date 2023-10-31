@@ -5,21 +5,18 @@ import * as S from "./AddPlan.styles";
 import KeywordModal from "../../shared/KeywordModal";
 import TextInput from "../../components/TextInput";
 import DropdownMenu from "../../components/DropdownMenu";
-import { koreaRegions } from "../../utils/mapData";
+import { koreaRegions } from "../../utils/Data/mapData";
 import DayPlan from "../../shared/DayPlan";
-import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
-import { tripThema } from "../../utils/tripThema";
+import { tripThema } from "../../utils/Data/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
 import { useNavigate } from "react-router-dom";
 import PlanMap from "../../shared/PlanMap";
-import { useDeletePlaceFromPlan, useAddPlaceToPlan, useOnPlaceDragEnd } from "../../recoil/PlanList";
+import { useDeletePlaceFromPlan, useAddPlaceToPlan } from "../../recoil/PlanList";
 import { useRecoilState } from "recoil";
 import { PlanState } from "../../recoil/PlanList/atoms";
-import { DragDropContext} from "react-beautiful-dnd";
 
 const AddPlanPage:React.FC = () => {
   const [allDay, setDay] = useState(3); //기본으로 3일 지정
-  // const [placeList, setPlaceList] = useState<dayPlan[]>([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]); //기본 3일이기 때문에
   const [placeList, setPlaceList] = useRecoilState<any[]>(PlanState);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
   const [isKeywordModalOpen, setIsKeywordModalOpen] = useState<boolean>(false);
@@ -34,7 +31,6 @@ const AddPlanPage:React.FC = () => {
   const navigate = useNavigate();
   const deletePlaceFromPlan = useDeletePlaceFromPlan();
   const addPlaceToPlan = useAddPlaceToPlan();
-  const onPlaceDragEnd = useOnPlaceDragEnd();
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);

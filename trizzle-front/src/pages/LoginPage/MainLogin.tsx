@@ -3,7 +3,7 @@ import Page from "../Page";
 import * as S from './MainLogin.styles';
 import { GoogleLogin, KakaoLogin } from "../../shared/SnsLoginButton/SnsLoginButton";
 
-import { tripThema } from "../../utils/tripThema";
+import { tripThema } from "../../utils/Data/tripThema";
 import DropdownMenu from "../../components/DropdownMenu";
 import LogoImg from '../../assets/logo/nonTextLogo.svg'
 

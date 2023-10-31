@@ -17,7 +17,7 @@ const GlobalStyle = css`
   @media screen and (min-width:768px) and (max-width: 1023px) {
 	/* Tablet */
   html {
-    font-size: 14px !important;
+    font-size: 12px !important;
   }
   }
   @media screen and (max-width:767px){ 
