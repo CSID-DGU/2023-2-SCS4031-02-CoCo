@@ -11,7 +11,7 @@ import MainLogin from "../../pages/LoginPage/MainLogin";
 
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const location = useLocation();
-  const isLogin = false;
+  const isLogin = props.isLogin || true;
   const isHome = props.isHome || false;
   const [isLoginModal, setIsLoginModal] = useState(false);
   let headerContent;

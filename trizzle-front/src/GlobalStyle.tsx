@@ -1,6 +1,32 @@
 import { css } from '@emotion/react';
 
 const GlobalStyle = css`
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    letter-spacing: -0.2px;
+  }
+
+  @media screen and (min-width:1024px){
+    html {
+    font-size: 16px !important;
+    }
+  }
+
+  @media screen and (min-width:768px) and (max-width: 1023px) {
+	/* Tablet */
+  html {
+    font-size: 14px !important;
+  }
+  }
+  @media screen and (max-width:767px){ 
+    /* Mobile */
+  html {
+    font-size: 8px !important;
+  }
+  }
+
   @font-face {
     font-family: 'Pretendard Variable';
     font-weight: 45 920;
@@ -65,19 +91,13 @@ const GlobalStyle = css`
     font-display: swap;
   }
 
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
-    letter-spacing: -0.2px;
-  }
-
   body {
     font-family: 'Pretendard Variable', 'Pretendard', 'Noto Sans KR', 'Nanum Gothic', sans-serif !important;
     color: #000;
-    font-size: 14px !important;
+    font-size: 1rem;
   }
+
+
 
   a {
     text-decoration: none;
@@ -99,7 +119,7 @@ const GlobalStyle = css`
   }
 
   .container {
-    width: 1400px;
+    width: 87.5rem;
     margin: 0 auto;
   }
 
@@ -109,23 +129,23 @@ const GlobalStyle = css`
   }
 
   .btn-m {
-    padding: 12px 24px;
+    padding: 0.75rem 1.5rem;
   }
 
   .btn-round {
-    border-radius: 20px;
+    border-radius: 1.25rem;
   }
 
   .btn-transparent {
     background: transparent;
-    border-radius: 20px;
+    border-radius: 1.25rem;
   }
   .btn-transparent:hover {
     background: #f7f7f7;
   }
   .btn-primary {
     background: #000;
-    border-radius: 20px;
+    border-radius: 1.25rem;
     color: #fff;
   }
   a.btn-primary {
