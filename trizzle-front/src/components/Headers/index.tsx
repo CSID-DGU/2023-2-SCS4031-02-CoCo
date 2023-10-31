@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./Headers.style";
 import { HeadersProps } from "./Headers.type";
 import { AiOutlineBell, AiOutlinePlus } from "react-icons/ai";
@@ -7,11 +7,13 @@ import ProfileImage from "../ProfileImage";
 
 import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
+import MainLogin from "../../pages/LoginPage/MainLogin";
 
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const location = useLocation();
-  const isLogin = props.isLogin || true;
+  const isLogin = false;
   const isHome = props.isHome || false;
+  const [isLoginModal, setIsLoginModal] = useState(false);
   let headerContent;
 
   if (isLogin) {
@@ -38,6 +40,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
 
   return (
     <>
+
     {isLogin === true? (
       <S.Header isHome={isHome}>
       <S.LogoImg>
@@ -70,6 +73,10 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
         <>
         </>
       )}
+
+      {
+        isLoginModal && <MainLogin onClose={() => setIsLoginModal(!isLoginModal)} />
+      }
     </>
 
 

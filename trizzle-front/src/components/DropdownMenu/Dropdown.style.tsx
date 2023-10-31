@@ -58,7 +58,9 @@ export const BadgeDropdownContainer = styled.div`
   flex-direction: column;
   position: relative;
 `
-export const BadgeDropdownInput = styled.div<{selectedItem:boolean}>`
+export const BadgeDropdownInput = styled.div<{ selectedItem: boolean }>`
+  display: flex;
+  flex-wrap: wrap;
   width: ${props => props.selectedItem ? "100%" : "20rem"};
   height: 2.5rem;
   border: ${props => props.selectedItem ? "none" : "1px solid #9e9e9e"};
@@ -90,7 +92,7 @@ export const BadgeDropdownMenuContainer = styled.div`
   z-index: 50;
 `
 
-export const BadgeDropdownMenuItem = styled.div<{selected:boolean}>`
+export const BadgeDropdownMenuItem = styled.div<{ selected: boolean }>`
   width: auto;
   height: 1.2rem;
   font-size: 0.8rem;
