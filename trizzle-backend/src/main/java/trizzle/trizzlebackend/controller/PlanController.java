@@ -13,7 +13,6 @@ public class PlanController {
 
     private final PlanService planService;
 
-    @Autowired
     public PlanController(PlanService planService) {
         this.planService = planService;
     }
