@@ -33,6 +33,7 @@ const AddPlanPage:React.FC = () => {
   const deletePlaceFromPlan = useDeletePlaceFromPlan();
   const addPlaceToPlan = useAddPlaceToPlan();
   const [state, fetchData] = useAsync({url:"", method:""});
+  const [submitData, setSubmitData] = useState<any>();
 
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
@@ -87,22 +88,24 @@ const AddPlanPage:React.FC = () => {
       alert("여행 테마를 선택해주세요.");
       return;
     };
+    const themaNames = thema.map((item) => item.name);
+    const formattedDate = startDate.toISOString().slice(0, 10);
 
-    const submitData = {
+    const data = {
       plan_name: title,
-      plan_start_date: startDate,
+      plan_start_date: formattedDate,
       plan_end_date: endDate,
       plan_location: region.name,
-      plan_thema: thema,
+      plan_thema: themaNames,
       content: placeList
     }
 
-    const json = JSON.stringify(submitData);
+    const json = JSON.stringify(data);
+    console.log(json)
     const url = `/api/plans`;
-    fetchData(url, "POST", json);
+    fetchData(url, "POST",json);
     console.log(state);
     };
-
 
   return (
     <Page headersProps={{isHome:false, isLogin:true}}>
