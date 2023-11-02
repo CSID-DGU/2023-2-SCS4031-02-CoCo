@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import * as S from "./SearchPlaceModal.style";
 import Maps from "../../components/KakaoMap";
 import SearchInput from "../../components/SearchInput";
-import { searchKeyword } from "../../utils/kakaoMap";
+import { searchKeyword } from "../../utils/Data/kakaoMap";
 import Modal from "../../components/Modal";
 import { PlaceInfoList } from "../../components/KakaoMap/Map.type";
 

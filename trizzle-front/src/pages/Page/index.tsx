@@ -19,6 +19,9 @@ const DefaultBody = styled.div`
   flex-direction: column;
   margin-top: 4.5rem;
   padding: 0 1.875rem;
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
 `
 
 const Page: React.FC<PageProps> = (props: PageProps) => {
