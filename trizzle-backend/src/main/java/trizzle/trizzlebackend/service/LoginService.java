@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.OauthService.GoogleOauthService;
+import trizzle.trizzlebackend.OauthService.KakaoOauthService;
 import trizzle.trizzlebackend.domain.User;
 
 import java.util.HashMap;
@@ -16,10 +17,12 @@ public class LoginService {
 
     private final MongoTemplate mongoTemplate;
     private final GoogleOauthService googleOauthService;
+    private final KakaoOauthService kakaoOauthService;
 
-    public LoginService(MongoTemplate mongoTemplate, GoogleOauthService googleOauthService) {
+    public LoginService(MongoTemplate mongoTemplate, GoogleOauthService googleOauthService, KakaoOauthService kakaoOauthService) {
         this.mongoTemplate = mongoTemplate;
         this.googleOauthService = googleOauthService;
+        this.kakaoOauthService = kakaoOauthService;
     }
 
     // user정보 없음(최초 로그인) -> 회원가입 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
@@ -34,11 +37,11 @@ public class LoginService {
             signUp(user);
             response.put("message", "id 입력이 필요합니다");
             response.put("token", token);
-            response.put("registrationId", user.getRegistration_id());
+            response.put("registration_id", user.getRegistration_id());
         } else if (isUser.getAccount_id() == null || isUser.getNickname() == null) {
             response.put("message", "id 입력이 필요합니다");
             response.put("token", token);
-            response.put("registrationId", user.getRegistration_id());
+            response.put("registration_id", user.getRegistration_id());
         } else {
             String accessToken = "123";
             response.put("message", "login success");
@@ -48,9 +51,34 @@ public class LoginService {
         return response;
     }
 
+    /* 기존 social_id 에 해당하는 user정보에 추가로 입력받은 user정보 저장,  Jwt 발급 */
+    public Map<String, String> putUserInfo(String token, User additionalUserInfo) {
+        User userInfo = null;    // userInfo가 db에 저장될 값
+
+        if (additionalUserInfo.getRegistration_id().equals("google")) {
+            userInfo = googleOauthService.getUserInfo(token);
+
+        } else if (additionalUserInfo.getRegistration_id().equals("kakao")) {
+            userInfo = kakaoOauthService.getUserInfo(token);
+        }
+        User isUser = findBySocialId(userInfo.getRegistration_id(), userInfo.getSocial_id());
+        userInfo.setId(isUser.getId()); // db에 있는 user정보에 추가해야하므로 user_id 값 같게 지정
+
+        userInfo.setAccount_id(additionalUserInfo.getAccount_id());
+        userInfo.setNickname(additionalUserInfo.getNickname());
+        userInfo.setThema(additionalUserInfo.getThema());
+        signUp(userInfo); // 추가로 입력된 정보 합쳐서 user정보 db에서 update
+
+        Map<String, String> response = new HashMap<>();
+        String accessToken = "123";
+        response.put("message", "login success");
+        response.put("accessToken", accessToken);
+        return response;
+    }
+
     /* 최초 소셜로그인 때를 위한 회원가입 */
     private User signUp(User user) {
-        return mongoTemplate.insert(user);
+        return mongoTemplate.save(user);
     }
 
     /*소셜 로그인에 해당하는 user있는지 확인 */

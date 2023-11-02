@@ -4,19 +4,18 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.OauthService.GoogleOauthService;
 import trizzle.trizzlebackend.OauthService.KakaoOauthService;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.service.LoginService;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("/login/oauth2/code")
+@RequestMapping("/login")
 public class OauthController {
 
     private final LoginService loginService;
@@ -29,7 +28,7 @@ public class OauthController {
         this.kakaoOauthService = kakaoOauthService;
     }
 
-    @GetMapping("/google")  // google oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
+    @GetMapping("/oauth2/code/google")  // google oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
     public ResponseEntity googleLogin(@RequestParam String code, HttpServletResponse response) {
         String token = googleOauthService.getAccessToken(code);
         User userInfo = googleOauthService.getUserInfo(token);
@@ -38,7 +37,7 @@ public class OauthController {
         return responseMethod(result, response);
     }
 
-    @GetMapping("/kakao")   // // kakao oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
+    @GetMapping("/oauth2/code/kakao")   // kakao oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
     public ResponseEntity kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         String token = kakaoOauthService.getAccessToken(code);
         User userInfo = kakaoOauthService.getUserInfo(token);
@@ -46,6 +45,13 @@ public class OauthController {
 
         return responseMethod(result, response);
     }
+
+    @PostMapping("/additionalUserInfo") // user정보 추가 입력 요청(account_id, nickname, thema)
+    public ResponseEntity putAdditionalUserInfo(@RequestParam String token, @RequestBody User additionaluserInfo, HttpServletResponse response) {
+        Map<String, String> result = loginService.putUserInfo(token, additionaluserInfo);
+        return responseMethod(result, response);
+    }
+
 
     private ResponseEntity responseMethod(Map<String, String> result, HttpServletResponse response) {
         String responseMessage = result.get("message");

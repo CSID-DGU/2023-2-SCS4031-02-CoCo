@@ -3,6 +3,8 @@ package trizzle.trizzlebackend.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Document(collection = "users")
 public class User {
     @Id
@@ -13,6 +15,7 @@ public class User {
     private String name;
     private String account_id;             // 회원가입 시 입력할 id
     private String nickname;            // 회원가입 시 입력한 nickname
+    private List<String> thema;
 
     public String getId() {
         return id;
@@ -68,5 +71,13 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public List<String> getThema() {
+        return thema;
+    }
+
+    public void setThema(List<String> thema) {
+        this.thema = thema;
     }
 }
