@@ -1,12 +1,14 @@
 package trizzle.trizzlebackend.service;
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.OauthService.GoogleOauthService;
 import trizzle.trizzlebackend.OauthService.KakaoOauthService;
+import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.User;
 
 import java.util.HashMap;
@@ -24,6 +26,11 @@ public class LoginService {
         this.googleOauthService = googleOauthService;
         this.kakaoOauthService = kakaoOauthService;
     }
+
+    // Jwt관련
+    @Value("${jwt.secret}")
+    private String secretKey;
+    private Long expiredMS = 1000 * 60 * 60L;
 
     // user정보 없음(최초 로그인) -> 회원가입 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
     // user정보는 있으나 account_id나 nickname없음 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
@@ -43,7 +50,7 @@ public class LoginService {
             response.put("token", token);
             response.put("registration_id", user.getRegistration_id());
         } else {
-            String accessToken = "123";
+            String accessToken = JwtUtil.createJwt(isUser.getAccount_id(), secretKey, expiredMS);
             response.put("message", "login success");
             response.put("accessToken", accessToken);
         }
@@ -70,7 +77,7 @@ public class LoginService {
         signUp(userInfo); // 추가로 입력된 정보 합쳐서 user정보 db에서 update
 
         Map<String, String> response = new HashMap<>();
-        String accessToken = "123";
+        String accessToken = JwtUtil.createJwt(userInfo.getAccount_id(), secretKey, expiredMS);;
         response.put("message", "login success");
         response.put("accessToken", accessToken);
         return response;
