@@ -4,14 +4,14 @@ export const PlanState = atom({
   key: 'planState',
   default: [{
     day: 1,
-    placeList: []
+    place_list: []
   },
 {
   day: 2,
-  placeList: []
+  place_list: []
 },
 {
   day: 3,
-  placeList: []
+  place_list: []
 }],
 });

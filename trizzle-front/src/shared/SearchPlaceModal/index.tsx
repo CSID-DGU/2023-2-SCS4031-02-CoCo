@@ -10,6 +10,7 @@ import { PlaceInfoList } from "../../components/KakaoMap/Map.type";
 type props = {
   onAddButtonClick: (selectedPlace:any, day:any) => void;
   center: {lat: number, lng: number};
+  region?: any;
   onCloseClick: () => void;
 }
 
@@ -23,9 +24,11 @@ const AddPlaceModal = (props: props) => {
 
   const handleSearch = async (keyword: string) => {
       const result:any = await searchKeyword(keyword, 1);
-      setPlaceList(result);
-      result.map((place:any) => {
-        console.log(place);
+      const updateResult = result.filter((place:any) => {return place.address_name.slice(0, 2) === props.region.name.slice(0,2)});
+
+      setPlaceList(updateResult);
+
+      updateResult.map((place:any) => {
       setMarkerList((prev) => [...prev, {
         position: {lat: place.y, lng: place.x},
         placeInfo: place,

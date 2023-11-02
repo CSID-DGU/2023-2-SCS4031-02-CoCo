@@ -8,14 +8,14 @@ const addPlaceToPlan = (place:any, day:number, planList:any, allDay:number) => {
       if(dayPlan.day === allDay) {
         return {
           day: allDay,
-          placeList: [...dayPlan.placeList, place],
+          place_list: [...dayPlan.place_list, place],
         }} else {
         return dayPlan;
         }
     }else if(dayPlan.day === day) {
       return {
         day: dayPlan.day,
-        placeList: [...dayPlan.placeList, place],
+        place_list: [...dayPlan.place_list, place],
       }
     } else {
       return dayPlan;
@@ -39,7 +39,7 @@ const deletePlaceFromPlan = (place:any, day:number, planList:any, index:number) 
     if(dayPlan.day === day) {
       return {
         day: dayPlan.day,
-        placeList: dayPlan.placeList.filter((placeItem:any, idx:any) => idx !== index),
+        place_list: dayPlan.place_list.filter((placeItem:any, idx:any) => idx !== index),
       }
     } else {
       return dayPlan;
@@ -65,7 +65,7 @@ const onPlaceDragEnd = (result:any, planList:any) => {
   const destinationDay = destination.droppableId.split('-')[0];
   const sourceIndex = source.droppableId.split('-')[1];
   const destinationIndex = destination.droppableId.split('-')[1];
-  const place = planList[Number(sourceDay)-1].placeList[sourceIndex];
+  const place = planList[Number(sourceDay)-1].place_list[sourceIndex];
 
   if(sourceDay === destinationDay && sourceIndex === destinationIndex) {
     return planList;
@@ -74,11 +74,11 @@ const onPlaceDragEnd = (result:any, planList:any) => {
   if(sourceDay === destinationDay && sourceIndex !== destinationIndex) {
     const updatedPlaceList = planList.map((dayPlan:any) => {
       if(dayPlan.day === Number(sourceDay)){
-        const newPlaceList = [...dayPlan.placeList];
+        const newPlaceList = [...dayPlan.place_list];
         newPlaceList.splice(Number(destinationIndex), 0, newPlaceList.splice(Number(sourceIndex), 1)[0]);
         return {
           day: dayPlan.day,
-          placeList: newPlaceList,
+          place_list: newPlaceList,
         }
       } else {
         return dayPlan;
@@ -91,21 +91,21 @@ const onPlaceDragEnd = (result:any, planList:any) => {
     if(dayPlan.day === Number(sourceDay)){
       return {
         day: dayPlan.day,
-        placeList: dayPlan.placeList.filter((placeItem:any, idx:any) => {return idx !== Number(sourceIndex)}),
+        place_list: dayPlan.place_list.filter((placeItem:any, idx:any) => {return idx !== Number(sourceIndex)}),
       }
     } else if(dayPlan.day === Number(destinationDay)) {
-      console.log(dayPlan.placeList);
-      if(dayPlan.placeList.length === 0) {
+      console.log(dayPlan.place_list);
+      if(dayPlan.place_list.length === 0) {
         return {
           day: dayPlan.day,
-          placeList: [place],
+          place_list: [place],
         }
       }
-      const newPlaceList = [...dayPlan.placeList];
+      const newPlaceList = [...dayPlan.place_list];
       newPlaceList.splice(Number(destinationIndex), 0, place);
       return {
         day: dayPlan.day,
-        placeList: newPlaceList,
+        place_list: newPlaceList,
       }
     } else {
       return dayPlan;
