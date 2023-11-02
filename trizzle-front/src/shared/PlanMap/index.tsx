@@ -24,7 +24,7 @@ const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
     useEffect(() => {
     if (props.selectDay === 0) {
       const filteredPlaces = props.placeList
-        .map((dayPlan) => dayPlan.placeList)
+        .map((dayPlan) => dayPlan.place_list)
         .reduce((acc, cur) => acc.concat(cur), [])
         .filter((place:any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
       
@@ -34,13 +34,13 @@ const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
           placeInfo: place,
           selected: false,
           type: "plan",
-          day: props.placeList.findIndex((dayPlan) => dayPlan.placeList.includes(place)) + 1,
+          day: props.placeList.findIndex((dayPlan) => dayPlan.place_list.includes(place)) + 1,
         };
       });
   
       setMarkerList(allMarkerList);
     } else {
-      const filteredPlaces = props.placeList[props.selectDay - 1].placeList.filter((place:any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
+      const filteredPlaces = props.placeList[props.selectDay - 1].place_list.filter((place:any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
       const markerList = filteredPlaces.map((place:any) => {
         return {
           position: { lat: place.y, lng: place.x },
@@ -60,7 +60,7 @@ const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
           // 여기서 각 마커의 day 속성을 업데이트합니다.
           return {
             ...marker,
-            day: props.placeList.findIndex((dayPlan) => dayPlan.placeList.includes(marker.placeInfo)) + 1,
+            day: props.placeList.findIndex((dayPlan) => dayPlan.place_list.includes(marker.placeInfo)) + 1,
           };
         });
         return allMarkerList;

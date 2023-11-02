@@ -33,14 +33,14 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
         {placeList.map((dayPlan, index) => (
           <S.DayPlanContainer>
             <S.DayPlanTitle>{dayPlan.day}일차</S.DayPlanTitle>
-            {dayPlan.placeList.length > 0 && dayPlan.placeList.map((place:any, index:number) => (
+            {dayPlan.place_list.length > 0 && dayPlan.place_list.map((place:any, index:number) => (
               <Droppable droppableId={`${dayPlan.day}-${index}`} key={index} type="ITEM">
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps} style={{width: "100%"}}>
                     <Draggable draggableId={`${dayPlan.day}-${index}`} index={index} key={`${dayPlan.day}-${index}`}>
                       {(provided) => (
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                          <DayPlace key={index} place={place} day={dayPlan.day} isPlan={props.isPlan} isPost={props.isPost} onPostClick={props.onPostClick} index={index} onDeleteClick={(place, day, index) => props.onDeleteClick(place, day, index)}/>
+                          <DayPlace key={`${dayPlan.day}-${index}`} place={place} day={dayPlan.day} isPlan={props.isPlan} isPost={props.isPost} onPostClick={props.onPostClick} index={index} onDeleteClick={(place, day, index) => props.onDeleteClick(place, day, index)}/>
                         </div>
                       )}
                     </Draggable>
@@ -49,7 +49,7 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
               </Droppable>
             ))
             }
-            <Droppable droppableId={`${dayPlan.day}-${dayPlan.placeList.length}`} key={dayPlan.placeList.length} type="ITEM">
+            <Droppable droppableId={`${dayPlan.day}-${dayPlan.place_list.length}`} key={dayPlan.place_list.length} type="ITEM">
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps} style={{width: "100%"}}>
                   <S.PlusButtonContainer>

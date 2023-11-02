@@ -1,5 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useReducer, useEffect } from "react";
+import { useCookies } from "react-cookie";
+
 
 //api 호출 커스텀 훅 -> useAsync
 
@@ -45,10 +47,10 @@ const reducer:Reducer = (state, action) => {
     }
 }
 
-export type AsyncState<D> = [StateType<D>, (url:string, method?:string, data?:any) => void];
+export type AsyncState<D> = [StateType<D>, (url?:string, method?:string, data?:any) => void];
 
 export const useAsync = <D = any>({
-  url,
+  url = "",
   method = "GET",
   data = null,
 }: {
@@ -62,20 +64,31 @@ export const useAsync = <D = any>({
     error: null
   });
 
-  const fetchData = async (url: string, method?:string, data?:any) => {
+  const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
+
+  const fetchData = async (url?: string, method?:string, data?:any) => {
+  
+    if (url === "") return;
+
+    const token = cookies.access_token;
+    console.log(token);
     dispatch({ type: "LOADING" });
     try {
       const response = await axios({
         method: method,
         url: url,
-        data: data
+        data: data,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization" : `Bearer ${token}`
+        },
       });
       dispatch({ type: "SUCCESS", data: response.data });
     } catch (e:any) {
       dispatch({ type: "ERROR", error: e });
     }
   };
-
+  
   useEffect(() => {
     fetchData(url, method, data);
   }, [url]);

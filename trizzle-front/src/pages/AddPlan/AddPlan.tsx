@@ -14,6 +14,7 @@ import PlanMap from "../../shared/PlanMap";
 import { useDeletePlaceFromPlan, useAddPlaceToPlan } from "../../recoil/PlanList";
 import { useRecoilState } from "recoil";
 import { PlanState } from "../../recoil/PlanList/atoms";
+import { useAsync } from "../../utils/API/useAsync";
 
 const AddPlanPage:React.FC = () => {
   const [allDay, setDay] = useState(3); //기본으로 3일 지정
@@ -31,6 +32,7 @@ const AddPlanPage:React.FC = () => {
   const navigate = useNavigate();
   const deletePlaceFromPlan = useDeletePlaceFromPlan();
   const addPlaceToPlan = useAddPlaceToPlan();
+  const [state, fetchData] = useAsync({url:"", method:""});
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);
@@ -84,20 +86,27 @@ const AddPlanPage:React.FC = () => {
       alert("여행 테마를 선택해주세요.");
       return;
     };
+    const themaNames = thema.map((item) => item.name);
+    const formattedDate = startDate.toISOString().slice(0, 10);
 
-    const submitData = {
-      plan_id:Math.floor(Math.random() * 1000000000) + 1,
+    const data = {
       plan_name: title,
-      plan_start_date: startDate,
+      plan_start_date: formattedDate,
       plan_end_date: endDate,
       plan_location: region.name,
-      plan_theme: thema,
+      plan_thema: themaNames,
       content: placeList
     }
-    localStorage.setItem("submitData", JSON.stringify(submitData));
-    navigate(`/myfeed/plans/${submitData.plan_id}}`);
-  };
 
+    const json = JSON.stringify(data);
+    console.log(json)
+    const url = `/api/plans`;
+    fetchData(url, "POST",json);
+    };
+
+    useEffect(() => {
+      if(state.data && state.data.message === "success") navigate("/myfeed");
+    }, [state])
 
   return (
     <Page headersProps={{isHome:false, isLogin:true}}>
@@ -135,13 +144,12 @@ const AddPlanPage:React.FC = () => {
       {/* </form> */}
 
       <div style={{height:"10rem"}}/>
-      {isSearchModalOpen && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace, addClickDay)} center={region.center} onCloseClick={() => setIsSearchModalOpen(!isSearchModalOpen)}/>
+      {isSearchModalOpen && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace, addClickDay)} center={region.center} onCloseClick={() => setIsSearchModalOpen(!isSearchModalOpen)} region={region}/>
       }
       {isKeywordModalOpen && <KeywordModal onAddButtonClick={(seletedKeyword) => onKeywordAddButtonClick(seletedKeyword, addClickDay)} onCloseClick={() => setIsKeywordModalOpen(!isKeywordModalOpen)}/>
       }
     </Page>
   );
-
 };
 
 export default AddPlanPage;
