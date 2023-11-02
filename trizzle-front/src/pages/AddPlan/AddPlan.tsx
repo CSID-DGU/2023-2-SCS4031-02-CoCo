@@ -35,7 +35,6 @@ const AddPlanPage:React.FC = () => {
   const [state, fetchData] = useAsync({url:"", method:""});
   const [submitData, setSubmitData] = useState<any>();
 
-
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);
     setIsSearchModalOpen(!isSearchModalOpen);
@@ -104,8 +103,11 @@ const AddPlanPage:React.FC = () => {
     console.log(json)
     const url = `/api/plans`;
     fetchData(url, "POST",json);
-    console.log(state);
     };
+
+    useEffect(() => {
+      if(state.data && state.data.message === "success") navigate("/myfeed");
+    }, [state])
 
   return (
     <Page headersProps={{isHome:false, isLogin:true}}>
