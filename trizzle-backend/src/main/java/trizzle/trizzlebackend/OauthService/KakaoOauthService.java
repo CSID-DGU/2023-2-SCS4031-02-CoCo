@@ -23,8 +23,7 @@ public class KakaoOauthService {
     @Value("${oauth.kakao.resource-uri}")
     private String resourceUri;
 
-    public User getUserInfo(String code) {
-        String accessToken = getAccessToken(code);
+    public User getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity httpEntity = new HttpEntity(headers);
@@ -41,7 +40,7 @@ public class KakaoOauthService {
         }
         String nickname = userResourceNode.get("properties").get("nickname").asText();
 
-        user.setRegistrationId("kakao");
+        user.setRegistration_id("kakao");
         user.setSocial_id(id);
         user.setName(nickname);
 
@@ -49,7 +48,7 @@ public class KakaoOauthService {
     }
 
     /* 인가코드를 통해 kakao에서 access_token 얻어오는 메소드 */
-    private String getAccessToken(String authorizationCode) {
+    public String getAccessToken(String authorizationCode) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
         params.add("client_id", clientId);

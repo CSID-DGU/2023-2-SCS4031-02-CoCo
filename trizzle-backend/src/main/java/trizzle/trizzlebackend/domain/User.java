@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class User {
     @Id
     private String id;
-    private String registrationId;     // "google", "kakao"로 저장
+    private String registration_id;     // "google", "kakao"로 저장
     private String social_id;          // 소셜로그인 결과 얻은 id
     private String email;
     private String name;
@@ -22,12 +22,12 @@ public class User {
         this.id = id;
     }
 
-    public String getRegistrationId() {
-        return registrationId;
+    public String getRegistration_id() {
+        return registration_id;
     }
 
-    public void setRegistrationId(String registrationId) {
-        this.registrationId = registrationId;
+    public void setRegistration_id(String registration_id) {
+        this.registration_id = registration_id;
     }
 
     public String getSocial_id() {

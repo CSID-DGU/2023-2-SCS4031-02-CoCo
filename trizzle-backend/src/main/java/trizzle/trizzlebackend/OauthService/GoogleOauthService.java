@@ -25,8 +25,7 @@ public class GoogleOauthService {
     @Value("${oauth.google.resource-uri}")
     private String resourceUri;
 
-    public User getUserInfo(String code) {
-        String accessToken = getAccessToken(code);
+    public User getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);  // Authorization Bearer 에 accesToken담아서 user정보 google에 요청
         HttpEntity httpEntity = new HttpEntity<>(headers);
@@ -37,7 +36,7 @@ public class GoogleOauthService {
         String nickname = userResourceNode.get("name").asText();
 
         User user = new User();
-        user.setRegistrationId("google");      // google로 로그인한 것을 표시
+        user.setRegistration_id("google");      // google로 로그인한 것을 표시
         user.setSocial_id(id);
         user.setEmail(email);
         user.setName(nickname);
@@ -46,7 +45,7 @@ public class GoogleOauthService {
     }
 
     /* 인가코드를 통해 google에서 access_token 얻어오는 메소드 */
-    private String getAccessToken(String authorizationCode) {
+    public String getAccessToken(String authorizationCode) {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("code", authorizationCode);
         params.add("client_id", clientId);
