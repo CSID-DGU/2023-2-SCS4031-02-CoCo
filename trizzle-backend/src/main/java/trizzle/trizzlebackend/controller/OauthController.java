@@ -77,6 +77,7 @@ public class OauthController {
 
             // cookie 설정 (cookie에 accessToken 담아서 응답)
             Cookie cookie = new Cookie("accessToken", accessToken);
+            cookie.setPath("/");
             cookie.setMaxAge(3600);
             cookie.setSecure(true);
             cookie.setHttpOnly(true);
