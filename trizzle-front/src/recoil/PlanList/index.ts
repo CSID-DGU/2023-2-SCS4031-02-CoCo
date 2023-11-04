@@ -122,3 +122,32 @@ export const useOnPlaceDragEnd = () => {
   };
   return onDragEnd;
 };
+
+export const deleteDay = (day:number, planList:any) => {
+  const filteredPlanList = planList.filter((dayPlan:any) => dayPlan.day !== day );
+  const updatePlanList = filteredPlanList.map((dayPlan:any, index:number) => {
+    if(dayPlan.day < day) {
+      return {
+        day : dayPlan.day,
+        place_list: dayPlan.place_list,
+      }}
+      else {
+      return {
+        day: dayPlan.day -1,
+        place_list : dayPlan.place_list,
+      }
+    }
+  });
+
+  return updatePlanList;
+
+};
+
+export const useDeleteDay = () => {
+  const setPlanList = useSetRecoilState(PlanListState);
+  const deleteDayPlan = (day:number, planList:any) => {
+    const updatePlanList = deleteDay(day, planList);
+    setPlanList(updatePlanList);
+  }
+  return deleteDayPlan;
+}

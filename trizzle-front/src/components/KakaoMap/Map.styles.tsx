@@ -16,15 +16,20 @@ export const MapWrapper = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 1rem;
-
+  border: 2px solid #FFDC61;
 `
 
 export const SearchMap = styled(Map)`
   width: 100%;
   height: 100%;
-  border-top-left-radius: 1.3rem;
-  border-bottom-left-radius: 1.3rem;
-  border: 2px solid #FFDC61;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+`
+
+export const BeforeSearchMap = styled(Map)`
+  width:100%;
+  height:100%;
+  border-radius: 1rem;
 `
 export const PlanMapWrapper = styled.div`
   width: 90%;
