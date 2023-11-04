@@ -60,6 +60,15 @@ public class LoginService {
 
     /* 기존 social_id 에 해당하는 user정보에 추가로 입력받은 user정보 저장,  Jwt 발급 */
     public Map<String, String> putUserInfo(String token, User additionalUserInfo) {
+
+        // id중복확인
+        String account_id = findAccountId(additionalUserInfo.getAccount_id());
+        if (account_id != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "이미 존재하는 id입니다");
+            return response;
+        }
+
         User userInfo = null;    // userInfo가 db에 저장될 값
 
         if (additionalUserInfo.getRegistration_id().equals("google")) {
@@ -97,6 +106,17 @@ public class LoginService {
         Query query = new Query(criteria);
         User user = mongoTemplate.findOne(query, User.class);
         return user;
+    }
+
+    /* account_id가 존재하는지 확인*/
+    private String findAccountId(String account_id) {
+        Query query = new Query(Criteria.where("account_id").is(account_id));
+        User user = mongoTemplate.findOne(query, User.class);
+        if (user != null) {
+            return user.getAccount_id();
+        } else{
+            return null;
+        }
     }
 
 }
