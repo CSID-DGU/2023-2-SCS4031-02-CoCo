@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import trizzle.trizzlebackend.domain.User;
 
 @Service
@@ -24,6 +25,10 @@ public class GoogleOauthService {
     private String tokenUri;
     @Value("${oauth.google.resource-uri}")
     private String resourceUri;
+    @Value("${oauth.google.client-authorize}")
+    private String authorizeUri;
+    @Value("${oauth.google.scope}")
+    private String scope;
 
     public User getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
@@ -61,5 +66,15 @@ public class GoogleOauthService {
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, httpEntity, JsonNode.class);   // <200 OK OK, {"access_token":, "expires_in":, "scope":,"token_type":, "id_token":, }, [header정보]
         JsonNode accessTokenNode = responseNode.getBody();
         return accessTokenNode.get("access_token").asText();
+    }
+
+    public String googleRedirectUri() {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(authorizeUri)
+                .queryParam("client_id", clientId)
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("response_type", "code")
+                .queryParam("scope", scope);
+
+        return uriComponentsBuilder.toUriString();
     }
 }

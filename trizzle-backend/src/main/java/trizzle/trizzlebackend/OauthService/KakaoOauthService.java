@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import trizzle.trizzlebackend.domain.User;
 
 @Service
@@ -22,6 +23,8 @@ public class KakaoOauthService {
     private String tokenUri;
     @Value("${oauth.kakao.resource-uri}")
     private String resourceUri;
+    @Value("${oauth.kakao.client-authorize}")
+    private String authorizeUri;
 
     public User getUserInfo(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
@@ -63,5 +66,14 @@ public class KakaoOauthService {
         ResponseEntity<JsonNode> responseNode = restTemplate.exchange(tokenUri, HttpMethod.POST, httpEntity, JsonNode.class);
         JsonNode accessTokenNode = responseNode.getBody();
         return accessTokenNode.get("access_token").asText();
+    }
+
+    public String kakaoRedirectUri() {
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(authorizeUri)
+                .queryParam("client_id", clientId)
+                .queryParam("redirect_uri", redirectUri)
+                .queryParam("response_type", "code");
+
+        return uriComponentsBuilder.toUriString();
     }
 }
