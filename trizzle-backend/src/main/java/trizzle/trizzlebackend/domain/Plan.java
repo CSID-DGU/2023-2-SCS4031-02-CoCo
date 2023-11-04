@@ -21,7 +21,7 @@ public class Plan {
     private LocalDate plan_end_date;
     private String plan_name;
     private String plan_location;
-    private String plan_thema;
+    private List<String> plan_thema;
     private List<Day> content;
 
     public List<Day> getContent() {
@@ -56,11 +56,11 @@ public class Plan {
         this.plan_location = plan_location;
     }
 
-    public String getPlan_thema() {
+    public List<String> getPlan_thema() {
         return plan_thema;
     }
 
-    public void setPlan_thema(String plan_thema) {
+    public void setPlan_thema(List<String> plan_thema) {
         this.plan_thema = plan_thema;
     }
 

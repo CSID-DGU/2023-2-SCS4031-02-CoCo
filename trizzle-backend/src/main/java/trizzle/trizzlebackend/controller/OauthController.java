@@ -10,6 +10,7 @@ import trizzle.trizzlebackend.OauthService.KakaoOauthService;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.service.LoginService;
 
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -26,6 +27,20 @@ public class OauthController {
         this.loginService = loginService;
         this.googleOauthService = googleOauthService;
         this.kakaoOauthService = kakaoOauthService;
+    }
+
+    @GetMapping("/google")
+    public ResponseEntity<Void> redirectGoogle() {
+        String redirectUri = googleOauthService.googleRedirectUri();
+
+        return  ResponseEntity.status(302).location(URI.create(redirectUri)).build();
+    }
+
+    @GetMapping("/kakao")
+    public ResponseEntity<Void> redirectKakao() {
+        String redirectUri = kakaoOauthService.kakaoRedirectUri();
+
+        return ResponseEntity.status(302).location(URI.create(redirectUri)).build();
     }
 
     @GetMapping("/oauth2/code/google")  // google oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
