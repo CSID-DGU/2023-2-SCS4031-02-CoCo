@@ -69,4 +69,24 @@ public class PlanController {
         return ResponseEntity.ok()
                 .body(myPlans);
     }
+
+    @DeleteMapping("/myplans/{plan_id}") // 일정 삭제하기
+    public ResponseEntity deleteMyPlan(@PathVariable("plan_id") String planId, HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        Plan plan = planService.searchPlan(planId);
+
+        if (plan.getAccount_id().equals(accountId)) {
+            planService.deletePlan(planId);
+            String message = "delete success";
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"" + message + "\"}");
+        } else {
+            String message = "wrong approach";
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"" + message + "\"}");
+        }
+
+    }
 }

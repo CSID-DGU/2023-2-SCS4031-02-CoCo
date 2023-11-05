@@ -70,5 +70,7 @@ public class PlanService {
         return myPlans;
     }
 
-
+    public void deletePlan(String plan_id) {
+        mongoRepository.deleteById(plan_id);
+    }
 }
