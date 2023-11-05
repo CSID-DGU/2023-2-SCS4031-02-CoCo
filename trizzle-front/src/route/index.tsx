@@ -7,6 +7,7 @@ import Myfeed from '../pages/Myfeed';
 import PlanList from '../pages/PlanList';
 import PlanDetail from '../pages/PlanDetail';
 import MainLogin from '../pages/LoginPage/MainLogin';
+import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
 
 
 const Router = () => {
@@ -14,6 +15,8 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/:id" element={<Home />} />
+        
         <Route path="/login" element={<MainLogin />} />
         <Route path="/:id/plan/addPlan" element={<AddPlanPage />} />
         <Route path="/post/places/add/" element={<AddPlacePage />} />
@@ -31,6 +34,7 @@ const Router = () => {
         
         <Route path="/feed/:id" element={<Myfeed />} />
 
+        <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
       </Routes>
     </BrowserRouter>
   );
