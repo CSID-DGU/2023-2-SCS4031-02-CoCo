@@ -13,6 +13,7 @@ import java.util.List;
 public class Plan {
     @Id
     private String id;
+    private String account_id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime plan_registration_date;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -23,6 +24,14 @@ public class Plan {
     private String plan_location;
     private List<String> plan_thema;
     private List<Day> content;
+
+    public String getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(String account_id) {
+        this.account_id = account_id;
+    }
 
     public List<Day> getContent() {
         return content;
