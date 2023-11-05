@@ -78,6 +78,7 @@ export const useAsync = <D = any>({
         method: method,
         url: url,
         data: data,
+        withCredentials: true,
         headers: {
           "Content-Type": "application/json",
           "Authorization" : `Bearer ${token}`
