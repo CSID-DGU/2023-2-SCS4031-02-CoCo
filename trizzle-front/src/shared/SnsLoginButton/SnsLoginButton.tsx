@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-import Page from "../Page";
+import React, { useEffect, useState } from "react";
 import * as S from './SnsLoginButton.styles';
 import kakaoImg from '../../assets/images/KakaoTalk_logo.png';
 import googleImg from '../../assets/images/GoogleLogo.png';
 
-export const GoogleLogin = ({ onLogin }) => {
+export const GoogleLogin = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <S.GoogleButton
-      onClick={onLogin}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -19,12 +17,16 @@ export const GoogleLogin = ({ onLogin }) => {
   )
 }
 
-export const KakaoLogin = ({ onLogin }) => {
+export const KakaoLogin = () => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const actionLogin = () => {
+    window.location.href = 'http://localhost:8080/login/kakao';
+  }
 
   return (
     <S.KakaoButton
-      onClick={onLogin}
+      onClick={actionLogin}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
