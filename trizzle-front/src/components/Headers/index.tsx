@@ -43,13 +43,15 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
 
     {isLogin === true? (
       <S.Header isHome={isHome}>
-      <S.LogoImg>
-        {isHome ? (
-          <img src={homeLogo} alt="logo" width="100%" height="100%"/>
-          ):(
-          <img src={logo} alt="logo" width="100%" height="100%"/>
-          )}
-      </S.LogoImg>
+        <Link to="/">
+          <S.LogoImg>
+            {isHome ? (
+              <img src={homeLogo} alt="logo" width="100%" height="100%"/>
+              ):(
+              <img src={logo} alt="logo" width="100%" height="100%"/>
+              )}
+          </S.LogoImg>
+        </Link>
       <S.RightWrapper>
         <S.HeaderIconText>
           <AiOutlinePlus size="1.1rem"/>

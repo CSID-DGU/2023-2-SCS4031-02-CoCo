@@ -1,17 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./Map.styles";
 import { MapProps } from "./Map.type";
 import MapMarkers from "./MapMarkers";
+import { DayPolyline } from "./DayMarker";
 
 const Maps: React.FC<MapProps> = (props: MapProps) => {
+  const [polylineList, setPolylineList] = useState<any[]>([]);
 
+
+  console.log(polylineList);
 
   switch (props.type) {
     case "search":
       if(props.markerList && props.markerList.length === 0) {
         return (
           <S.MapWrapper>
-            <S.SearchMap
+            <S.BeforeSearchMap
               center={props.center}
               level={props.level}
               />

@@ -70,7 +70,7 @@ export const useAsync = <D = any>({
   
     if (url === "") return;
 
-    const token = cookies.access_token;
+    const token = cookies.access_token? cookies.access_token : import.meta.env.VITE_TEST_TOKEN;
     console.log(token);
     dispatch({ type: "LOADING" });
     try {

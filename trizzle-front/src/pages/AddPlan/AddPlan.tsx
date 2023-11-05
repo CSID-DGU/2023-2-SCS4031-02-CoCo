@@ -11,7 +11,7 @@ import { tripThema } from "../../utils/Data/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
 import { useNavigate } from "react-router-dom";
 import PlanMap from "../../shared/PlanMap";
-import { useDeletePlaceFromPlan, useAddPlaceToPlan, useDeleteDay } from "../../recoil/PlanList";
+import { useDeletePlaceFromPlan, useAddPlaceToPlan } from "../../recoil/PlanList";
 import { useRecoilState } from "recoil";
 import { PlanState } from "../../recoil/PlanList/atoms";
 import { useAsync } from "../../utils/API/useAsync";
@@ -32,8 +32,8 @@ const AddPlanPage:React.FC = () => {
   const navigate = useNavigate();
   const deletePlaceFromPlan = useDeletePlaceFromPlan();
   const addPlaceToPlan = useAddPlaceToPlan();
-  const deleteDay = useDeleteDay();
   const [state, fetchData] = useAsync({url:"", method:""});
+  const [submitData, setSubmitData] = useState<any>();
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);
@@ -57,18 +57,10 @@ const AddPlanPage:React.FC = () => {
 
   const onDayPlusButtonClick = () => {
     setDay(allDay+1);
-    setPlaceList((prev) => [...prev, {day:allDay+1, place_list:[]}]);
+    setPlaceList((prev) => [...prev, {day:allDay+1, placeList:[]}]);
   };
 
-  const onDeleteDayClick = (day:number) => {
-    if(allDay === 1) {
-      alert("더 이상 삭제할 수 없습니다.");
-      return;
-    }
 
-    deleteDay(day, placeList);
-    setDay(allDay-1);
-  }
   
   const onThemaBadgeClick = (select: any) => {
     // 선택한 아이템이 thema 배열에 이미 존재하는지 확인
@@ -107,15 +99,14 @@ const AddPlanPage:React.FC = () => {
       content: placeList
     }
 
-
     const json = JSON.stringify(data);
-
+    console.log(json)
     const url = `/api/plans`;
     fetchData(url, "POST",json);
     };
 
     useEffect(() => {
-      if(state.data && state.data.message === "success") navigate("/myfeed");
+      if(state.data && state.data.message === "success") navigate(`/myfeed/plans/${state.data.plan_id}`);
     }, [state])
 
   return (
@@ -148,7 +139,7 @@ const AddPlanPage:React.FC = () => {
           </S.FormContainer>
           <PlanMap selectDay={selectDay} setSelectDay={setSelectDay} placeList={placeList} center={center} isSearchModalOpen={isSearchModalOpen} setIsSearchModalOpen={setIsSearchModalOpen} isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} onDayPlusButtonClick={onDayPlusButtonClick} setAddClickDay={setAddClickDay} page="add"/>
           
-          <DayPlan isPlan={true} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)} onDayDeleteClick={(day) => onDeleteDayClick(day)}/>
+          <DayPlan isPlan={true} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)} />
       
 
       {/* </form> */}
