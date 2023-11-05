@@ -32,13 +32,13 @@ export default function SearchBar() {
 
   return (
     <S.Container>
-      <S.InputContainer >
+      <S.InputContainer onClick={() => setIsMapOpen(!isMapOpen)}>
         <S.HorizontalFirstStartContainer>
           <S.DropdownContainer>
             <S.DropdownButton type="button" onClick={() => setIsFieldOpen(!isFieldOpen)}>
               {searchField}
               <BiSolidDownArrow size="1rem" />
-            </S.DropdownButton>
+            </S.DropdownButton>x
             {isFieldOpen &&
               <S.OptionContainer>
                 <S.OptionButton type="button" onClick={() => onClick("일정")} >
