@@ -1,6 +1,10 @@
 package trizzle.trizzlebackend.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.domain.Day;
@@ -11,16 +15,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class PlanService {
 
     private final MongoRepository<Plan, String> mongoRepository;
     private final PlaceService placeService;
-
-    @Autowired
-    public PlanService(MongoRepository<Plan, String> mongoRepository, PlaceService placeService){
-        this.mongoRepository = mongoRepository;
-        this.placeService = placeService;
-    }
+    private final MongoTemplate mongoTemplate;
 
 
     // plan 저장하는 메소드
@@ -64,6 +64,11 @@ public class PlanService {
         return insertPlan(plan, acccount_id);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
     }
 
+    public List<Plan> findMyPlans(String account_id) {
+        Query query = new Query(Criteria.where("account_id").is(account_id));
+        List<Plan> myPlans = mongoTemplate.find(query, Plan.class);
+        return myPlans;
+    }
 
 
 }

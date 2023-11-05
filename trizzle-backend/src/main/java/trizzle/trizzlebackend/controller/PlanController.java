@@ -11,6 +11,7 @@ import trizzle.trizzlebackend.domain.Plan;
 import trizzle.trizzlebackend.service.PlanService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -56,5 +57,16 @@ public class PlanController {
         response.put("plan_id",plan_id);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @GetMapping("/myplans") //내 일정 불러오기
+    public ResponseEntity getMyPlans(HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String token = authorization.split(" ")[1];
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        List<Plan> myPlans = planService.findMyPlans(accountId);
+        return ResponseEntity.ok()
+                .body(myPlans);
     }
 }
