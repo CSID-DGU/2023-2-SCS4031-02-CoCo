@@ -71,9 +71,9 @@ export default function AddPlacePage({ userContent }: AddPlacePageProps) {
 
     localStorage.setItem("postData", JSON.stringify(ResultData));
     if (secretValue) {
-      navigate(`/post/places/${ResultData.post_id}}`);
+      navigate(`/post/places/${ResultData.post_id}`);
     } else {
-      navigate(`/post/places/secret/${ResultData.post_id}}`);
+      navigate(`/post/places/secret/${ResultData.post_id}`);
     }
   }
 
