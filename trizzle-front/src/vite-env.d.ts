@@ -8,6 +8,8 @@ interface ImportMetaEnv {
   readonly VITE_NAVER_CLIENT_SECRET: string;
   readonly VITE_PUBLIC_URL: string;
   readonly VITE_API_URL: string;
+  readonly VITE_KAKAO_LOGIN_URL: string;
+  readonly VITE_GOOGLE_LOGIN_URL: string;
   readonly VITE_TEST_TOKEN: string;
 };
 
