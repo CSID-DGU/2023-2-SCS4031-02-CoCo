@@ -1,16 +1,29 @@
-import React, { useState } from "react";
-import Page from "../Page";
+import React, { useEffect, useState } from "react";
 import * as S from './MainLogin.styles';
 import { GoogleLogin, KakaoLogin } from "../../shared/SnsLoginButton/SnsLoginButton";
 
 import { tripThema } from "../../utils/Data/tripThema";
 import DropdownMenu from "../../components/DropdownMenu";
 import LogoImg from '../../assets/logo/nonTextLogo.svg'
+import { useAsync } from "../../utils/API/useAsync";
+import axios from "axios";
 
-export default function MainLogin({ onClose }) {
-  const [isStart, setIsStart] = useState('');
-  const [userSearch, setUserSearch] = useState(false);
+interface MainLoginProps {
+  type: string;
+  data: {};
+  onClose: (value: boolean) => void;
+}
+
+export default function MainLogin({ type, data, onClose }: MainLoginProps) {
+  const token = data.token;
   const [thema, setThema] = useState<any[]>([]);
+  const [userData, setUserData] = useState({
+    "account_id": '',
+    "nickname": '',
+    "thema": [],
+    "registration_id": data.registration_id,
+  });
+  const [state, fetchData] = useAsync({ url: "" });
   let components;
 
   const onThemaBadgeClick = (select: any) => {
@@ -26,87 +39,103 @@ export default function MainLogin({ onClose }) {
     }
   };
 
-  if (isStart === '회원가입') {
+  // const addUser = () => {
+  //   fetchData(`/login/additionalUserInfo?token=${token}`, "POST", userData);
+  //   console.log(userData);
+  //   console.log(state);
+  // }
+
+  const addUser = async () => {
+    console.log(userData);
+    try {
+      const response = await axios.post(`http://localhost:8080/login/additionalUserInfo?token=${token}`, userData);
+      const data = response.data; // 응답 데이터
+      console.log(data);
+    } catch (e: any) {
+      console.log(e);
+    }
+  }
+
+  const closeModal = () => {
+    onClose(false);
+  }
+
+  const handleAccountIdChange = (event) => {
+    // Update the account_id value in userData
+    setUserData({
+      ...userData,
+      account_id: event.target.value
+    });
+  };
+
+  const handleNicknameChange = (event) => {
+    // Update the nickname value in userData
+    setUserData({
+      ...userData,
+      nickname: event.target.value
+    });
+  };
+
+  useEffect(() => {
+    if (thema.length > 0) {
+      const themaNames = thema.map((item) => item.name); // 첫 번째 항목을 선택하거나 다른 방식으로 선택
+  
+      setUserData((prevUserData) => {
+        return {
+          ...prevUserData,
+          thema: themaNames
+        };
+      });
+    }
+  }, [thema]);
+
+  if (type === '회원가입') {
     components = (
-      <S.userModalWrapper>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start'
-        }}>
+      <S.UserModalWrapper>
+        <S.Container>
           <S.LogoImage src={LogoImg} />
-          <S.title>회원정보 입력</S.title>
-          <S.content>
-            가입되지 않은 회원이기에 <br />회원으로 등록하시려면 정보를 입력해주세요
-          </S.content>
-          <S.userContainer>
-            <S.userContents>어떤 이름으로 활동하시겠습니까?</S.userContents>
-            <S.userInput />
-            <S.userContents>자신의 여행테마를 선택해주세요</S.userContents>
+          <S.Title>추가 정보 입력</S.Title>
+          <S.UserContainer>
+            <S.UserContents>아이디를 입력해주세요</S.UserContents>
+            <S.UserInput
+              type="text"
+              value={userData.account_id}
+              onChange={handleAccountIdChange} />
+            <S.UserContents>어떤 이름으로 활동하시겠습니까?</S.UserContents>
+            <S.UserInput
+              type="text"
+              value={userData.nickname}
+              onChange={handleNicknameChange} />
+            <S.UserContents>자신의 여행테마를 선택해주세요</S.UserContents>
             <DropdownMenu type="badge" name="여행테마를 선택해주세요" items={tripThema} selectedItem={thema} onClick={(thema) => onThemaBadgeClick(thema)} />
-          </S.userContainer>
-        </div>
-        <S.checkButton>회원 정보 등록</S.checkButton>
-      </S.userModalWrapper>
-    );
-  } else if (isStart === '회원 정보 검색') {
-    components = (
-      <S.userModalWrapper>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start'
-        }}>
-          <S.LogoImage src={LogoImg} />
-          <S.title>회원 정보 확인</S.title>
-          <S.content>
-            이메일로 본인 정보 확인 부탁드립니다.
-          </S.content>
-          <S.userContainer>
-            <S.userContents>이름</S.userContents>
-            <S.userInput />
-            <S.userContents>이메일</S.userContents>
-            <S.userInput />
-            <S.userContents>이메일 인증</S.userContents>
-            <S.userInput />
-          </S.userContainer>
-        </div>
-        <S.checkButton>회원 정보 확인</S.checkButton>
-      </S.userModalWrapper>
+          </S.UserContainer>
+        </S.Container>
+        <S.CheckButton onClick={addUser}>회원 정보 등록</S.CheckButton>
+      </S.UserModalWrapper>
     );
   } else {
     components = (
-      <S.loginModalWrapper>
-        <div style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start'
-        }}>
+      <S.LoginModalWrapper>
+        <S.Container>
           <S.LogoImage src={LogoImg} />
-          <S.title>로그인</S.title>
-          <S.content>회원으로 Trizzle을 이용해보세요 </S.content>
+          <S.Title>로그인</S.Title>
+          <S.Content>회원으로 Trizzle을 이용해보세요 </S.Content>
           <S.ButtonContainer>
-            <KakaoLogin onLogin={() => setIsStart('회원가입')} />
-            <GoogleLogin onLogin={() => setIsStart('회원가입')} />
+            <KakaoLogin />
+            <GoogleLogin />
           </S.ButtonContainer>
-          <S.findContainer>
-            <S.findContents onClick={() => setIsStart('회원 정보 검색')}>소셜회원정보확인</S.findContents>
-          </S.findContainer>
-        </div>
+        </S.Container>
         <S.Text3>
           계속 진행할 경우, Trizzle의 개인정보 취급방침 및 쿠키 정책에 동의한 것으로 간주됩니다.
           <br />
           이 사이트는 reCAPTCHA에 의해 보호되며 Google 개인정보 취급방침 및 이용 약관이 적용됩니다.</S.Text3>
-      </S.loginModalWrapper >
+      </S.LoginModalWrapper >
     );
   }
 
   return (
     <>
-      <S.Blur onClick={onClose} />
+      <S.Blur onClick={closeModal} />
       {components}
     </>
   )
