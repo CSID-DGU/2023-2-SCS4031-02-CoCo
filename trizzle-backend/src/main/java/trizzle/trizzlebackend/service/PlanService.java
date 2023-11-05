@@ -1,6 +1,10 @@
 package trizzle.trizzlebackend.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.domain.Day;
@@ -11,20 +15,17 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class PlanService {
 
     private final MongoRepository<Plan, String> mongoRepository;
     private final PlaceService placeService;
-
-    @Autowired
-    public PlanService(MongoRepository<Plan, String> mongoRepository, PlaceService placeService){
-        this.mongoRepository = mongoRepository;
-        this.placeService = placeService;
-    }
+    private final MongoTemplate mongoTemplate;
 
 
     // plan 저장하는 메소드
-    public Plan insertPlan(Plan plan){
+    public Plan insertPlan(Plan plan, String accountId){
+        plan.setAccount_id(accountId);  // plan에 account_id도 저장
         LocalDateTime dateTime = LocalDateTime.now();   
         plan.setPlan_registration_date(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
         
@@ -58,9 +59,18 @@ public class PlanService {
     }
 
     /*일정 수정하기*/
-    public Plan updatePlan(Plan plan, String id){
+    public Plan updatePlan(Plan plan, String id, String acccount_id){
         plan.setId(id);
-        return insertPlan(plan);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
+        return insertPlan(plan, acccount_id);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
     }
 
+    public List<Plan> findMyPlans(String account_id) {
+        Query query = new Query(Criteria.where("account_id").is(account_id));
+        List<Plan> myPlans = mongoTemplate.find(query, Plan.class);
+        return myPlans;
+    }
+
+    public void deletePlan(String plan_id) {
+        mongoRepository.deleteById(plan_id);
+    }
 }

@@ -33,7 +33,6 @@ const AddPlanPage:React.FC = () => {
   const deletePlaceFromPlan = useDeletePlaceFromPlan();
   const addPlaceToPlan = useAddPlaceToPlan();
   const [state, fetchData] = useAsync({url:"", method:""});
-  const [submitData, setSubmitData] = useState<any>();
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);

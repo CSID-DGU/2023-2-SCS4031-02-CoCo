@@ -13,6 +13,7 @@ import java.util.List;
 public class Plan {
     @Id
     private String id;
+    private String account_id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime plan_registration_date;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
@@ -21,8 +22,16 @@ public class Plan {
     private LocalDate plan_end_date;
     private String plan_name;
     private String plan_location;
-    private String plan_thema;
+    private List<String> plan_thema;
     private List<Day> content;
+
+    public String getAccount_id() {
+        return account_id;
+    }
+
+    public void setAccount_id(String account_id) {
+        this.account_id = account_id;
+    }
 
     public List<Day> getContent() {
         return content;
@@ -56,11 +65,11 @@ public class Plan {
         this.plan_location = plan_location;
     }
 
-    public String getPlan_thema() {
+    public List<String> getPlan_thema() {
         return plan_thema;
     }
 
-    public void setPlan_thema(String plan_thema) {
+    public void setPlan_thema(List<String> plan_thema) {
         this.plan_thema = plan_thema;
     }
 
