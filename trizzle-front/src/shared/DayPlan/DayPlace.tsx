@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./DayPlan.style";
 import logo from "../../assets/logo/nonTextLogo.svg"
 import { AiOutlineEllipsis } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import res from "src/assets/keywords/trans.svg"
+import trans from "../../assets/keywords/trans.svg"
+import rest from "../../assets/keywords/rest.svg"
+import shopping from "../../assets/keywords/shopping.svg"
 
 type DayPlaceProps = {
   place: any;
@@ -14,9 +18,17 @@ type DayPlaceProps = {
   onDeleteClick?: (place: any, day: number, index: number) => void;
 }
 
+const KeywordList: { keyword: string; src: string; }[] = [
+  {keyword:"식사", src: res},
+  {keyword:"이동", src: trans},
+  {keyword:"휴식", src: rest},
+  {keyword:"쇼핑", src: shopping},
+];
+
 const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<any>(null);
 
   const handleNavigation = () => {
 
@@ -29,7 +41,14 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
     navigate(`/post/places/add/?${queryString}`);
   };
 
-  if (props.place.hasOwnProperty('y') && props.place.hasOwnProperty('x')) {
+  useEffect(() => {
+    if(props.place.hasOwnProperty('keyword') && props.place.keyword !==null) {
+      const keywordSrc = KeywordList.filter((key) => {return props.place.keyword === key.keyword});
+      setKeyword(keywordSrc);
+    }
+  }, [])
+
+  if (keyword === null) {
     return (
       <S.PlaceContainer>
         <S.MenuButtonContainer >
@@ -59,6 +78,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
       </S.PlaceContainer>
     )
   } else {
+    if(keyword !== null){
     return (
       <S.PlaceContainer>
         <S.MenuButtonContainer>
@@ -73,10 +93,12 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
             </>
           )}
         </S.MenuButtonContainer>
-        <img src={props.place.src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
-        <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{props.place.name}</S.PlaceAddress>
+        <img src={keyword[0].src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
+        <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{keyword[0].keyword}</S.PlaceAddress>
       </S.PlaceContainer>
-    )
+    )} else {
+      <></>
+    }
   }
 
 }

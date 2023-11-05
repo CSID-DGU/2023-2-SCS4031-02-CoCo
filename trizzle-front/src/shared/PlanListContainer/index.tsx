@@ -16,7 +16,7 @@ export const PlanListContainer: React.FC<PlanListContainerProps> = (props: PlanL
             <S.Title past={props.past}>{props.plan.plan_name}</S.Title>
             <S.Location past={props.past}>
               <BiMapPin size="1.5rem" color={props.past? "#BDBDBD" : "#89711B"}/>
-              {props.plan.location}
+              {props.plan.plan_location}
             </S.Location>
             <S.Date past={props.past}>{props.plan.plan_start_date} ~ {props.plan.plan_end_date}</S.Date>
           </S.RightContainer>
