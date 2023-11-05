@@ -24,7 +24,8 @@ public class PlanService {
 
 
     // plan 저장하는 메소드
-    public Plan insertPlan(Plan plan){
+    public Plan insertPlan(Plan plan, String accountId){
+        plan.setAccount_id(accountId);  // plan에 account_id도 저장
         LocalDateTime dateTime = LocalDateTime.now();   
         plan.setPlan_registration_date(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
         
@@ -58,9 +59,11 @@ public class PlanService {
     }
 
     /*일정 수정하기*/
-    public Plan updatePlan(Plan plan, String id){
+    public Plan updatePlan(Plan plan, String id, String acccount_id){
         plan.setId(id);
-        return insertPlan(plan);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
+        return insertPlan(plan, acccount_id);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
     }
+
+
 
 }

@@ -44,12 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             // userId token에서 꺼내기
-            String userId = JwtUtil.getUserId(token, secretKey);
-            log.info("{}", userId);
+            String accountId = JwtUtil.getAccountId(token, secretKey);
+            log.info("{}", accountId);
 
             //권한부여
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userId, null, List.of(new SimpleGrantedAuthority("USER")));
+                    new UsernamePasswordAuthenticationToken(accountId, null, List.of(new SimpleGrantedAuthority("USER")));
 
             //detail
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
