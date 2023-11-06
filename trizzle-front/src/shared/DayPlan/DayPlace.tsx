@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./DayPlan.style";
 import logo from "../../assets/logo/nonTextLogo.svg"
-import { AiOutlineEllipsis } from "react-icons/ai";
+// import { AiOutlineEllipsis } from "react-icons/ai";
+import Menu from "../../components/Menu";
 import { useNavigate } from "react-router-dom";
 import res from "src/assets/keywords/trans.svg"
 import trans from "../../assets/keywords/trans.svg"
@@ -13,6 +14,8 @@ type DayPlaceProps = {
   day: number;
   isPlan: boolean;
   isPost?: boolean;
+  id?: string;
+  secret?: boolean;
   index: number;
   onPostClick?: () => void;
   onDeleteClick?: (place: any, day: number, index: number) => void;
@@ -29,6 +32,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<any>(null);
+  const [menuItem, setMenuItem] = useState<any[]>([]);
 
   const handleNavigation = () => {
 
@@ -41,33 +45,32 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
     navigate(`/post/places/add/?${queryString}`);
   };
 
+  const onPostClick =() => {
+    if(props.secret && props.secret === true) navigate(`/post/places/secret/${props.id}`)
+    navigate(`/post/places/secret/${props.id}`)
+  }
+
   useEffect(() => {
     if(props.place.hasOwnProperty('keyword') && props.place.keyword !==null) {
       const keywordSrc = KeywordList.filter((key) => {return props.place.keyword === key.keyword});
       setKeyword(keywordSrc);
+      if(props.onDeleteClick)
+      setMenuItem([{content: "삭제", onClick: props.onDeleteClick(props.place, props.day, props.index)}])
+    } else {
+      if(props.isPlan && props.onDeleteClick)
+      setMenuItem([{content: "삭제", onClick: props.onDeleteClick(props.place, props.day, props.index), isDelete: true}])
+      else if(props.isPost && props.isPost === true) {
+        setMenuItem([{content: "게시글로 이동", onClick: onPostClick(), isDelte:false}]);
+      } else {
+        setMenuItem([{content: "게시글 작성", onClick: handleNavigation(), isDelte:false}]);
+      }
     }
   }, [])
 
   if (keyword === null) {
     return (
       <S.PlaceContainer>
-        <S.MenuButtonContainer >
-          <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)} />
-          {open && (
-            <S.MenuContainer>
-              {!props.isPlan && props.onPostClick ? (
-                props.isPost ? (
-                  <S.MenuItem delete={false} onClick={handleNavigation}>게시글 바로가기</S.MenuItem>
-                ) : (
-                  <S.MenuItem delete={false} onClick={handleNavigation}>게시글 등록</S.MenuItem>
-                )
-              ) : (
-                <S.MenuItem delete={true} onClick={() => { props.onDeleteClick(props.place, props.day, props.index); setOpen(!open) }}>삭제</S.MenuItem>
-              )}
-            </S.MenuContainer>
-
-          )}
-        </S.MenuButtonContainer>
+          <Menu item={menuItem} />
         <S.PlaceLogo>
           <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
         </S.PlaceLogo>
@@ -81,18 +84,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
     if(keyword !== null){
     return (
       <S.PlaceContainer>
-        <S.MenuButtonContainer>
-          {props.isPlan && (
-            <>
-              <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)} />
-              {open && (
-                <S.MenuContainer>
-                  <S.MenuItem delete={true} onClick={() => { props.onDeleteClick(props.place, props.day, props.index); console.log(props.index); setOpen(!open); }}>삭제</S.MenuItem>
-                </S.MenuContainer>
-              )}
-            </>
-          )}
-        </S.MenuButtonContainer>
+        <Menu item={menuItem} />
         <img src={keyword[0].src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
         <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{keyword[0].keyword}</S.PlaceAddress>
       </S.PlaceContainer>

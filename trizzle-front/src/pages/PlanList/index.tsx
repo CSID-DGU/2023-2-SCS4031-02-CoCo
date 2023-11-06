@@ -8,12 +8,14 @@ import { Link } from "react-router-dom";
 
 
 const PlanList = () => {
+  const [allPlan, setAllPlan]= useState<any[]>([]);
   const [nextPlan, setNextPlan] = useState<any[]>([]);
   const [pastPlan, setPastPlan] = useState<any[]>([]);
   const [state, fetchData] = useAsync({url:"/api/plans/myplans"});
 
   useEffect(() => {
     if(state.data) {
+      setAllPlan(state.data);
       const today = new Date();
       const nextArray:any[] = [];
       const pastArray:any[] = [];
@@ -32,6 +34,9 @@ const PlanList = () => {
     }
   }, [state])
 
+  const onDeleteClick = (id:string) => {
+    console.log(id);
+  }
 
   return (
     <MyfeedLayout isMe={true} selectTab={{name:"여행 계획", URL:"plans"}}>
@@ -49,7 +54,7 @@ const PlanList = () => {
             <S.PlanList>
             {nextPlan.map((plan:any) => (
               <Link to={`/myfeed/plans/${plan.id}`}>
-              <PlanListContainer key={plan.id} plan={plan} past={false}/>
+              <PlanListContainer key={plan.id} plan={plan} past={false} onDeleteClick={(id:string) => onDeleteClick(id)}/>
               </Link>
             ))}
           </S.PlanList>
@@ -60,7 +65,7 @@ const PlanList = () => {
             <S.PlanList>
               {pastPlan.map((plan:any) => (
                 <Link to={`/myfeed/plans/${plan.id}`}>
-                  <PlanListContainer key={plan.id} plan={plan} past={true}/>
+                  <PlanListContainer key={plan.id} plan={plan} past={true} onDeleteClick={(id:string) => onDeleteClick(id)}/>
                 </Link>
               ))}
             </S.PlanList>

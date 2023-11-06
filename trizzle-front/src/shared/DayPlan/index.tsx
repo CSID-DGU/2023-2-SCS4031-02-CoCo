@@ -7,6 +7,7 @@ import { useOnPlaceDragEnd } from "../../recoil/PlanList";
 import {PlanListState} from "../../recoil/PlanList/selector";
 import { useRecoilValue } from "recoil";
 import { AiOutlineEllipsis } from "react-icons/ai";
+import Menu from "../../components/Menu";
 
 //Drag & Drop 가능하도록 수정 예정
 
@@ -47,13 +48,20 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
   setOpen(newOpen);
   }
 
+  const onDayDelete = (day:number) => {
+    props.onDayDeleteClick(day)
+  }
+
+
+
   return(
     <DragDropContext onDragEnd={(result) => onPlaceDragEnd(result, placeList)}>
       <HorizontalScrollContainer moveDistance={200}>
         {placeList.map((dayPlan, index) => (
           <S.DayPlanContainer>
             <S.DayPlanTitle>{dayPlan.day}일차
-                <AiOutlineEllipsis size="1.5rem" className='menu' onClick={() => {
+            <Menu item={[{ content: "삭제", onClick: () => props.onDayDeleteClick(dayPlan.day), isDelete: true }]} />
+                {/* <AiOutlineEllipsis size="1.5rem" className='menu' onClick={() => {
                   onOpen(index);
                 }}/>
               {open[index] && (
@@ -61,7 +69,7 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
                     <S.MenuItem delete={true} onClick={() => { props.onDayDeleteClick(dayPlan.day); onOpen(index) }}>삭제</S.MenuItem>
                 </S.MenuContainer>
 
-              )}
+              )} */}
             </S.DayPlanTitle>
             {dayPlan.place_list.length > 0 && dayPlan.place_list.map((place:any, index:number) => (
               <Droppable droppableId={`${dayPlan.day}-${index}`} key={index} type="ITEM">
