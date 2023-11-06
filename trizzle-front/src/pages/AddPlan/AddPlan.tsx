@@ -35,8 +35,11 @@ const AddPlanPage:React.FC = () => {
   const deleteDay = useDeleteDay();
   const [state, fetchData] = useAsync({url:"", method:""});
 
+  console.log(placeList);
+
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);
+    console.log(place);
     setIsSearchModalOpen(!isSearchModalOpen);
     setCenter({lat: place.y, lng: place.x});
   }

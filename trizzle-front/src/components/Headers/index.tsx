@@ -39,7 +39,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       );
     } else {
       headerContent = (
-        <Link to="/myfeed/plans/add">
+        <Link to="/mypage/plans/add">
           <S.HeaderText>일정추가</S.HeaderText>
         </Link>
       );
@@ -58,13 +58,15 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     <>
       {isLogin ? (
         <S.Header isHome={isHome}>
-          <S.LogoImg>
-            {isHome ? (
-              <img src={homeLogo} alt="logo" width="100%" height="100%" />
-            ) : (
-              <img src={logo} alt="logo" width="100%" height="100%" />
-            )}
-          </S.LogoImg>
+          <Link to={"/"}>
+            <S.LogoImg>
+              {isHome ? (
+                <img src={homeLogo} alt="logo" width="100%" height="100%" />
+              ) : (
+                <img src={logo} alt="logo" width="100%" height="100%" />
+              )}
+            </S.LogoImg>
+          </Link>
           <S.RightWrapper>
             <S.HeaderIconText>
               <AiOutlinePlus size="1.1rem" />

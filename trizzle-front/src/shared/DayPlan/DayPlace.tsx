@@ -51,26 +51,30 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   }
 
   useEffect(() => {
-    if(props.place.hasOwnProperty('keyword') && props.place.keyword !==null) {
-      const keywordSrc = KeywordList.filter((key) => {return props.place.keyword === key.keyword});
+    if (props.place.hasOwnProperty('keyword') && props.place.keyword !== null) {
+      const keywordSrc = KeywordList.filter((key) => props.place.keyword === key.keyword);
       setKeyword(keywordSrc);
-      if(props.onDeleteClick)
-      setMenuItem([{content: "삭제", onClick: props.onDeleteClick(props.place, props.day, props.index)}])
+      if (props.onDeleteClick) {
+        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick(props.place, props.day, props.index) }]);
+      }
     } else {
-      if(props.isPlan && props.onDeleteClick)
-      setMenuItem([{content: "삭제", onClick: props.onDeleteClick(props.place, props.day, props.index), isDelete: true}])
-      else if(props.isPost && props.isPost === true) {
-        setMenuItem([{content: "게시글로 이동", onClick: onPostClick(), isDelte:false}]);
+      if (props.isPlan && props.onDeleteClick) {
+        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick(props.place, props.day, props.index), isDelete: true }]);
+      } else if (props.isPost && props.isPost === true) {
+        setMenuItem([{ content: "게시글로 이동", onClick: onPostClick, isDelete: false }]);
       } else {
-        setMenuItem([{content: "게시글 작성", onClick: handleNavigation(), isDelte:false}]);
+        setMenuItem([{ content: "게시글 작성", onClick: handleNavigation, isDelete: false }]);
       }
     }
-  }, [])
+  }, [props.place, props.day, props.index, props.onDeleteClick, props.isPlan, props.isPost, props.id]);
+  
 
   if (keyword === null) {
     return (
       <S.PlaceContainer>
+        {menuItem.length !== 0 &&
           <Menu item={menuItem} />
+        }
         <S.PlaceLogo>
           <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
         </S.PlaceLogo>
@@ -84,7 +88,9 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
     if(keyword !== null){
     return (
       <S.PlaceContainer>
-        <Menu item={menuItem} />
+        {menuItem.length !== 0 &&
+          <Menu item={menuItem} />
+        }
         <img src={keyword[0].src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
         <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{keyword[0].keyword}</S.PlaceAddress>
       </S.PlaceContainer>

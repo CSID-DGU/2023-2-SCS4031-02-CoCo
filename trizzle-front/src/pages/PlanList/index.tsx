@@ -4,7 +4,7 @@ import * as S from "./PlanList.style";
 import {AiOutlinePlus} from "react-icons/ai";
 import { PlanListContainer } from "../../shared/PlanListContainer";
 import { useAsync } from "../../utils/API/useAsync";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const PlanList = () => {
@@ -12,6 +12,7 @@ const PlanList = () => {
   const [nextPlan, setNextPlan] = useState<any[]>([]);
   const [pastPlan, setPastPlan] = useState<any[]>([]);
   const [state, fetchData] = useAsync({url:"/api/plans/myplans"});
+  const navigate = useNavigate();
 
   useEffect(() => {
     if(state.error) {
@@ -52,7 +53,7 @@ const PlanList = () => {
       <S.Container>
         <S.HeadContainer>
           <S.DDay>다음 여행</S.DDay>
-          <S.PlusButton>
+          <S.PlusButton onClick={() => navigate("/mypage/plans/add")}>
             <AiOutlinePlus size="1.5rem"/>
             새 일정 추가
           </S.PlusButton>
