@@ -18,9 +18,20 @@ const PlanDetail: React.FC = () => {
 
   useEffect(() => {
     console.log(state);
-    setData(state.data);
-
+    if(state.error) {
+      console.error(state.error);
+      alert("데이터를 불러오는 데 실패했습니다");
+    }else if(state.data) {
+      if(state.data.message === "delete success") navigate('/myfeed/plans');
+      else {
+        setData(state.data);
+      }
+    }
   },[state]);
+
+  const onDeleteClick = () => {
+    fetchData(`/api/plans/myplans/${planId.id}`, "DELETE");
+  }
 
   return (
     
@@ -28,6 +39,7 @@ const PlanDetail: React.FC = () => {
       <S.ButtonContainer>
         <S.ListButton onClick={() => {navigate("/myfeed/plans")}}>목록</S.ListButton>
         <S.ModButton>수정</S.ModButton>
+        <S.DeleteButton onClick={onDeleteClick}>삭제</S.DeleteButton>
       </S.ButtonContainer>
       {data === null || data.lenth === 0? <div>로딩중</div> :(
         <S.Container>

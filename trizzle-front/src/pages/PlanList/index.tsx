@@ -14,28 +14,37 @@ const PlanList = () => {
   const [state, fetchData] = useAsync({url:"/api/plans/myplans"});
 
   useEffect(() => {
-    if(state.data) {
-      setAllPlan(state.data);
-      const today = new Date();
-      const nextArray:any[] = [];
-      const pastArray:any[] = [];
-      state.data.map((plan:any) => {
-        const end_date = new Date(plan.plan_end_date);
-        if(today.getTime() > end_date.getTime()){
-          pastArray.push(plan);
-        } else {
-          nextArray.push(plan);
-        };
-      });
+    if(state.error) {
+      console.error(state.error);
+      alert("데이터를 불러올 수 없습니다. 잠시 후 다시 접속해주세요");
+      return;
+    } else if(state.data) {
 
-      console.log(nextArray)
-      setNextPlan(nextArray);
-      setPastPlan(pastArray);
-    }
+      let data;
+      if(state.data.message === "delete success" && state.data.myplans) {
+        data = state.data.myplans;
+      } else{
+        data = state.data;
+      }
+        setAllPlan(data);
+        const today = new Date();
+        const nextArray:any[] = [];
+        const pastArray:any[] = [];
+        data.map((plan:any) => {
+          const end_date = new Date(plan.plan_end_date);
+          if(today.getTime() > end_date.getTime()){
+            pastArray.push(plan);
+          } else {
+            nextArray.push(plan);
+          };
+        });
+        setNextPlan(nextArray);
+        setPastPlan(pastArray);
+    };
   }, [state])
 
   const onDeleteClick = (id:string) => {
-    console.log(id);
+    fetchData(`api/plans/myplans/${id}`);
   }
 
   return (
