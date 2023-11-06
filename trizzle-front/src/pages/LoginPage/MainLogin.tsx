@@ -60,7 +60,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     onClose(false);
   }
 
-  const handleAccountIdChange = (event) => {
+  const handleAccountIdChange = (event:any) => {
     // Update the account_id value in userData
     setUserData({
       ...userData,
@@ -68,7 +68,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     });
   };
 
-  const handleNicknameChange = (event) => {
+  const handleNicknameChange = (event:any) => {
     // Update the nickname value in userData
     setUserData({
       ...userData,

@@ -10,11 +10,11 @@ const Home = () => {
   useEffect(() => {
     const queryString = window.location.search;
     const params = new URLSearchParams(queryString);
-    const reIdValue = params.get('reId');
+    const reIdValue:any = params.get('reId');
     const reIdResult = decodeURIComponent(reIdValue);
-    const dataValue = params.get('data');
+    const dataValue:any = params.get('data');
     const dataResult = decodeURIComponent(dataValue);
-    const tokenValue = params.get('token');
+    const tokenValue:any = params.get('token');
     const tokenResult = decodeURIComponent(tokenValue);
 
     // 상태를 업데이트

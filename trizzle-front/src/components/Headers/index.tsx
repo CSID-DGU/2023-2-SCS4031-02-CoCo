@@ -12,7 +12,7 @@ import MainLogin from "../../pages/LoginPage/MainLogin";
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   let headerContent;
   const location = useLocation();
-  const isLogin = props.isLogin || false;
+  const isLogin = props.isLogin? props.isLogin : (props.isMassage === "login success" ? true : false);
   const isHome = props.isHome || false;
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('로그인');
@@ -21,6 +21,8 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     message : props.isMassage,
     registration_id : props.isRegistrationId
   });
+
+ 
 
   if (isLogin) {
     if (location.pathname.includes('/myfeed/plans/')) {
