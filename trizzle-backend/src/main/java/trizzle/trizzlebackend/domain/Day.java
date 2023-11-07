@@ -4,14 +4,14 @@ import java.util.List;
 
 public class Day {
     private int day;
-    private List<Place> place_list;
+    private List<Place> placeList;
 
-    public List<Place> getPlace_list() {
-        return place_list;
+    public List<Place> getPlaceList() {
+        return placeList;
     }
 
-    public void setPlace_list(List<Place> place_list) {
-        this.place_list = place_list;
+    public void setPlaceList(List<Place> placeList) {
+        this.placeList = placeList;
     }
 
     public int getDay() {

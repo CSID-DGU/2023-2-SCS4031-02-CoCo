@@ -1,9 +1,7 @@
 package trizzle.trizzlebackend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
@@ -32,29 +30,29 @@ public class PlanController {
         String token =authorization.split(" ")[1];
         String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
 
-        String plan_id = planService.insertPlan(plan, accountId).getId(); // plan 저장할 때 user의 acount_id도 저장,   plan_id 값 반환
+        String planId = planService.insertPlan(plan, accountId).getId(); // plan 저장할 때 user의 acount_id도 저장,   plan_id 값 반환
         Map<String, String> response = new HashMap<>();
         response.put("message", "save success");
-        response.put("plan_id",plan_id);
+        response.put("planId",planId);
         return ResponseEntity.ok()
                 .body(response);
     }
 
-    @GetMapping("/{plan_id}")
-    public Plan searchPlan(@PathVariable("plan_id") String id) {
+    @GetMapping("/{planId}")
+    public Plan searchPlan(@PathVariable("planId") String id) {
         return planService.searchPlan(id);
     }
 
-    @PutMapping("/{plan_id}")
-    public ResponseEntity updatePlan(@RequestBody Plan plan, @PathVariable("plan_id") String id, HttpServletRequest request) {
+    @PutMapping("/{planId}")
+    public ResponseEntity updatePlan(@RequestBody Plan plan, @PathVariable("planId") String id, HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         String token =authorization.split(" ")[1];
         String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
 
-        String plan_id = planService.updatePlan(plan, id, accountId).getId();
+        String planId = planService.updatePlan(plan, id, accountId).getId();
         Map<String, String> response = new HashMap<>();
         response.put("message", "save success");
-        response.put("plan_id",plan_id);
+        response.put("planId",planId);
         return ResponseEntity.ok()
                 .body(response);
     }
@@ -70,14 +68,14 @@ public class PlanController {
                 .body(myPlans);
     }
 
-    @DeleteMapping("/myplans/{plan_id}") // 일정 삭제하기
-    public ResponseEntity deleteMyPlan(@PathVariable("plan_id") String planId, HttpServletRequest request) {
+    @DeleteMapping("/myplans/{planId}") // 일정 삭제하기
+    public ResponseEntity deleteMyPlan(@PathVariable("planId") String planId, HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         String token = authorization.split(" ")[1];
         String accountId = JwtUtil.getAccountId(token, secretKey);
         Plan plan = planService.searchPlan(planId);
 
-        if (plan.getAccount_id().equals(accountId)) {
+        if (plan.getAccountId().equals(accountId)) {
             planService.deletePlan(planId);
             String message = "delete success";
             return ResponseEntity.ok()
