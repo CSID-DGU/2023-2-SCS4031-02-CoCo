@@ -2,7 +2,6 @@ package trizzle.trizzlebackend.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Objects;
 
@@ -10,41 +9,41 @@ import java.util.Objects;
 public class Place {
     @Id
     private String id;
-    private String place_id;
-    private String place_name;
-    private String category_name;
-    private String category_group_code;
-    private String category_group_name;
+    private String placeId;
+    private String placeName;
+    private String categoryName;
+    private String categoryGroupCode;
+    private String categoryGroupName;
     private String phone;
-    private String address_name;
-    private String road_address_name;
+    private String addressName;
+    private String roadAddressName;
     private double x;
     private double y;
-    private String place_keyword;
-    private String place_url;
+    private String placeKeyword;
+    private String placeUrl;
     private double distance;
-
     private String keyword;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Place place = (Place) o;
-        return Objects.equals(place_id, place.place_id);
+        return Objects.equals(placeId, place.placeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(place_id);
+        return Objects.hash(placeId);
     }
 
 
-    public String getPlace_id() {
-        return place_id;
+    public String getPlaceId() {
+        return placeId;
     }
 
-    public void setPlace_id(String place_id) {
-        this.place_id = place_id;
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     public String getKeyword() {
@@ -63,36 +62,36 @@ public class Place {
         this.id = id;
     }
 
-    public String getPlace_name() {
-        return place_name;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setPlace_name(String place_name) {
-        this.place_name = place_name;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
-    public String getCategory_name() {
-        return category_name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory_name(String category_name) {
-        this.category_name = category_name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
-    public String getCategory_group_code() {
-        return category_group_code;
+    public String getCategoryGroupCode() {
+        return categoryGroupCode;
     }
 
-    public void setCategory_group_code(String category_group_code) {
-        this.category_group_code = category_group_code;
+    public void setCategoryGroupCode(String categoryGroupCode) {
+        this.categoryGroupCode = categoryGroupCode;
     }
 
-    public String getCategory_group_name() {
-        return category_group_name;
+    public String getCategoryGroupName() {
+        return categoryGroupName;
     }
 
-    public void setCategory_group_name(String category_group_name) {
-        this.category_group_name = category_group_name;
+    public void setCategoryGroupName(String categoryGroupName) {
+        this.categoryGroupName = categoryGroupName;
     }
 
     public String getPhone() {
@@ -103,20 +102,20 @@ public class Place {
         this.phone = phone;
     }
 
-    public String getAddress_name() {
-        return address_name;
+    public String getAddressName() {
+        return addressName;
     }
 
-    public void setAddress_name(String address_name) {
-        this.address_name = address_name;
+    public void setAddressName(String addressName) {
+        this.addressName = addressName;
     }
 
-    public String getRoad_address_name() {
-        return road_address_name;
+    public String getRoadAddressName() {
+        return roadAddressName;
     }
 
-    public void setRoad_address_name(String road_address_name) {
-        this.road_address_name = road_address_name;
+    public void setRoadAddressName(String roadAddressName) {
+        this.roadAddressName = roadAddressName;
     }
 
     public double getX() {
@@ -135,20 +134,20 @@ public class Place {
         this.y = y;
     }
 
-    public String getPlace_keyword() {
-        return place_keyword;
+    public String getPlaceKeyword() {
+        return placeKeyword;
     }
 
-    public void setPlace_keyword(String place_keyword) {
-        this.place_keyword = place_keyword;
+    public void setPlaceKeyword(String placeKeyword) {
+        this.placeKeyword = placeKeyword;
     }
 
-    public String getPlace_url() {
-        return place_url;
+    public String getPlaceUrl() {
+        return placeUrl;
     }
 
-    public void setPlace_url(String place_url) {
-        this.place_url = place_url;
+    public void setPlaceUrl(String placeUrl) {
+        this.placeUrl = placeUrl;
     }
 
     public double getDistance() {

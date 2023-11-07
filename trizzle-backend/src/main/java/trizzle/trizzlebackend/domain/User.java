@@ -9,11 +9,11 @@ import java.util.List;
 public class User {
     @Id
     private String id;
-    private String registration_id;     // "google", "kakao"로 저장
-    private String social_id;          // 소셜로그인 결과 얻은 id
+    private String registrationId;     // "google", "kakao"로 저장
+    private String socialId;          // 소셜로그인 결과 얻은 id
     private String email;
     private String name;
-    private String account_id;             // 회원가입 시 입력할 id
+    private String accountId;             // 회원가입 시 입력할 id
     private String nickname;            // 회원가입 시 입력한 nickname
     private List<String> thema;
 
@@ -25,20 +25,20 @@ public class User {
         this.id = id;
     }
 
-    public String getRegistration_id() {
-        return registration_id;
+    public String getRegistrationId() {
+        return registrationId;
     }
 
-    public void setRegistration_id(String registration_id) {
-        this.registration_id = registration_id;
+    public void setRegistrationId(String registrationId) {
+        this.registrationId = registrationId;
     }
 
-    public String getSocial_id() {
-        return social_id;
+    public String getSocialId() {
+        return socialId;
     }
 
-    public void setSocial_id(String social_id) {
-        this.social_id = social_id;
+    public void setSocialId(String socialId) {
+        this.socialId = socialId;
     }
 
     public String getEmail() {
@@ -57,12 +57,12 @@ public class User {
         this.name = name;
     }
 
-    public String getAccount_id() {
-        return account_id;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setAccount_id(String account_id) {
-        this.account_id = account_id;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
     public String getNickname() {
