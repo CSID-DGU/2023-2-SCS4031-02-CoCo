@@ -8,6 +8,7 @@ import PlanList from '../pages/PlanList';
 import PlanDetail from '../pages/PlanDetail';
 import MainLogin from '../pages/LoginPage/MainLogin';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
+import EditPlanPage from '../pages/AddPlan/ModPlan';
 
 
 const Router = () => {
@@ -18,6 +19,7 @@ const Router = () => {
         <Route path="/:id" element={<Home />} />
         <Route path="/post/places/add" element={<AddPlacePage />} />
         <Route path="/mypage/plans/add" element={<AddPlanPage />} />
+        <Route path="/mypage/plans/edit/:id" element={<EditPlanPage />} />
 
 
 

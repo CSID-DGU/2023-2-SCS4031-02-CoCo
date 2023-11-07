@@ -38,7 +38,7 @@ const PlanDetail: React.FC = () => {
     <MyfeedLayout isMe={true} selectTab={{name:"여행 계획", URL:"plans"}}>
       <S.ButtonContainer>
         <S.ListButton onClick={() => {navigate("/myfeed/plans")}}>목록</S.ListButton>
-        <S.ModButton>수정</S.ModButton>
+        <S.ModButton onClick={() => navigate(`/mypage/plans/edit/${planId.id}`)}>수정</S.ModButton>
         <S.DeleteButton onClick={onDeleteClick}>삭제</S.DeleteButton>
       </S.ButtonContainer>
       {data === null || data.lenth === 0? <div>로딩중</div> :(
