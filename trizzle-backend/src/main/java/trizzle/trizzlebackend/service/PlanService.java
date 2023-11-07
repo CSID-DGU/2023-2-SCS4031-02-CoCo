@@ -1,7 +1,6 @@
 package trizzle.trizzlebackend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -25,15 +24,15 @@ public class PlanService {
 
     // plan 저장하는 메소드
     public Plan insertPlan(Plan plan, String accountId){
-        plan.setAccount_id(accountId);  // plan에 account_id도 저장
+        plan.setAccountId(accountId);  // plan에 account_id도 저장
         LocalDateTime dateTime = LocalDateTime.now();   
-        plan.setPlan_registration_date(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        plan.setPlanRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
         
         HashSet<Place> places = new HashSet<>();    // plan내의 place들을 중복되지 않게 저장
 
         for(Day day: plan.getContent()){    // content의 날짜(day)에 따라
-            for(Place place: day.getPlace_list()) { // place 항목을 확인
-                if(place.getPlace_id() != null) {   // place_id가 null이 아니면(즉 keyword가 아닌 place정보 왔다면) place정보 저장
+            for(Place place: day.getPlaceList()) { // place 항목을 확인
+                if(place.getPlaceId() != null) {   // place_id가 null이 아니면(즉 keyword가 아닌 place정보 왔다면) place정보 저장
                     if(!places.contains(place)){  // plan 내의 place 중복되는 지 확인(place 중복 저장 막기 위해)
                         places.add(place);
                     }
@@ -42,7 +41,7 @@ public class PlanService {
             }
 
         for (Place place : places) {
-            Optional<Place> existingPlace = placeService.findByPlaceId(place.getPlace_id());      // place 중복 저장 막기 위해 저장되어 있는지 확인
+            Optional<Place> existingPlace = placeService.findByPlaceId(place.getPlaceId());      // place 중복 저장 막기 위해 저장되어 있는지 확인
 
             if(!existingPlace.isPresent()) {    // 존재하지 않을 경우
                 placeService.savePlace(place);
@@ -59,18 +58,18 @@ public class PlanService {
     }
 
     /*일정 수정하기*/
-    public Plan updatePlan(Plan plan, String id, String acccount_id){
+    public Plan updatePlan(Plan plan, String id, String acccountId){
         plan.setId(id);
-        return insertPlan(plan, acccount_id);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
+        return insertPlan(plan, acccountId);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
     }
 
-    public List<Plan> findMyPlans(String account_id) {
-        Query query = new Query(Criteria.where("account_id").is(account_id));
+    public List<Plan> findMyPlans(String accountId) {
+        Query query = new Query(Criteria.where("accountId").is(accountId));
         List<Plan> myPlans = mongoTemplate.find(query, Plan.class);
         return myPlans;
     }
 
-    public void deletePlan(String plan_id) {
-        mongoRepository.deleteById(plan_id);
+    public void deletePlan(String planId) {
+        mongoRepository.deleteById(planId);
     }
 }

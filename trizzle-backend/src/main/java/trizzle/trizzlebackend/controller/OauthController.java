@@ -11,9 +11,7 @@ import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.service.LoginService;
 
 import java.net.URI;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/login")
