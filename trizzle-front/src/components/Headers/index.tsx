@@ -12,7 +12,7 @@ import MainLogin from "../../pages/LoginPage/MainLogin";
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   let headerContent;
   const location = useLocation();
-  const isLogin = props.isLogin || false;
+  const isLogin = props.isLogin? props.isLogin : (props.isMassage === "login success" ? true : false);
   const isHome = props.isHome || false;
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('로그인');
@@ -21,6 +21,8 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     message : props.isMassage,
     registration_id : props.isRegistrationId
   });
+
+ 
 
   if (isLogin) {
     if (location.pathname.includes('/myfeed/plans/')) {
@@ -37,7 +39,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       );
     } else {
       headerContent = (
-        <Link to="/myfeed/plans/add">
+        <Link to="/mypage/plans/add">
           <S.HeaderText>일정추가</S.HeaderText>
         </Link>
       );
@@ -56,13 +58,15 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     <>
       {isLogin ? (
         <S.Header isHome={isHome}>
-          <S.LogoImg>
-            {isHome ? (
-              <img src={homeLogo} alt="logo" width="100%" height="100%" />
-            ) : (
-              <img src={logo} alt="logo" width="100%" height="100%" />
-            )}
-          </S.LogoImg>
+          <Link to={"/"}>
+            <S.LogoImg>
+              {isHome ? (
+                <img src={homeLogo} alt="logo" width="100%" height="100%" />
+              ) : (
+                <img src={logo} alt="logo" width="100%" height="100%" />
+              )}
+            </S.LogoImg>
+          </Link>
           <S.RightWrapper>
             <S.HeaderIconText>
               <AiOutlinePlus size="1.1rem" />

@@ -21,12 +21,24 @@ export const DayPlanTitle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
   font-size: 1rem;
   font-weight: 500;
   color: #000;
   border-radius: 0.75rem;
   border: 2px solid #EBB700;
   background: var(--MainLightColor, #FFECAA);
+
+  .menu {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    cursor: pointer;
+    color: #EBB700;
+    &:hover {
+      color: #ad8800;
+    }
+  }
 `
 
 export const PlaceContainer = styled.div`
@@ -34,6 +46,7 @@ export const PlaceContainer = styled.div`
   height: 6rem;
   display: flex;
   border: 1.5px solid #EBB700;
+  background-color:white;
   border-radius: 0.75rem;
   margin-top: 1rem;
   align-items: center;
@@ -141,6 +154,7 @@ export const MenuContainer = styled.div`
   border-radius: 0.5rem;
   background-color: #ffffff;
   position: absolute;
+  z-index:5;
   top: 2rem;
   right: -4rem;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
@@ -159,6 +173,7 @@ export const MenuItem = styled.div<{delete:boolean}>`
   &:hover {
     background-color: #F5F5F5;
     color: ${props => props.delete ? "#FF0000" : "#000000"};
+    border-radius: 0.5rem;
   }
 
 `

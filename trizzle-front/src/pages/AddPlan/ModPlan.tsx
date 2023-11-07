@@ -9,14 +9,15 @@ import { koreaRegions } from "../../utils/Data/mapData";
 import DayPlan from "../../shared/DayPlan";
 import { tripThema } from "../../utils/Data/tripThema";
 import DatePicker, {CustomInput} from "../../components/DatePicker";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PlanMap from "../../shared/PlanMap";
 import { useDeletePlaceFromPlan, useAddPlaceToPlan, useDeleteDay } from "../../recoil/PlanList";
 import { useRecoilState } from "recoil";
 import { PlanState } from "../../recoil/PlanList/atoms";
 import { useAsync } from "../../utils/API/useAsync";
 
-const AddPlanPage:React.FC = () => {
+const EditPlanPage:React.FC = () => {
+  const planId = useParams<{id:string}>();
   const [allDay, setDay] = useState(3); //기본으로 3일 지정
   const [placeList, setPlaceList] = useRecoilState<any[]>(PlanState);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState<boolean>(false);
@@ -29,17 +30,16 @@ const AddPlanPage:React.FC = () => {
   const [center, setCenter] = useState<any>(region.center);
   const [startDate, setStartDate] = useState<any>(new Date());
   const [endDate, setEndDate] = useState<any>();
+
+  const [loadingData, setLoadingData] = useState<any>(null);
   const navigate = useNavigate();
   const deletePlaceFromPlan = useDeletePlaceFromPlan();
   const addPlaceToPlan = useAddPlaceToPlan();
   const deleteDay = useDeleteDay();
-  const [state, fetchData] = useAsync({url:"", method:""});
-
-  console.log(placeList);
+  const [state, fetchData] = useAsync({url:`/api/plans/${planId.id}`});
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);
-    console.log(place);
     setIsSearchModalOpen(!isSearchModalOpen);
     setCenter({lat: place.y, lng: place.x});
   }
@@ -109,24 +109,44 @@ const AddPlanPage:React.FC = () => {
       plan_thema: themaNames,
       content: placeList
     }
-
-
     const json = JSON.stringify(data);
     console.log(json);
-    const url = `/api/plans`;
-    fetchData(url, "POST",json);
-    
+    const url = `/api/plans/${planId.id}`;
+    fetchData(url, "PUT",json);
     };
 
     useEffect(() => {
-      console.log(state)
-      if(state.data && state.data.message === "save success") navigate(`/myfeed/plans/${state.data.plan_id}`);
-    }, [state])
 
+      if(state.error) {console.error(state.error)}
+      else if(state.data){
+      if(state.data && state.data.message === "save success") {navigate(`/myfeed/plans/${state.data.plan_id}`) }
+      else{
+        console.log(state.data);
+        setLoadingData(state.data);
+        setPlaceList(state.data.content);
+        setDay(state.data.content.length);
+        setTitle(state.data.plan_name);
+        setStartDate(new Date(state.data.plan_start_date));
+        // setEndDate(state.data.plan_end_date);
+        setRegion(koreaRegions.filter((region) => {return region.name === state.data.plan_location})[0]);
+        setCenter(koreaRegions.filter((region) => {return region.name === state.data.plan_location})[0].center)
+        setThema(state.data.plan_thema.map((it:any) => {
+          const thema = tripThema.filter((item) => {
+            return item.name === it
+          });
+          if(thema) {
+          return {
+            id: thema[0].id,
+            name: thema[0].name
+          }} else return;
+        }));
+      }};
+    }, [state])
+  if(loadingData !== null) {
   return (
     <Page headersProps={{isHome:false, isLogin:true}}>
       <S.PageTitleContainer>
-        <S.PageTitle>나만의 일정 등록</S.PageTitle>
+        <S.PageTitle>일정 수정</S.PageTitle>
       </S.PageTitleContainer>
       {/* <form> */}
         <S.ButtonContainer>
@@ -165,6 +185,9 @@ const AddPlanPage:React.FC = () => {
       }
     </Page>
   );
+  } else {
+    <></>
+  }
 };
 
-export default AddPlanPage;
+export default EditPlanPage;

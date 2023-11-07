@@ -64,13 +64,13 @@ export const useAsync = <D = any>({
     error: null
   });
 
-  const [cookies, setCookie, removeCookie] = useCookies(["access_token"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
 
   const fetchData = async (url?: string, method?:string, data?:any) => {
   
     if (url === "") return;
 
-    const token = cookies.access_token;
+    const token = cookies.accessToken? cookies.accessToken : import.meta.env.VITE_TEST_TOKEN;
     console.log(token);
     dispatch({ type: "LOADING" });
     try {
@@ -78,7 +78,7 @@ export const useAsync = <D = any>({
         method: method,
         url: url,
         data: data,
-        withCredentials: true,
+        withCredentials:true,
         headers: {
           "Content-Type": "application/json",
           "Authorization" : `Bearer ${token}`

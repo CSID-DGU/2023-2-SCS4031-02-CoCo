@@ -8,6 +8,7 @@ import PlanList from '../pages/PlanList';
 import PlanDetail from '../pages/PlanDetail';
 import MainLogin from '../pages/LoginPage/MainLogin';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
+import EditPlanPage from '../pages/AddPlan/ModPlan';
 
 
 const Router = () => {
@@ -16,13 +17,10 @@ const Router = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:id" element={<Home />} />
-        
-        <Route path="/login" element={<MainLogin />} />
-        <Route path="/:id/plan/addPlan" element={<AddPlanPage />} />
-        <Route path="/post/places/add/" element={<AddPlacePage />} />
-      
+        <Route path="/post/places/add" element={<AddPlacePage />} />
         <Route path="/mypage/plans/add" element={<AddPlanPage />} />
-        <Route path="/myfeed/plans/add" element={<AddPlanPage />} />
+        <Route path="/mypage/plans/edit/:id" element={<EditPlanPage />} />
+
 
 
         <Route path="/post/places/:id"  element={<PostPlace />} />

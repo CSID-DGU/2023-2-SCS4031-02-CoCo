@@ -17,7 +17,7 @@ type DayPlanProps = {
 
 type dayPlan = {
   day: number;
-  placeList: any[];
+  place_list: any[];
 }
 
 const DetailDayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
@@ -25,7 +25,7 @@ const DetailDayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
   return(
     <S.DayPlanContainer>
         <S.DayPlanTitle>{props.dayPlan.day}일차</S.DayPlanTitle>
-        {props.dayPlan.placeList.length > 0 && props.dayPlan.placeList.map((place, index) => (
+        {props.dayPlan.place_list.length > 0 && props.dayPlan.place_list.map((place, index) => (
           <DayPlace key={index} place={place} day={props.dayPlan.day} isPlan={props.isPlan} isPost={props.isPost} onPostClick={props.onPostClick} index={index} />
         ))
         }

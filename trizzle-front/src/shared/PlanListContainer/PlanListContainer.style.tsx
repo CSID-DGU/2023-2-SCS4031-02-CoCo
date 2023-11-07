@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const Container = styled.div<{past:boolean}>`
-  width: 47%;
+  width: 35rem;
   height: 7.5rem;
   border-radius: 0.75rem;
   background-color: #ffffff;
@@ -9,8 +9,15 @@ export const Container = styled.div<{past:boolean}>`
   border: ${props => props.past ? "1px solid #BDBDBD" : "1px solid #747474"};
   margin: 1rem 0; 
   cursor: pointer;
+  position: relative;
   &:hover {
     background-color: #f6f6f6;
+  }
+  .icon {
+    position: absolute;
+    color: #747474;
+    top: 0.3rem;
+    right: 0.3rem;
   }
 `
 

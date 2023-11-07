@@ -14,7 +14,7 @@ export const Container = styled.div`
 `
 
 export const RightContainer = styled.div`
-  width: 60rem;
+  width: 50rem;
   height: auto;
   display: flex;
   flex-direction: column;

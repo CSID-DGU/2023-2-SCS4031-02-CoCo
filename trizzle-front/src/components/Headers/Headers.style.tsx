@@ -39,6 +39,7 @@ export const HeaderText = styled.div`
   font-size: 1.1rem;
   font-weight: 600;
   margin: 0 0.2rem;
+  cursor: pointer;
 `
 
 export const AlarmBadge = styled.div`
