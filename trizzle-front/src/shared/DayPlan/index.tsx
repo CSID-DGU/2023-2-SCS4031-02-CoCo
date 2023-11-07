@@ -71,7 +71,7 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
 
               )} */}
             </S.DayPlanTitle>
-            {dayPlan.place_list.length > 0 && dayPlan.place_list.map((place:any, index:number) => (
+            {dayPlan.placeList.length > 0 && dayPlan.placeList.map((place:any, index:number) => (
               <Droppable droppableId={`${dayPlan.day}-${index}`} key={index} type="ITEM">
                 {(provided) => (
                   <div ref={provided.innerRef} {...provided.droppableProps} style={{width: "100%", height:"auto"}} key={`${dayPlan.day}-${index}`}>
@@ -87,7 +87,7 @@ const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
               </Droppable>
             ))
             }
-            <Droppable droppableId={`${dayPlan.day}-${dayPlan.place_list.length}`} key={dayPlan.place_list.length} type="ITEM">
+            <Droppable droppableId={`${dayPlan.day}-${dayPlan.placeList.length}`} key={dayPlan.placeList.length} type="ITEM">
               {(provided) => (
                 <div ref={provided.innerRef} {...provided.droppableProps} style={{width: "100%"}}>
                   <S.PlusButtonContainer>

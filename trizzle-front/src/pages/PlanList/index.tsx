@@ -32,7 +32,7 @@ const PlanList = () => {
         const nextArray:any[] = [];
         const pastArray:any[] = [];
         data.map((plan:any) => {
-          const end_date = new Date(plan.plan_end_date);
+          const end_date = new Date(plan.planEndDate);
           if(today.getTime() > end_date.getTime()){
             pastArray.push(plan);
           } else {

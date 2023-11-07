@@ -60,7 +60,7 @@ const EditPlanPage:React.FC = () => {
 
   const onDayPlusButtonClick = () => {
     setDay(allDay+1);
-    setPlaceList((prev) => [...prev, {day:allDay+1, place_list:[]}]);
+    setPlaceList((prev) => [...prev, {day:allDay+1, placeList:[]}]);
   };
 
   const onDeleteDayClick = (day:number) => {
@@ -102,11 +102,11 @@ const EditPlanPage:React.FC = () => {
     const formattedDate = startDate.toISOString().slice(0, 10);
 
     const data = {
-      plan_name: title,
-      plan_start_date: formattedDate,
-      plan_end_date: endDate,
-      plan_location: region.name,
-      plan_thema: themaNames,
+      planName: title,
+      planStartDate: formattedDate,
+      planEndDate: endDate,
+      planLocation: region.name,
+      planThema: themaNames,
       content: placeList
     }
     const json = JSON.stringify(data);
@@ -119,18 +119,18 @@ const EditPlanPage:React.FC = () => {
 
       if(state.error) {console.error(state.error)}
       else if(state.data){
-      if(state.data && state.data.message === "save success") {navigate(`/myfeed/plans/${state.data.plan_id}`) }
+      if(state.data && state.data.message === "save success") {navigate(`/myfeed/plans/${state.data.planId}`) }
       else{
         console.log(state.data);
         setLoadingData(state.data);
         setPlaceList(state.data.content);
         setDay(state.data.content.length);
-        setTitle(state.data.plan_name);
-        setStartDate(new Date(state.data.plan_start_date));
+        setTitle(state.data.planName);
+        setStartDate(new Date(state.data.planStartDate));
         // setEndDate(state.data.plan_end_date);
-        setRegion(koreaRegions.filter((region) => {return region.name === state.data.plan_location})[0]);
-        setCenter(koreaRegions.filter((region) => {return region.name === state.data.plan_location})[0].center)
-        setThema(state.data.plan_thema.map((it:any) => {
+        setRegion(koreaRegions.filter((region) => {return region.name === state.data.planLocation})[0]);
+        setCenter(koreaRegions.filter((region) => {return region.name === state.data.planLocation})[0].center)
+        setThema(state.data.planThema.map((it:any) => {
           const thema = tripThema.filter((item) => {
             return item.name === it
           });

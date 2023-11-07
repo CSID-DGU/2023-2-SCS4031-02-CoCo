@@ -24,7 +24,7 @@ const AddPlaceModal = (props: props) => {
 
   const handleSearch = async (keyword: string) => {
       const result:any = await searchKeyword(keyword, 1);
-      const updateResult = result.filter((place:any) => {return place.address_name.slice(0, 2) === props.region.name.slice(0,2)});
+      const updateResult = result.filter((place:any) => {return place.addressName.slice(0, 2) === props.region.name.slice(0,2)});
 
       setPlaceList(updateResult);
 
@@ -140,18 +140,18 @@ const AddPlaceModal = (props: props) => {
               {placeList.map((place, index) => (
                 <S.ListItemContainer key={index} onClick={() => handleSelectPlace(place)} id={place.id}>
                   <S.PlaceNameConatiner>
-                    <S.PlaceName>{place.place_name}</S.PlaceName>
-                    <S.PlaceCategory>{place.category_group_name}</S.PlaceCategory>
+                    <S.PlaceName>{place.placeName}</S.PlaceName>
+                    <S.PlaceCategory>{place.categoryGroupName}</S.PlaceCategory>
                   </S.PlaceNameConatiner>
                   <S.PlaceNameConatiner>
                     <S.PlaceTitle>주소</S.PlaceTitle>
-                    <S.PlaceRoadAddress>{place.road_address_name}</S.PlaceRoadAddress>
+                    <S.PlaceRoadAddress>{place.roadAddressName}</S.PlaceRoadAddress>
                   </S.PlaceNameConatiner>
-                  <S.PlaceAdress>{place.address_name}</S.PlaceAdress>
+                  <S.PlaceAdress>{place.addressName}</S.PlaceAdress>
                   <S.ButtonsWrapper>
                     <S.Buttons onClick={(day) => props.onAddButtonClick(place, day)}>일정에 추가</S.Buttons>
                     <S.Buttons>
-                      <a href={place.place_url} target="_blank" rel="noreferrer" id={place.id}>
+                      <a href={place.placeUrl} target="_blank" rel="noreferrer" id={place.id}>
                         상세페이지
                       </a>
                     </S.Buttons>
