@@ -6,8 +6,9 @@ const TextInput: React.FC<TextInputProps> = (props: TextInputProps) => {
 
   return (
     <S.TextInputContainer width={props.styleProps.width}>
+      {props.title &&
       <S.TextInputTitle>{props.title}</S.TextInputTitle>
-
+      }
       <S.TextInput
         type={props.type}
         placeholder={props.placeholder}
