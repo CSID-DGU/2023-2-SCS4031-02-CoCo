@@ -30,7 +30,7 @@ public class LoginService {
     // Jwt관련
     @Value("${jwt.secret}")
     private String secretKey;
-    private Long expiredMS = 1000 * 60 * 60L;
+    private Long expiredMS = 1000 * 60 * 60L * 24 * 5;
 
     // user정보 없음(최초 로그인) -> 회원가입 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
     // user정보는 있으나 account_id나 nickname없음 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
