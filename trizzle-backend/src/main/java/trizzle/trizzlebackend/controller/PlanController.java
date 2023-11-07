@@ -78,8 +78,14 @@ public class PlanController {
         if (plan.getAccountId().equals(accountId)) {
             planService.deletePlan(planId);
             String message = "delete success";
+            List<Plan> myPlans = planService.findMyPlans(accountId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", message);
+            response.put("myplans", myPlans);
+
             return ResponseEntity.ok()
-                    .body("{\"message\": \"" + message + "\"}");
+                    .body(response);
         } else {
             String message = "wrong approach";
             return ResponseEntity.ok()
