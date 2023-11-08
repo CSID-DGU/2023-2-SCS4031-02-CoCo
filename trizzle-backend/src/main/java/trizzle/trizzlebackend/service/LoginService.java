@@ -30,27 +30,27 @@ public class LoginService {
     // Jwt관련
     @Value("${jwt.secret}")
     private String secretKey;
-    private Long expiredMS = 1000 * 60 * 60L;
+    private Long expiredMS = 1000 * 60 * 60L * 24 * 5;
 
     // user정보 없음(최초 로그인) -> 회원가입 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
     // user정보는 있으나 account_id나 nickname없음 -> account_id,nickname, thema입력받도록("message"), 다음 입력에서 사용자 정보 유지 위해 token도 전달
     // user정보도 있고 account_id과 nickname있음 -> accessToken발급 받을 수 있도록
     public Map<String, String> login(String token, User user) {
 
-        User isUser = findBySocialId(user.getRegistration_id(), user.getSocial_id());
+        User isUser = findBySocialId(user.getRegistrationId(), user.getSocialId());
         Map<String, String> response = new HashMap<>();
 
         if (isUser == null) {
             signUp(user);
             response.put("message", "id 입력이 필요합니다");
             response.put("token", token);
-            response.put("registration_id", user.getRegistration_id());
-        } else if (isUser.getAccount_id() == null || isUser.getNickname() == null) {
+            response.put("registration_id", user.getRegistrationId());
+        } else if (isUser.getAccountId() == null || isUser.getNickname() == null) {
             response.put("message", "id 입력이 필요합니다");
             response.put("token", token);
-            response.put("registration_id", user.getRegistration_id());
+            response.put("registration_id", user.getRegistrationId());
         } else {
-            String accessToken = JwtUtil.createJwt(isUser.getAccount_id(), secretKey, expiredMS);
+            String accessToken = JwtUtil.createJwt(isUser.getAccountId(), secretKey, expiredMS);
             response.put("message", "login success");
             response.put("accessToken", accessToken);
         }
@@ -60,24 +60,33 @@ public class LoginService {
 
     /* 기존 social_id 에 해당하는 user정보에 추가로 입력받은 user정보 저장,  Jwt 발급 */
     public Map<String, String> putUserInfo(String token, User additionalUserInfo) {
+
+        // id중복확인
+        String account_id = findAccountId(additionalUserInfo.getAccountId());
+        if (account_id != null) {
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "이미 존재하는 id입니다");
+            return response;
+        }
+
         User userInfo = null;    // userInfo가 db에 저장될 값
 
-        if (additionalUserInfo.getRegistration_id().equals("google")) {
+        if (additionalUserInfo.getRegistrationId().equals("google")) {
             userInfo = googleOauthService.getUserInfo(token);
 
-        } else if (additionalUserInfo.getRegistration_id().equals("kakao")) {
+        } else if (additionalUserInfo.getRegistrationId().equals("kakao")) {
             userInfo = kakaoOauthService.getUserInfo(token);
         }
-        User isUser = findBySocialId(userInfo.getRegistration_id(), userInfo.getSocial_id());
+        User isUser = findBySocialId(userInfo.getRegistrationId(), userInfo.getSocialId());
         userInfo.setId(isUser.getId()); // db에 있는 user정보에 추가해야하므로 user_id 값 같게 지정
 
-        userInfo.setAccount_id(additionalUserInfo.getAccount_id());
+        userInfo.setAccountId(additionalUserInfo.getAccountId());
         userInfo.setNickname(additionalUserInfo.getNickname());
         userInfo.setThema(additionalUserInfo.getThema());
         signUp(userInfo); // 추가로 입력된 정보 합쳐서 user정보 db에서 update
 
         Map<String, String> response = new HashMap<>();
-        String accessToken = JwtUtil.createJwt(userInfo.getAccount_id(), secretKey, expiredMS);;
+        String accessToken = JwtUtil.createJwt(userInfo.getAccountId(), secretKey, expiredMS);;
         response.put("message", "login success");
         response.put("accessToken", accessToken);
         return response;
@@ -91,12 +100,23 @@ public class LoginService {
     /*소셜 로그인에 해당하는 user있는지 확인 */
     private User findBySocialId(String registrationId, String socialId) {
         Criteria criteria = new Criteria().andOperator(
-            Criteria.where("registration_id").is(registrationId),
-            Criteria.where("social_id").is(socialId)
+            Criteria.where("registrationId").is(registrationId),
+            Criteria.where("socialId").is(socialId)
         );
         Query query = new Query(criteria);
         User user = mongoTemplate.findOne(query, User.class);
         return user;
+    }
+
+    /* account_id가 존재하는지 확인*/
+    private String findAccountId(String accountId) {
+        Query query = new Query(Criteria.where("accountId").is(accountId));
+        User user = mongoTemplate.findOne(query, User.class);
+        if (user != null) {
+            return user.getAccountId();
+        } else{
+            return null;
+        }
     }
 
 }

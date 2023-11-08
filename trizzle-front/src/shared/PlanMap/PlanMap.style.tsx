@@ -32,6 +32,7 @@ export const Day = styled.div<{isClicked:boolean}>`
   justify-content: center;
   align-items: center;
   border-bottom: none;
+  cursor: pointer;
 `
 
 export const OverlayButtonContainer = styled.div`

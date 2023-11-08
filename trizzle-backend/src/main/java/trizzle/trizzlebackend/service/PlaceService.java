@@ -27,8 +27,8 @@ public class PlaceService {
         return placeRepository.save(place);
     }
 
-    public Optional<Place> findByPlaceId(String place_id) {
-        Query query = new Query(Criteria.where("place_id").is(place_id));
+    public Optional<Place> findByPlaceId(String placeId) {
+        Query query = new Query(Criteria.where("placeId").is(placeId));
         Place place = mongoTemplate.findOne(query, Place.class);
         return Optional.ofNullable(place);
     }

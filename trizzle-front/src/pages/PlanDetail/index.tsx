@@ -6,26 +6,42 @@ import PlanMap from "../../shared/PlanMap";
 import { koreaRegions } from "../../utils/Data/mapData";
 import DetailDayPlan from "../../shared/DayPlan/DetailDayPlan";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
+import { useAsync } from "../../utils/API/useAsync";
 
 const PlanDetail: React.FC = () => { 
   const [data, setData] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
+  const planId = useParams<{id:string}>();
+  const [state, fetchData] = useAsync({url:`/api/plans/${planId.id}`});
   const navigate = useNavigate();
 
-  const planId = useParams<{id:string}>();
+
   useEffect(() => {
-    const fetchData = localStorage.getItem("submitData");
-    setData(JSON.parse(fetchData!));
-  },[]);
+    console.log(state);
+    if(state.error) {
+      console.error(state.error);
+      alert("데이터를 불러오는 데 실패했습니다");
+    }else if(state.data) {
+      if(state.data.message === "delete success") navigate('/myfeed/plans');
+      else {
+        setData(state.data);
+      }
+    }
+  },[state]);
+
+  const onDeleteClick = () => {
+    fetchData(`/api/plans/myplans/${planId.id}`, "DELETE");
+  }
 
   return (
     
     <MyfeedLayout isMe={true} selectTab={{name:"여행 계획", URL:"plans"}}>
       <S.ButtonContainer>
         <S.ListButton onClick={() => {navigate("/myfeed/plans")}}>목록</S.ListButton>
-        <S.ModButton>수정</S.ModButton>
+        <S.ModButton onClick={() => navigate(`/mypage/plans/edit/${planId.id}`)}>수정</S.ModButton>
+        <S.DeleteButton onClick={onDeleteClick}>삭제</S.DeleteButton>
       </S.ButtonContainer>
-      {data === null ? <div>로딩중</div> :(
+      {data === null || data.lenth === 0? <div>로딩중</div> :(
         <S.Container>
         <S.HorizontalContainer>
           <S.Title>제목</S.Title>
@@ -42,8 +58,8 @@ const PlanDetail: React.FC = () => {
         <S.HorizontalContainer>
           <S.Title>여행 테마</S.Title>
           <S.Content>
-            {data.plan_theme.map((thema:any) => (
-              <S.ThemaBadge key={thema.id}>{thema.name}</S.ThemaBadge>
+            {data.plan_thema.map((thema:any) => (
+              <S.ThemaBadge key={thema.id}>{thema}</S.ThemaBadge>
             ))}
           </S.Content>
         </S.HorizontalContainer>

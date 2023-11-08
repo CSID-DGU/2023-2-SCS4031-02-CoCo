@@ -18,7 +18,7 @@ const DefaultBody = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 4.5rem;
-  padding: 0 1.875rem;
+  padding: 0 8rem;
   @media screen and (max-width: 767px) {
     width: 100%;
   }

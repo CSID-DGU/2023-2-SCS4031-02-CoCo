@@ -3,7 +3,6 @@ package trizzle.trizzlebackend.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,16 +12,25 @@ import java.util.List;
 public class Plan {
     @Id
     private String id;
+    private String accountId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime plan_registration_date;
+    private LocalDateTime planRegistrationDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDate plan_start_date;
+    private LocalDate planStartDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private LocalDate plan_end_date;
-    private String plan_name;
-    private String plan_location;
-    private List<String> plan_thema;
+    private LocalDate planEndDate;
+    private String planName;
+    private String planLocation;
+    private List<String> planThema;
     private List<Day> content;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
     public List<Day> getContent() {
         return content;
@@ -40,51 +48,51 @@ public class Plan {
         this.id = id;
     }
 
-    public String getPlan_name() {
-        return plan_name;
+    public String getPlanName() {
+        return planName;
     }
 
-    public void setPlan_name(String plan_name) {
-        this.plan_name = plan_name;
+    public void setPlanName(String planName) {
+        this.planName = planName;
     }
 
-    public String getPlan_location() {
-        return plan_location;
+    public String getPlanLocation() {
+        return planLocation;
     }
 
-    public void setPlan_location(String plan_location) {
-        this.plan_location = plan_location;
+    public void setPlanLocation(String planLocation) {
+        this.planLocation = planLocation;
     }
 
-    public List<String> getPlan_thema() {
-        return plan_thema;
+    public List<String> getPlanThema() {
+        return planThema;
     }
 
-    public void setPlan_thema(List<String> plan_thema) {
-        this.plan_thema = plan_thema;
+    public void setPlanThema(List<String> planThema) {
+        this.planThema = planThema;
     }
 
-    public LocalDateTime getPlan_registration_date() {
-        return plan_registration_date;
+    public LocalDateTime getPlanRegistrationDate() {
+        return planRegistrationDate;
     }
 
-    public void setPlan_registration_date(LocalDateTime plan_registration_date) {
-        this.plan_registration_date = plan_registration_date;
+    public void setPlanRegistrationDate(LocalDateTime planRegistrationDate) {
+        this.planRegistrationDate = planRegistrationDate;
     }
 
-    public LocalDate getPlan_start_date() {
-        return plan_start_date;
+    public LocalDate getPlanStartDate() {
+        return planStartDate;
     }
 
-    public void setPlan_start_date(LocalDate plan_start_date) {
-        this.plan_start_date = plan_start_date;
+    public void setPlanStartDate(LocalDate planStartDate) {
+        this.planStartDate = planStartDate;
     }
 
-    public LocalDate getPlan_end_date() {
-        return plan_end_date;
+    public LocalDate getPlanEndDate() {
+        return planEndDate;
     }
 
-    public void setPlan_end_date(LocalDate plan_end_date) {
-        this.plan_end_date = plan_end_date;
+    public void setPlanEndDate(LocalDate planEndDate) {
+        this.planEndDate = planEndDate;
     }
 }

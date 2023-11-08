@@ -11,21 +11,23 @@ type modalProps = {
   onAddButtonClick: (selectedKeyword: any, day:any) => void;
 }
 
+export const KeywordList: { keyword: string; src: string; }[] = [
+  {keyword:"식사", src: res},
+  {keyword:"이동", src: trans},
+  {keyword:"휴식", src: rest},
+  {keyword:"쇼핑", src: shopping},
+];
+
 const KeywordModal:React.FC<modalProps> = (props: modalProps) => {
-  const KeywordList = [
-    {name:"식사", src: res},
-    {name:"이동", src: trans},
-    {name:"휴식", src: rest},
-    {name:"쇼핑", src: shopping},
-  ];
+
   
   return (
     <Modal onCloseClick={props.onCloseClick} styleProps={{width:"47rem", height:"30rem"}} title="키워드 추가">
       <S.KeywordsContainer>
         {KeywordList.map((keyword, index) => (
-          <S.KeywordContainer key={index} onClick={(day) => props.onAddButtonClick(keyword, day)}>
+          <S.KeywordContainer key={index} onClick={(day) => props.onAddButtonClick({keyword: keyword.keyword}, day)}>
             <S.KeywordImg src={keyword.src} alt="keywordImg"/>
-            <S.KeywordTitle>{keyword.name}</S.KeywordTitle>
+            <S.KeywordTitle>{keyword.keyword}</S.KeywordTitle>
           </S.KeywordContainer>
         ))}
       </S.KeywordsContainer>
