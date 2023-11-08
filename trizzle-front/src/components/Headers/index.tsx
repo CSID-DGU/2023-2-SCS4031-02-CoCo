@@ -19,7 +19,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const [userData, setUserData] = useState<any>({
     token : props.isToken,
     message : props.isMassage,
-    registration_id : props.isRegistrationId
+    registrationId : props.isRegistrationId
   });
 
   if (isLogin) {

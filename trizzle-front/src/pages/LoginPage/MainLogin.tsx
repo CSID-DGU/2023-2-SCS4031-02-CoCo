@@ -18,10 +18,10 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   const token = data.token;
   const [thema, setThema] = useState<any[]>([]);
   const [userData, setUserData] = useState({
-    "account_id": '',
+    "accountId": '',
     "nickname": '',
     "thema": [],
-    "registration_id": data.registration_id,
+    "registrationId": data.registrationId,
   });
   const [state, fetchData] = useAsync({ url: "" });
   let components;
@@ -63,15 +63,15 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     onClose(false);
   }
 
-  const handleAccountIdChange = (event) => {
+  const handleAccountIdChange = (event: any) => {
     // Update the account_id value in userData
     setUserData({
       ...userData,
-      account_id: event.target.value
+      accountId: event.target.value
     });
   };
 
-  const handleNicknameChange = (event) => {
+  const handleNicknameChange = (event: any) => {
     // Update the nickname value in userData
     setUserData({
       ...userData,
@@ -102,7 +102,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
             <S.UserContents>아이디를 입력해주세요</S.UserContents>
             <S.UserInput
               type="text"
-              value={userData.account_id}
+              value={userData.accounId}
               onChange={handleAccountIdChange} />
             <S.UserContents>어떤 이름으로 활동하시겠습니까?</S.UserContents>
             <S.UserInput
@@ -145,3 +145,4 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     </>
   )
 }
+
