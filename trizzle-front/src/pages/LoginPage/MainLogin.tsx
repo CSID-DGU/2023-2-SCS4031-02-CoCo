@@ -18,15 +18,16 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   const token = data.token;
   const [thema, setThema] = useState<any[]>([]);
   const [userData, setUserData] = useState({
-    "account_id": '',
+    "accountId": '',
     "nickname": '',
     "thema": [],
-    "registration_id": data.registration_id,
+    "registrationId": data.registrationId,
   });
   const [state, fetchData] = useAsync({ url: "" });
   let components;
 
   const onThemaBadgeClick = (select: any) => {
+
     // 선택한 아이템이 thema 배열에 이미 존재하는지 확인
     const itemExists = thema.some((item) => item.id === select.id);
 
@@ -35,8 +36,10 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
       setThema((prev) => prev.filter((item) => item.id !== select.id));
     } else {
       // 선택한 아이템이 없는 경우, 해당 아이템을 추가
-      setThema((prev) => [...prev, select]);
+      if (thema.length > 4) alert("5개 이하로 선택해주세요");
+      else setThema((prev) => [...prev, select]);
     }
+
   };
 
   // const addUser = () => {
@@ -60,15 +63,15 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     onClose(false);
   }
 
-  const handleAccountIdChange = (event:any) => {
+  const handleAccountIdChange = (event: any) => {
     // Update the account_id value in userData
     setUserData({
       ...userData,
-      account_id: event.target.value
+      accountId: event.target.value
     });
   };
 
-  const handleNicknameChange = (event:any) => {
+  const handleNicknameChange = (event: any) => {
     // Update the nickname value in userData
     setUserData({
       ...userData,
@@ -79,7 +82,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   useEffect(() => {
     if (thema.length > 0) {
       const themaNames = thema.map((item) => item.name); // 첫 번째 항목을 선택하거나 다른 방식으로 선택
-  
+
       setUserData((prevUserData) => {
         return {
           ...prevUserData,
@@ -99,7 +102,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
             <S.UserContents>아이디를 입력해주세요</S.UserContents>
             <S.UserInput
               type="text"
-              value={userData.account_id}
+              value={userData.accounId}
               onChange={handleAccountIdChange} />
             <S.UserContents>어떤 이름으로 활동하시겠습니까?</S.UserContents>
             <S.UserInput
@@ -107,7 +110,9 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
               value={userData.nickname}
               onChange={handleNicknameChange} />
             <S.UserContents>자신의 여행테마를 선택해주세요</S.UserContents>
+            <div>
             <DropdownMenu type="badge" name="여행테마를 선택해주세요" items={tripThema} selectedItem={thema} onClick={(thema) => onThemaBadgeClick(thema)} />
+            </div>
           </S.UserContainer>
         </S.Container>
         <S.CheckButton onClick={addUser}>회원 정보 등록</S.CheckButton>
@@ -140,3 +145,4 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     </>
   )
 }
+
