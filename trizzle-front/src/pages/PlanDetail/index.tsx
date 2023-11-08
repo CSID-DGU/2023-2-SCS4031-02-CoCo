@@ -45,25 +45,25 @@ const PlanDetail: React.FC = () => {
         <S.Container>
         <S.HorizontalContainer>
           <S.Title>제목</S.Title>
-          <S.Content>{data.plan_name}</S.Content>
+          <S.Content>{data.planName}</S.Content>
         </S.HorizontalContainer>
         <S.HorizontalContainer>
           <S.Title>여행 지역</S.Title>
-          <S.Content>{data.plan_location}</S.Content>
+          <S.Content>{data.planLocation}</S.Content>
         </S.HorizontalContainer>
         <S.HorizontalContainer>
           <S.Title>여행 기간</S.Title>
-          <S.Content>{data.plan_start_date.slice(0,10)}  ~  {data.plan_end_date}</S.Content>
+          <S.Content>{data.planStartDate.slice(0,10)}  ~  {data.planEndDate}</S.Content>
         </S.HorizontalContainer>
         <S.HorizontalContainer>
           <S.Title>여행 테마</S.Title>
           <S.Content>
-            {data.plan_thema.map((thema:any) => (
+            {data.planThema.map((thema:any) => (
               <S.ThemaBadge key={thema.id}>{thema}</S.ThemaBadge>
             ))}
           </S.Content>
         </S.HorizontalContainer>
-        <PlanMap selectDay={selectDay} setSelectDay={(day:number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => {return region.name === data.plan_location})[0].center} page="detail"/>
+        <PlanMap selectDay={selectDay} setSelectDay={(day:number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => {return region.name === data.planLocation})[0].center} page="detail"/>
         <HorizontalScrollContainer moveDistance={200}>
           {data.content.map((dayPlan:any, index:number) => (
             <DetailDayPlan key={index} dayPlan={dayPlan} isPlan={false} onPostClick={() => {}}/>
