@@ -9,7 +9,7 @@ import PlanDetail from '../pages/PlanDetail';
 import MainLogin from '../pages/LoginPage/MainLogin';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
 import EditPlanPage from '../pages/AddPlan/ModPlan';
-
+import UserInfoEdit from '../pages/UserInfoEdit';
 
 const Router = () => {
   return (
@@ -29,7 +29,7 @@ const Router = () => {
         <Route path="/myfeed" element={<Myfeed />} />
         <Route path="/myfeed/plans" element={<PlanList />} />
         <Route path="/myfeed/plans/:id" element={<PlanDetail />} />
-        
+        <Route path="/myfeed/info" element={<UserInfoEdit />} />
         <Route path="/feed/:id" element={<Myfeed />} />
 
         <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />

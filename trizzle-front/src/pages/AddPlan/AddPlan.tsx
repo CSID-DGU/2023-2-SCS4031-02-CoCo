@@ -60,7 +60,7 @@ const AddPlanPage:React.FC = () => {
 
   const onDayPlusButtonClick = () => {
     setDay(allDay+1);
-    setPlaceList((prev) => [...prev, {day:allDay+1, place_list:[]}]);
+    setPlaceList((prev) => [...prev, {day:allDay+1, placeList:[]}]);
   };
 
   const onDeleteDayClick = (day:number) => {
@@ -102,11 +102,11 @@ const AddPlanPage:React.FC = () => {
     const formattedDate = startDate.toISOString().slice(0, 10);
 
     const data = {
-      plan_name: title,
-      plan_start_date: formattedDate,
-      plan_end_date: endDate,
-      plan_location: region.name,
-      plan_thema: themaNames,
+      planName: title,
+      planStartDate: formattedDate,
+      planEndDate: endDate,
+      planLocation: region.name,
+      planThema: themaNames,
       content: placeList
     }
 
@@ -120,7 +120,7 @@ const AddPlanPage:React.FC = () => {
 
     useEffect(() => {
       console.log(state)
-      if(state.data && state.data.message === "save success") navigate(`/myfeed/plans/${state.data.plan_id}`);
+      if(state.data && state.data.message === "save success") navigate(`/myfeed/plans/${state.data.planId}`);
     }, [state])
 
   return (

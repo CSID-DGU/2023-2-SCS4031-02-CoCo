@@ -37,8 +37,8 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const handleNavigation = () => {
 
     const data = {
-      place_id: props.place.id,
-      place_name: props.place.place_name,
+      placeId: props.place.id,
+      placeName: props.place.placeName,
     };
 
     const queryString = new URLSearchParams(data).toString();
@@ -79,7 +79,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
           <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
         </S.PlaceLogo>
         <S.PlaceInfo>
-          <S.PlaceName>{props.place.place_name}</S.PlaceName>
+          <S.PlaceName>{props.place.placeName}</S.PlaceName>
           {/* <S.PlaceAddress>{place.address_name}</S.PlaceAddress> */}
         </S.PlaceInfo>
       </S.PlaceContainer>

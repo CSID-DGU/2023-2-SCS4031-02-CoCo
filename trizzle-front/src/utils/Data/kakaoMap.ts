@@ -54,7 +54,23 @@ export const searchKeyword = async (keyword: string, page: number) => {
   const result = await new Promise((resolve, reject) => {
     places.keywordSearch(keyword, (result: any, status: any) => {
       if (status === window.kakao.maps.services.Status.OK) {
-        resolve(result); 
+        const updateResult = result.map((item:any) => {
+          return {
+            id: item.id,
+            placeName: item.place_name,
+            categoryName:item.category_name, 
+            categoryGroupCode : item.category_group_code, 
+            categoryGroupName:item.category_group_name, 
+            phone: item.phone, 
+            addressName: item.address_name, 
+            roadAddressName: item.road_address_name, 
+            x: item.x, 
+            y: item.y, 
+            placeUrl: item.place_url, 
+            distance: item.distance
+          }
+        })
+        resolve(updateResult); 
       } else {
         reject(status);
       }
@@ -65,24 +81,24 @@ export const searchKeyword = async (keyword: string, page: number) => {
 }
 
 //카테고리 검색 결과 {id, place_name, category_name, category_group_code, category_group_name, phone, address_name, road_address_name, x, y, place_url, distance}
-export const searchCategory = async (category: string, page: number) => {
-  const places = new window.kakao.maps.services.Places();
-  if(category === "전체") category = "";
-  else category = categoryCode.find((item) => item.name.includes(category))?.code || "";
+// export const searchCategory = async (category: string, page: number) => {
+//   const places = new window.kakao.maps.services.Places();
+//   if(category === "전체") category = "";
+//   else category = categoryCode.find((item) => item.name.includes(category))?.code || "";
 
-  const result = await new Promise((resolve, reject) => {
-    places.categorySearch(category, (result: any, status: any) => {
-      if (status === window.kakao.maps.services.Status.OK) {
-        console.log(result);
-        resolve(result); 
-      } else {
-        reject(status);
-      }
-    }, {page});
-  });
+//   const result = await new Promise((resolve, reject) => {
+//     places.categorySearch(category, (result: any, status: any) => {
+//       if (status === window.kakao.maps.services.Status.OK) {
+//         console.log(result);
+//         resolve(result); 
+//       } else {
+//         reject(status);
+//       }
+//     }, {page});
+//   });
 
-  return result;
-}
+//   return result;
+// }
 
 interface Location {
   lat: number;
