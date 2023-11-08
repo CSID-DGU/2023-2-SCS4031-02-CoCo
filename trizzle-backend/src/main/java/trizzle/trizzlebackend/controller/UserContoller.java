@@ -1,17 +1,18 @@
 package trizzle.trizzlebackend.controller;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.service.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -41,5 +42,25 @@ public class UserContoller {
         User user = userService.searchUser(accountId);
 
         return ResponseEntity.ok().body(user);
+    };
+
+    @PutMapping("/{accountId}")
+    public ResponseEntity updateUser(@PathVariable("accountId") String accountId ,@RequestBody User user,HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String token =authorization.split(" ")[1];
+        String account = JwtUtil.getAccountId(token, secretKey);
+        if(account.equals(accountId)) {
+            User updatedUser = userService.updateUser(user);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "success");
+            response.put("updatedUser", updatedUser);
+
+            return ResponseEntity.ok().body(response);
+        }else {
+            String message = "wrong approach";
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"" + message + "\"}");
+        }
     };
 };

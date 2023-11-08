@@ -17,7 +17,10 @@ public class UserService {
     public User searchUser(String accountId) { //accountId로 유저 검색, 없으면 null return
         Optional<User> userOptional = Optional.ofNullable(userRepository.findByAccountId(accountId));
         return userOptional.orElse(null);
-    }
+    };
 
+    public User updateUser(User user) {
+        return userRepository.save(user);
+    };
 
 }
