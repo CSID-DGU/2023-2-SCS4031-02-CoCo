@@ -17,6 +17,8 @@ public class User {
     private String nickname;            // 회원가입 시 입력한 nickname
     private List<String> thema;
 
+    private String profileImage;
+
     public String getId() {
         return id;
     }
@@ -79,5 +81,13 @@ public class User {
 
     public void setThema(List<String> thema) {
         this.thema = thema;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 }

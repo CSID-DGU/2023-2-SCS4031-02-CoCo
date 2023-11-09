@@ -52,7 +52,7 @@ export const DropdownMenuItem = styled.div`
 `
 
 export const BadgeDropdownContainer = styled.div`
-  width: 90%;
+  width: 100%;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -61,7 +61,8 @@ export const BadgeDropdownContainer = styled.div`
 export const BadgeDropdownInput = styled.div<{ selectedItem: boolean }>`
   display: flex;
   flex-wrap: wrap;
-  width: ${props => props.selectedItem ? "100%" : "20rem"};
+  width: ${props => props.selectedItem ? "100%" : "auto"};
+  max-width: 100%;
   height: 2.5rem;
   border: ${props => props.selectedItem ? "none" : "1px solid #9e9e9e"};
   border-radius: 0.5rem;
@@ -76,7 +77,7 @@ export const BadgeDropdownInput = styled.div<{ selectedItem: boolean }>`
   
 `
 export const BadgeDropdownMenuContainer = styled.div`
-  width: auto;
+  width: 100%;
   max-width: 65rem;
   height: auto;
   padding: 1rem 0.5rem;
@@ -87,9 +88,9 @@ export const BadgeDropdownMenuContainer = styled.div`
   border-radius: 0.5rem;
   background-color: #ffffff;
   position: absolute;
-  top: 3rem;
+  top: 5rem;
   left: 0;
-  z-index: 50;
+  z-index: 150;
 `
 
 export const BadgeDropdownMenuItem = styled.div<{ selected: boolean }>`
