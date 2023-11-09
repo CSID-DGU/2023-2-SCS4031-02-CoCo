@@ -58,6 +58,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
       if (data.message === "이미 존재하는 id 입니다.") {
         alert("이미 존재하는 id입니다.");
       } else if (data.message === "login success") {
+        alert("성공적으로 회원가입이 되었습니다. 로그인을 진행해주세요.");
         naviation('/');
       }
     } catch (e: any) {
