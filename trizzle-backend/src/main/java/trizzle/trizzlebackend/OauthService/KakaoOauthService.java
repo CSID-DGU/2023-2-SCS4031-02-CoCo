@@ -27,6 +27,7 @@ public class KakaoOauthService {
     private String authorizeUri;
 
     public User getUserInfo(String accessToken) {
+        System.out.println(accessToken);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity httpEntity = new HttpEntity(headers);
@@ -43,8 +44,8 @@ public class KakaoOauthService {
         }
         String nickname = userResourceNode.get("properties").get("nickname").asText();
 
-        user.setRegistration_id("kakao");
-        user.setSocial_id(id);
+        user.setRegistrationId("kakao");
+        user.setSocialId(id);
         user.setName(nickname);
 
         return user;

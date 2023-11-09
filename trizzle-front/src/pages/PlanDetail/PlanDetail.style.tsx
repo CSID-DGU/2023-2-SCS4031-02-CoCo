@@ -19,7 +19,7 @@ export const ButtonContainer = styled.div`
 `
 
 export const ListButton = styled.button`
-  width: 6.5rem;
+  width: 6rem;
   height: 2.5rem;
   border-radius: 0.75rem;
   background-color: #ffffff;
@@ -35,7 +35,7 @@ export const ListButton = styled.button`
 `
 
 export const ModButton = styled.button`
-  width: 6.5rem;
+  width: 6rem;
   height: 2.5rem;
   border-radius: 0.75rem;
   background-color: #ffffff;
@@ -47,6 +47,22 @@ export const ModButton = styled.button`
   &:hover {
     border:2px solid #fcc500d6;
     color: #fcc500d6;
+  }
+`
+
+export const DeleteButton = styled.button`
+  width: 6rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background-color: #ffffff;
+  border: 2px solid #9E9E9E;
+  color: #9E9E9E;
+  font-size: 1rem;
+  font-weight: 400;
+  cursor: pointer;
+  &:hover {
+    border:2px solid red;
+    color: red;
   }
 `
 

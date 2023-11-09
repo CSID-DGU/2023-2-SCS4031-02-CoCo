@@ -8,7 +8,6 @@ export const TabContainer = styled.div`
   justify-content: flex-start;
   background-color: #ffffff;
   margin-bottom: 1rem;
-  gap: 0.5rem;
 `
 
 export const Tab = styled.div<{active: boolean}>`

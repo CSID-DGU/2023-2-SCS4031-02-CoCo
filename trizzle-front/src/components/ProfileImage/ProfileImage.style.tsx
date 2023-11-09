@@ -15,6 +15,14 @@ export const BigContainer = styled.div<{margin?:string}>`
   position: relative;
 `
 
+export const MidContainer = styled.div<{margin?:string}>`
+  width: 11rem;
+  height: 11rem;
+  border-radius: 50%;
+  margin: ${({margin}) => margin? margin : "0"};
+  position: relative;
+`
+
 export const ProfileImage = styled.img`
   width: 100%;
   height: 100%;
@@ -33,4 +41,18 @@ export const CameraContainer = styled.div`
   position: absolute;
   bottom: 1rem;
   right: 1rem;
+`
+
+export const MidCameraContainer = styled.div`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background-color: #dadada;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
 `

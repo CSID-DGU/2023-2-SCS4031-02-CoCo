@@ -20,6 +20,13 @@ const ProfileImage: React.FC<ProfileImageProps> = (props: ProfileImageProps) => 
         <S.ProfileImage src={imageSrc} alt="profile" />
       </S.SmallContainer>
     );
+  } else if(props.type === "mid"){
+    return (
+    <S.MidContainer margin={props.margin}>
+      <S.ProfileImage src={imageSrc} alt="profile" />
+      {props.isMe===true && <S.MidCameraContainer><AiOutlineCamera color="#fff" size="1rem"/></S.MidCameraContainer>}
+  </S.MidContainer>
+    )
   }
 };
 

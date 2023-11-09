@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from 'react';
+import { Polyline } from 'react-kakao-maps-sdk';
 
 const colors = [
   "#FF0B00", "#FF5C00", "#FFD600", "#61FF00", "#008105", "#00F0FF", "#000AFF", "#AD00FF", "#FF00D6",
@@ -9,7 +10,6 @@ const colors = [
 
 const DayMarker: React.FC<{day:number, onClick?:() => void}> = ({day, onClick}) => {
   const [markerColor, setMarkerColor] = useState<string>('');
-  console.log(day, "day")
   useEffect(() => {
     setMarkerColor(colors[day-1]);
   }
@@ -25,3 +25,16 @@ const DayMarker: React.FC<{day:number, onClick?:() => void}> = ({day, onClick}) 
 }
 
 export default DayMarker;
+
+export const DayPolyline: React.FC<{day:number, path:any}> = ({day, path}) => {
+  const [markerColor, setMarkerColor] = useState<string>(colors[day-1]);
+  return (
+    <Polyline
+      path={path}
+      strokeColor={markerColor}
+      strokeOpacity={0.8}
+      strokeWeight={5}
+      strokeStyle="solid"
+    />
+  );
+};

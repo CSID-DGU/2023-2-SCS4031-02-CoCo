@@ -1,82 +1,102 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as S from "./DayPlan.style";
 import logo from "../../assets/logo/nonTextLogo.svg"
-import { AiOutlineEllipsis } from "react-icons/ai";
+// import { AiOutlineEllipsis } from "react-icons/ai";
+import Menu from "../../components/Menu";
 import { useNavigate } from "react-router-dom";
+import res from "src/assets/keywords/trans.svg"
+import trans from "../../assets/keywords/trans.svg"
+import rest from "../../assets/keywords/rest.svg"
+import shopping from "../../assets/keywords/shopping.svg"
 
 type DayPlaceProps = {
   place: any;
   day: number;
   isPlan: boolean;
   isPost?: boolean;
+  id?: string;
+  secret?: boolean;
   index: number;
   onPostClick?: () => void;
   onDeleteClick?: (place: any, day: number, index: number) => void;
 }
 
+const KeywordList: { keyword: string; src: string; }[] = [
+  {keyword:"식사", src: res},
+  {keyword:"이동", src: trans},
+  {keyword:"휴식", src: rest},
+  {keyword:"쇼핑", src: shopping},
+];
+
 const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const navigate = useNavigate();
   const [open, setOpen] = useState<boolean>(false);
+  const [keyword, setKeyword] = useState<any>(null);
+  const [menuItem, setMenuItem] = useState<any[]>([]);
 
   const handleNavigation = () => {
 
     const data = {
-      place_id: props.place.id,
-      place_name: props.place.place_name,
+      placeId: props.place.id,
+      placeName: props.place.placeName,
     };
 
     const queryString = new URLSearchParams(data).toString();
     navigate(`/post/places/add/?${queryString}`);
   };
 
-  if (props.place.hasOwnProperty('y') && props.place.hasOwnProperty('x')) {
+  const onPostClick =() => {
+    if(props.secret && props.secret === true) navigate(`/post/places/secret/${props.id}`)
+    navigate(`/post/places/secret/${props.id}`)
+  }
+
+  useEffect(() => {
+    if (props.place.hasOwnProperty('keyword') && props.place.keyword !== null) {
+      const keywordSrc = KeywordList.filter((key) => props.place.keyword === key.keyword);
+      setKeyword(keywordSrc);
+      if (props.onDeleteClick) {
+        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick(props.place, props.day, props.index) }]);
+      }
+    } else {
+      if (props.isPlan && props.onDeleteClick) {
+        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick(props.place, props.day, props.index), isDelete: true }]);
+      } else if (props.isPost && props.isPost === true) {
+        setMenuItem([{ content: "게시글로 이동", onClick: onPostClick, isDelete: false }]);
+      } else {
+        setMenuItem([{ content: "게시글 작성", onClick: handleNavigation, isDelete: false }]);
+      }
+    }
+  }, [props.place, props.day, props.index, props.onDeleteClick, props.isPlan, props.isPost, props.id]);
+  
+
+  if (keyword === null) {
     return (
       <S.PlaceContainer>
-        <S.MenuButtonContainer >
-          <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)} />
-          {open && (
-            <S.MenuContainer>
-              {!props.isPlan && props.onPostClick ? (
-                props.isPost ? (
-                  <S.MenuItem delete={false} onClick={handleNavigation}>게시글 바로가기</S.MenuItem>
-                ) : (
-                  <S.MenuItem delete={false} onClick={handleNavigation}>게시글 등록</S.MenuItem>
-                )
-              ) : (
-                <S.MenuItem delete={true} onClick={() => { props.onDeleteClick(props.place, props.day, props.index); setOpen(!open) }}>삭제</S.MenuItem>
-              )}
-            </S.MenuContainer>
-
-          )}
-        </S.MenuButtonContainer>
+        {menuItem.length !== 0 &&
+          <Menu item={menuItem} />
+        }
         <S.PlaceLogo>
           <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
         </S.PlaceLogo>
         <S.PlaceInfo>
-          <S.PlaceName>{props.place.place_name}</S.PlaceName>
+          <S.PlaceName>{props.place.placeName}</S.PlaceName>
           {/* <S.PlaceAddress>{place.address_name}</S.PlaceAddress> */}
         </S.PlaceInfo>
       </S.PlaceContainer>
     )
   } else {
+    if(keyword !== null){
     return (
       <S.PlaceContainer>
-        <S.MenuButtonContainer>
-          {props.isPlan && (
-            <>
-              <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)} />
-              {open && (
-                <S.MenuContainer>
-                  <S.MenuItem delete={true} onClick={() => { props.onDeleteClick(props.place, props.day, props.index); console.log(props.index); setOpen(!open); }}>삭제</S.MenuItem>
-                </S.MenuContainer>
-              )}
-            </>
-          )}
-        </S.MenuButtonContainer>
-        <img src={props.place.src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
-        <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{props.place.name}</S.PlaceAddress>
+        {menuItem.length !== 0 &&
+          <Menu item={menuItem} />
+        }
+        <img src={keyword[0].src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
+        <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{keyword[0].keyword}</S.PlaceAddress>
       </S.PlaceContainer>
-    )
+    )} else {
+      <></>
+    }
   }
 
 }

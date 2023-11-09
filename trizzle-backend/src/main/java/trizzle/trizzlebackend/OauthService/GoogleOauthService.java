@@ -31,6 +31,7 @@ public class GoogleOauthService {
     private String scope;
 
     public User getUserInfo(String accessToken) {
+        System.out.println(accessToken);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);  // Authorization Bearer 에 accesToken담아서 user정보 google에 요청
         HttpEntity httpEntity = new HttpEntity<>(headers);
@@ -41,8 +42,8 @@ public class GoogleOauthService {
         String nickname = userResourceNode.get("name").asText();
 
         User user = new User();
-        user.setRegistration_id("google");      // google로 로그인한 것을 표시
-        user.setSocial_id(id);
+        user.setRegistrationId("google");      // google로 로그인한 것을 표시
+        user.setSocialId(id);
         user.setEmail(email);
         user.setName(nickname);
 
