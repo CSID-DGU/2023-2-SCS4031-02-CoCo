@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import * as S from './MainLogin.styles';
 import { GoogleLogin, KakaoLogin } from "../../shared/SnsLoginButton/SnsLoginButton";
-
+import { useAsync } from "../../utils/API/useAsync";
 import { tripThema } from "../../utils/Data/tripThema";
 import DropdownMenu from "../../components/DropdownMenu";
 import LogoImg from '../../assets/logo/nonTextLogo.svg'
-import { useAsync } from "../../utils/API/useAsync";
-import axios from "axios";
 
 interface MainLoginProps {
   type: string;
@@ -15,6 +16,7 @@ interface MainLoginProps {
 }
 
 export default function MainLogin({ type, data, onClose }: MainLoginProps) {
+  const naviation = useNavigate();
   const token = data.token;
   const [thema, setThema] = useState<any[]>([]);
   const [userData, setUserData] = useState({
@@ -56,7 +58,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
       if (data.message === "이미 존재하는 id 입니다.") {
         alert("이미 존재하는 id입니다.");
       } else if (data.message === "login success") {
-        onClose(false); 
+        naviation('/');
       }
     } catch (e: any) {
       console.log(e);
