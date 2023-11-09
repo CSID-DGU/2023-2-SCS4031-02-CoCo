@@ -1,16 +1,4 @@
 import styled from "@emotion/styled";
-const SampleComment = [
-  {
-    img: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_42E5B8F3E27A193D9A4A71E8A5511DB3.jpg&type=l340_165',
-    id: '날탱이탱날',
-    content: '너무 좋아요'
-  },
-  {
-    img: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_42E5B8F3E27A193D9A4A71E8A5511DB3.jpg&type=l340_165',
-    id: '날탱이탱날',
-    content: '너무 좋아요'
-  },
-]
 
 export const PageTitleContainer = styled.div`
   width: 100%;
