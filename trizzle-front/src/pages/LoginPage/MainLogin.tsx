@@ -114,9 +114,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
               value={userData.nickname}
               onChange={handleNicknameChange} />
             <S.UserContents>자신의 여행테마를 선택해주세요</S.UserContents>
-            <div>
             <DropdownMenu type="badge" name="여행테마를 선택해주세요" items={tripThema} selectedItem={thema} onClick={(thema) => onThemaBadgeClick(thema)} />
-            </div>
           </S.UserContainer>
         </S.Container>
         <S.CheckButton onClick={addUser}>회원 정보 등록</S.CheckButton>
