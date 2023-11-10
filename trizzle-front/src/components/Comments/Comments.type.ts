@@ -1,17 +1,26 @@
 export type CommentsProps = {
   type : string; // post : 포스트 댓글, comment : 댓글의 댓글, mypage : 댓글내역
-  commentData : commentData;
+  postCommentData : commentData;
   isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
   isLiked : boolean;
-  onLike ?: (commentId : string) => void;
-  onDelete ?: (commentId : string) => void;
-  onFix ?: (commentId : string) => void;
-  onComment ?: (commentId : string) => void;
+  onLike : (commentId : string) => void;
+  onDelete : (commentId : string) => void;
+  onFix : (commentId : string) => void;
+  onComment : (commentId : string) => void;
 };
+
+
+export type myCommentProps = {
+  myCommentData : myCommentData;
+  onDelete : (commentId : string) => void;
+};
+
 
 type commentData = {
   id: string;
-  accountId ?: string;
+  accountId : string;// 본인의 아이디
+  commentAccountId : string; // 댓글 작성자의 아이디
+  postAccountId : string; // 포스트 작성자의 아이디
   profileImg : string;
   nickname : string;
   parentId : string;
@@ -19,11 +28,21 @@ type commentData = {
   postId: string;
   postName : string;
   registrationDate : string;
-  commentId : string;
   fix : boolean;
   likeCount : number;
   isDeleted : boolean;
+};
+
+type myCommentData = {
+  id: string;
+  postId: string;
+  postName : string;
+  content : string;
+  registrationDate : string;
+  isDeleted : boolean;
 }
+
+
 
 //댓글 고려사항
 //1. 본인 포스트이면 다른 사람 댓글 고정 가능
