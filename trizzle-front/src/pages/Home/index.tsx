@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getFestivalList} from "../../utils/Data/tourData";
 import * as S from "./Home.style";
 import HomePlanSlider from "../../shared/HomePlanSlider";
+import SearchBar from "../../components/SearchBar";
 
 
 const PlanLists = [
@@ -76,6 +77,8 @@ const Home = () => {
             isToken: token,
           }}
         >
+          <div style={{marginBottom:"5rem"}}/>
+          <SearchBar type="main"/>
           <S.SectionTitle>급상승! 현재 인기 일정</S.SectionTitle>
           <HomePlanSlider planList={PlanLists} />
         </Page>

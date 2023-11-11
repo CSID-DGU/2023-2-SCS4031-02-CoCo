@@ -1,16 +1,14 @@
 import styled from "@emotion/styled";
 
-export const Container = styled.div`
+export const Container = styled.div<{type:string}>`
   width: 100%;
   height: 5rem;
-  background-color: #EBB700;
+  background-color: ${({type}) => type === "main" ? "#EBB700" : "white"};
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  top: 4.5rem;
-  left: 0;
-  z-index: 2;
+  position: relative;
+  padding: 0 8rem;
 `
 
 export const InputContainer = styled.div`
@@ -19,6 +17,7 @@ export const InputContainer = styled.div`
   align-items: center;
   width: 98%;
   height: 3.5rem;
+  border: 2px solid #EBB700;
   background-color: #ffffff;
 `
 
@@ -36,12 +35,16 @@ export const HorizontalFirstStartContainer = styled.div`
 // 일정, 장소 검색 대상 결정 컴포넌트
 export const DropdownContainer = styled.div`
   width: 10rem;
-  height: 3.5rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
   `
 
 export const DropdownButton = styled.button`
   width: 10rem;
-  height: 3.5rem;
+  height:1.4rem;
   border-right: 1px solid #FFDC61;
   background-color: #ffffff;
   font-size: 1.5rem;
@@ -58,10 +61,14 @@ export const OptionContainer = styled.div`
   width: 10rem;
   border: 2px solid #FFDC61;
   background-color: #ffffff;
+  position: absolute;
+  top: 5rem;
+  left: 9rem;
 `
 
 export const OptionButton = styled.div`
   width: auto;
+  height: 2.5rem;
   min-width: 9rem;
   height: 2.5rem;
   font-size: 1.2rem;
@@ -87,7 +94,7 @@ export const PlaceOptionContainer = styled.div`
   overflow-y: scroll;
   position: absolute;
   top: 5rem;
-  left: 11rem;
+  left: 19rem;
 `
 
 export const PlaceOptionButton = styled.div`
