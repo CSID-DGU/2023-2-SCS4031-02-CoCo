@@ -7,7 +7,6 @@ import { Link } from "react-router-dom";
 
 const HomePlanSlider: React.FC<HomePlanSliderProps> = (props: HomePlanSliderProps) => {
   const [currentPlan, setCurrentPlan] = useState<number>(0);
-  const planRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = setInterval(() => {

@@ -4,6 +4,8 @@ import { getFestivalList} from "../../utils/Data/tourData";
 import * as S from "./Home.style";
 import HomePlanSlider from "../../shared/HomePlanSlider";
 import SearchBar from "../../components/SearchBar";
+import FestivalCard from "../../shared/FestivalCard";
+import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 
 
 const PlanLists = [
@@ -79,8 +81,17 @@ const Home = () => {
         >
           <div style={{marginBottom:"5rem"}}/>
           <SearchBar type="main"/>
-          <S.SectionTitle>급상승! 현재 인기 일정</S.SectionTitle>
+          <S.SectionTitle>급상승! 현재 인기 일정 <b style={{fontWeight:"500"}}>&nbsp;TOP </b><p style={{color:"red"}}>&nbsp;4</p></S.SectionTitle>
           <HomePlanSlider planList={PlanLists} />
+
+          <S.SectionTitle style={{marginBottom:"2rem"}}>이런 축제는 어떠세요?</S.SectionTitle>
+          <HorizontalScrollContainer moveDistance={355} type="main">
+            {festivalLists.map((festival, index) => {
+              return (
+                <FestivalCard key={index} festival={festival}/>
+              )
+            })}
+          </HorizontalScrollContainer>
         </Page>
       )}
     </>

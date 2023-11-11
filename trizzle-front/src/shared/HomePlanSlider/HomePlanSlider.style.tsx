@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -75,14 +74,5 @@ export const DetailLink = styled.div`
     color: #000;
   }
 `
-
-export const sliderStyle = css`
-
-`
-
-export const sliderStyleActive = css`
- 
-`
-
 
 

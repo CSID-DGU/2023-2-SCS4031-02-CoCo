@@ -36,7 +36,7 @@ export default function SearchBar(type?:any) {
           <S.DropdownContainer>
             <S.DropdownButton type="button" onClick={() => setIsFieldOpen(!isFieldOpen)}>
               {searchField}
-              <BiSolidDownArrow size="1rem" />
+              <BiSolidDownArrow size="0.8rem" />
             </S.DropdownButton>
             {isFieldOpen &&
               <S.OptionContainer>

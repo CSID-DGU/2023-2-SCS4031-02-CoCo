@@ -2,12 +2,13 @@ import React, { useRef, useEffect, useState } from 'react';
 import * as S from './style';
 import {AiOutlineLeft, AiOutlineRight} from "react-icons/ai";
 
-const HorizontalScrollContainer: React.FC<{ children: React.ReactNode, moveDistance: number }> = ({ children, moveDistance }) => {
+const HorizontalScrollContainer: React.FC<{ children: React.ReactNode, moveDistance: number, type?:string; }> = ({ children, moveDistance, type }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [isScrollable, setIsScrollable] = useState(false);
 
   const handleScrollLeft = () => {
     if (containerRef.current) {
+      containerRef.current.style.transition = "all 1s ease-in-out";
       containerRef.current.scrollLeft -= moveDistance; // 스크롤 왼쪽으로 이동할 거리
       
     }
@@ -15,6 +16,7 @@ const HorizontalScrollContainer: React.FC<{ children: React.ReactNode, moveDista
 
   const handleScrollRight = () => {
     if (containerRef.current) {
+      containerRef.current.style.transition = "all 1s ease-in-out";
       containerRef.current.scrollLeft += moveDistance; // 스크롤 오른쪽으로 이동할 거리
     }
   };
@@ -27,17 +29,17 @@ const HorizontalScrollContainer: React.FC<{ children: React.ReactNode, moveDista
   }, [children]);
 
   return (
-    <div style={{display:"flex", alignItems:"flex-start"}}>
+    <S.Wrapper type={type? type : "normal"}>
       <button onClick={handleScrollLeft} style={{ display: isScrollable ? 'block' : 'none' }} type='button'>
-        <AiOutlineLeft size="2rem" color="#EBB700"/>
+        <AiOutlineLeft size="2rem" color={type? "#D6D6D6" :"#EBB700"}/>
       </button>
       <S.HorizontalScrollContainer ref={containerRef}>
         {children}
       </S.HorizontalScrollContainer>
       <button onClick={handleScrollRight} style={{ display: isScrollable ? 'block' : 'none' }} type='button'>
-        <AiOutlineRight size="2rem" color="#EBB700"/>
+        <AiOutlineRight size="2rem" color={type? "#D6D6D6" :"#EBB700"}/>
       </button>
-    </div>
+    </S.Wrapper>
   );
 };
 
