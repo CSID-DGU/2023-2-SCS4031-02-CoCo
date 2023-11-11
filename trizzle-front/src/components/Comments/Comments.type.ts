@@ -1,5 +1,4 @@
 export type CommentsProps = {
-  type : string; // post : 포스트 댓글, comment : 댓글의 댓글, mypage : 댓글내역
   postCommentData : commentData;
   isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
   isLiked : boolean;
@@ -21,9 +20,9 @@ type commentData = {
   accountId : string;// 본인의 아이디
   commentAccountId : string; // 댓글 작성자의 아이디
   postAccountId : string; // 포스트 작성자의 아이디
-  profileImg : string;
+  profileImg : any;
   nickname : string;
-  parentId : string;
+  parentId : any;
   content : string;
   postId: string;
   postName : string;

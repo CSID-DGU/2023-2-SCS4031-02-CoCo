@@ -22,8 +22,11 @@ export const PostCommentContent = styled.div`
 
 export const PostCommentContentHeader = styled.div`
   width: 100%;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 400;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
 `
 
 export const PostCommentContentDate = styled.div`
@@ -58,14 +61,16 @@ export const PostCommentContentFooterLike = styled.div`
 
 export const PostCommentContentFooterReply = styled.div`
   width: auto;
-  height: 1.2rem;
+  height: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.5rem;
-  margin-left: 3rem;
+  border-radius: 0.75rem;
+  margin-left: 2rem;
   font-size: 0.9rem;
   font-weight: 400;
+  padding: 0 0.5rem;
+  cursor: pointer;  
   &:hover {
     background-color: #e9ecef;
   }
@@ -87,15 +92,17 @@ export const Fixed = styled.div`
 
 export const MyCommentContainer = styled.div`
   width: 100%;
-  border-bottom: 1px solid #999999;
-  border-top: 1px solid #999999;
+  border-bottom: 1px solid #D6D6D6;
+  border-top: 1px solid #D6D6D6;
   padding: 1rem 0.5rem;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+  margin-top: -1px;
+  gap: 0.5rem;
   &:hover {
-    background-color: #D6D6D6;
+    background-color: #F6F6F6;
   }
 `
 
@@ -104,13 +111,13 @@ export const MyCommentContent = styled.div`
   height: auto;
   display: flex;
   justify-content: space-between;
-  margin-top: -1px;
+
 `
 
 export const MyCommentContentText = styled.div`
   width: 80%;
   height: auto;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   word-wrap: break-word;
   line-height: 1.1rem;

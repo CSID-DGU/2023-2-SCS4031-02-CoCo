@@ -36,18 +36,20 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
           </S.Fixed>
           {menuItems.length > 0 && <Menu item={menuItems}/>}
           <ProfileImage type='small'/>
-          <S.PostCommentContentHeader>
-            {props.postCommentData.nickname}
-            <S.PostCommentContentDate>{props.postCommentData.registrationDate}</S.PostCommentContentDate>
-          </S.PostCommentContentHeader>
-          <S.PostCommentContentBody>
-            {props.postCommentData.content}
-          </S.PostCommentContentBody>
-          <S.PostCommentContentFooter>
-            {props.isLiked ? <BiSolidLike size="1rem" onClick={() => props.onLike(props.postCommentData.id)}/> : <BiLike size="1rem" onClick={() => props.onLike(props.postCommentData.id)}/>}
-            <S.PostCommentContentFooterLike>{props.postCommentData.likeCount}</S.PostCommentContentFooterLike>
-            {props.postCommentData.parentId === null && <S.PostCommentContentFooterReply onClick={() => props.onComment(props.postCommentData.id)}>답글</S.PostCommentContentFooterReply>}
-          </S.PostCommentContentFooter>
+          <S.PostCommentContent>
+            <S.PostCommentContentHeader>
+              {props.postCommentData.nickname}
+              <S.PostCommentContentDate>{props.postCommentData.registrationDate}</S.PostCommentContentDate>
+            </S.PostCommentContentHeader>
+            <S.PostCommentContentBody>
+              {props.postCommentData.content}
+            </S.PostCommentContentBody>
+            <S.PostCommentContentFooter>
+              {props.isLiked ? <BiSolidLike size="1rem" onClick={() => props.onLike(props.postCommentData.id)}/> : <BiLike size="1rem" onClick={() => props.onLike(props.postCommentData.id)}/>}
+              <S.PostCommentContentFooterLike>{props.postCommentData.likeCount}</S.PostCommentContentFooterLike>
+              {props.postCommentData.parentId === null && <S.PostCommentContentFooterReply onClick={() => props.onComment(props.postCommentData.id)}>답글</S.PostCommentContentFooterReply>}
+            </S.PostCommentContentFooter>
+          </S.PostCommentContent>
         </S.PostCommentContainer>
       )
     }
@@ -58,9 +60,9 @@ export const MyComments:React.FC<myCommentProps> = (props: myCommentProps) => {
     <S.MyCommentContainer>
       <S.MyCommentContent>
         <S.MyCommentContentText>{props.myCommentData.content}</S.MyCommentContentText>
-        <S.MyCommentPostText>{props.myCommentData.postName} | {props.myCommentData.registrationDate}</S.MyCommentPostText>
+        <S.MyCommentDeleteButton onClick={() => props.onDelete(props.myCommentData.id)}>삭제</S.MyCommentDeleteButton>
       </S.MyCommentContent>
-      <S.MyCommentDeleteButton onClick={() => props.onDelete(props.myCommentData.id)}>삭제</S.MyCommentDeleteButton>
+      <S.MyCommentPostText>{props.myCommentData.postName} | {props.myCommentData.registrationDate}</S.MyCommentPostText>
     </S.MyCommentContainer>
   )
 }
