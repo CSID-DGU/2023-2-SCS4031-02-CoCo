@@ -5,7 +5,7 @@ export const RegionContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 2rem;
-  margin: 7rem 0 2rem 0;
+  margin: 2rem 0 2rem 0;
 `
 
 export const RegionInforContainer = styled.div`
