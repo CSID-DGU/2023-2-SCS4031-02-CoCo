@@ -28,7 +28,7 @@ public class PlaceService {
     }
 
     public Optional<Place> findByPlaceId(String placeId) {
-        Query query = new Query(Criteria.where("placeId").is(placeId));
+        Query query = new Query(Criteria.where("_id").is(placeId));
         Place place = mongoTemplate.findOne(query, Place.class);
         return Optional.ofNullable(place);
     }

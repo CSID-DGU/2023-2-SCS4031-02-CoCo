@@ -8,7 +8,7 @@ import java.util.Objects;
 @Document(collection = "places")
 public class Place {
     @Id
-    private String id;
+    private String _id;
     private String placeId;
     private String placeName;
     private String categoryName;
@@ -29,12 +29,12 @@ public class Place {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Place place = (Place) o;
-        return Objects.equals(placeId, place.placeId);
+        return Objects.equals(_id, place._id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(placeId);
+        return Objects.hash(_id);
     }
 
 
@@ -54,12 +54,12 @@ public class Place {
         this.keyword = keyword;
     }
 
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getPlaceName() {
