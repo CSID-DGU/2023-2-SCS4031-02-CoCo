@@ -29,6 +29,22 @@ export const ThumbnailImg = styled.img`
   border-radius: 1.5rem 1.5rem 0 0;
 `
 
+export const NonoThumbnailContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 21.8rem;
+  height: 17.5rem;
+  background-color: #FFF7DA;
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+`
+
+export const NonoThumbnail = styled.img`
+  width: 20%;
+  height: 20%;
+`
+
 export const SiteBadge = styled.div`
   background-color: rgba(0, 0, 0, 0.50);
   width: auto;
