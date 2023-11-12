@@ -35,16 +35,24 @@ export const Content = styled.div`
   padding: 0;
 `
 
-export const SubmmitButton = styled.div`
+export const SubmmitButton = styled.button`
   width: 3.5rem;
   height: 2rem;
   display: flex;
   align-items:center;
   justify-content:center;
-  cursor: pointer;
   position: absolute;
   top: 6rem;
   right: 1rem;
   border: 1px solid #929292;
   color: #929292;
+  &:enabled {
+    border: none;
+    background-color: #EBB700;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  &:disabled{
+    cursor: not-allowed;
+  }
 `
