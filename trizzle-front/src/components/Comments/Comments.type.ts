@@ -1,5 +1,8 @@
 export type CommentsProps = {
   postCommentData : commentData;
+  postAccountId : string;
+  profileImg : any;
+  accountId : string;
   isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
   isLiked : boolean;
   onLike : (commentId : string) => void;
@@ -11,16 +14,14 @@ export type CommentsProps = {
 
 export type myCommentProps = {
   myCommentData : myCommentData;
+  postName : string;
   onDelete : (commentId : string) => void;
 };
 
 
 type commentData = {
   id: string;
-  accountId : string;// 본인의 아이디
-  commentAccountId : string; // 댓글 작성자의 아이디
-  postAccountId : string; // 포스트 작성자의 아이디
-  profileImg : any;
+  accountId : string; // 댓글 작성자의 아이디
   nickname : string;
   parentId : any;
   content : string;
@@ -35,7 +36,6 @@ type commentData = {
 type myCommentData = {
   id: string;
   postId: string;
-  postName : string;
   content : string;
   registrationDate : string;
   isDeleted : boolean;

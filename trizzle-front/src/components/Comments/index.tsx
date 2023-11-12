@@ -12,7 +12,8 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
     let menuItem:any[] = []; 
     if(props.isMe && props.postCommentData) {
       menuItem.push({content: "삭제", onClick: () => props.onDelete(props.postCommentData.id), isDelete: true});
-    } else if(props.postCommentData && props.postCommentData.accountId === props.postCommentData.postAccountId){
+    } 
+    if(props.postCommentData && props.accountId === props.postAccountId){
       menuItem.push({content: "고정", onClick: () => props.onFix(props.postCommentData.id), isDelete: false});
     }
 
@@ -62,7 +63,7 @@ export const MyComments:React.FC<myCommentProps> = (props: myCommentProps) => {
         <S.MyCommentContentText>{props.myCommentData.content}</S.MyCommentContentText>
         <S.MyCommentDeleteButton onClick={() => props.onDelete(props.myCommentData.id)}>삭제</S.MyCommentDeleteButton>
       </S.MyCommentContent>
-      <S.MyCommentPostText>{props.myCommentData.postName} | {props.myCommentData.registrationDate}</S.MyCommentPostText>
+      <S.MyCommentPostText>{props.postName} | {props.myCommentData.registrationDate}</S.MyCommentPostText>
     </S.MyCommentContainer>
   )
 }
