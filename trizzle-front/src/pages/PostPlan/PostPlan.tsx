@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import * as S from './PostPlan.styles';
 import Page from "../Page";
-import { AiFillStar, AiOutlineDown, AiOutlineHeart, AiOutlineStar, AiOutlineUp, AiTwotoneHeart } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineHeart,AiOutlineUp, AiTwotoneHeart } from "react-icons/ai";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import PlanMap from "../../shared/PlanMap";
 import { koreaRegions } from "../../utils/Data/mapData";
@@ -124,8 +124,6 @@ const SampleComment = [
 
 
 const PostPlan: React.FC = () => {
-  let components;
-  // const location = useLocation();
   const [isLogin, setIsLogin] = useState<string>(true);
   const [data, setData] = useState<any>(sampleData);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(sampleData.content);
