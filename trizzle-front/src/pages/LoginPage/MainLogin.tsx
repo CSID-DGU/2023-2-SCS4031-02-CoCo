@@ -53,7 +53,11 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     try {
       const response = await axios.post(`http://localhost:8080/login/additionalUserInfo?token=${token}`, userData);
       const data = response.data; // 응답 데이터
-      console.log(data);
+      if (data.message === "이미 존재하는 id 입니다.") {
+        alert("이미 존재하는 id입니다.");
+      } else if (data.message === "login success") {
+        onClose(false); 
+      }
     } catch (e: any) {
       console.log(e);
     }

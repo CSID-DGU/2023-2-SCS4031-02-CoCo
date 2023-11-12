@@ -34,3 +34,17 @@ export const Content = styled.div`
   word-wrap: break-word;
   padding: 0;
 `
+
+export const SubmmitButton = styled.div`
+  width: 3.5rem;
+  height: 2rem;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  cursor: pointer;
+  position: absolute;
+  top: 6rem;
+  right: 1rem;
+  border: 1px solid #929292;
+  color: #929292;
+`

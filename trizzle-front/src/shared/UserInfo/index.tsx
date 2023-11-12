@@ -1,14 +1,52 @@
-import React, { useState } from "react";
-import { UserInfoProps } from "./UserInfo.type";
+import React, { useState, useEffect } from "react";
 import * as S from "./UserInfo.style"
 import ProfileImage from "../../components/ProfileImage";
 import TextInput from "../../components/TextInput";
 import DropdownMenu from "../../components/DropdownMenu";
 import { tripThema } from "../../utils/Data/tripThema";
+import { useAsync } from "../../utils/API/useAsync";
 
-const UserInfo:React.FC<UserInfoProps> = (props: UserInfoProps) => {
-  const [nickname, setNickname] = useState(props.nickname);
-  const [thema, setThema] = useState(props.thema);
+type userData = {
+  accountId : string,
+  email: string,
+  id: string,
+  name : string,
+  nickname: string,
+  profileImage : any;
+  registrationId : string,
+  socialId : string,
+  thema : string[]
+}
+
+const UserInfo = () => {
+  const [userData, setUserData] = useState<userData>();
+  const [nickname, setNickname] = useState("");
+  const [thema, setThema] = useState<{name:string, id:number}[]>([]);
+  const [state, fetchData] = useAsync({url:"/api/user"});
+
+  useEffect(() => {
+    if(state.error) console.error(state.error);
+    else {
+    if(state.data) {
+      let data;
+      if(state.data.message === "success") data=state.data.updatedUser;
+      else data = state.data;
+
+      setUserData(data);
+      setNickname(data.nickname);
+      setThema(data.thema.map((it:any) => {
+        const thema = tripThema.filter((item) => {
+          return item.name === it
+        });
+        if(thema) {
+        return {
+          id: thema[0].id,
+          name: thema[0].name
+        }} else return;
+      }));
+    }
+  }
+  },[state]);
 
   const handleInputChange = (event: any) => {
     // 입력 값 업데이트
@@ -28,20 +66,49 @@ const UserInfo:React.FC<UserInfoProps> = (props: UserInfoProps) => {
     }
   };
 
+  const onUpdateData = () => {
+    const themaNames: string[] = [];
+    thema.map((thema) => {
+      themaNames.push(thema.name);
+    });
+    if(userData !== undefined && userData.nickname !== nickname && userData.thema !== themaNames) {
+      if(confirm("수정사항을 저장하시겠습니까?")) {
+      const submitData = {
+        accountId : userData.accountId,
+        email: userData.email,
+        id: userData.id,
+        name : userData.name,
+        nickname: nickname,
+        profileImage : userData.profileImage,
+        registrationId : userData.registrationId,
+        socialId : userData.socialId,
+        thema : themaNames
+      };
+      fetchData(`/api/user/${userData.accountId}`, "PUT", submitData);
+    } else {
+      return;
+    }
+  }else {
+    alert("수정된 사항이 없습니다");
+  }
+  }
+
+  if(userData !== undefined) {
   return (
     <S.Container>
+      <S.SubmmitButton onClick={onUpdateData}>저장</S.SubmmitButton>
       <ProfileImage type="mid" isMe={true} margin="0 auto 0.5rem auto"/>
       <S.HorizontalContainer>
         <S.Title>이름</S.Title>
-        <S.Content>{props.name}</S.Content>
+        <S.Content>{userData.name}</S.Content>
       </S.HorizontalContainer>
       <S.HorizontalContainer>
         <S.Title>아이디</S.Title>
-        <S.Content>{props.account_id}</S.Content>
+        <S.Content>{userData.accountId}</S.Content>
       </S.HorizontalContainer>
       <S.HorizontalContainer>
         <S.Title>소셜</S.Title>
-        <S.Content>{props.registration_id}</S.Content>
+        <S.Content>{userData.registrationId === "kakao"? "카카오" : "구글"}</S.Content>
       </S.HorizontalContainer>
       <S.HorizontalContainer>
         <S.Title>별명</S.Title>
@@ -56,7 +123,13 @@ const UserInfo:React.FC<UserInfoProps> = (props: UserInfoProps) => {
         </S.Content>
       </S.HorizontalContainer>
     </S.Container>
-  );
+  ); }
+  else {
+    return (
+      <>
+      </>
+    )
+  }
 };
 
 export default UserInfo;
