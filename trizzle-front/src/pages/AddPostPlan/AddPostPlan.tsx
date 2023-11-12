@@ -200,7 +200,7 @@ const AddPostPlan: React.FC = () => {
           </S.PlanDateContainer>
         </S.HorizontalContainer>
         <S.HorizontalContainer>
-          <S.SelectTitle>여행테마</S.SelectTitle>
+          <S.DropTitle>여행테마</S.DropTitle>
           <DropdownMenu type="badge" name="여행테마를 선택해주세요" items={tripThema} selectedItem={thema} onClick={(thema) => onThemaBadgeClick(thema)} />
         </S.HorizontalContainer>
         <S.HorizontalLine />

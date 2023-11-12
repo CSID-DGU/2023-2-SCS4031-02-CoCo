@@ -72,6 +72,13 @@ export const SelectTitle = styled.div`
   margin-right: 1rem;
 `
 
+export const DropTitle = styled.div`
+  width: 4.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-right: 1rem;
+`
+
 export const PlanDateContainer = styled.div`
   display: flex;
   width: auto;
