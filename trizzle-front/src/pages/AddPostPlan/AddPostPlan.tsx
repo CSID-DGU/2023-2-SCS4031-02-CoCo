@@ -32,7 +32,7 @@ const sampleData = {
       place_url: "http://place.map.kakao.com/1254228746"
     },
     {
-      _id: "1254228746",
+      _id: "1254228742",
       place_name: "수잔나의앞치마",
       category_name: "음식점 > 카페",
       category_group_code: "CE7",
@@ -44,7 +44,7 @@ const sampleData = {
       y: 37.5633050390399,
       place_url: "http://place.map.kakao.com/1254228746"
     }, {
-      _id: "1254228746",
+      _id: "1254228742",
       place_name: "수잔나의앞치마",
       category_name: "음식점 > 카페",
       category_group_code: "CE7",
@@ -119,7 +119,6 @@ const sampleData = {
 
 const AddPostPlan: React.FC = () => {
   const [data, setData] = useState<any>({});
-
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(sampleData.content);
   const [title, setTitle] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -131,6 +130,7 @@ const AddPostPlan: React.FC = () => {
 
   const [isUploadPlanModal, setIsUploadPlanModal] = useState<boolean>(false);
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
+  const [connectPlaceList, setIsConnectPlaceList] = useState<boolean>([{_id: "1254228746" }, {_id: "1254228744" }]);
   const [ConnectPlaceModalData, setIsConnectPlaceModalData] = useState<string>('');
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
@@ -185,7 +185,7 @@ const AddPostPlan: React.FC = () => {
       {/* <form> */}
       <S.ButtonContainer>
         {/* <S.Button>임시저장</S.Button> */}
-        <S.Button onClick={()=>navigate('/post/plan/id')}>저장</S.Button>
+        <S.Button onClick={() => navigate('/post/plan/id')}>저장</S.Button>
       </S.ButtonContainer>
       <S.FormContainer>
         <TextInput name="title" title="제목" placeholder="일정 제목을 입력해주세요." styleProps={{ width: "100%" }} id="title" onChange={(event) => setTitle(event.target.value)} value={title} />
@@ -208,10 +208,10 @@ const AddPostPlan: React.FC = () => {
 
       {isUploadPlan ? (
         <S.MapAndDayPlanContainer>
-          {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => selectedDay(day) } placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+          {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => selectedDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
           <S.DayPlanPostContainer>
             <S.DayPlanPostInnerContainer>
-              <DayPlanPost dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={connectPlace} />
+              <DayPlanPost dayList={selectedDayPlan} selectDay={selectDay} connectData={connectPlaceList} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={connectPlace} />
             </S.DayPlanPostInnerContainer>
           </S.DayPlanPostContainer>
         </S.MapAndDayPlanContainer>

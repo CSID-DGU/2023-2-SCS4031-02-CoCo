@@ -17,7 +17,7 @@ export const DayContainer = styled.div`
   border-radius: 0.5rem;
 `
 
-export const PalceContainer = styled.div`
+export const PlaceContainer = styled.div`
   margin: 1rem;
   width: 28rem;
   height: 8rem;
@@ -37,10 +37,65 @@ export const PalceText = styled.div`
   font-weight: 700;
 `
 
-export const ThreeDotsButton = styled.div`
+export const ThreeDotsButton = styled.button`
   position: relative;
+  margin: 0.2rem 0 0 0;
   top: 0.25rem;
   left: 25.5rem;
+  width: auto;
+  color: #BEBEBE;
+  &:hover {
+    font-weight: 600;
+  }
+`
+
+export const PlacePostContainer = styled.div`
+  display: block;
+  margin: 1rem;
+  width: 28rem;
+  height: 8rem;
+  border: 1.5px solid #FFDC61;
+  border-radius: 1rem;
+`
+
+export const PlaceLogo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 100%;
+  background-color: #FFECAA;
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
+  position: relative;
+  top: -1.2rem;
+`
+
+export const PlaceInfo = styled.div`
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0 0.5rem;
+`
+
+export const PlaceName = styled.div`
+  position: relative;
+  top: -10rem;
+  left: 9rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+`
+
+export const PlacePostName = styled.div`
+  position: relative;
+  top: -8rem;
+  left: 9rem;
+  color: #747474;
+  font-size: 1rem;
+  font-weight: 7400;
 `
 
 export const ToggleButtonContainer = styled.div`
@@ -66,7 +121,7 @@ export const ToggleButtonOption = styled.button`
   justify-content: center;
   align-items: center;
   padding: 0 1rem;
-  width: 100%;
+  width: 7rem;
   height: 2rem;
   border-radius: 0.5rem;
 
