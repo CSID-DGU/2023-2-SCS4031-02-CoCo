@@ -10,6 +10,7 @@ import MainLogin from '../pages/LoginPage/MainLogin';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
 import EditPlanPage from '../pages/AddPlan/ModPlan';
 import UserInfoEdit from '../pages/UserInfoEdit';
+import GoogleRedirectPage from '../pages/GoogleRedirectPage/GoogleRedirectPage';
 
 const Router = () => {
   return (
@@ -33,6 +34,7 @@ const Router = () => {
         <Route path="/feed/:id" element={<Myfeed />} />
 
         <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
+        <Route path="/login/oauth2/code/Google" element={<GoogleRedirectPage />} />
       </Routes>
     </BrowserRouter>
   );
