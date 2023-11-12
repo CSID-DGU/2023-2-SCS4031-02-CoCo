@@ -14,7 +14,6 @@ export const HorizontalScrollContainer = styled.div`
   overflow-y: hidden;
   display: flex;
   gap: 1.25rem;
-  
   ::-webkit-scrollbar-thumb {
     width: 0;
   }
