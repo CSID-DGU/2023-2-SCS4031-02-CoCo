@@ -90,19 +90,56 @@ export const UploadContainer = styled.div`
   height: 20rem;
   border: 1px solid #949494;
   border-radius: 1.5rem;
-`
-
-
-export const UploadPlanButton = styled.button`
-  padding: 0 0.5rem;
-  height: 2rem;
-  border: 1px solid #D9D9D9;
-  border-radius: 0.5rem;
-  color: #D9D9D9;
   &:hover{
-    font-weight: 500;
-    color: #C8C8C8;
-    border: 1.5px solid #C8C8C8;
+    border: 2px solid #949494;
   }
 `
+
+export const MapAndDayPlanContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+`
+
+export const DayPlanPostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 45%;
+  height: 34rem;
+  border: 2px solid #FFDC61;
+  position: relative;
+  top: -0.5rem;
+  padding: 1rem;
+`
+
+export const DayPlanPostInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+`
+
+export const DayPlanCopyButton = styled.button`
+  maigin: 0 0 0.5rem 0;
+  width: 28rem;
+  text-align: end;
+`
+
+export const UploadPlanButton = styled.button<{ isHovered: boolean }>`
+  padding: 0 0.5rem;
+  height: 2rem;
+  border: ${({ isHovered }) => (isHovered ? '1.5px solid #C8C8C8' : '1px solid #D9D9D9')};
+  border-radius: 0.5rem;
+  color: ${({ isHovered }) => (isHovered ? '#C8C8C8' : '#D9D9D9')};
+  font-weight: ${({ isHovered }) => (isHovered ? '700' : '500')};
+`
+
+
 
