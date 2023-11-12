@@ -12,7 +12,7 @@ import LogoImg from '../../assets/logo/nonTextLogo.svg'
 interface MainLoginProps {
   type: string;
   data: {};
-  onClose: (value: boolean) => void;
+  onClose: () => void;
 }
 
 export default function MainLogin({ type, data, onClose }: MainLoginProps) {
@@ -59,7 +59,8 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
         alert("이미 존재하는 id입니다.");
       } else if (data.message === "login success") {
         alert("성공적으로 회원가입이 되었습니다. 로그인을 진행해주세요.");
-        naviation('/');
+        onClose()
+        naviation('/')
       }
     } catch (e: any) {
       console.log(e);
