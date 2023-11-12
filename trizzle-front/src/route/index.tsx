@@ -12,6 +12,7 @@ import EditPlanPage from '../pages/AddPlan/ModPlan';
 import UserInfoEdit from '../pages/UserInfoEdit';
 import AddPostPlan from '../pages/AddPostPlan/AddPostPlan';
 import PostPlan from '../pages/PostPlan/PostPlan';
+import GoogleRedirectPage from '../pages/GoogleRedirectPage/GoogleRedirectPage';
 
 const Router = () => {
   return (
@@ -37,6 +38,7 @@ const Router = () => {
         <Route path="/feed/:id" element={<Myfeed />} />
 
         <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
+        <Route path="/login/oauth2/code/Google" element={<GoogleRedirectPage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -61,7 +61,7 @@ export const BadgeDropdownContainer = styled.div`
 export const BadgeDropdownInput = styled.div<{ selectedItem: boolean }>`
   display: flex;
   flex-wrap: wrap;
-  width: ${props => props.selectedItem ? "100%" : "auto"};
+  width: 100%;
   max-width: 100%;
   height: 2.5rem;
   border: ${props => props.selectedItem ? "none" : "1px solid #9e9e9e"};
