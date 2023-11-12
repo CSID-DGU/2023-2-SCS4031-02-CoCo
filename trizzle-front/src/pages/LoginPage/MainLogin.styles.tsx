@@ -88,7 +88,8 @@ export const UserContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  margin: 2rem 0 0 0;
+  /* margin: 2rem 0 0 0; */
+  padding: 2rem 2rem 0 2rem;
 `;
 
 export const UserContents = styled.div`

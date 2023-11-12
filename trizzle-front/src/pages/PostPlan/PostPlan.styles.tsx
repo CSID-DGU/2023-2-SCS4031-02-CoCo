@@ -1,50 +1,5 @@
 import styled from "@emotion/styled";
 
-export const PageTitleContainer = styled.div`
-  width: 100%;
-  height: 9rem;
-  position:absolute;
-  top: 9.5rem;
-  left: 0;
-`;
-
-export const PageTitleImage = styled.img`
-  width: 100%;
-  height: 100%; 
-  opacity: 0.5;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1; 
-`
-
-export const PageTitle = styled.div`
-  font-size: 2rem;
-  font-weight: 600;
-  position: absolute;
-  top: 50%; 
-  left: 50%; 
-  transform: translate(-50%, -50%); 
-  z-index: 1;
-`
-
-export const PageTitleContainer2 = styled.div`
-  width: 100%;
-  height: 9rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #FFF7DA;
-  position:absolute;
-  top: 9.5rem;
-  left: 0;
-`;
-
-export const PageTitle2 = styled.div`
-  font-size: 2rem;
-  font-weight: 600;
-`
-
 export const ModifiedButton = styled.button`
   margin-left: 1rem;
   width: 7rem;
@@ -68,7 +23,7 @@ export const BookmarkButton = styled.button`
   align-items: center;
 `
 
-export const BookmarkButtonInnerText = styled.div`
+export const BookmarkButtonInnerText = styled.div<{isBookmark: boolean}>`
   margin: 0 0 0 0.3rem; 
   font-size: 1rem;
   font-weight: 400;
@@ -80,12 +35,11 @@ export const BookmarkButtonInnerText = styled.div`
   `}
 `
 
-
 export const InforFirstContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 16rem;
+  margin-top: 2rem;
   margin-bottom: 1.5rem;
 
   font-size: 2rem;
@@ -96,6 +50,7 @@ export const InforContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.5rem;
+  widrh: 5rem;
   font-weight: bold;
   font-size: 1.1rem;
 `
@@ -106,12 +61,86 @@ export const InforInputContainer = styled.div`
   font-size: 1rem;
 `
 
+
+export const Content = styled.div`
+  width: auto;
+  height: auto;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #747474;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`
+
+export const ThemaBadge = styled.div`
+  width: auto;
+  height: 2rem;
+  border-radius: 0.5rem;
+  background-color: #FFECAA;
+  display: flex;
+  padding: 1rem 1rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #747474;
+`
+
 export const HorizontalFirstStartContainer = styled.div`
   display: flex;
   justify-content: first-start;
   align-items: center;
   gap: 1rem;
 `
+
+export const HorizontalContainer = styled.div`
+  display: flex;
+  justify-content: first-start;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0 0 0;
+`
+
+
+export const MapAndDayPlanContainer = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0;
+`
+
+export const DayPlanPostContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 45%;
+  height: 34rem;
+  border: 2px solid #FFDC61;
+  position: relative;
+  top: -0.5rem;
+  padding: 1rem;
+`
+
+export const DayPlanPostInnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+`
+
+export const DayPlanCopyButton = styled.button`
+  maigin: 0 0 0.5rem 0;
+  width: 28rem;
+  text-align: end;
+`
+
+
 
 export const PostContainer = styled.div`
   margin: 1rem 0 2rem 0;

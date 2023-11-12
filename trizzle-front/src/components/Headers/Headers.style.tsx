@@ -6,7 +6,7 @@ export const Header = styled.header<{isHome:boolean}>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 1rem;
+  padding: 0 8rem;
   background-color: ${({isHome}) => isHome ? "#EBB700" : "#fff"};
   position: fixed;
   top: 0;

@@ -4,7 +4,7 @@ import { BsMap } from 'react-icons/bs';
 import { BiSolidDownArrow } from 'react-icons/bi';
 import { koreaRegions } from '../../utils/Data/mapData';
 
-export default function SearchBar() {
+export default function SearchBar(type?:any) {
   const [searchField, setSearchField] = useState<string>('일정');
   const [searchValue, setSearchValue] = useState<string>('');
   const [isFieldOpen, setIsFieldOpen] = useState<boolean>(false);
@@ -15,7 +15,6 @@ export default function SearchBar() {
     setIsFieldOpen(!isFieldOpen);
     setSearchField(value);
     setSearchValue(searchValue);
-    console.log(searchValue);
   }
 
   // const handleKeyPress = (e) => {
@@ -31,20 +30,20 @@ export default function SearchBar() {
   }
 
   return (
-    <S.Container>
-      <S.InputContainer onClick={() => setIsMapOpen(!isMapOpen)}>
+    <S.Container type={type? type: "normal"}>
+      <S.InputContainer>
         <S.HorizontalFirstStartContainer>
           <S.DropdownContainer>
             <S.DropdownButton type="button" onClick={() => setIsFieldOpen(!isFieldOpen)}>
               {searchField}
-              <BiSolidDownArrow size="1rem" />
-            </S.DropdownButton>x
+              <BiSolidDownArrow size="0.8rem" />
+            </S.DropdownButton>
             {isFieldOpen &&
               <S.OptionContainer>
-                <S.OptionButton type="button" onClick={() => onClick("일정")} >
+                <S.OptionButton onClick={() => onClick("일정")} >
                   일정
                 </S.OptionButton>
-                <S.OptionButton type="button" onClick={() => onClick("장소")} >
+                <S.OptionButton onClick={() => onClick("장소")} >
                   장소
                 </S.OptionButton>
               </S.OptionContainer>
@@ -70,21 +69,21 @@ export default function SearchBar() {
         {isMapOpen && (
           <S.PlaceOptionContainer>
             {koreaRegions.map((place, index) => (
-              <S.PlaceOptionButton key={index} type="button" onClick={() => setSearchValue(place.name)} >
+              <S.PlaceOptionButton key={index} onClick={() => setSearchValue(place.name)} >
                 {place.name}
               </S.PlaceOptionButton>
             ))}
           </S.PlaceOptionContainer>
         )}
-        {isMapOpen && searchValue != '' && (
+        {/* {isMapOpen && searchValue != '' && (
           <S.PlaceSubOptionContainer>
             {koreaRegions.map((place, index) => (
-              <S.PlaceSubOptionButton key={index} type="button" onClick={() => isMapClose(place.name)} >
+              <S.PlaceSubOptionButton key={index} onClick={() => isMapClose(place.name)} >
                 {place.name}
               </S.PlaceSubOptionButton>
             ))}
           </S.PlaceSubOptionContainer>
-        )}
+        )} */}
       </S.InputContainer>
     </S.Container>
   )
