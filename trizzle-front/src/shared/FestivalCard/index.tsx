@@ -1,5 +1,6 @@
 import React from "react";
 import * as S from "./FestivalCard.style";
+import DefaultFestival from "../../assets/images/default_festival.jpg"
 
 type FestivalCardProps = {
   festival: festival;
@@ -19,7 +20,7 @@ const FestivalCard: React.FC<FestivalCardProps> = (props: FestivalCardProps) => 
 
   return (
     <S.Container>
-      <S.Tumbnail src={props.festival.image}/>
+      <S.Tumbnail src={props.festival.image ==="" ?DefaultFestival : props.festival.image}/>
       <S.ContentContainer>
         <S.Title>{props.festival.name}</S.Title>
         <S.Date>{props.festival.startDate} ~ {props.festival.endDate}</S.Date>
