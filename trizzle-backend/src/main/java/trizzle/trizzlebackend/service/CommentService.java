@@ -12,11 +12,14 @@ import java.util.*;
 @Service
 public class CommentService {
 
-    private CommentRepository commentRepository;
-    private UserService userService;
+    private final CommentRepository commentRepository;
+    private final UserService userService;
     //게시글 서비스 올라오면 그것도 가져옴
 
-
+    public CommentService(CommentRepository commentRepository, UserService userService) {
+        this.commentRepository = commentRepository;
+        this.userService = userService;
+    }
 
     public Comment insertComment(Comment comment, String accountId) {
         comment.setAccountId(accountId);
@@ -51,7 +54,7 @@ public class CommentService {
             Boolean isMe = false;
             //isLiked랑 postAccountId도 추가해줘야 함
             if(profileImg == null) profileImg = "";
-            if(myAccount == accountId) isMe = true;
+            if(myAccount.equals(accountId)) isMe = true;
             newComment.put("commentData", comment);
             newComment.put("profileImg", profileImg);
             newComment.put("accountId", myAccount);
@@ -65,4 +68,14 @@ public class CommentService {
        List<Comment> comments = commentRepository.findByAccountId(accountId);
        return comments;
    };
+
+   public Comment fixComment(String id) {
+       Comment comment = searchComment(id);
+       Boolean fixed = comment.isFix();
+       if(fixed) comment.setFix(false);
+       else comment.setFix(true);
+
+       return commentRepository.save(comment);
+   };
+
 }

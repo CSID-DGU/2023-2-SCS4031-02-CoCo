@@ -64,11 +64,36 @@ public class CommentController {
         return ResponseEntity.ok().body(comments);
     };
 
-    @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity deleteComment(@PathVariable("commentId") String commentId, HttpServletRequest request) {
-        Comment comment = commentService.searchComment(commentId);
+    @DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity postDeleteComment(@PathVariable("commentId") String commentId, @PathVariable("postId") String postId, HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String token =authorization.split(" ")[1];
+        String accountId = JwtUtil.getAccountId(token, secretKey);
 
+        Comment comment = commentService.searchComment(commentId);
         commentService.deleteComment(comment);
-        return ResponseEntity.ok().body("delete success");
+
+        List<Object> commentLists = commentService.findByPost(postId, accountId);
+        return ResponseEntity.ok().body(commentLists);
+    };
+
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity mypageDeleteComment(@PathVariable("commentId") String commentId, HttpServletRequest request) {
+        String authorization = request.getHeader("Authorization");
+        String token =authorization.split(" ")[1];
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        Comment comment = commentService.searchComment(commentId);
+        commentService.deleteComment(comment);
+
+        List<Comment> commentLists = commentService.findByAccount(accountId);
+        return ResponseEntity.ok().body(commentLists);
+    };
+
+    @PatchMapping("/comments/fix/{commentId}")
+    public ResponseEntity fixComment(@PathVariable("commentId") String commentId) {
+        Comment comment = commentService.fixComment(commentId);
+
+        return ResponseEntity.ok().body(comment);
     };
 }
