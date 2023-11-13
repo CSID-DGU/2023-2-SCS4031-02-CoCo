@@ -7,9 +7,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Post;
+import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.service.PostService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -53,6 +55,16 @@ public class PostController {
         response.put("reviewId", postId);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @GetMapping("/myposts")
+    public ResponseEntity getMyPosts(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        List<Post> myPosts = postService.findMyPosts(accountId);
+        return ResponseEntity.ok()
+                .body(myPosts);
     }
 
 

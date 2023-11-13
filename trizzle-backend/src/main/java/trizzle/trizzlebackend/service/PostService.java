@@ -10,6 +10,7 @@ import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -57,5 +58,10 @@ public class PostService {
     public Post updatePost(Post post, String postId, String accountId) {
         post.setId(postId);
         return insertPost(post, accountId);
+    }
+
+    public List<Post> findMyPosts(String accountId) {
+        List<Post> myPosts = postRepository.findByAccountId(accountId);
+        return myPosts;
     }
 }
