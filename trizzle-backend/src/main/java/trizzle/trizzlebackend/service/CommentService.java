@@ -3,8 +3,10 @@ package trizzle.trizzlebackend.service;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.controller.CommentController;
 import trizzle.trizzlebackend.domain.Comment;
+import trizzle.trizzlebackend.domain.Post;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.repository.CommentRepository;
+import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,10 +17,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     //게시글 서비스 올라오면 그것도 가져옴
+    private final PostService postService;
+    private final ReviewService reviewService;
 
-    public CommentService(CommentRepository commentRepository, UserService userService) {
+    public CommentService(CommentRepository commentRepository, UserService userService, PostService postService, ReviewService reviewService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
+        this.postService = postService;
+        this.reviewService = reviewService;
     }
 
     public Comment insertComment(Comment comment, String accountId) {
@@ -47,6 +53,8 @@ public class CommentService {
     public List<Object> findByPost(String postId, String myAccount) {
         List<Comment> comments = commentRepository.findByPostId(postId);
         List<Object> newComments = new ArrayList<>();
+        String postAccountId = postService.findPost(postId).getAccountId();
+
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             Map<String, Object> newComment = new HashMap<>();
             String accountId = comment.getAccountId();
@@ -59,6 +67,30 @@ public class CommentService {
             newComment.put("profileImg", profileImg);
             newComment.put("accountId", myAccount);
             newComment.put("isMe", isMe);
+            newComment.put("postAccountId", postAccountId);
+            newComments.add(newComment);
+        }
+        return newComments;
+    };
+
+    public List<Object> findByReview(String reviewId, String myAccount) {
+        List<Comment> comments = commentRepository.findByReviewId(reviewId);
+        List<Object> newComments = new ArrayList<>();
+        String postAccountId = reviewService.findReview(reviewId).getAccountId();
+
+        for(Comment comment: comments) { //각 댓글에 profileImg 추가
+            Map<String, Object> newComment = new HashMap<>();
+            String accountId = comment.getAccountId();
+            String profileImg = userService.searchUser(accountId).getProfileImage();
+            Boolean isMe = false;
+            //isLiked랑 postAccountId도 추가해줘야 함
+            if(profileImg == null) profileImg = "";
+            if(myAccount.equals(accountId)) isMe = true;
+            newComment.put("commentData", comment);
+            newComment.put("profileImg", profileImg);
+            newComment.put("accountId", myAccount);
+            newComment.put("isMe", isMe);
+            newComment.put("postAccountId", postAccountId);
             newComments.add(newComment);
         }
         return newComments;

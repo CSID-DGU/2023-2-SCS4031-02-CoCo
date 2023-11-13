@@ -29,9 +29,8 @@ public class CommentController {
 
     @PostMapping("/comments")
     public ResponseEntity postComment(@RequestBody Comment comment, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
-        String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
 
         Comment com = commentService.insertComment(comment, accountId);
         String profileImg = userService.searchUser(accountId).getProfileImage();
@@ -43,31 +42,37 @@ public class CommentController {
         return ResponseEntity.ok().body(response);
     };
 
-    @GetMapping("/{postId}/comments")
+    @GetMapping("/post/{postId}/comments")
     public ResponseEntity getCommentByPost(@PathVariable("postId") String postId, HttpServletRequest request ){
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
-        String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
 
         List<Object> comments = commentService.findByPost(postId, accountId);
         return ResponseEntity.ok().body(comments);
     };
 
+    @GetMapping("/review/{postId}/comments")
+    public ResponseEntity getCommentByReview(@PathVariable("postId") String postId, HttpServletRequest request ){
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        List<Object> comments = commentService.findByReview(postId, accountId);
+        return ResponseEntity.ok().body(comments);
+    };
+
     @GetMapping("/mypage/comments")
     public ResponseEntity getCommentById(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
-        String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
 
         List<Comment> comments = commentService.findByAccount(accountId);
 
         return ResponseEntity.ok().body(comments);
     };
 
-    @DeleteMapping("/{postId}/comments/{commentId}")
+    @DeleteMapping("/post/{postId}/comments/{commentId}")
     public ResponseEntity postDeleteComment(@PathVariable("commentId") String commentId, @PathVariable("postId") String postId, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
 
         Comment comment = commentService.searchComment(commentId);
@@ -77,10 +82,21 @@ public class CommentController {
         return ResponseEntity.ok().body(commentLists);
     };
 
+    @DeleteMapping("/review/{postId}/comments/{commentId}")
+    public ResponseEntity reviewDeleteComment(@PathVariable("commentId") String commentId, @PathVariable("postId") String postId, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        Comment comment = commentService.searchComment(commentId);
+        commentService.deleteComment(comment);
+
+        List<Object> commentLists = commentService.findByReview(postId, accountId);
+        return ResponseEntity.ok().body(commentLists);
+    };
+
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity mypageDeleteComment(@PathVariable("commentId") String commentId, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
 
         Comment comment = commentService.searchComment(commentId);

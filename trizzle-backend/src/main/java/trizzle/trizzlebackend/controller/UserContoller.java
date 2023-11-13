@@ -31,14 +31,9 @@ public class UserContoller {
 
     @GetMapping("")
     public ResponseEntity searchUser(HttpServletRequest request) {
-//        Cookie tokenCookie = WebUtils.getCookie(request, "accessToken");
-//        if(tokenCookie == null) return ResponseEntity.ok("로그인이 필요합니다.");
-
-//        String token = tokenCookie.getValue();
-        // 토큰 파싱
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
+
         User user = userService.searchUser(accountId);
 
         return ResponseEntity.ok().body(user);
@@ -46,8 +41,7 @@ public class UserContoller {
 
     @PutMapping("/{accountId}")
     public ResponseEntity updateUser(@PathVariable("accountId") String accountId ,@RequestBody User user,HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String account = JwtUtil.getAccountId(token, secretKey);
         if(account.equals(accountId)) {
             User updatedUser = userService.updateUser(user);
