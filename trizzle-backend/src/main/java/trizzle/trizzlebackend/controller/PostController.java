@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Post;
-import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.service.PostService;
 
 import java.util.HashMap;
@@ -65,6 +64,30 @@ public class PostController {
         List<Post> myPosts = postService.findMyPosts(accountId);
         return ResponseEntity.ok()
                 .body(myPosts);
+    }
+
+    @DeleteMapping("/myposts/{postId}")
+    public ResponseEntity deleteMyPost(@PathVariable("postId") String postId, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        Post post = postService.searchPost(postId, request);
+
+        if (post != null) {
+            postService.deletePost(postId);
+            String message = "delete success";
+            List<Post> myPosts = postService.findMyPosts(accountId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", message);
+            response.put("myplans", myPosts);
+
+            return ResponseEntity.ok()
+                    .body(response);
+        } else {
+            String message = "wrong approach";
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"" + message + "\"}");
+        }
     }
 
 

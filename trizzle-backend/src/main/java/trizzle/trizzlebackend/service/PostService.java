@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Post;
-import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -63,5 +62,9 @@ public class PostService {
     public List<Post> findMyPosts(String accountId) {
         List<Post> myPosts = postRepository.findByAccountId(accountId);
         return myPosts;
+    }
+
+    public void deletePost(String postId) {
+        postRepository.deleteById(postId);
     }
 }
