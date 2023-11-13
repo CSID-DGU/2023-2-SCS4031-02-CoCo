@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.service.ReviewService;
@@ -34,5 +31,10 @@ public class ReviewController {
         response.put("reviewId",reviewId);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @GetMapping("/{reviewId}")
+    public Review getReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
+        return reviewService.searchReview(reviewId, request);
     }
 }

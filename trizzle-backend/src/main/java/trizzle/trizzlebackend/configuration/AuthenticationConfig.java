@@ -29,7 +29,8 @@ public class AuthenticationConfig {
                                 new AntPathRequestMatcher("/login/kakao"),
                                 new AntPathRequestMatcher("/login/oauth2/code/google"),
                                 new AntPathRequestMatcher("/login/oauth2/code/kakao"),
-                                new AntPathRequestMatcher("/login/additionalUserInfo")
+                                new AntPathRequestMatcher("/login/additionalUserInfo"),
+                                new AntPathRequestMatcher("/reviews/{reviewId}", "GET")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
