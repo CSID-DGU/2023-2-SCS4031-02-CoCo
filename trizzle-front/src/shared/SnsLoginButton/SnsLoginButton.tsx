@@ -6,8 +6,14 @@ import googleImg from '../../assets/images/GoogleLogo.png';
 export const GoogleLogin = () => {
   const [isHovered, setIsHovered] = useState(false);
 
+  const actionLogin = () => {
+    window.location.href = 'http://localhost:8080/login/google';
+  }
+
+
   return (
     <S.GoogleButton
+      onClick={actionLogin}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

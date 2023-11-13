@@ -1,34 +1,35 @@
 import * as S from "./PlanMap.style";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Maps from "../../components/KakaoMap";
-import {AiOutlinePlus} from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
 
 type PlanMapProps = {
   selectDay: number;
-  setSelectDay: (day:number) => void;
+  setSelectDay: (day: number) => void;
   placeList: any[];
   // markerList: any[];
   center: any;
   isSearchModalOpen?: boolean;
-  setIsSearchModalOpen?: (isOpen:boolean) => void;
+  setIsSearchModalOpen?: (isOpen: boolean) => void;
   isKeywordModalOpen?: boolean;
-  setIsKeywordModalOpen?: (isOpen:boolean) => void;
+  setIsKeywordModalOpen?: (isOpen: boolean) => void;
   onDayPlusButtonClick?: () => void;
-  setAddClickDay?: (day:number) => void;
+  setAddClickDay?: (day: number) => void;
   page: string; //page가 add면 overlay버튼이 보이고, detail이면 안보임
+  width?: string; // half 면 반토막 아니면, full screen
 }
 
-const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
+const PlanMap: React.FC<PlanMapProps> = (props: PlanMapProps) => {
   const [markerList, setMarkerList] = useState<any[]>([]);
 
-    useEffect(() => {
+  useEffect(() => {
     if (props.selectDay === 0) {
       const filteredPlaces = props.placeList
         .map((dayPlan) => dayPlan.placeList)
         .reduce((acc, cur) => acc.concat(cur), [])
-        .filter((place:any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
-      
-      const allMarkerList = filteredPlaces.map((place:any) => {
+        .filter((place: any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
+
+      const allMarkerList = filteredPlaces.map((place: any) => {
         return {
           position: { lat: place.y, lng: place.x },
           placeInfo: place,
@@ -37,11 +38,11 @@ const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
           day: props.placeList.findIndex((dayPlan) => dayPlan.placeList.includes(place)) + 1,
         };
       });
-  
+
       setMarkerList(allMarkerList);
     } else {
-      const filteredPlaces = props.placeList[props.selectDay - 1].placeList.filter((place:any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
-      const markerList = filteredPlaces.map((place:any) => {
+      const filteredPlaces = props.placeList[props.selectDay - 1].placeList.filter((place: any) => typeof place === 'object' && place.hasOwnProperty('y') && place.hasOwnProperty('x'));
+      const markerList = filteredPlaces.map((place: any) => {
         return {
           position: { lat: place.y, lng: place.x },
           day: props.selectDay,
@@ -50,7 +51,7 @@ const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
           type: "plan",
         };
       });
-  
+
       setMarkerList(markerList);
     }
 
@@ -84,27 +85,29 @@ const PlanMap: React.FC<PlanMapProps> = (props:PlanMapProps) => {
   }, [props.placeList, props.selectDay]);
 
   return (
-    <S.MapContainer>
-            <S.DaysContainer>
-              <S.Day isClicked={props.selectDay === 0? true : false} onClick={() => props.setSelectDay(0)}>전체</S.Day>
-              {props.placeList.map((dayPlan, index) => (
-                <S.Day key={index} isClicked={props.selectDay === dayPlan.day ? true : false} onClick={() => props.setSelectDay(dayPlan.day)}>{dayPlan.day}일차</S.Day>
-              ))}
-              {props.page === "add" && <S.Day onClick={() => props.onDayPlusButtonClick()} isClicked={false} >추가</S.Day>
-              }
-            </S.DaysContainer>
-            <Maps markerList={markerList} center={props.center} type="plan"/>
-            {props.page === "add" &&
-            <S.OverlayButtonContainer>
-                <S.OverlayButton onClick={() => {props.setIsSearchModalOpen(!props.isSearchModalOpen); props.setAddClickDay(props.selectDay)} } type="button">장소 추가
-                  <AiOutlinePlus color="#FCC400"/>
-                </S.OverlayButton>
-                <S.OverlayButton onClick={() => {props.setIsKeywordModalOpen(!props.isKeywordModalOpen); props.setAddClickDay(props.selectDay)} } type="button">키워드 추가
-                  <AiOutlinePlus color="#FCC400"/>
-                </S.OverlayButton>
-              </S.OverlayButtonContainer>
-            }
-          </S.MapContainer>
+    <S.MapContainer width={props.width}>
+      <S.DaysContainer>
+        <S.Day isClicked={props.selectDay === 0 ? true : false} onClick={() => props.setSelectDay(0)}>전체</S.Day>
+        {props.placeList.map((dayPlan, index) => (
+          <S.Day key={index} isClicked={props.selectDay === dayPlan.day ? true : false} onClick={() => props.setSelectDay(dayPlan.day)}>{dayPlan.day}일차</S.Day>
+        ))}
+        {props.page === "add" && <S.Day onClick={() => props.onDayPlusButtonClick()} isClicked={false} >추가</S.Day>
+        }
+      </S.DaysContainer>
+      <Maps markerList={markerList} center={props.center} type="plan" />
+      {
+        props.page === "add" &&
+        <S.OverlayButtonContainer>
+          <S.OverlayButton onClick={() => { props.setIsSearchModalOpen(!props.isSearchModalOpen); props.setAddClickDay(props.selectDay) }} type="button">장소 추가
+            <AiOutlinePlus color="#FCC400" />
+          </S.OverlayButton>
+          <S.OverlayButton onClick={() => { props.setIsKeywordModalOpen(!props.isKeywordModalOpen); props.setAddClickDay(props.selectDay) }} type="button">키워드 추가
+            <AiOutlinePlus color="#FCC400" />
+          </S.OverlayButton>
+        </S.OverlayButtonContainer>
+      }
+    </S.MapContainer >
+
   )
 };
 

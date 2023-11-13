@@ -279,6 +279,15 @@ const GlobalStyle = css`
     border-collapse: collapse;
     border-spacing: 0;
   }
+
+  ::-webkit-scrollbar {
+    width: 0.5rem; /* 스크롤바의 너비 */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #D9D9D9; /* 스크롤바 색상 */
+    border-radius: 0.2rem; /* 스크롤바의 둥근 테두리 */
+  }
 `;
 
 export default GlobalStyle;
