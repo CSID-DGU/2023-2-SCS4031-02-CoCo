@@ -58,9 +58,9 @@ public class PlanService {
     }
 
     /*일정 수정하기*/
-    public Plan updatePlan(Plan plan, String id, String acccountId){
+    public Plan updatePlan(Plan plan, String id, String accountId){
         plan.setId(id);
-        return insertPlan(plan, acccountId);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
+        return insertPlan(plan, accountId);    // insertPlan 재활용할지 아니면 insertPlan에서는 insert, 여기서는 save사용할지
     }
 
     public List<Plan> findMyPlans(String accountId) {
