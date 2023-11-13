@@ -10,6 +10,7 @@ import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.service.ReviewService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,8 +36,10 @@ public class ReviewController {
     }
 
     @GetMapping("/{reviewId}")
-    public Review getReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
-        return reviewService.searchReview(reviewId, request);
+    public ResponseEntity getReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
+        Review review = reviewService.searchReview(reviewId, request);
+        return ResponseEntity.ok()
+                .body(review);
     }
 
     @PutMapping("/{reviewId}")
@@ -50,6 +53,16 @@ public class ReviewController {
         response.put("reviewId",reviewId);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @GetMapping("/myreviews")
+    public ResponseEntity getMyReviews(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        List<Review> myReviews = reviewService.findMyReviews(accountId);
+        return ResponseEntity.ok()
+                .body(myReviews);
     }
 
 

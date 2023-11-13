@@ -8,14 +8,17 @@ import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Place;
 import trizzle.trizzlebackend.domain.Review;
+import trizzle.trizzlebackend.repository.ReviewRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ReviewService {
-    private final MongoRepository<Review, String> mongoRepository;
+
+    private final ReviewRepository reviewRepository;
     private final PlaceService placeService;
     @Value("${jwt.secret}")
     private String secretKey;
@@ -31,11 +34,11 @@ public class ReviewService {
             placeService.savePlace(place);
         }
 
-        return mongoRepository.save(review);
+        return reviewRepository.save(review);
     }
 
     public Review searchReview(String reviewId, HttpServletRequest request) {
-        Optional<Review> reviewOptional = mongoRepository.findById((reviewId));
+        Optional<Review> reviewOptional = reviewRepository.findById((reviewId));
         if (reviewOptional.isPresent()) {   // reviewId에 해당하는 review가 있을 경우
             Review review = reviewOptional.get();
 
@@ -64,6 +67,11 @@ public class ReviewService {
     public Review updateReview(Review reivew, String reveiwId, String accountId) {
         reivew.setId(reveiwId);
         return insertReview(reivew, accountId);
+    }
+
+    public List<Review> findMyReviews(String accountId) {
+        List<Review> myReviews = reviewRepository.findByAccountId(accountId);
+        return myReviews;
     }
 
 }
