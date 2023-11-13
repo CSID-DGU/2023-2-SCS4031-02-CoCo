@@ -21,6 +21,20 @@ export const Thumbnail = styled.img`
   border: 1px solid #f2f2f2;
 `
 
+export const NonoThumbnailContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 11rem;
+  height: 11rem;
+  background-color: #FFF7DA;
+`
+
+export const NonoThumbnail = styled.img`
+  width: 20%;
+  height: 20%;
+`
+
 export const LeftContainer = styled.div`
   width: 57rem;
   height: 11rem;

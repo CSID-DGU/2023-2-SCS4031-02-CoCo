@@ -46,3 +46,9 @@ export type PlaceList = {
   placeInfoList: PlaceInfoList[];
 };
 
+
+export type StaticMaspProps = {
+  center: string;
+  width: string;
+  height: string;
+}
