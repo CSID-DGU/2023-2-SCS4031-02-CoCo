@@ -53,4 +53,9 @@ public class PostService {
             return null;
         }
     }
+
+    public Post updatePost(Post post, String postId, String accountId) {
+        post.setId(postId);
+        return insertPost(post, accountId);
+    }
 }

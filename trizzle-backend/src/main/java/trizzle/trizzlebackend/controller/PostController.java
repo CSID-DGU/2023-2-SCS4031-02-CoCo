@@ -42,5 +42,18 @@ public class PostController {
                 .body(post);
     }
 
+    @PutMapping("/{postId}")
+    public ResponseEntity updatePost(@RequestBody Post post, @PathVariable("postId") String id, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        String postId = postService.updatePost(post, id, accountId).getId();
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "save success");
+        response.put("reviewId", postId);
+        return ResponseEntity.ok()
+                .body(response);
+    }
+
 
 }
