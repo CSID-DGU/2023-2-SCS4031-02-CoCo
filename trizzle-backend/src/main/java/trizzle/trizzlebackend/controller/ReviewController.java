@@ -50,7 +50,7 @@ public class ReviewController {
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "save success");
-        response.put("reviewId",reviewId);
+        response.put("reviewId", reviewId);
         return ResponseEntity.ok()
                 .body(response);
     }
@@ -65,5 +65,27 @@ public class ReviewController {
                 .body(myReviews);
     }
 
+    @DeleteMapping("/myreviews/{reviewId}")
+    public ResponseEntity deleteMyReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        Review review = reviewService.searchReview(reviewId, request);
 
+        if (review != null) {
+            reviewService.deleteReview(reviewId);
+            String message = "delete success";
+            List<Review> myReviews = reviewService.findMyReviews(accountId);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", message);
+            response.put("myplans", myReviews);
+
+            return ResponseEntity.ok()
+                    .body(response);
+        } else {
+            String message = "wrong approach";
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"" + message + "\"}");
+        }
+    }
 }
