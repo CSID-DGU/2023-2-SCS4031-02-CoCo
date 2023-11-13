@@ -116,7 +116,7 @@ export default function AddPlacePage({ userContent }: AddPlacePageProps) {
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
           <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} />
-
+          
         </S.FormContainer>
       </form>
       {
