@@ -66,3 +66,15 @@ export const InfoWindowTitle = styled.div`
   display: flex;
   align-items: center;
 `
+
+export const InforMapWrapper = styled.div`
+  width: 30rem;
+  height: 20rem;
+  border: 2px solid #FFDC61;
+  position: relative;
+`
+
+export const InforMap = styled(Map)`
+  width: 100%;
+  height: 100%;
+`

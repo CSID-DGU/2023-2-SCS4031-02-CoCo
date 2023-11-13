@@ -10,6 +10,8 @@ import MainLogin from '../pages/LoginPage/MainLogin';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
 import EditPlanPage from '../pages/AddPlan/ModPlan';
 import UserInfoEdit from '../pages/UserInfoEdit';
+import SearchPlace from '../pages/SearchPlace/SearchPlace';
+import SearchPlan from '../pages/SearchPlan/SearchPlan';
 import AddPostPlan from '../pages/AddPostPlan/AddPostPlan';
 import PostPlan from '../pages/PostPlan/PostPlan';
 import GoogleRedirectPage from '../pages/GoogleRedirectPage/GoogleRedirectPage';
@@ -25,11 +27,14 @@ const Router = () => {
         <Route path="/mypage/plans/add" element={<AddPlanPage />} />
         <Route path="/mypage/plans/edit/:id" element={<EditPlanPage />} />
 
+        <Route path='/Search/:place/places' element={<SearchPlace />} />
+        <Route path='/Search/:plan/plans' element={<SearchPlan />} />
+
         <Route path='post/plans/add' element={<AddPostPlan />} />
         <Route path='/post/plan/:id' element={<PostPlan />} />
 
-        <Route path="/post/places/:id"  element={<PostPlace />} />
-        <Route path="/post/places/secret/:id"  element={<PostPlace />} />
+        <Route path="/post/places/:id" element={<PostPlace />} />
+        <Route path="/post/places/secret/:id" element={<PostPlace />} />
 
         <Route path="/myfeed" element={<Myfeed />} />
         <Route path="/myfeed/plans" element={<PlanList />} />
