@@ -61,6 +61,9 @@ public class ReviewService {
         }
     }
 
-
+    public Review updateReview(Review reivew, String reveiwId, String accountId) {
+        reivew.setId(reveiwId);
+        return insertReview(reivew, accountId);
+    }
 
 }
