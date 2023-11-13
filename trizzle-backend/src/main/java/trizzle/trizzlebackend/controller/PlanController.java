@@ -26,8 +26,7 @@ public class PlanController {
 
     @PostMapping("")
     public ResponseEntity createPlans(@RequestBody Plan plan, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
 
         String planId = planService.insertPlan(plan, accountId).getId(); // plan 저장할 때 user의 acount_id도 저장,   plan_id 값 반환
@@ -45,8 +44,7 @@ public class PlanController {
 
     @PutMapping("/{planId}")
     public ResponseEntity updatePlan(@RequestBody Plan plan, @PathVariable("planId") String id, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token =authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);  // token에서 account_id 가져오기
 
         String planId = planService.updatePlan(plan, id, accountId).getId();
@@ -59,8 +57,7 @@ public class PlanController {
 
     @GetMapping("/myplans") //내 일정 불러오기
     public ResponseEntity getMyPlans(HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
 
         List<Plan> myPlans = planService.findMyPlans(accountId);
@@ -70,8 +67,7 @@ public class PlanController {
 
     @DeleteMapping("/myplans/{planId}") // 일정 삭제하기
     public ResponseEntity deleteMyPlan(@PathVariable("planId") String planId, HttpServletRequest request) {
-        String authorization = request.getHeader("Authorization");
-        String token = authorization.split(" ")[1];
+        String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
         Plan plan = planService.searchPlan(planId);
 

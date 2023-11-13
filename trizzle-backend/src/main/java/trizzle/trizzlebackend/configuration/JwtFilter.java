@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,15 +28,15 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-            // header에 token 없거나 Bearer 로 보내지 않으면 block
-            if (authorization == null || !authorization.startsWith("Bearer ")) {
-                throw new ServletException("Authorization 헤더가 잘못되었습니다.");
+            //token 꺼내기
+            String token = JwtUtil.getAccessTokenFromCookie(request);
+
+            // cookie에 token 없을경우 block
+            if (token == null) {
+                throw new ServletException("토큰이 존재하지 않습니다.");
             }
 
-            // Token 꺼내기
-            String token = authorization.split(" ")[1];
             // Token Expired 되었는지 여부
             if (JwtUtil.isExpired(token, secretKey)) {
                 throw new ServletException("토큰이 만료되었습니다.");
@@ -57,8 +56,6 @@ public class JwtFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
-
-
 
         filterChain.doFilter(request, response);
     }
