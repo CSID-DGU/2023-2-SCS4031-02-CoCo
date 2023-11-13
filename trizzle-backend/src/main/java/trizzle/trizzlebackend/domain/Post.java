@@ -18,5 +18,6 @@ public class Post {
     private String postTitle;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime postRegistrationDate;
+    private boolean postSecret;
     private Plan plan;
 }
