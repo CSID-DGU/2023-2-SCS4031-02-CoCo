@@ -7,7 +7,7 @@ export const ParentCommentContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
-  margin: 0 2rem;
+  margin: 0 1.5rem;
 `
 
 export const ChildMoreButton = styled.div`

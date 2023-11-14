@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const Container = styled.div`
   width: 100%;
   height: auto;
-  padding: 1rem 1.5rem;
+  padding: 1rem 0.5rem;
   display: flex;
   justify-content: flex-start;
 `
@@ -18,13 +18,11 @@ export const ContentContainer = styled.div`
 ` 
 
 export const TextArea = styled.textarea`
-  width: 64rem;
-  height: auto;
-  min-height: 1.5rem;
-  max-height: 10rem;
+  width: 66rem;
+  height: fit-content;
   word-wrap: break-word;
   border: none;
-  border-bottom: 1px solid #404040;
+  border-bottom: 1px solid #bdbdbd;
   font-size: 0.9rem;
   line-height: 1.1rem;
   font-weight: 400;
