@@ -6,7 +6,8 @@ import * as S from "./Paging.style";
 
 const Paging:React.FC<PagingProps> = (props: PagingProps) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [currentItems, setCurrentItems] = useState(props.items.slice(0, props.perPage));
+  const [allItems, setAllItems] = useState<any[]>([]);
+  const [currentItems, setCurrentItems] = useState<any[]>([]);
   const totalPages = Math.ceil(props.items.length / props.perPage);
 
   const handlePageChange = (page:number) => {
@@ -35,10 +36,12 @@ const Paging:React.FC<PagingProps> = (props: PagingProps) => {
     const indexOfLastItem = currentPage * props.perPage;
     const indexOfFirstItem = indexOfLastItem - props.perPage;
     setCurrentItems(props.items.slice(indexOfFirstItem, indexOfLastItem));
-  },[currentPage]);
+    setAllItems(props.items); // 전체 아이템 업데이트
+  }, [currentPage, props.items, props.perPage]);
+  
 
 
-  if(props.type === "horizontalPlan") {
+  if(props.type === "horizontalPlan" && currentItems &&currentItems.length > 0) {
   return (
     <S.VerticalContainer>
       <S.HorizontalContainer>
@@ -55,7 +58,7 @@ const Paging:React.FC<PagingProps> = (props: PagingProps) => {
         </S.PageButtonContainer>
       </S.VerticalContainer>
     );
-  } else if(props.type === "verticalComment") {
+  } else if(props.type === "verticalComment" && currentItems && currentItems.length > 0) {
     return (
       <S.VerticalContainer>
         {/* 현재 페이지의 컴포넌트들을 표시 */}

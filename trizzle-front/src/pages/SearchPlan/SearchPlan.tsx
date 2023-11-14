@@ -4,10 +4,11 @@ import React, { useState } from "react";
 import * as S from './SearchPlan.styles';
 import Page from "../Page";
 import Maps from "../../components/KakaoMap";
-import img from 'C:/Users/ajtwo/OneDrive/바탕 화면/image19.png'
+import img from '../../assets/images/default_festival.jpg'
 import SearchBar from "../../components/SearchBar";
 import PlanCard from "../../components/PlanCard";
 import { koreaRegions } from "../../utils/Data/mapData";
+import { useParams } from "react-router-dom";
 
 const regionInformation = {
   region: "서울특별시",
@@ -19,7 +20,7 @@ const planContainer = [{
   planId: 1235105,
   thumbnail: img,
   title: '나만의 사랑',
-  region: '부산광역시',
+  region: '서울특별시',
   startDate: '2023-10-10',
   endDate: '2023-10-13',
   likeCount: 12,
@@ -161,17 +162,15 @@ const planContainer = [{
 
 
 const SearchPlan = () => {
-  const [region, useResgion] = useState<any>({ lat: 37.5665, lng: 126.9780 })
-  const filteredCenters = koreaRegions.flatMap((region) => {
-    const matchingRegions = planContainer.filter((value) => value.region === region.name);
-    return matchingRegions.map((matchingRegion) => matchingRegion.center);
-  });
+  const {plan} = useParams<any>();
+  const [region, setResgion] = useState<any>(koreaRegions.filter((region) => region.name === plan)[0]);
+  const [planList, setPlanList] = useState<any>(planContainer);
 
   return (
     <Page headersProps={{ isHome: false, isLogin: true }}>
-      <SearchBar />
+      <SearchBar type="normal"/>
       <S.RegionContainer>
-        <Maps center={region} type="infor" />
+        <Maps center={region.center} type="infor" />
         <S.RegionInforContainer>
           <S.RegionName>{regionInformation.region}</S.RegionName>
           <S.RegionInfor>{regionInformation.information}</S.RegionInfor>
@@ -180,14 +179,14 @@ const SearchPlan = () => {
 
       <S.SearchContainer>
         <S.SearchText>
-          &#123; 검색결과 &#125;
+          {region.name}
         </S.SearchText>
-        에 대한 다른 일정 추천 결과 입니다.
+        에 대한 일정 검색 결과입니다.
       </S.SearchContainer>
 
       <S.SearchResultContainer>
         <S.PlanCardContainer>
-          {planContainer.map((plan, index) => (
+          {planList.map((plan:any, index:number) => (
             <PlanCard
               key={index}
               userId={plan.userId}

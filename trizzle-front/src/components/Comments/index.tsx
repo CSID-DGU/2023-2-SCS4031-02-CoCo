@@ -10,20 +10,19 @@ import Menu from '../Menu';
 
 const Comment:React.FC<CommentsProps> = (props: CommentsProps) => { 
   const [menuItems, setMenuItems] = useState<any[]>([]);
-
   useEffect(() => {
     let menuItem:any[] = []; 
-    if(props.commentData.isMe && props.commentData.postCommentData) {
-      menuItem.push({content: "삭제", onClick: () => props.onDelete(props.commentData.postCommentData.id), isDelete: true});
+    if(props.commentData.isMe && props.commentData.commentData) {
+      menuItem.push({content: "삭제", onClick: () => props.onDelete(props.commentData.commentData.id), isDelete: true});
     } 
-    if(props.commentData.postCommentData && props.commentData.accountId === props.commentData.postAccountId){
-      menuItem.push({content: props.commentData.postCommentData.fix ? "고정 해제" : "고정", onClick: () => props.onFix(props.commentData.postCommentData.id), isDelete: false});
+    if(props.commentData.commentData && props.commentData.accountId === props.commentData.postAccountId){
+      menuItem.push({content: props.commentData.commentData.fix ? "고정 해제" : "고정", onClick: () => props.onFix(props.commentData.commentData.id), isDelete: false});
     }
 
     setMenuItems(menuItem);
   }, []);
     
-    if(props.commentData.postCommentData && props.commentData.postCommentData.isDeleted){
+    if(props.commentData.commentData && props.commentData.commentData.isDeleted){
       return (
         <S.PostCommentContainer>
           <S.PostCommentContentBody>
@@ -31,10 +30,10 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           </S.PostCommentContentBody>
         </S.PostCommentContainer>
       )
-    }else if(props.commentData.postCommentData) {
+    }else if(props.commentData.commentData) {
       return (
         <S.PostCommentContainer>
-          {props.commentData.postCommentData.fix && 
+          {props.commentData.commentData.fix && 
           <S.Fixed>
             <BsFillPinAngleFill size="0.8rem" color="#C5C5C5"/>
             고정됨
@@ -44,16 +43,16 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           <ProfileImage type='small'/>
           <S.PostCommentContent>
             <S.PostCommentContentHeader>
-              {props.commentData.postCommentData.nickname}
-              <S.PostCommentContentDate>{props.commentData.postCommentData.registrationDate}</S.PostCommentContentDate>
+              {props.commentData.nickname}
+              <S.PostCommentContentDate>{props.commentData.commentData.registrationDate}</S.PostCommentContentDate>
             </S.PostCommentContentHeader>
             <S.PostCommentContentBody>
-              {props.commentData.postCommentData.content}
+              {props.commentData.commentData.commentContent}
             </S.PostCommentContentBody>
             <S.PostCommentContentFooter>
-              {props.commentData.isLiked ? <BiSolidLike size="1rem" onClick={() => props.onLike(props.commentData.postCommentData.id)}/> : <BiLike size="1rem" onClick={() => props.onLike(props.commentData.postCommentData.id)}/>}
-              <S.PostCommentContentFooterLike>{props.commentData.postCommentData.likeCount}</S.PostCommentContentFooterLike>
-              {props.commentData.postCommentData.parentId === null && <S.PostCommentContentFooterReply onClick={() => props.onChild(props.commentData.postCommentData.id)}>답글</S.PostCommentContentFooterReply>}
+              {props.commentData.isLiked ? <BiSolidLike size="1rem" onClick={() => props.onLike(props.commentData.commentData.id)}/> : <BiLike size="1rem" onClick={() => props.onLike(props.commentData.commentData.id)}/>}
+              <S.PostCommentContentFooterLike>{props.commentData.commentData.likeCount}</S.PostCommentContentFooterLike>
+              {props.commentData.commentData.parentId === null && <S.PostCommentContentFooterReply onClick={() => props.onChild(props.commentData.commentData.id)}>답글</S.PostCommentContentFooterReply>}
             </S.PostCommentContentFooter>
           </S.PostCommentContent>
         </S.PostCommentContainer>
@@ -92,7 +91,9 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
         )}
       </S.ParentCommentContainer>
     ): (
-      <Comment {...props} />
+      <>
+      {!props.commentData.commentData.isDeleted && <Comment {...props} /> }
+      </>
     )
     }
   </>

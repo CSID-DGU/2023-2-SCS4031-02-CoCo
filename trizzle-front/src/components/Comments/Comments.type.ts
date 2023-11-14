@@ -8,11 +8,12 @@ export type CommentsProps = {
 };
 
 type Comment = {
-  postCommentData : commentData;
+  commentData : commentData;
   postAccountId : string;
   profileImg : any;
   accountId : string;
   isLiked? : boolean | false;
+  nickname : string;
   isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
   childComment?: any[];
 }
@@ -31,7 +32,7 @@ type commentData = {
   accountId : string; // 댓글 작성자의 아이디
   nickname : string;
   parentId : any;
-  content : string;
+  commentContent : string;
   postId: string;
   postName : string;
   registrationDate : string;

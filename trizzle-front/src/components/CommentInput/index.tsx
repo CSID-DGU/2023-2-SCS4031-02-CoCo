@@ -13,11 +13,11 @@ const CommentInput: React.FC<CommentInputProps> = (props: CommentInputProps) => 
             placeholder={props.placeholder}
             value={props.value}
             onChange={props.onChange}
-            name={props.name}
-            id={props.id}
             />
-          <S.SaveButton onClick={props.onSubmit} disabled={props.disabled}>저장</S.SaveButton>
+          <S.SaveButton onClick={props.onSubmit} disabled={props.disabled}>작성</S.SaveButton>
         </S.ContentContainer>
       </S.Container>
     )
 };
+
+export default CommentInput;

@@ -6,6 +6,7 @@ export const ParentCommentContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin: 0 1rem;
 `
 
 export const ChildMoreButton = styled.div`
@@ -40,7 +41,8 @@ export const ChildCommentContainer = styled.div`
 
 export const PostCommentContainer = styled.div`
   width: 100%;
-  padding: 2rem 1rem 1rem 1rem;
+  padding: 0.5rem;
+  margin: 0 1rem;
   height: auto;
   display: flex;
   align-items: flex-start;
@@ -59,8 +61,8 @@ export const PostCommentContent = styled.div`
 
 export const PostCommentContentHeader = styled.div`
   width: 100%;
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 500;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
@@ -114,11 +116,8 @@ export const PostCommentContentFooterReply = styled.div`
 `
 
 export const Fixed = styled.div`
-  position: absolute;
   width: auto;
   height: 1rem;
-  top: 0.5rem;
-  left: 1rem;
   font-size: 0.9rem;
   font-weight: 400;
   color: #C5C5C5;

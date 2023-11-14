@@ -8,6 +8,6 @@ export const SectionTitle = styled.div`
   align-items: center;
   font-size: 1.5rem;
   font-weight: 400;
-  margin-top: 7rem;
+  margin-top: 8rem;
   color: #000;
 `

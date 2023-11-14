@@ -64,14 +64,9 @@ export const useAsync = <D = any>({
     error: null
   });
 
-  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
-
   const fetchData = async (url?: string, method?:string, data?:any) => {
   
     if (url === "") return;
-
-    const token = cookies.accessToken? cookies.accessToken : import.meta.env.VITE_TEST_TOKEN;
-    console.log(token);
     dispatch({ type: "LOADING" });
     try {
       const response = await axios({
@@ -81,7 +76,6 @@ export const useAsync = <D = any>({
         withCredentials:true,
         headers: {
           "Content-Type": "application/json",
-          "Authorization" : `Bearer ${token}`
         },
       });
       dispatch({ type: "SUCCESS", data: response.data });
