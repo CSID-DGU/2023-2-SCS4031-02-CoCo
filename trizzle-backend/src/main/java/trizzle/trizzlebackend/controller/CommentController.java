@@ -44,69 +44,58 @@ public class CommentController {
         }
     };
 
-    @GetMapping("/post/{postId}/comments")
-    public ResponseEntity getCommentByPost(@PathVariable("postId") String postId, HttpServletRequest request ){
+    public ResponseEntity getComments(@RequestParam(value = "postId", required = false) String postId,
+                                      @RequestParam(value = "reviewId", required = false) String reviewId,
+                                      HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
 
-        List<Object> comments = commentService.findByPost(postId, accountId);
-        return ResponseEntity.ok().body(comments);
-    };
-
-    @GetMapping("/review/{postId}/comments")
-    public ResponseEntity getCommentByReview(@PathVariable("postId") String postId, HttpServletRequest request ){
-        String token = JwtUtil.getAccessTokenFromCookie(request);
-        String accountId = JwtUtil.getAccountId(token, secretKey);
-
-        List<Object> comments = commentService.findByReview(postId, accountId);
-        return ResponseEntity.ok().body(comments);
-    };
-
-    @GetMapping("/mypage/comments")
-    public ResponseEntity getCommentById(HttpServletRequest request) {
-        String token = JwtUtil.getAccessTokenFromCookie(request);
-        String accountId = JwtUtil.getAccountId(token, secretKey);
-
-        List<Comment> comments = commentService.findByAccount(accountId);
+        List<Object> comments;
+        if (postId != null) {
+            comments = commentService.findByPost(postId, accountId);
+        } else if (reviewId != null) {
+            comments = commentService.findByReview(reviewId, accountId);
+        } else {
+            List<Comment> userComments = commentService.findByAccount(accountId);
+            return ResponseEntity.ok().body(userComments);
+        }
 
         return ResponseEntity.ok().body(comments);
-    };
+    }
 
-    @DeleteMapping("/post/{postId}/comments/{commentId}")
-    public ResponseEntity postDeleteComment(@PathVariable("commentId") String commentId, @PathVariable("postId") String postId, HttpServletRequest request) {
+
+    @DeleteMapping("/{type}/{postId}/comments/{commentId}")
+    public ResponseEntity deleteComment(
+            @PathVariable("type") String type,
+            @PathVariable("postId") String postId,
+            @PathVariable("commentId") String commentId,
+            HttpServletRequest request) {
+
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
 
         Comment comment = commentService.searchComment(commentId);
         commentService.deleteComment(comment);
 
-        List<Object> commentLists = commentService.findByPost(postId, accountId);
+        List<Object> commentLists;
+
+        switch (type) {
+            case "post":
+                commentLists = commentService.findByPost(postId, accountId);
+                break;
+            case "review":
+                commentLists = commentService.findByReview(postId, accountId);
+                break;
+            case "mypage":
+                List<Comment> commentList = commentService.findByAccount(accountId);
+                return ResponseEntity.ok().body(commentList);
+            default:
+                return ResponseEntity.badRequest().body("Invalid comment type");
+        }
+
         return ResponseEntity.ok().body(commentLists);
-    };
+    }
 
-    @DeleteMapping("/review/{postId}/comments/{commentId}")
-    public ResponseEntity reviewDeleteComment(@PathVariable("commentId") String commentId, @PathVariable("postId") String postId, HttpServletRequest request) {
-        String token = JwtUtil.getAccessTokenFromCookie(request);
-        String accountId = JwtUtil.getAccountId(token, secretKey);
-
-        Comment comment = commentService.searchComment(commentId);
-        commentService.deleteComment(comment);
-
-        List<Object> commentLists = commentService.findByReview(postId, accountId);
-        return ResponseEntity.ok().body(commentLists);
-    };
-
-    @DeleteMapping("/comments/{commentId}")
-    public ResponseEntity mypageDeleteComment(@PathVariable("commentId") String commentId, HttpServletRequest request) {
-        String token = JwtUtil.getAccessTokenFromCookie(request);
-        String accountId = JwtUtil.getAccountId(token, secretKey);
-
-        Comment comment = commentService.searchComment(commentId);
-        commentService.deleteComment(comment);
-
-        List<Comment> commentLists = commentService.findByAccount(accountId);
-        return ResponseEntity.ok().body(commentLists);
-    };
 
     @PatchMapping("/comments/fix/{commentId}")
     public ResponseEntity fixComment(@PathVariable("commentId") String commentId) {
