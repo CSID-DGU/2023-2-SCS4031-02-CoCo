@@ -1,14 +1,16 @@
 package trizzle.trizzlebackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Document(collection = "comments")
 public class Comment {
-
+    @Id
     private String id;
     private String accountId;
     private String postId;
@@ -20,6 +22,10 @@ public class Comment {
     private boolean fix;
     private Integer commentLike;
     private boolean isDeleted;
+    @Field("postInfo")
+    private List<Post> postInfo;
+    @Field("reviewInfo")
+    private List<Review> reviewInfo;
 
     public String getId() {
         return id;
@@ -101,4 +107,19 @@ public class Comment {
         this.reviewId = reviewId;
     }
 
+    public List<Post> getPostInfo() {
+        return postInfo;
+    }
+
+    public void setPostInfo(List<Post> postInfo) {
+        this.postInfo = postInfo;
+    }
+
+    public List<Review> getReviewInfo() {
+        return reviewInfo;
+    }
+
+    public void setReviewInfo(List<Review> reviewInfo) {
+        this.reviewInfo = reviewInfo;
+    }
 }

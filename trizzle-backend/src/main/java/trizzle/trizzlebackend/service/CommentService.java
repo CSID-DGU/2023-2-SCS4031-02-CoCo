@@ -1,6 +1,5 @@
 package trizzle.trizzlebackend.service;
 
-import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
@@ -62,6 +61,7 @@ public class CommentService {
         Map<String, Object> newComment = new HashMap<>();
         String accountId = comment.getAccountId();
         String profileImg = userService.searchUser(accountId).getProfileImage();
+        String userNick = userService.searchUser(accountId).getNickname();
         Boolean isMe = false;
         //isLiked랑 postAccountId도 추가해줘야 함
         if (profileImg == null) profileImg = "";
@@ -70,6 +70,7 @@ public class CommentService {
         newComment.put("profileImg", profileImg);
         newComment.put("accountId", myAccount);
         newComment.put("isMe", isMe);
+        newComment.put("nickname", userNick);
         newComment.put("postAccountId", postAccountId);
 
         return newComment;
@@ -82,7 +83,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null) {
+            if(parentId == null && !comment.getIsDeleted()) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -112,7 +113,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null) {
+            if(parentId == null && !comment.getIsDeleted()) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -124,7 +125,6 @@ public class CommentService {
         return newComments;
     };
 
-    @Lookup
    public List<Comment> findByAccount(String accountId) {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("accountId").is(accountId)),

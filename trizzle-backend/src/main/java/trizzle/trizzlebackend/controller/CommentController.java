@@ -32,18 +32,22 @@ public class CommentController {
             String accountId = JwtUtil.getAccountId(token, secretKey);
 
             Comment com = commentService.insertComment(comment, accountId);
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "success");
             List<Object> comments = new ArrayList<>();
             if(com.getReviewId() == null) {
                 comments = commentService.findByPost(com.getPostId(), accountId);
             } else {
                 comments = commentService.findByReview(com.getReviewId(), accountId);
             }
-            return ResponseEntity.ok().body(comments);
+            response.put("comments", comments);
+            return ResponseEntity.ok().body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred.");
         }
     };
 
+    @GetMapping("/comments")
     public ResponseEntity getComments(@RequestParam(value = "postId", required = false) String postId,
                                       @RequestParam(value = "reviewId", required = false) String reviewId,
                                       HttpServletRequest request) {
@@ -97,10 +101,23 @@ public class CommentController {
     }
 
 
-    @PatchMapping("/comments/fix/{commentId}")
-    public ResponseEntity fixComment(@PathVariable("commentId") String commentId) {
+    @PatchMapping("/{type}/comments/fix/{commentId}")
+    public ResponseEntity fixComment(@PathVariable("type") String type,@PathVariable("commentId") String commentId, HttpServletRequest request) {
         Comment comment = commentService.fixComment(commentId);
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        List<Object> commentLists = new ArrayList<>();
 
-        return ResponseEntity.ok().body(comment);
+        switch (type) {
+            case "post":
+                String postId = comment.getPostId();
+                commentLists = commentService.findByPost(postId, accountId);
+                break;
+            case "review":
+                String reviewId = comment.getReviewId();
+                commentLists = commentService.findByReview(reviewId, accountId);
+                break;
+        }
+        return ResponseEntity.ok().body(commentLists);
     };
 }
