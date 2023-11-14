@@ -1,5 +1,6 @@
 package trizzle.trizzlebackend.controller;
 
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -7,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Comment;
+import trizzle.trizzlebackend.error.TokenError;
 import trizzle.trizzlebackend.service.CommentService;
 import trizzle.trizzlebackend.service.UserService;
 
@@ -53,6 +55,25 @@ public class CommentController {
                                       HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
+
+            List<Object> comments;
+            if (postId != null) {
+                comments = commentService.findByPost(postId, accountId);
+            } else if (reviewId != null) {
+                comments = commentService.findByReview(reviewId, accountId);
+            } else {
+                List<Comment> userComments = commentService.findByAccount(accountId);
+                return ResponseEntity.ok().body(userComments);
+            }
+
+            return ResponseEntity.ok().body(comments);
+    }
+
+    @GetMapping("/comments/public")
+    public ResponseEntity getPublicComments(@RequestParam(value = "postId", required = false) String postId,
+                                      @RequestParam(value = "reviewId", required = false) String reviewId,
+                                      HttpServletRequest request) {
+        String accountId = "";
 
         List<Object> comments;
         if (postId != null) {
