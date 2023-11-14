@@ -2,6 +2,7 @@ package trizzle.trizzlebackend.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
@@ -9,10 +10,7 @@ import trizzle.trizzlebackend.domain.Comment;
 import trizzle.trizzlebackend.service.CommentService;
 import trizzle.trizzlebackend.service.UserService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 public class CommentController {
@@ -29,17 +27,21 @@ public class CommentController {
 
     @PostMapping("/comments")
     public ResponseEntity postComment(@RequestBody Comment comment, HttpServletRequest request) {
-        String token = JwtUtil.getAccessTokenFromCookie(request);
-        String accountId = JwtUtil.getAccountId(token, secretKey);
+        try {
+            String token = JwtUtil.getAccessTokenFromCookie(request);
+            String accountId = JwtUtil.getAccountId(token, secretKey);
 
-        Comment com = commentService.insertComment(comment, accountId);
-        String profileImg = userService.searchUser(accountId).getProfileImage();
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", "save success");
-        response.put("comment", com);
-        response.put("profileImg", profileImg);
-        return ResponseEntity.ok().body(response);
+            Comment com = commentService.insertComment(comment, accountId);
+            List<Object> comments = new ArrayList<>();
+            if(com.getReviewId() == null) {
+                comments = commentService.findByPost(com.getPostId(), accountId);
+            } else {
+                comments = commentService.findByReview(com.getReviewId(), accountId);
+            }
+            return ResponseEntity.ok().body(comments);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred.");
+        }
     };
 
     @GetMapping("/post/{postId}/comments")
