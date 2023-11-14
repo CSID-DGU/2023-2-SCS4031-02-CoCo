@@ -1,21 +1,28 @@
 export type CommentsProps = {
+  commentData : Comment;
+  key: any;
+  onDelete : (id : string) => void;
+  onLike : (id : string) => void;
+  onFix : (id : string) => void;
+  onChild ?: (id : string) => void;
+};
+
+type Comment = {
   postCommentData : commentData;
   postAccountId : string;
   profileImg : any;
   accountId : string;
+  isLiked? : boolean | false;
   isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
-  isLiked : boolean;
-  onLike : (commentId : string) => void;
-  onDelete : (commentId : string) => void;
-  onFix : (commentId : string) => void;
-  onComment : (commentId : string) => void;
-};
+  childComment?: any[];
+}
 
 
 export type myCommentProps = {
   myCommentData : myCommentData;
   postName : string;
-  onDelete : (commentId : string) => void;
+  key: any;
+  onDelete : (id : string) => void;
 };
 
 
@@ -36,6 +43,7 @@ type commentData = {
 type myCommentData = {
   id: string;
   postId: string;
+  reviewId : string;
   content : string;
   registrationDate : string;
   isDeleted : boolean;

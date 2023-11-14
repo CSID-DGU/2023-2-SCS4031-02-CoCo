@@ -1,8 +1,45 @@
 import styled from "@emotion/styled";
 
-export const PostCommentContainer = styled.div<{isReply: boolean}>`
+export const ParentCommentContainer = styled.div`
   width: 100%;
-  margin: ${(props) => props.isReply ? '0 0 0 3.3rem' : '0'};
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`
+
+export const ChildMoreButton = styled.div`
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #bdbdbd;
+  font-weight: 400;
+  gap: 0.5rem;
+  &:hover {
+    color: #000000;
+  }
+  .icon {
+    color: #bdbdbd;
+    &:hover {
+      color: #000000;
+    }
+  }
+`
+
+export const ChildCommentContainer = styled.div`
+  width: 100%;
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`
+
+export const PostCommentContainer = styled.div`
+  width: 100%;
   padding: 2rem 1rem 1rem 1rem;
   height: auto;
   display: flex;
