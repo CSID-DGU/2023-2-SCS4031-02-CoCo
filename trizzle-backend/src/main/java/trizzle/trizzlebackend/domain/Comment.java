@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Document(collection = "comments")
 public class Comment {
+
     private String id;
     private String accountId;
     private String postId;
