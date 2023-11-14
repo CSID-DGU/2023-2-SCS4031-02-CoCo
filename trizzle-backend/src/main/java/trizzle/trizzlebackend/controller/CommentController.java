@@ -54,40 +54,23 @@ public class CommentController {
                                       @RequestParam(value = "reviewId", required = false) String reviewId,
                                       HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
-        String accountId = JwtUtil.getAccountId(token, secretKey);
+        String accountId = new String();
+        if(token == null || JwtUtil.isExpired(token, secretKey)) accountId = "";
+        else accountId = JwtUtil.getAccountId(token, secretKey);
 
-            List<Object> comments;
+        List<Object> comments;
             if (postId != null) {
                 comments = commentService.findByPost(postId, accountId);
             } else if (reviewId != null) {
                 comments = commentService.findByReview(reviewId, accountId);
             } else {
+                if(accountId.equals("")) return ResponseEntity.ok().body("please login");
                 List<Comment> userComments = commentService.findByAccount(accountId);
                 return ResponseEntity.ok().body(userComments);
             }
 
             return ResponseEntity.ok().body(comments);
     }
-
-    @GetMapping("/comments/public")
-    public ResponseEntity getPublicComments(@RequestParam(value = "postId", required = false) String postId,
-                                      @RequestParam(value = "reviewId", required = false) String reviewId,
-                                      HttpServletRequest request) {
-        String accountId = "";
-
-        List<Object> comments;
-        if (postId != null) {
-            comments = commentService.findByPost(postId, accountId);
-        } else if (reviewId != null) {
-            comments = commentService.findByReview(reviewId, accountId);
-        } else {
-            List<Comment> userComments = commentService.findByAccount(accountId);
-            return ResponseEntity.ok().body(userComments);
-        }
-
-        return ResponseEntity.ok().body(comments);
-    }
-
 
     @DeleteMapping("/{type}/{postId}/comments/{commentId}")
     public ResponseEntity deleteComment(
