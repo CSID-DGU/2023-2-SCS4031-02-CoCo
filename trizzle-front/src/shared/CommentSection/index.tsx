@@ -54,7 +54,9 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
   }
 
   useEffect(() => {
-    if(state.error) console.error(state.error);
+    if(state.error) {
+      console.log(state.error);
+    }
     else {
       if(state.data) {
         let data;
@@ -94,7 +96,6 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
         onSubmit={onSubmit}
         disabled={!ableSubmit}
         />
-        <S.HorizontalLine />
         {commentPropList.length > 0 &&
         <Paging perPage={5} items={commentPropList} type="verticalComment"/>
       }

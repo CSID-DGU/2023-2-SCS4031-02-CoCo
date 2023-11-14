@@ -11,5 +11,5 @@ export type TextInputProps = {
 
 type styleProps = {
   width: string;
-
+  
 }
