@@ -6,12 +6,15 @@ import ProfileImage from '../ProfileImage';
 import {BiLike, BiSolidLike} from 'react-icons/bi';
 import {AiFillCaretDown, AiFillCaretUp} from 'react-icons/ai';
 import Menu from '../Menu';
+import CommentInput from '../CommentInput';
+import { useAsync } from '../../utils/API/useAsync';
 
 
 const Comment:React.FC<CommentsProps> = (props: CommentsProps) => { 
   const [menuItems, setMenuItems] = useState<any[]>([]);
   useEffect(() => {
     let menuItem:any[] = []; 
+    if(props.commentData.accountId !== ""){
     if(props.commentData.isMe && props.commentData.commentData) {
       menuItem.push({content: "삭제", onClick: () => props.onDelete(props.commentData.commentData.id), isDelete: true});
     } 
@@ -20,6 +23,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
     }
 
     setMenuItems(menuItem);
+  }
   }, []);
     
     if(props.commentData.commentData && props.commentData.commentData.isDeleted){
@@ -52,7 +56,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
             <S.PostCommentContentFooter>
               {props.commentData.isLiked ? <BiSolidLike size="1rem" onClick={() => props.onLike(props.commentData.commentData.id)}/> : <BiLike size="1rem" onClick={() => props.onLike(props.commentData.commentData.id)}/>}
               <S.PostCommentContentFooterLike>{props.commentData.commentData.likeCount}</S.PostCommentContentFooterLike>
-              {props.commentData.commentData.parentId === null && <S.PostCommentContentFooterReply onClick={() => props.onChild(props.commentData.commentData.id)}>답글</S.PostCommentContentFooterReply>}
+              {props.commentData.commentData.parentId === null && <S.PostCommentContentFooterReply onClick={() => props.onChild()}>답글</S.PostCommentContentFooterReply>}
             </S.PostCommentContentFooter>
           </S.PostCommentContent>
         </S.PostCommentContainer>
@@ -62,6 +66,20 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
 
 const Comments:React.FC<CommentsProps> = (props: CommentsProps) => { 
   const [childOpen, setChildOpen] = useState<boolean>(false);
+  const [childCommentOpen, setChildCommentOpen] = useState<boolean>(false);
+  const [value, setValue] = useState<string>("");
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [state, fetchData] = useAsync({url: ""});
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
+
+  useEffect(() => {
+    if(value !== "") setDisabled(false);
+    else setDisabled(true);
+  }, [value]);
+
   const onMoreButtonClick = () => {
     setChildOpen(!childOpen);
   };
@@ -69,7 +87,11 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
     <>
     {props.commentData.childComment && props.commentData.childComment.length > 0 ? (
       <S.ParentCommentContainer>
-        <Comment {...props} />
+        <Comment {...props} onChild={() => setChildCommentOpen(!childCommentOpen)}/>
+        {childCommentOpen && 
+          <CommentInput onChange={() => onChange} value={value} 
+          onSubmit={() => {props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId); setValue("")}} disabled={disabled} placeholder='답글 달기..'/>
+        }
         {childOpen ? (
           <S.ChildMoreButton onClick={onMoreButtonClick}>
             <AiFillCaretUp size="0.9rem" className="icon"/>

@@ -4,7 +4,8 @@ export type CommentsProps = {
   onDelete : (id : string) => void;
   onLike : (id : string) => void;
   onFix : (id : string) => void;
-  onChild ?: (id : string) => void;
+  onChild ?: () => void;
+  onChildSubmit ?: (parentId:string,content : string, postId:string, reviewId:string) => void;
 };
 
 type Comment = {
@@ -34,6 +35,7 @@ type commentData = {
   parentId : any;
   commentContent : string;
   postId: string;
+  reviewId : string;
   postName : string;
   registrationDate : string;
   fix : boolean;

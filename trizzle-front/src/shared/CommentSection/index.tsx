@@ -29,8 +29,17 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
     }
     setValue("");
     fetchData("/api/comments", "POST", submitData);
-
   }
+
+  const onChildSubmit = (id: string, value: string, postId: string, reviewId: string) => {
+    const submitData = {
+      commentContent: value,
+      postId: postId,
+      reviewId: reviewId,
+      parentId: id
+    };
+    fetchData("/api/comments", "POST", submitData);
+  };
 
   const onDelete = (id: string) => {
     fetchData(`/api/${props.page}/${props.postId}/comments/${id}`, "DELETE");
@@ -64,7 +73,8 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
         key: comment.id,
         onDelete : (id:string) => onDelete(id),
         onLike : (id : string) => onLike(id),
-        onFix : (id : string) => onFix(id)
+        onFix : (id : string) => onFix(id),
+        onChildSubmit: (id: string, value: string, postId: string, reviewId: string) => onChildSubmit(id, value, postId, reviewId)
       }
     }));
   }, [commentList]);
