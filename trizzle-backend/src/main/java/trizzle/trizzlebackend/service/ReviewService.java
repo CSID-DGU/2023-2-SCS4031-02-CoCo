@@ -64,6 +64,11 @@ public class ReviewService {
         }
     }
 
+    public Review findReview(String reviewId) {
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        return optionalReview.orElse(null);
+    }
+
     public Review updateReview(Review reivew, String reveiwId, String accountId) {
         reivew.setId(reveiwId);
         return insertReview(reivew, accountId);

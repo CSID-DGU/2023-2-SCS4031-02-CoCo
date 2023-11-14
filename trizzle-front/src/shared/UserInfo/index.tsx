@@ -23,6 +23,7 @@ const UserInfo = () => {
   const [nickname, setNickname] = useState("");
   const [thema, setThema] = useState<{name:string, id:number}[]>([]);
   const [state, fetchData] = useAsync({url:"/api/user"});
+  const [ableSubmit, setAbleSubmit] = useState<boolean>(false);
 
   useEffect(() => {
     if(state.error) console.error(state.error);
@@ -47,6 +48,19 @@ const UserInfo = () => {
     }
   }
   },[state]);
+
+  useEffect(() => {
+    const themaNames: string[] = [];
+    thema.map((thema) => {
+      themaNames.push(thema.name);
+    });
+    console.log(themaNames, userData?.thema);
+    if(nickname === userData?.nickname && userData?.thema === themaNames) {
+      setAbleSubmit(false);
+    } else {
+      setAbleSubmit(true);
+    }
+  }, [nickname, thema]);
 
   const handleInputChange = (event: any) => {
     // 입력 값 업데이트
@@ -96,7 +110,7 @@ const UserInfo = () => {
   if(userData !== undefined) {
   return (
     <S.Container>
-      <S.SubmmitButton onClick={onUpdateData}>저장</S.SubmmitButton>
+      <S.SubmmitButton onClick={onUpdateData} disabled={!ableSubmit}>저장</S.SubmmitButton>
       <ProfileImage type="mid" isMe={true} margin="0 auto 0.5rem auto"/>
       <S.HorizontalContainer>
         <S.Title>이름</S.Title>

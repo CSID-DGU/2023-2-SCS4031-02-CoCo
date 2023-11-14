@@ -1,30 +1,41 @@
 export type CommentsProps = {
-  postCommentData : commentData;
-  isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
-  isLiked : boolean;
-  onLike : (commentId : string) => void;
-  onDelete : (commentId : string) => void;
-  onFix : (commentId : string) => void;
-  onComment : (commentId : string) => void;
+  commentData : Comment;
+  key: any;
+  onDelete : (id : string) => void;
+  onLike : (id : string) => void;
+  onFix : (id : string) => void;
+  onChild ?: () => void;
+  onChildSubmit ?: (parentId:string,content : string, postId:string, reviewId:string) => void;
 };
+
+type Comment = {
+  commentData : commentData;
+  postAccountId : string;
+  profileImg : any;
+  accountId : string;
+  isLiked? : boolean | false;
+  nickname : string;
+  isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
+  childComment?: any[];
+}
 
 
 export type myCommentProps = {
   myCommentData : myCommentData;
-  onDelete : (commentId : string) => void;
+  postName : string;
+  key: any;
+  onDelete : (id : string) => void;
 };
 
 
 type commentData = {
   id: string;
-  accountId : string;// 본인의 아이디
-  commentAccountId : string; // 댓글 작성자의 아이디
-  postAccountId : string; // 포스트 작성자의 아이디
-  profileImg : any;
+  accountId : string; // 댓글 작성자의 아이디
   nickname : string;
   parentId : any;
-  content : string;
+  commentContent : string;
   postId: string;
+  reviewId : string;
   postName : string;
   registrationDate : string;
   fix : boolean;
@@ -35,7 +46,7 @@ type commentData = {
 type myCommentData = {
   id: string;
   postId: string;
-  postName : string;
+  reviewId : string;
   content : string;
   registrationDate : string;
   isDeleted : boolean;

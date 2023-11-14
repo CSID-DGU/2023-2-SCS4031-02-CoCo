@@ -1,9 +1,49 @@
 import styled from "@emotion/styled";
 
-export const PostCommentContainer = styled.div<{isReply: boolean}>`
+export const ParentCommentContainer = styled.div`
   width: 100%;
-  margin: ${(props) => props.isReply ? '0 0 0 3.3rem' : '0'};
-  padding: 2rem 1rem 1rem 1rem;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin: 0 2rem;
+`
+
+export const ChildMoreButton = styled.div`
+  width: 100%;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  padding-left: 4rem;
+  justify-content: flex-start;
+  cursor: pointer;
+  font-size: 0.8rem;
+  color: #bdbdbd;
+  font-weight: 400;
+  gap: 0.5rem;
+  &:hover {
+    color: #000000;
+  }
+  .icon {
+    color: #bdbdbd;
+    &:hover {
+      color: #000000;
+    }
+  }
+`
+
+export const ChildCommentContainer = styled.div`
+  width: 95%;
+  margin-left: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+`
+
+export const PostCommentContainer = styled.div`
+  width: 100%;
+  padding: 0.5rem;
   height: auto;
   display: flex;
   align-items: flex-start;
@@ -22,8 +62,8 @@ export const PostCommentContent = styled.div`
 
 export const PostCommentContentHeader = styled.div`
   width: 100%;
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 1rem;
+  font-weight: 500;
   display: flex;
   justify-content: flex-start;
   align-items: flex-end;
@@ -77,11 +117,8 @@ export const PostCommentContentFooterReply = styled.div`
 `
 
 export const Fixed = styled.div`
-  position: absolute;
   width: auto;
   height: 1rem;
-  top: 0.5rem;
-  left: 1rem;
   font-size: 0.9rem;
   font-weight: 400;
   color: #C5C5C5;

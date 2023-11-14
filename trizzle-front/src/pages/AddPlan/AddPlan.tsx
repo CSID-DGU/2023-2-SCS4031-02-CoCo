@@ -120,7 +120,9 @@ const AddPlanPage:React.FC = () => {
 
     useEffect(() => {
       console.log(state)
-      if(state.data && state.data.message === "save success") navigate(`/myfeed/plans/${state.data.planId}`);
+      if(state.data && state.data.message === "save success") {
+        setPlaceList([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]);
+        navigate(`/myfeed/plans/${state.data.planId}`);}
     }, [state])
 
   return (

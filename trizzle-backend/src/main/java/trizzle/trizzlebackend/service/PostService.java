@@ -54,6 +54,11 @@ public class PostService {
         }
     }
 
+    public Post findPost(String postId) {
+        Optional<Post> postOptional = postRepository.findById((postId));
+        return postOptional.orElse(null);
+    }
+
     public Post updatePost(Post post, String postId, String accountId) {
         post.setId(postId);
         return insertPost(post, accountId);
