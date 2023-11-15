@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.repository.UserRepository;
 import trizzle.trizzlebackend.domain.User;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,5 +24,20 @@ public class UserService {
     public User updateUser(User user) {
         return userRepository.save(user);
     };
+
+    public User patchProfileImg(String profileImg, String accountId) {
+        User user = searchUser(accountId);
+        user.setProfileImage(profileImg);
+
+        return userRepository.save(user);
+    }
+
+    public Map<String, String> getHeaderUserInfo(String accountId) {
+        User user = searchUser(accountId);
+        Map<String, String> response = new HashMap<>();
+        response.put("profileImg", user.getProfileImage());
+        response.put("id", user.getAccountId());
+        return response;
+    }
 
 }

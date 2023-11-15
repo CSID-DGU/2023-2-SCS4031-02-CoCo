@@ -57,4 +57,30 @@ public class UserContoller {
                     .body("{\"message\": \"" + message + "\"}");
         }
     };
+
+    @PatchMapping("/profileimg")
+    public ResponseEntity updateUserProfileImg(@RequestBody String profileImg, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String account = JwtUtil.getAccountId(token, secretKey);
+        User user = userService.patchProfileImg(profileImg, account);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "success");
+        response.put("user", user);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/header")
+    public ResponseEntity getProfileImg(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        if(token == null || JwtUtil.isExpired(token, secretKey)) {
+            String message = "not login";
+            return ResponseEntity.ok()
+                    .body("{\"message\": \"" + message + "\"}");
+        } else {
+            String account = JwtUtil.getAccountId(token, secretKey);
+            Map<String, String> response = userService.getHeaderUserInfo(account);
+            return ResponseEntity.ok().body(response);
+        }
+    }
 };
