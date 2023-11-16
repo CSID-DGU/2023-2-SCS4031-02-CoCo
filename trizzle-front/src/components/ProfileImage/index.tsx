@@ -6,7 +6,7 @@ import avatar from "../../assets/images/default_avatar.png"
 
 const ProfileImage: React.FC<ProfileImageProps> = (props: ProfileImageProps) => {
   const imageSrc = props.src? props.src : avatar;
-  console.log(props.isMe);
+
   if(props.type === "big") {
     return (
       <S.BigContainer margin={props.margin}>

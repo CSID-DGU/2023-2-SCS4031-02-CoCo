@@ -7,6 +7,7 @@ import SearchBar from "../../components/SearchBar";
 import FestivalCard from "../../shared/FestivalCard";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 import Paging from "../../components/Paging";
+import CommentSection from "../../shared/CommentSection";
 
 
 
@@ -47,7 +48,6 @@ const PlanCardLists = [
 ];
 
 const Home = () => {
-  const [isLogin, setIsLogin] = useState<boolean>(false);
   const [registrationId, setRegistrationId] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [token, setToken] = useState<string>('');
@@ -77,20 +77,17 @@ const Home = () => {
 
   }, []);
 
-  console.log(festivalLists);
   return (
     <>
       {registrationId && message && token && (
         <Page
           headersProps={{
-            isLogin: isLogin,
             isHome: true,
             isRegistrationId: registrationId,
-            isMassage: message,
+            isMessage: message,
             isToken: token,
           }}
         >
-          <div style={{marginBottom:"5rem"}}/>
           <SearchBar type="main"/>
           <S.SectionTitle>급상승! 현재 인기 일정 <b style={{fontWeight:"500"}}>&nbsp;TOP </b><p style={{color:"red"}}>&nbsp;4</p></S.SectionTitle>
           <HomePlanSlider planList={PlanLists} />

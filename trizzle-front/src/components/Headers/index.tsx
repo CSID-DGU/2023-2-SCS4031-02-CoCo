@@ -4,25 +4,36 @@ import { HeadersProps } from "./Headers.type";
 import { AiOutlineBell, AiOutlinePlus } from "react-icons/ai";
 import { Link, useLocation } from "react-router-dom";
 import ProfileImage from "../ProfileImage";
-
 import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
 import MainLogin from "../../pages/LoginPage/MainLogin";
+import { useAsync } from "../../utils/API/useAsync";
 
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   let headerContent;
   const location = useLocation();
-  const isLogin = props.isLogin? props.isLogin : (props.isMassage === "login success" ? true : false);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+  const [state, fetchData] = useAsync({ url: "/api/user/header" });
   const isHome = props.isHome || false;
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('로그인');
-  const [userData, setUserData] = useState<any>({
-    token : props.isToken,
-    message : props.isMassage,
-    registrationId : props.isRegistrationId
+  const [userData, setUserData] = useState<any>({});
+  const [propsData, setPropsData] = useState<any>({
+    registrationId : props.isRegistrationId,
+    message: props.isMessage,
+    token: props.isToken
   });
+  console.log(propsData);
 
- 
+  useEffect(() => {
+    if(state.data){
+      if(state.data.message&&state.data.message==="not login") setIsLogin(false);
+      else {
+        setIsLogin(true);
+        setUserData(state.data);
+      }
+    }
+  }, [state]);
 
   if (isLogin) {
     if (location.pathname.includes('/myfeed/plans/')) {
@@ -47,8 +58,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   }
 
   useEffect(() => {
-    console.log(props.isRegistrationId);
-    if (userData.message === "id 입력이 필요합니다") {
+    if (propsData.message === "id 입력이 필요합니다") {
       setIsLoginModal(!isLoginModal);
       setModalType('회원가입');
     }
@@ -80,7 +90,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
               )}
             </S.HeaderIconText>
             <Link to="/myfeed">
-              <ProfileImage type="small" margin="0 0 0 1.5rem" />
+              <ProfileImage type="small" margin="0 0 0 1.5rem" src={userData.profileImg}/>
             </Link>
           </S.RightWrapper>
         </S.Header>
@@ -100,7 +110,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       )}
 
       {
-        isLoginModal && <MainLogin type={modalType} data={userData} onClose={(e) => setIsLoginModal(!e && !isLoginModal)} />
+        isLoginModal && <MainLogin type={modalType} data={propsData} onClose={() => setIsLoginModal(!isLoginModal)} />
       }
     </>
 

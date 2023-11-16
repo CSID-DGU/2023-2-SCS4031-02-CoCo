@@ -1,9 +1,7 @@
 export type HeadersProps = {
-  isLogin?: boolean;
   isHome?: boolean;
+  isMessage?: string;
   isRegistrationId?: string;
-  isMassage?: string;
-  isToken?: string;
   alarmCount?: number;
-  avatarSrc?: string;
+  isToken?: string;
 };
