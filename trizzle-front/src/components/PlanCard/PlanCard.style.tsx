@@ -19,15 +19,17 @@ export const Container = styled.div`
 export const Thumbnail = styled.div`
   width: 100%;
   height: 17.5rem;
-  border-radius: 1.5rem 1.5rem 0 0;
+  border-top-right-radius: 1.3rem;
+  border-top-left-radius: 1.3rem;
   position: relative;
 `
 
 export const ThumbnailImg = styled.img`
   width: 100%;
   height: 100%;
-  border-radius: 1.5rem 1.5rem 0 0;
-`
+  border-top-right-radius: inherit;
+  border-top-left-radius: inherit;
+  `
 
 export const NonoThumbnailContainer = styled.div`
   display: flex;

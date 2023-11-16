@@ -11,7 +11,7 @@ const HomePlanSlider: React.FC<HomePlanSliderProps> = (props: HomePlanSliderProp
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentPlan((prev) =>(prev+1)%4);
-    }, 7000);
+    }, 5000);
 
     return () => {
       clearInterval(timer);
@@ -19,7 +19,6 @@ const HomePlanSlider: React.FC<HomePlanSliderProps> = (props: HomePlanSliderProp
 
 
   }, [currentPlan]);
-  console.log(currentPlan);
 
   return (
       <S.Wrapper >

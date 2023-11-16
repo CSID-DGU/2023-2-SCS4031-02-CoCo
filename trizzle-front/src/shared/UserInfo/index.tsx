@@ -54,11 +54,10 @@ const UserInfo = () => {
     thema.map((thema) => {
       themaNames.push(thema.name);
     });
-    console.log(themaNames, userData?.thema);
-    if(nickname === userData?.nickname && userData?.thema === themaNames) {
-      setAbleSubmit(false);
-    } else {
+    if(nickname !== userData?.nickname || JSON.stringify(userData?.thema.sort()) !== JSON.stringify(themaNames.sort())) {
       setAbleSubmit(true);
+    } else {
+      setAbleSubmit(false);
     }
   }, [nickname, thema]);
 
@@ -85,7 +84,7 @@ const UserInfo = () => {
     thema.map((thema) => {
       themaNames.push(thema.name);
     });
-    if(userData !== undefined && userData.nickname !== nickname && userData.thema !== themaNames) {
+    if(userData !== undefined) {
       if(confirm("수정사항을 저장하시겠습니까?")) {
       const submitData = {
         accountId : userData.accountId,
@@ -102,8 +101,6 @@ const UserInfo = () => {
     } else {
       return;
     }
-  }else {
-    alert("수정된 사항이 없습니다");
   }
   }
 

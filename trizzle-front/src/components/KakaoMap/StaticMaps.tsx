@@ -14,6 +14,8 @@ const StaticMaps: React.FC<StaticMapsProps> = (props: StaticMaspProps) => {
                 // 지도의 크기
                 width: props.width,
                 height: props.height,
+                borderTopRightRadius: "1.5rem",
+                borderTopLeftRadius: "1.5rem",
             }}
             level={3} // 지도의 확대 레벨
         />
