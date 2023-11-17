@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-
+import { useParams } from "react-router-dom";
+import { koreaRegions } from "../../utils/Data/mapData";
 import * as S from './SearchPlace.styles';
-import Page from "../Page";
+import {SearchLayout} from "../Page";
 import Maps from "../../components/KakaoMap";
 import PlaceCard from "../../components/PlaceCard";
-import img from 'C:/Users/ajtwo/OneDrive/바탕 화면/image19.png'
+import img from '../../assets/images/default_festival.jpg'
 import SearchBar from "../../components/SearchBar";
 
 const regionInformation = {
@@ -103,26 +104,8 @@ const placeSample = [{
 }]
 
 const SearchPlace = () => {
-  const [region, useResgion] = useState<any>({ lat: 37.5665, lng: 126.9780 })
-
   return (
-    <Page headersProps={{ isHome: false, isLogin: true }}>
-      <SearchBar />
-      <S.RegionContainer>
-        <Maps center={region} type="infor" />
-        <S.RegionInforContainer>
-          <S.RegionName>{regionInformation.region}</S.RegionName>
-          <S.RegionInfor>{regionInformation.information}</S.RegionInfor>
-        </S.RegionInforContainer>
-      </S.RegionContainer>
-
-      <S.SearchContainer>
-        <S.SearchText>
-          &#123; 검색결과 &#125;
-        </S.SearchText>
-        에 대한 다른 장소 추천 결과 입니다.
-      </S.SearchContainer>
-
+    <SearchLayout selectTab="장소">
       <S.SearchResultContainer>
         {placeSample.map((place, index) => (
           <S.PlaceCardContainer key={index}>
@@ -130,7 +113,7 @@ const SearchPlace = () => {
           </S.PlaceCardContainer>
         ))}
       </S.SearchResultContainer>
-    </Page>
+    </SearchLayout>
   )
 }
 

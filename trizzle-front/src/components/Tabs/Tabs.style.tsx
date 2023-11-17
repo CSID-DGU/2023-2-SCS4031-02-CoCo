@@ -22,3 +22,32 @@ export const Tab = styled.div<{active: boolean}>`
   color: ${({active}) => active ? "#000000" : "#BDBDBD"};
   border-bottom: ${({active}) => active ? "2px solid #000" : "2px solid #dadada"};
 `
+
+export const RoundTabContainer = styled.div`
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 8rem 0 3rem 0;
+`
+
+export const RoundTab = styled.div<{active: boolean}>`
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  border-radius: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: ${({active}) => active ? "600" : "400"};
+  color: ${({active}) => !active ? "#bdbdbd" : "#EBB700"};
+  border: ${({active}) => !active ? "1px solid #bdbdbd" : "2px solid #EBB700"};
+  cursor: pointer;
+  .icon {
+    color: ${({active}) => !active ? "#bdbdbd" : "#EBB700"};
+    margin-right: 0.5rem;
+  }
+`

@@ -86,7 +86,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
             </S.PostCommentContentFooter>
           </S.PostCommentContent>
         </S.PostCommentContainer>
-          {childCommentOpen && 
+          {childCommentOpen &&
                   <CommentInput
                   placeholder="댓글 입력..."
                   value={value}

@@ -4,27 +4,50 @@ import styled from "@emotion/styled";
 export const Container = styled.div<{type:string}>`
   width: 100%;
   height: 5rem;
-  background-color: ${({type}) => type === "main" ? "#EBB700" : "white"};
+  background-color: ${({type}) => type === "main" ? "#ffff" : "#EBB700"};
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: ${({type}) => type === "main" ? "relative" : "fixed"};
   padding: 0 8rem;
+  top:4.5rem;
+  left:0;
+  z-index: ${({type}) => type === "main" ? "100" : "100"};
 `
 
 export const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 98%;
+  width: 100%;
   height: 3.5rem;
   border: 2px solid #EBB700;
   background-color: #ffffff;
+  border-radius: 0.75rem;
+  position: relative;
+  z-index: 100;
+  .searchIcon {
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-right: 1rem;
+    color: #bdbdbd;
+    cursor: pointer; 
+    &:hover {
+      color: #EBB700;
+    }
+  }
 `
 
-export const InputValueContainer = styled.div`
+export const InputValueContainer = styled.input`
+  width: fit-content;
+  height: 100%;
   margin: 0 0 0 1rem;
   font-size: 1.2rem;
+  border:none;
+  &:focus {
+    outline: none;
+    border: none;
+  }
 `
 
 export const HorizontalFirstStartContainer = styled.div`
@@ -35,7 +58,7 @@ export const HorizontalFirstStartContainer = styled.div`
 
 // 일정, 장소 검색 대상 결정 컴포넌트
 export const DropdownContainer = styled.div`
-  width: 6rem;
+  width: auto;
   height: 100%;
   display: flex;
   align-items: center;
@@ -87,15 +110,15 @@ export const OptionButton = styled.div`
 `
 
 // 위치 입력 컴포넌트
-export const PlaceOptionContainer = styled.div`
+export const PlaceOptionContainer = styled.div<{type?:string}>`
   width: 40rem;
   height: 10rem;
   border: 2px solid #EBB700;
   background-color: #ffffff;
   overflow-y: scroll;
   position: absolute;
-  top: 5rem;
-  left: 19rem;
+  top: 4rem;
+  left: 0;
 `
 
 export const PlaceOptionButton = styled.div`
@@ -122,7 +145,7 @@ export const PlaceSubOptionContainer = styled.div`
   overflow-y: scroll;
   position: absolute;
   top: 5rem;
-  left: 50rem;
+  left: 8rem;
 `
 
 export const PlaceSubOptionButton = styled.div`

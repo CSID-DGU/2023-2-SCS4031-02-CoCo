@@ -5,7 +5,7 @@ export const RegionContainer = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   gap: 2rem;
-  margin: 2rem 0 2rem 0;
+  margin: 7rem 0 2rem 0;
 `
 
 export const RegionInforContainer = styled.div`
@@ -28,22 +28,6 @@ export const RegionInfor = styled.div`
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.7rem;
-`
-
-export const SearchContainer = styled.div`
-  margin: 2rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  color: #747474;
-  font-size: 2rem;
-  font-weight: 400;
-`
-
-export const SearchText = styled.div`
-  color: #747474;
-  font-weight: 700;
 `
 
 export const SearchResultContainer = styled.div`

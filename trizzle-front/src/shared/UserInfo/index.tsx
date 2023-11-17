@@ -24,6 +24,7 @@ const UserInfo = () => {
   const [thema, setThema] = useState<{name:string, id:number}[]>([]);
   const [state, fetchData] = useAsync({url:"/api/user"});
   const [ableSubmit, setAbleSubmit] = useState<boolean>(false);
+  const [previewURL, setPreviewURL] = useState<string>("");
 
   useEffect(() => {
     if(state.error) console.error(state.error);
@@ -35,6 +36,7 @@ const UserInfo = () => {
 
       setUserData(data);
       setNickname(data.nickname);
+      setPreviewURL(data.profileImage)
       setThema(data.thema.map((it:any) => {
         const thema = tripThema.filter((item) => {
           return item.name === it
@@ -54,13 +56,12 @@ const UserInfo = () => {
     thema.map((thema) => {
       themaNames.push(thema.name);
     });
-    console.log(themaNames, userData?.thema);
-    if(nickname === userData?.nickname && userData?.thema === themaNames) {
-      setAbleSubmit(false);
-    } else {
+    if(nickname !== userData?.nickname || JSON.stringify(userData?.thema.sort()) !== JSON.stringify(themaNames.sort()) || previewURL !== userData?.profileImage) {
       setAbleSubmit(true);
+    } else {
+      setAbleSubmit(false);
     }
-  }, [nickname, thema]);
+  }, [nickname, thema, previewURL]);
 
   const handleInputChange = (event: any) => {
     // 입력 값 업데이트
@@ -85,7 +86,7 @@ const UserInfo = () => {
     thema.map((thema) => {
       themaNames.push(thema.name);
     });
-    if(userData !== undefined && userData.nickname !== nickname && userData.thema !== themaNames) {
+    if(userData !== undefined) {
       if(confirm("수정사항을 저장하시겠습니까?")) {
       const submitData = {
         accountId : userData.accountId,
@@ -93,7 +94,7 @@ const UserInfo = () => {
         id: userData.id,
         name : userData.name,
         nickname: nickname,
-        profileImage : userData.profileImage,
+        profileImage : previewURL,
         registrationId : userData.registrationId,
         socialId : userData.socialId,
         thema : themaNames
@@ -102,8 +103,6 @@ const UserInfo = () => {
     } else {
       return;
     }
-  }else {
-    alert("수정된 사항이 없습니다");
   }
   }
 
@@ -111,7 +110,7 @@ const UserInfo = () => {
   return (
     <S.Container>
       <S.SubmmitButton onClick={onUpdateData} disabled={!ableSubmit}>저장</S.SubmmitButton>
-      <ProfileImage type="mid" isMe={true} margin="0 auto 0.5rem auto"/>
+      <ProfileImage type="mid" isMe={true} margin="0 auto 0.5rem auto" previewURL={previewURL} setPreviewURL={(previewURL:string) => setPreviewURL(previewURL)}/>
       <S.HorizontalContainer>
         <S.Title>이름</S.Title>
         <S.Content>{userData.name}</S.Content>

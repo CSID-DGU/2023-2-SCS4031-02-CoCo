@@ -1,18 +1,25 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import { CommentInputProps } from "./CommentInput.type";
 import * as S from "./CommentInput.style";
 import ProfileImage from "../ProfileImage";
 
 const CommentInput: React.FC<CommentInputProps> = (props: CommentInputProps) => {
-  
+    const textarea = useRef<HTMLTextAreaElement>(null);
+
+    useEffect(() => {
+      textarea.current!.style.height = "auto";
+      textarea.current!.style.height = textarea.current!.scrollHeight + "px";
+    }, [props.value]);
     return (
       <S.Container>
         <ProfileImage type="small"/>
         <S.ContentContainer>
           <S.TextArea
+            ref={textarea}
             placeholder={props.placeholder}
             value={props.value}
             onChange={props.onChange}
+            rows={2}
             />
           <S.SaveButton onClick={props.onSubmit} disabled={props.disabled}>작성</S.SaveButton>
         </S.ContentContainer>

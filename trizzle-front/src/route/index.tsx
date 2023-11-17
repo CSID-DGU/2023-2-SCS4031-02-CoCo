@@ -27,10 +27,10 @@ const Router = () => {
         <Route path="/mypage/plans/add" element={<AddPlanPage />} />
         <Route path="/mypage/plans/edit/:id" element={<EditPlanPage />} />
 
-        <Route path='/Search/:place/places' element={<SearchPlace />} />
-        <Route path='/Search/:plan/plans' element={<SearchPlan />} />
+        <Route path='/search/:region/places' element={<SearchPlace />} />
+        <Route path='/search/:region/plans' element={<SearchPlan />} />
 
-        <Route path='post/plans/add' element={<AddPostPlan />} />
+        <Route path='/post/plans/add' element={<AddPostPlan />} />
         <Route path='/post/plan/:id' element={<PostPlan />} />
 
         <Route path="/post/places/:id" element={<PostPlace />} />

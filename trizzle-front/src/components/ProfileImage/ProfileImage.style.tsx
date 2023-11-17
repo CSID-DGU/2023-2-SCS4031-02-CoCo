@@ -4,6 +4,7 @@ export const SmallContainer = styled.div<{margin?:string}>`
   width: 2.7rem;
   height: 2.7rem;
   border-radius: 50%;
+  border: 1px solid #D6D6D6;
   margin: ${({margin}) => margin? margin : "0"};
 `
 
@@ -19,6 +20,7 @@ export const MidContainer = styled.div<{margin?:string}>`
   width: 11rem;
   height: 11rem;
   border-radius: 50%;
+  border: 1px solid #D6D6D6;
   margin: ${({margin}) => margin? margin : "0"};
   position: relative;
 `
@@ -55,4 +57,22 @@ export const MidCameraContainer = styled.div`
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
+`
+
+export const InputContainer = styled.div`
+width: 7rem;
+height: 3rem;
+
+`
+
+export const ProfileChangeInput = styled.input`
+  /* width:2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background-color: #dadada; */
+  /* position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem; */
+  display: none;
 `

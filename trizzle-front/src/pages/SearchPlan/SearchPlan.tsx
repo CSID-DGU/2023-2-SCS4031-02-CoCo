@@ -1,14 +1,14 @@
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import * as S from './SearchPlan.styles';
-import Page from "../Page";
+import {SearchLayout} from "../Page";
 import Maps from "../../components/KakaoMap";
 import img from '../../assets/images/default_festival.jpg'
 import SearchBar from "../../components/SearchBar";
 import PlanCard from "../../components/PlanCard";
 import { koreaRegions } from "../../utils/Data/mapData";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 const regionInformation = {
   region: "서울특별시",
@@ -162,28 +162,10 @@ const planContainer = [{
 
 
 const SearchPlan = () => {
-  const {plan} = useParams<any>();
-  const [region, setResgion] = useState<any>(koreaRegions.filter((region) => region.name === plan)[0]);
   const [planList, setPlanList] = useState<any>(planContainer);
 
   return (
-    <Page headersProps={{ isHome: false, isLogin: true }}>
-      <SearchBar type="normal"/>
-      <S.RegionContainer>
-        <Maps center={region.center} type="infor" />
-        <S.RegionInforContainer>
-          <S.RegionName>{regionInformation.region}</S.RegionName>
-          <S.RegionInfor>{regionInformation.information}</S.RegionInfor>
-        </S.RegionInforContainer>
-      </S.RegionContainer>
-
-      <S.SearchContainer>
-        <S.SearchText>
-          {region.name}
-        </S.SearchText>
-        에 대한 일정 검색 결과입니다.
-      </S.SearchContainer>
-
+    <SearchLayout selectTab="일정" >
       <S.SearchResultContainer>
         <S.PlanCardContainer>
           {planList.map((plan:any, index:number) => (
@@ -202,7 +184,7 @@ const SearchPlan = () => {
           ))}
         </S.PlanCardContainer>
       </S.SearchResultContainer>
-    </Page>
+    </SearchLayout>
   )
 }
 
