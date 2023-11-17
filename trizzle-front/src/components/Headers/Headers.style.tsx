@@ -12,7 +12,7 @@ export const Header = styled.header<{isHome:boolean}>`
   top: 0;
   left: 0;
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
-  z-index: 100;
+  z-index: 500;
 `
 
 export const LogoImg = styled.div`
