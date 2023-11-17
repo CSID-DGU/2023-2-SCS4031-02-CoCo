@@ -56,3 +56,21 @@ export const MidCameraContainer = styled.div`
   bottom: 0.5rem;
   right: 0.5rem;
 `
+
+export const InputContainer = styled.div`
+width: 7rem;
+height: 3rem;
+
+`
+
+export const ProfileChangeInput = styled.input`
+  /* width:2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  background-color: #dadada; */
+  /* position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem; */
+  display: none;
+`

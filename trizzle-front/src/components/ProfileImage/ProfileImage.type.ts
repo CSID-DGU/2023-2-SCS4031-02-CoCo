@@ -4,4 +4,6 @@ export type ProfileImageProps = {
   type: string; // small, medium, large
   isMe?: boolean;
   margin?: string;
+  previewURL?: string;
+  setPreviewURL?: (previewURL: string) => void;
 };
