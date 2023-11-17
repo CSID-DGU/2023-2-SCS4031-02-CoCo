@@ -4,6 +4,7 @@ export const SmallContainer = styled.div<{margin?:string}>`
   width: 2.7rem;
   height: 2.7rem;
   border-radius: 50%;
+  border: 1px solid #D6D6D6;
   margin: ${({margin}) => margin? margin : "0"};
 `
 
@@ -19,6 +20,7 @@ export const MidContainer = styled.div<{margin?:string}>`
   width: 11rem;
   height: 11rem;
   border-radius: 50%;
+  border: 1px solid #D6D6D6;
   margin: ${({margin}) => margin? margin : "0"};
   position: relative;
 `
