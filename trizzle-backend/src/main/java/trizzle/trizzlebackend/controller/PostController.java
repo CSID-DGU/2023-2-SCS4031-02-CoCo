@@ -50,7 +50,7 @@ public class PostController {
         String postId = postService.updatePost(post, id, accountId).getId();
 
         Map<String, String> response = new HashMap<>();
-        response.put("message", "save success");
+        response.put("message", "update success");
         response.put("reviewId", postId);
         return ResponseEntity.ok()
                 .body(response);

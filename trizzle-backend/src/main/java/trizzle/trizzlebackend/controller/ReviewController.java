@@ -49,7 +49,7 @@ public class ReviewController {
         String reviewId = reviewService.updateReview(review, id, accountId).getId();
 
         Map<String, String> response = new HashMap<>();
-        response.put("message", "save success");
+        response.put("message", "update success");
         response.put("reviewId", reviewId);
         return ResponseEntity.ok()
                 .body(response);

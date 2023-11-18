@@ -3,7 +3,6 @@ package trizzle.trizzlebackend.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Place;
@@ -29,7 +28,7 @@ public class ReviewService {
         review.setReviewRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
 
         Place place = review.getPlace();
-        Optional<Place> existingPlace = placeService.findByPlaceId(place.get_id());
+        Optional<Place> existingPlace = placeService.findByPlaceId(place.getId());
         if (!existingPlace.isPresent()) {    // place정보가 db에 없다면 저장
             placeService.savePlace(place);
         }
