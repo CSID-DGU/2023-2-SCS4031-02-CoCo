@@ -2,114 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import * as S from './PostPlan.styles';
 import Page from "../Page";
-import { AiOutlineDown, AiOutlineHeart,AiOutlineUp, AiTwotoneHeart } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineHeart, AiOutlineUp, AiTwotoneHeart } from "react-icons/ai";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import PlanMap from "../../shared/PlanMap";
 import { koreaRegions } from "../../utils/Data/mapData";
 import UserPreview from "../../components/UserPreview";
 import { useAsync } from "../../utils/API/useAsync";
 import { useParams } from "react-router-dom";
-
-const sampleData = {
-  content: [{
-    day: 1, placeList: [{
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    },
-    {
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }, {
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }, {
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }]
-  }, {
-    day: 2, placeList: [{
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }, {
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }]
-  }, {
-    day: 3, placeList: [{
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }]
-  }],
-  plan_end_date: "2023-11-06",
-  plan_id: 44418118,
-  plan_location: "서울특별시",
-  plan_name: "박예림",
-  plan_start_date: "2023-11-03",
-  plan_theme: [{ name: "도심속여행", id: 2 }, { name: "도심속여행", id: 2 }, { name: "도심속여행", id: 2 }]
-}
+import { tripThema } from "../../utils/Data/tripThema";
 
 const SampleComment = [
   {
@@ -124,19 +24,24 @@ const SampleComment = [
   },
 ]
 
-
 const PostPlan: React.FC = () => {
   const [isLogin, setIsLogin] = useState<string>(true);
-  const [data, setData] = useState<any>(sampleData);
-  const [selectedDayPlan, setSelectedDayPlan] = useState<any>(sampleData.content);
+  const [data, setData] = useState<any>([]);
+  const [title, setTitle] = useState<string>('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [regions, setRegions] = useState<string>('서울특별시');
+  const [thema, setThema] = useState<any>([]);
+  const [dayPlan, setDayPlan] = useState<any>(null);
+  const [selectDay, setSelectDay] = useState<number>(0);
+  const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
+  
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
-  const [selectDay, setSelectDay] = useState<number>(0);
-  const [regions, setRegions] = useState<string>('서울특별시');
 
   const placeId = useParams<{ id: string }>();
-  const [state, fetchData] = useAsync({url: `/reviews/${placeId.id}`});
+  const [state, fetchData] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
 
   useEffect(() => {
     console.log(state);
@@ -144,25 +49,35 @@ const PostPlan: React.FC = () => {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      if (state.data.message === "delete success") console.log('아쉽지만 데이터가 없어용!');
-      else {
-        setData(state.data);
-      }
+      setData(state.data);
     }
   }, [state]);
 
-  const selectedDay = (day: number) => {
-    if (day === 0) setSelectedDayPlan(sampleData.content)
-    else setSelectedDayPlan(sampleData.content.filter((plan) => plan.day === day));
-    setSelectDay(day)
-  }
-z
+  useEffect(() => {
+    if (data.length !== 0) {
+      setTitle(data.plan.planName);
+      setStartDate(data.plan.planStartDate);
+      setEndDate(data.plan.planEndDate);
+      setRegions(data.plan.planLocation);
+      setThema(data.plan.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setDayPlan(data.plan.content);
+      setSelectedDayPlan(data.plan.content);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (selectDay === 0) {
+      setSelectedDayPlan(dayPlan);
+    } else {
+      const newArray = [dayPlan[selectDay - 1]];
+      setSelectedDayPlan(newArray);
+    }
+  }, [selectDay]);
 
   return (
-    <Page headersProps={{ isHome: false, isLogin: true }}>
-
+    <Page headersProps={{ isHome: false }}>
       <S.InforFirstContainer>
-        <div>제목 {data.plan_name}</div>
+        <div>제목 {title}</div>
       </S.InforFirstContainer>
       <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -170,7 +85,7 @@ z
             작성일자
           </S.InforContainer>
           <S.InforInputContainer>
-            {Date.now()}
+          {data.postRegistrationDate}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
       </S.HorizontalFirstStartContainer>
@@ -180,7 +95,7 @@ z
             여행 기간
           </S.InforContainer>
           <S.InforInputContainer>
-            {sampleData.plan_start_date} ~ {sampleData.plan_end_date}
+            {startDate} ~ {endDate}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
       </S.HorizontalFirstStartContainer>
@@ -190,8 +105,8 @@ z
             여행 테마
           </S.InforContainer>
           <S.Content>
-            {data.plan_theme.map((thema: any) => (
-              <S.ThemaBadge key={thema.id}>{thema.name}</S.ThemaBadge>
+            {thema.map((thema: any) => (
+              <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
             ))}
           </S.Content>
         </S.HorizontalFirstStartContainer>
@@ -225,7 +140,7 @@ z
       </S.HorizontalContainer>
 
       <S.MapAndDayPlanContainer>
-        {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => selectedDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+        {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
         <S.DayPlanPostContainer>
           <S.DayPlanPostInnerContainer>
             <DayPlanPost dayList={selectedDayPlan} selectDay={selectDay} />
