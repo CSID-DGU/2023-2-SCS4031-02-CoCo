@@ -36,8 +36,8 @@ export default function UserPreview({ nickName, keyword }: UserPreviewProps) {
         style={{
           width: "5rem",
           height: "2.5rem",
-          color: isHovered ? "#EBB700" : "#9E9E9E",
-          opacity: 0.8
+          color: isHovered ? "#EBB700" : "#BDBDBD",
+          opacity: 0.5
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

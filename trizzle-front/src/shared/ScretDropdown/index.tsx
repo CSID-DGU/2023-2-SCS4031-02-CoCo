@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import * as S from "./ScretDropdown.styles";
-import { AiOutlineDown} from "react-icons/ai";
+import { AiOutlineDown } from "react-icons/ai";
 
-interface ScretDropdownPorps {
-  title_value?: string;
+type ScretDropdownPorps = {
+  titleValue: string;
   onScret: (value: boolean) => void;
 }
 
-export default function ScretDropdown({ title_value, onScret }: ScretDropdownPorps) {
-  const [title, setTitle] = useState<string>(title_value === '공개 범위' ? title_value : '공개 범위');
+const ScretDropdown: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) => {
+  const [title, setTitle] = useState<string>(props.titleValue ? '나만 보기' : '게시하기');
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClick = (value: string) => {
     setIsOpen(!isOpen)
     if (value === "나만 보기") {
       setTitle(value);
-      onScret(false);
+      props.onScret(false);
     } else {
-      onScret(true);
+      props.onScret(true);
       setTitle(value);
     }
   }
@@ -42,3 +42,4 @@ export default function ScretDropdown({ title_value, onScret }: ScretDropdownPor
     </>
   );
 }
+export default ScretDropdown;

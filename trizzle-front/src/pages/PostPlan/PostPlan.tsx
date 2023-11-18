@@ -7,6 +7,8 @@ import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import PlanMap from "../../shared/PlanMap";
 import { koreaRegions } from "../../utils/Data/mapData";
 import UserPreview from "../../components/UserPreview";
+import { useAsync } from "../../utils/API/useAsync";
+import { useParams } from "react-router-dom";
 
 const sampleData = {
   content: [{
@@ -133,16 +135,28 @@ const PostPlan: React.FC = () => {
   const [selectDay, setSelectDay] = useState<number>(0);
   const [regions, setRegions] = useState<string>('서울특별시');
 
+  const placeId = useParams<{ id: string }>();
+  const [state, fetchData] = useAsync({url: `/reviews/${placeId.id}`});
+
   useEffect(() => {
-    setData(sampleData);
-  }, []);
+    console.log(state);
+    if (state.error) {
+      console.error(state.error);
+      alert("데이터를 불러오는 데 실패했습니다");
+    } else if (state.data) {
+      if (state.data.message === "delete success") console.log('아쉽지만 데이터가 없어용!');
+      else {
+        setData(state.data);
+      }
+    }
+  }, [state]);
 
   const selectedDay = (day: number) => {
     if (day === 0) setSelectedDayPlan(sampleData.content)
     else setSelectedDayPlan(sampleData.content.filter((plan) => plan.day === day));
     setSelectDay(day)
   }
-
+z
 
   return (
     <Page headersProps={{ isHome: false, isLogin: true }}>
