@@ -32,7 +32,7 @@ public class PlanService {
 
         for(Day day: plan.getContent()){    // content의 날짜(day)에 따라
             for(Place place: day.getPlaceList()) { // place 항목을 확인
-                if(place.get_id() != null) {   // place_id가 null이 아니면(즉 keyword가 아닌 place정보 왔다면) place정보 저장
+                if(place.getId() != null) {   // place_id가 null이 아니면(즉 keyword가 아닌 place정보 왔다면) place정보 저장
                     if(!places.contains(place)){  // plan 내의 place 중복되는 지 확인(place 중복 저장 막기 위해)
                         places.add(place);
                     }
@@ -41,7 +41,7 @@ public class PlanService {
             }
 
         for (Place place : places) {
-            Optional<Place> existingPlace = placeService.findByPlaceId(place.get_id());      // place 중복 저장 막기 위해 저장되어 있는지 확인
+            Optional<Place> existingPlace = placeService.findByPlaceId(place.getId());      // place 중복 저장 막기 위해 저장되어 있는지 확인
 
             if(!existingPlace.isPresent()) {    // 존재하지 않을 경우
                 placeService.savePlace(place);
@@ -52,8 +52,8 @@ public class PlanService {
     }
 
     /*일정 가져오기*/
-    public Plan searchPlan(String _id) {
-        Optional <Plan> planOptional = mongoRepository.findById(_id);
+    public Plan searchPlan(String id) {
+        Optional <Plan> planOptional = mongoRepository.findById(id);
         return planOptional.orElse(null);
     }
 
