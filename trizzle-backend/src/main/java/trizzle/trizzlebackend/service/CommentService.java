@@ -1,9 +1,7 @@
 package trizzle.trizzlebackend.service;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.controller.CommentController;
@@ -15,6 +13,8 @@ import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.aggregation.AddFieldsOperation.addField;
 
 @Service
 public class CommentService {
@@ -126,22 +126,8 @@ public class CommentService {
     };
 
    public List<Comment> findByAccount(String accountId) {
-        Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("accountId").is(accountId)),
-                LookupOperation.newLookup()
-                        .from("posts")
-                        .localField("postId")
-                        .foreignField("_id")
-                        .as("postInfo"),
-                LookupOperation.newLookup()
-                        .from("reviews")
-                        .localField("reviewId")
-                        .foreignField("_id")
-                        .as("reviewInfo")
-        );
-
-        AggregationResults<Comment> results = mongoTemplate.aggregate(aggregation, "comments", Comment.class);
-        return results.getMappedResults();
+       List<Comment> myComments = commentRepository.findByAccountId(accountId);
+       return myComments;
    };
 
    public Comment fixComment(String id) {

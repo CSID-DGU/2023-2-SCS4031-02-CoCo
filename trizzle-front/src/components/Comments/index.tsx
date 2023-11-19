@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import * as S from './Comments.style';
 import { CommentsProps, myCommentProps } from './Comments.type';
 import {BsFillPinAngleFill} from 'react-icons/bs';
@@ -150,15 +151,21 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
 };
 
 export const MyComments:React.FC<myCommentProps> = (props: myCommentProps) => {
+  if(!props.myCommentData.isDeleted) {
   return(
     <S.MyCommentContainer>
       <S.MyCommentContent>
-        <S.MyCommentContentText>{props.myCommentData.content}</S.MyCommentContentText>
+        <S.MyCommentContentText>{props.myCommentData.commentContent}</S.MyCommentContentText>
         <S.MyCommentDeleteButton onClick={() => props.onDelete(props.myCommentData.id)}>삭제</S.MyCommentDeleteButton>
       </S.MyCommentContent>
-      <S.MyCommentPostText>{props.postName} | {props.myCommentData.registrationDate}</S.MyCommentPostText>
+      <S.MyCommentPostText>
+        <Link 
+      to={props.myCommentData.postId? `/post/plan/${props.myCommentData.postId}` : `/post/places/${props.myCommentData.reviewId}`}
+      style={{color:"#B8B8B8"}}
+      >원글이동</Link> | {props.myCommentData.commentRegistrationDate}</S.MyCommentPostText>
     </S.MyCommentContainer>
   )
+  }
 }
 
 export default Comments;
