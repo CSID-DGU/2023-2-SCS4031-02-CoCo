@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const UploadModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 1rem;
   margin: auto;
@@ -37,7 +37,7 @@ export const GridContainer = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 1.5rem;
-  justify-items: center;
+  justify-items: flex-start;
   align-items: flex-start;
   margin: 0 0 0.5rem 0;
 `
