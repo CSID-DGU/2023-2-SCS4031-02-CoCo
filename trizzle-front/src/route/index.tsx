@@ -15,6 +15,7 @@ import SearchPlan from '../pages/SearchPlan/SearchPlan';
 import AddPostPlan from '../pages/AddPostPlan/AddPostPlan';
 import PostPlan from '../pages/PostPlan/PostPlan';
 import GoogleRedirectPage from '../pages/GoogleRedirectPage/GoogleRedirectPage';
+import ConnectPlace from '../pages/AddPlace/ConnectPlace';
 
 const Router = () => {
   return (
@@ -31,6 +32,7 @@ const Router = () => {
         <Route path='/search/:region/plans' element={<SearchPlan />} />
 
         <Route path='/post/plans/add' element={<AddPostPlan />} />
+        <Route path="/post/plans/add/:planId/:placeName" element={<ConnectPlace />} />
         <Route path='/post/plan/:id' element={<PostPlan />} />
 
         <Route path="/post/places/:id" element={<PostPlace />} />
