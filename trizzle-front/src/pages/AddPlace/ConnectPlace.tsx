@@ -10,16 +10,15 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import { koreaRegions } from "../../utils/Data/mapData";
 
-export default function AddPlacePage() {
+export default function ConnectPlace() {
   const navigate = useNavigate();
-  const placeId = useParams<{ id: string }>();
-  const [state, fetchData] = useAsync(placeId && placeId.id ? { url: `/api/reviews/${placeId.id}` } : { url: "", method: "" });
+  const planInfor = useParams<{ planId: string, placeName: string }>();
+  const [state, fetchData] = useAsync({ url: "", method: "" });
 
-  const [data, setData] = useState<any>(null);
   const [title, setTitle] = useState<string>('');
-  const [secretValue, setSecretValue] = useState<boolean>(true);
+  const [secretValue, setSecretValue] = useState<boolean>(false);
   const [visitDate, setVisitDate] = useState<any>(new Date());
-  const [place, setPlace] = useState<any>({ placeName: '' });
+  const [place, setPlace] = useState<any>({ placeName: planInfor.placeName });
   const [contents, setContents] = useState<string>('');
   const [contentsText, setContentsText] = useState<string>('');
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
@@ -31,28 +30,9 @@ export default function AddPlacePage() {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      if (placeId.id) {
-        setData(state.data);
-        if (state.data.message === "update success") {
-          if (secretValue) navigate(`/post/places/secret/${state.data.reviewId}`);
-          else navigate(`/post/places/${state.data.reviewId}`);
-        }
-      } else if (state.data.message === "save success") {
-        if (secretValue) navigate(`/post/places/secret/${state.data.reviewId}`);
-        else navigate(`/post/places/${state.data.reviewId}`);
-      }
+      if (state.data.message === "save success") navigate(`/post/places/${state.data.reviewId}`);
     }
   }, [state]);
-
-  useEffect(() => {
-    setTitle(data && data.reviewTitle ? data.reviewTitle : '');
-    setSecretValue(data && data.reviewSecret ? data.reviewSecret : '');
-    setVisitDate(data && data.visitDate ? new Date(data.visitDate) : '');
-    setPlace(data && data.place ? data.place : '');
-    setContents(data && data.reviewContent ? data.reviewContent : '');
-    setRepresentImage(data && data.thumbnail ? data.thumbnail : '');
-  }, [data]);
-
 
   const onSave = () => {
     if (title === '') {
@@ -74,24 +54,27 @@ export default function AddPlacePage() {
       reviewContentText: contentsText,
       reviewSecret: secretValue,
       thumbnail: representImage,
+      planId: planInfor.planId,
     }
 
-    const json = JSON.stringify(ResultData);
-    console.log(ResultData);
-    if (placeId.id) fetchData(`/api/reviews/${placeId.id}`, "PUT", json);
-    else fetchData('/api/reviews', "POST", json);
+    const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
+    if (response) {
+      const json = JSON.stringify(ResultData);
+      console.log(ResultData);
+      fetchData('/api/reviews', "POST", json);
+    }
   }
 
   return (
     <Page headersProps={{ isHome: false }}>
       <S.PageTitleContainer>
-        <S.PageTitle>개별 장소 등록</S.PageTitle>
+        <S.PageTitle>장소 리뷰 연동</S.PageTitle>
       </S.PageTitleContainer>
       <form>
         <S.ButtonContainer>
           <ScretDropdown titleValue={secretValue} onScret={(e) => setSecretValue(e)} />
           <div>
-            <S.Button type="button" onClick={onSave}>{placeId.id ? '수정' : '저장'}</S.Button>
+            <S.Button type="button" onClick={onSave}>저장</S.Button>
           </div>
         </S.ButtonContainer>
         <S.FormContainer>
