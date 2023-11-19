@@ -54,3 +54,42 @@ export const SearchResultContainer = styled.div`
 export const PlaceCardContainer = styled.div`
   margin: 2rem 0 0 0;
 `
+
+
+export const FilterContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  font-size: 1rem;
+  font-weight: 400;
+  color: #868686;
+  padding: 0.5rem 0;
+`
+
+export const MenuContainer = styled.div`
+  width: auto;
+  max-width: 50rem;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  /* align-items: center; */
+  gap: 1rem;
+`
+
+export const FilterButton = styled.button`
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: auto 1rem auto 0;
+  .icon {
+    color: #868686;
+    &:hover {
+      color: #000;
+    }
+  }
+`

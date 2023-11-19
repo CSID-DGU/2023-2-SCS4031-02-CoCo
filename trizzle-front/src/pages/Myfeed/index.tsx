@@ -32,7 +32,9 @@ const Myfeed = () => {
   else {
   return (
     <MyfeedLayout isMe={id? false : true}>
-      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={["김희진", "김희진", "김희진"]} following={["김희진", "김희진", "김희진"]} isMe={id? false : true} planCount={1} placeCount={4}/>
+      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={["김희진", "김희진", "김희진"]} following={["김희진", "김희진", "김희진"]} isMe={id? false : true} planCount={1} placeCount={4}
+      src={userData.profileImage}
+      />
       <S.HorizontalContainer>
         <S.ListTitle>{id? "김희진님의 여행 일정 목록" : "나의 여행 일정 목록"}</S.ListTitle>
         <S.PlusButton>더보기</S.PlusButton>
@@ -50,7 +52,7 @@ const Myfeed = () => {
           title={item.postTitle} 
           startDate={item.plan.planStartDate.slice(0,10)} 
           endDate={item.plan.planEndDate.slice(0,10)} 
-          thumbnail={item.thumbnail} 
+          thumbnail={item.thumbnail? item.thumbnail : ""} 
           likeCount={item.likeCount? item.likeCount : 0} 
           commentCount={item.commentCount? item.commentCount : 0} 
           planId={item.id} 

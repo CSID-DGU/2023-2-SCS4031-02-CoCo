@@ -1,12 +1,10 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { koreaRegions } from "../../utils/Data/mapData";
+import React, { useEffect, useState } from "react";
 import * as S from './SearchPlace.styles';
 import {SearchLayout} from "../Page";
-import Maps from "../../components/KakaoMap";
 import PlaceCard from "../../components/PlaceCard";
+import DropdownMenu from "../../components/DropdownMenu";
+import { IoIosSearch } from "react-icons/io";
 import img from '../../assets/images/default_festival.jpg'
-import SearchBar from "../../components/SearchBar";
 
 const regionInformation = {
   region: "서울특별시",
@@ -21,6 +19,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -29,6 +28,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -37,6 +37,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -45,6 +46,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -53,6 +55,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -61,6 +64,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -69,6 +73,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -77,6 +82,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -85,6 +91,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -93,6 +100,7 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }, {
   src: '',
   postId: 215838,
@@ -101,13 +109,34 @@ const placeSample = [{
   postTitle: "과학의 날 행사",
   postDate: "2019-11-13",
   postContent: "시바시바견",
+  likeCount: 12,
 }]
 
 const SearchPlace = () => {
+  const [allReview, setAllReview] = useState(placeSample);
+  const [review, setReview] = useState(placeSample);
+  const [sort, setSort] = useState<any>({name:"최신순"});
+
+  useEffect(() => {
+    if (sort.name === "최신순") {
+      setReview(allReview);
+    } else if(sort.name === "오래된순") {
+      setReview(allReview.slice().reverse());
+    } else if(sort.name === "인기순") {
+      setReview(allReview.sort((a, b) => b.likeCount - a.likeCount))
+    }
+  }, [sort])
+
   return (
     <SearchLayout selectTab="장소">
       <S.SearchResultContainer>
-        {placeSample.map((place, index) => (
+      <S.FilterContainer>
+        {review.length} 개의 검색결과
+        <S.MenuContainer >
+          <DropdownMenu items={[{name: "최신순"}, {name: "오래된순"}, {name: "인기순"}]} onClick={(item:any) => setSort(item)} name="정렬 기준" selectedItem={sort}/>
+        </S.MenuContainer>
+      </S.FilterContainer>
+        {review.map((place, index) => (
           <S.PlaceCardContainer key={index}>
             <PlaceCard src={place.src} postId={place.postId} userName={place.userName} placeName={place.placeName} postTitle={place.postTitle} postContent={place.postContent} postDate={place.postDate} />
           </S.PlaceCardContainer>

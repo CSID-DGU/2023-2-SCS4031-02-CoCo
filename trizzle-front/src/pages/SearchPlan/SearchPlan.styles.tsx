@@ -41,3 +41,41 @@ export const PlanCardContainer = styled.div`
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;
 `
+
+export const FilterContainer = styled.div<{number:number}>`
+  width: 100%;
+  height: ${props => props.number > 8? "7rem" : "auto"};
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  font-size: 1rem;
+  font-weight: 400;
+  color: #868686;
+  padding: 0.5rem 0;
+`
+
+export const MenuContainer = styled.div`
+  width: auto;
+  max-width: 50rem;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  /* align-items: center; */
+  gap: 1rem;
+`
+
+export const FilterButton = styled.button`
+  width: 1.6rem;
+  height: 1.6rem;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin: auto 1rem auto 0;
+  .icon {
+    color: #868686;
+    &:hover {
+      color: #000;
+    }
+  }
+`

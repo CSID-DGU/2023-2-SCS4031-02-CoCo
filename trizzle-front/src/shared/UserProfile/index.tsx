@@ -22,7 +22,7 @@ const UserProfile: React.FC<UserProfileProps> = (props: UserProfileProps) => {
 
   return (
     <S.Container>
-      <ProfileImage type="big" isMe={props.isMe}/>
+      <ProfileImage type="big" isMe={false} src={props.src? props.src: ""}/>
       <S.RightContainer>
         <S.HorizontalContainer>
           <S.Nickname>{props.nickName}</S.Nickname>
