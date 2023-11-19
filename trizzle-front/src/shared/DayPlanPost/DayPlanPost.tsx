@@ -3,7 +3,17 @@ import * as S from './DayPlanPost.styles';
 
 import { PiDotsThree } from 'react-icons/pi';
 import logo from '../../assets/logo/nonTextLogo.svg'
+import res from "src/assets/keywords/trans.svg"
+import trans from "../../assets/keywords/trans.svg"
+import rest from "../../assets/keywords/rest.svg"
+import shopping from "../../assets/keywords/shopping.svg"
 
+const KeywordList: { keyword: string; src: string; }[] = [
+  { keyword: "식사", src: res },
+  { keyword: "이동", src: trans },
+  { keyword: "휴식", src: rest },
+  { keyword: "쇼핑", src: shopping },
+];
 
 type DayPlanPostProps = {
   planId?: string;
@@ -29,7 +39,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   }, [props.dayList]);
 
   useEffect(() => {
-    if (data && data.length !==0 ) {
+    if (data && data.length !== 0) {
       setIsDdetailOpen(Array.from({ length: data.length }, () =>
         Array.from({ length: data[0].placeList.length }, () => false)));
     }
@@ -70,29 +80,38 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                     </S.PlaceInfo>
                   </S.PlacePostContainer>
                 ) : (
-                  <S.PlaceContainer key={innerIndex}>
-                    <S.ThreeDotsButton onClick={() => openDetail(index, innerIndex)}>
-                      <PiDotsThree size={20} />
-                      {
-                        isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
-                        <S.ToggleButtonContainer>
-                          <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption>
-                          <S.ToggleButtonOption onClick={() => props.onConnetPostPlace(data[index].placeList[innerIndex])}>게시글 불러오기</S.ToggleButtonOption>
-                        </S.ToggleButtonContainer>
-                      }
-                    </S.ThreeDotsButton>
-                    <S.PalceText>
-                      {place.placeName}
-                    </S.PalceText>
-                  </S.PlaceContainer>
+                  place.keyword !== null ? (
+                    <S.PlaceContainer key={innerIndex} type={true}>
+                      <img src={KeywordList.filter((item)=> item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
+                      <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
+                    </S.PlaceContainer>
+                  ) : (
+                    <S.PlaceContainer key={innerIndex} >
+                      <S.ThreeDotsButton onClick={() => openDetail(index, innerIndex)}>
+                        <PiDotsThree size={20} />
+                        {
+                          isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
+                          <S.ToggleButtonContainer>
+                            <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption>
+                            <S.ToggleButtonOption onClick={() => props.onConnetPostPlace(data[index].placeList[innerIndex])}>게시글 불러오기</S.ToggleButtonOption>
+                          </S.ToggleButtonContainer>
+                        }
+                      </S.ThreeDotsButton>
+                      <S.PalceText>
+                        {place.placeName}
+                      </S.PalceText>
+                    </S.PlaceContainer>
+                  )
                 )}
-              </div>
+              </div >
             ))}
           </>
-        ))}
+        ))
+        }
       </>
     )
   }
 }
 
 export default DayPlanPost;
+
