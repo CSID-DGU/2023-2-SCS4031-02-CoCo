@@ -8,8 +8,10 @@ import { PlaceInfoList } from "../../components/KakaoMap/Map.type";
 
 
 type props = {
-  onAddButtonClick: (selectedPlace:any, day:any) => void;
-  center: {lat: number, lng: number};
+  type?: string; //place, plan
+  onAddButtonClick?: (selectedPlace: any, day: any) => void;
+  onAddPlaceClick?: (selectedPlace: any) => void
+  center: { lat: number, lng: number };
   region?: any;
   onCloseClick: () => void;
 }
@@ -23,21 +25,34 @@ const AddPlaceModal = (props: props) => {
   const [markerList, setMarkerList] = useState<any[]>([]);
 
   const handleSearch = async (keyword: string) => {
-      const result:any = await searchKeyword(keyword, 1);
-      const updateResult = result.filter((place:any) => {return place.addressName.slice(0, 2) === props.region.name.slice(0,2)});
+    const result: any = await searchKeyword(keyword, 1);
+    if (props.region) {
+      const updateResult = result.filter((place: any) => { return place.addressName.slice(0, 2) === props.region.name.slice(0, 2) });
 
       setPlaceList(updateResult);
 
-      updateResult.map((place:any) => {
-      setMarkerList((prev) => [...prev, {
-        position: {lat: place.y, lng: place.x},
-        placeInfo: place,
-        selected: false,
-        onClick: () => setSelectedPlace(place.id),
-      }])
-    })
-    setCenter({lat: result[0].y, lng: result[0].x});
-    
+      updateResult.map((place: any) => {
+        setMarkerList((prev) => [...prev, {
+          position: { lat: place.y, lng: place.x },
+          placeInfo: place,
+          selected: false,
+          onClick: () => setSelectedPlace(place.id),
+        }])
+      })
+    } else {
+      setPlaceList(result);
+      result.map((place: any) => {
+        setMarkerList((prev) => [...prev, {
+          position: { lat: place.y, lng: place.x },
+          placeInfo: place,
+          selected: false,
+          onClick: () => setSelectedPlace(place.id),
+        }])
+      });
+
+    }
+
+    setCenter({ lat: result[0].y, lng: result[0].x });
   }
 
   function handleSelectPlace(place: any) {
@@ -69,20 +84,20 @@ const AddPlaceModal = (props: props) => {
         selectedElement.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     }
-  
+
     // 이전에 선택한 항목의 배경색 원래대로 돌리기
     markerList.forEach((marker) => {
       if (marker.placeInfo.id !== selectedPlace) {
         const deselectedElement = document.getElementById(marker.placeInfo.id);
         if (deselectedElement) {
           deselectedElement.style.backgroundColor = "#ffffff"; // 원래 배경색으로 변경
-          
+
         }
       }
     });
   }, [selectedPlace]);
 
-  const handleEnter = async (e: any, value:string) => {
+  const handleEnter = async (e: any, value: string) => {
     if (e.key === "Enter") {
       setKeyword(value);
       await handleSearch(keyword);
@@ -94,20 +109,20 @@ const AddPlaceModal = (props: props) => {
     setValue(event.target.value);
   };
 
-  const handleSearchClick = (value:string) => {
+  const handleSearchClick = (value: string) => {
     setKeyword(value);
   }
 
   useEffect(() => {
-    if(keyword !== "") {
+    if (keyword !== "") {
       handleSearch(keyword);
     }
   }
-  , [keyword]);
+    , [keyword]);
 
 
   return (
-    <Modal title="장소 추가" onCloseClick={props.onCloseClick} styleProps={{width: "80%", height: "80%"}}>
+    <Modal title="장소 추가" onCloseClick={props.onCloseClick} styleProps={{ width: "80%", height: "80%" }}>
       <S.InputWrapper>
         <SearchInput
           value={value}
@@ -123,44 +138,49 @@ const AddPlaceModal = (props: props) => {
             center={center}
             level={5}
             markerList={placeList}
-            />
+          />
         </S.MapWrapper>
-        ): (
-          <S.MapWrapper>
-            <Maps
-              type="search"
-              center={center}
-              level={5}
-              markerList={markerList   }
-              />
-            <S.MapListContainer>
-              <S.ListItemContainer>
-                <S.ListItemTitle>검색결과</S.ListItemTitle>
-              </S.ListItemContainer>
-              {placeList.map((place, index) => (
-                <S.ListItemContainer key={index} onClick={() => handleSelectPlace(place)} id={place.id}>
-                  <S.PlaceNameConatiner>
-                    <S.PlaceName>{place.placeName}</S.PlaceName>
-                    <S.PlaceCategory>{place.categoryGroupName}</S.PlaceCategory>
-                  </S.PlaceNameConatiner>
-                  <S.PlaceNameConatiner>
-                    <S.PlaceTitle>주소</S.PlaceTitle>
-                    <S.PlaceRoadAddress>{place.roadAddressName}</S.PlaceRoadAddress>
-                  </S.PlaceNameConatiner>
-                  <S.PlaceAdress>{place.addressName}</S.PlaceAdress>
-                  <S.ButtonsWrapper>
+      ) : (
+        <S.MapWrapper>
+          <Maps
+            type="search"
+            center={center}
+            level={5}
+            markerList={markerList}
+          />
+          <S.MapListContainer>
+            <S.ListItemContainer>
+              <S.ListItemTitle>검색결과</S.ListItemTitle>
+            </S.ListItemContainer>
+            {placeList.map((place, index) => (
+              <S.ListItemContainer key={index} onClick={() => handleSelectPlace(place)} id={place.id}>
+                <S.PlaceNameConatiner>
+                  <S.PlaceName>{place.placeName}</S.PlaceName>
+                  <S.PlaceCategory>{place.categoryGroupName}</S.PlaceCategory>
+                </S.PlaceNameConatiner>
+                <S.PlaceNameConatiner>
+                  <S.PlaceTitle>주소</S.PlaceTitle>
+                  <S.PlaceRoadAddress>{place.roadAddressName}</S.PlaceRoadAddress>
+                </S.PlaceNameConatiner>
+                <S.PlaceAdress>{place.addressName}</S.PlaceAdress>
+                <S.ButtonsWrapper>
+                  {props.type === "place" ? (
+                    <S.Buttons onClick={() => props.onAddPlaceClick(place)}>장소 선택</S.Buttons>
+                  ) : (
                     <S.Buttons onClick={(day) => props.onAddButtonClick(place, day)}>일정에 추가</S.Buttons>
-                    <S.Buttons>
-                      <a href={place.placeUrl} target="_blank" rel="noreferrer" id={place.id}>
-                        상세페이지
-                      </a>
-                    </S.Buttons>
-                  </S.ButtonsWrapper>
-                </S.ListItemContainer>
-                ))}
-            </S.MapListContainer>
-          </S.MapWrapper>
-        )}
+                  )}
+
+                  <S.Buttons>
+                    <a href={place.placeUrl} target="_blank" rel="noreferrer" id={place.id}>
+                      상세페이지
+                    </a>
+                  </S.Buttons>
+                </S.ButtonsWrapper>
+              </S.ListItemContainer>
+            ))}
+          </S.MapListContainer>
+        </S.MapWrapper>
+      )}
     </Modal>
   )
 };

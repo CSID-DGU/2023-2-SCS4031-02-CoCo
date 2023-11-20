@@ -40,13 +40,13 @@ public class CommentService {
         comment.setCommentRegistrationDate(localDateTime);
         comment.setCommentLike(0); //좋아요 0개
         comment.setFix(false);
-        comment.setIsDeleted(false);
+        comment.setDeleted(false);
 
         return commentRepository.save(comment);
     };
 
     public Comment deleteComment(Comment comment) {
-        comment.setIsDeleted(true);
+        comment.setDeleted(true);
         comment.setCommentContent("");
         //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직 추가
         return commentRepository.save(comment);
@@ -83,7 +83,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.getIsDeleted()) {
+            if(parentId == null && !comment.isDeleted()) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -113,7 +113,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.getIsDeleted()) {
+            if(parentId == null && !comment.isDeleted()) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -138,5 +138,10 @@ public class CommentService {
 
        return commentRepository.save(comment);
    };
+
+    public Comment findComment(String id) {
+        Optional<Comment> optionalComment = commentRepository.findById(id);
+        return optionalComment.orElse(null);
+    }
 
 }

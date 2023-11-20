@@ -4,9 +4,10 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 10rem 0 0 0;
   width: auto;
   height: auto;
-  border: 2px solid #9E9E9E;
+  border: 1px solid #BDBDBD;
   border-radius: 0.5rem;
   &:hover {
     border: 2px solid #EBB700;
@@ -23,25 +24,25 @@ export const VerticalFirstStartContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: first-start;
-  gap: 0.8rem;
+  gap: 0.5rem;
 `
 
 export const UserImage = styled.div`
   margin: 0.5rem 0.5rem 0.5rem 1rem;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 50%;
   background-color: #D9D9D9;
 `
 
 export const UserIdText = styled.div`
-  margin: 1rem 0 0 0;
-  font-size: 1.2rem;
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
   font-weight: bold;
 `
 
 export const UserKeywordTag = styled.div`
-  margin: 0 0 1rem 0;
+  margin: 0 0 0.5rem 0;
   padding: 0.2rem 1rem 0.2rem 1rem;
   width: auto;
   height: auto;

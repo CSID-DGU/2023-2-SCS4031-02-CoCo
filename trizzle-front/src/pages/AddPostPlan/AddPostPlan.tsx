@@ -8,174 +8,129 @@ import { koreaRegions } from "../../utils/Data/mapData";
 import { tripThema } from "../../utils/Data/tripThema";
 import UploadPlanModal from "../../shared/UploadPlanModal";
 import PlanMap from "../../shared/PlanMap";
-import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
-import DetailDayPlan from "../../shared/DayPlan/DetailDayPlan";
 import { useNavigate } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import ConnectPlaceModal from "../../shared/ConnectPlaceModal";
 
-
-const sampleData = {
-  content: [{
-    day: 1, placeList: [{
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    },
-    {
-      _id: "1254228742",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }, {
-      _id: "1254228742",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }, {
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }]
-  }, {
-    day: 2, placeList: [{
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }, {
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }]
-  }, {
-    day: 3, placeList: [{
-      _id: "1254228746",
-      place_name: "수잔나의앞치마",
-      category_name: "음식점 > 카페",
-      category_group_code: "CE7",
-      category_group_name: "카페",
-      phone: "",
-      address_name: "서울 중구 충무로5가 36-12",
-      road_address_name: "서울 중구 퇴계로49길 24",
-      x: 126.999609510907,
-      y: 37.5633050390399,
-      place_url: "http://place.map.kakao.com/1254228746"
-    }]
-  }],
-  plan_end_date: "2023-11-06",
-  plan_id: 44418118,
-  plan_location: "서울특별시",
-  plan_name: "박예림",
-  plan_start_date: "2023-11-03",
-  plan_theme: [{ name: "도심속여행", id: 2 }]
-}
-
 const AddPostPlan: React.FC = () => {
-  const [data, setData] = useState<any>({});
-  const [selectedDayPlan, setSelectedDayPlan] = useState<any>(sampleData.content);
+  const [data, setData] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [regions, setRegions] = useState<string>('서울특별시');
+  const [prevThema, setPrevThema] = useState<any>([]);
   const [thema, setThema] = useState<any>([]);
-
+  const [dayPlan, setDayPlan] = useState<any>(null);
+  const [secret, setSecret] = useState<boolean>(true);
+  const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
-
   const [isUploadPlanModal, setIsUploadPlanModal] = useState<boolean>(false);
+
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
-  const [connectPlaceList, setIsConnectPlaceList] = useState<boolean>([{_id: "1254228746" }, {_id: "1254228744" }]);
   const [ConnectPlaceModalData, setIsConnectPlaceModalData] = useState<string>('');
   const [isHovered, setIsHovered] = useState<boolean>(false);
-
-  const [isUploadPlan, setIsUploadPlan] = useState<boolean>(true);
+  const [state, fetchData] = useAsync({ url: "", method: "" });
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log(state);
+    if (state.error) {
+      console.error(state.error);
+    } else if (state.data) {
+      console.log(state.data);
+      if (state.data.message === "연동 선공") setData(state.data);
+      // 저장 및 수정
+      else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
+      else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (data.length !== 0) {
+      setTitle(data.planName);
+      setStartDate(data.planStartDate);
+      setEndDate(data.planEndDate);
+      setRegions(data.planLocation);
+      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setDayPlan(data.content);
+      setSelectedDayPlan(data.content);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (selectDay === 0) {
+      setSelectedDayPlan(dayPlan);
+    } else {
+      const newArray = [dayPlan[selectDay - 1]];
+      setSelectedDayPlan(newArray);
+    }
+  }, [selectDay]);
+
+  useEffect(() => {
+    if (prevThema.length !== 0) {
+      prevThema.map((value: any) => onThemaBadgeClick(value[0]));
+    }
+  }, [prevThema]);
+
   const onThemaBadgeClick = (select: any) => {
-    // 선택한 아이템이 thema 배열에 이미 존재하는지 확인
     const itemExists = thema.some((item) => item.id === select.id);
 
     if (itemExists) {
-      // 이미 선택한 아이템이 있는 경우, 해당 아이템을 제거
       setThema((prev) => prev.filter((item) => item.id !== select.id));
     } else {
-      // 선택한 아이템이 없는 경우, 해당 아이템을 추가
       setThema((prev) => [...prev, select]);
     }
   };
 
-  const selectedDay = (day: number) => {
-    if (day === 0) setSelectedDayPlan(sampleData.content)
-    else setSelectedDayPlan(sampleData.content.filter((plan) => plan.day === day));
-    setSelectDay(day)
-  }
-
   const onPostPlace = (data: any) => {
-    window.open(`/post/places/add/?place_id=${data._id}&place_name=${data.place_name}`, '_blank');
+    window.open(`/post/places/add/${data._id}/${encodeURIComponent(data.placeName)}`, '_blank');
   }
 
   const connectPlace = (data: any) => {
-    // 데이터 가지고 있고
     setIsConnectPlaceModal(!isConnectPlaceModal);
-    setIsConnectPlaceModalData(data.place_name);
+    setIsConnectPlaceModalData(data);
   }
 
-  useEffect(() => {
-    setData(sampleData);
-    setTitle(sampleData.plan_name);
-    setStartDate(sampleData.plan_start_date);
-    setEndDate(sampleData.plan_end_date);
-    setRegions(sampleData.plan_location);
-    setThema(sampleData.plan_theme);
-    setSelectedDayPlan(sampleData.content);
-  }, []);
+  //review에 planId 추가해서 디비로 put 보내기
+  const connectReview = (place: any) => {
+    const reviewData = { ...place, planId: data.id }
+    fetchData(`/api/reviews/${place._id}`, 'PUT', reviewData);
+  }
+
+  const onSave = (type: string) => {
+    const newArray = thema.map((value: any) => value.name);
+    if (type === "save") {
+      setSecret(false);
+      data.planThema = newArray;
+      const ResultData = {
+        postTitle: title,
+        postSecret: false,
+        plan: { ...data }
+      }
+      console.log(ResultData);
+
+      const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
+      if (shouldProceed) {
+        const json = JSON.stringify(ResultData);
+        console.log(json);
+        fetchData(`/api/posts`, 'Post', json);
+      }
+    } else if (type === "secret") {
+      setSecret(true);
+      data.planThema = newArray;
+      const ResultData = {
+        postTitle: title,
+        postSecret: true,
+        plan: { ...data }
+      }
+
+      const json = JSON.stringify(ResultData);
+      console.log(json);
+      fetchData(`/api/posts`, 'Post', json);
+    }
+  }
 
   return (
     <Page headersProps={{ isHome: false, isLogin: true }}>
@@ -184,8 +139,8 @@ const AddPostPlan: React.FC = () => {
       </S.PageTitleContainer>
       {/* <form> */}
       <S.ButtonContainer>
-        {/* <S.Button>임시저장</S.Button> */}
-        <S.Button onClick={() => navigate('/post/plan/id')}>저장</S.Button>
+        <S.Button onClick={() => onSave("secret")}>임시저장</S.Button>
+        <S.Button onClick={() => onSave("save")}>게시</S.Button>
       </S.ButtonContainer>
       <S.FormContainer>
         <TextInput name="title" title="제목" placeholder="일정 제목을 입력해주세요." styleProps={{ width: "100%" }} id="title" onChange={(event) => setTitle(event.target.value)} value={title} />
@@ -206,12 +161,12 @@ const AddPostPlan: React.FC = () => {
         <S.HorizontalLine />
       </S.FormContainer>
 
-      {isUploadPlan ? (
+      {data.length !== 0 ? (
         <S.MapAndDayPlanContainer>
-          {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => selectedDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+          {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
           <S.DayPlanPostContainer>
             <S.DayPlanPostInnerContainer>
-              <DayPlanPost dayList={selectedDayPlan} selectDay={selectDay} connectData={connectPlaceList} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={connectPlace} />
+              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={(data: any) => connectPlace(data)} />
             </S.DayPlanPostInnerContainer>
           </S.DayPlanPostContainer>
         </S.MapAndDayPlanContainer>
@@ -223,8 +178,8 @@ const AddPostPlan: React.FC = () => {
       {/* </form> */}
 
       <div style={{ height: "10rem" }} />
-      {isUploadPlanModal && <UploadPlanModal data={[]} onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} />}
-      {isConnectPlaceModal && <ConnectPlaceModal data={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} />}
+      {isUploadPlanModal && <UploadPlanModal onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} onClickedPlan={(plan: any) => setData(plan)} />}
+      {isConnectPlaceModal && <ConnectPlaceModal placeInfor={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} onClickedPlace={(place: any) => connectReview(place)} />}
     </Page >
   )
 }

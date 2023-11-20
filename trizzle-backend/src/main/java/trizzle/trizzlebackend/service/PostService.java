@@ -9,7 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
+import trizzle.trizzlebackend.domain.Bookmark;
 import trizzle.trizzlebackend.domain.Post;
+import trizzle.trizzlebackend.repository.BookmarkRepository;
 import trizzle.trizzlebackend.repository.ElasticPostRepository;
 import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.elasticSearch.ElasticsearchOperations;
@@ -17,6 +19,7 @@ import trizzle.trizzlebackend.repository.ElasticPostRepository;
 import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final BookmarkRepository bookmarkRepository;
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
@@ -45,10 +49,10 @@ public class PostService {
 
     public Post searchPost(String postId, HttpServletRequest request) {
         Optional<Post> postOptional = postRepository.findById((postId));
-        if (postOptional.isPresent()) {   // reviewId에 해당하는 review가 있을 경우
+        if (postOptional.isPresent()) {   // postId에 해당하는 post가 있을 경우
             Post post = postOptional.get();
 
-            if (post.isPostSecret()) {  // 비공개일 경우 cookie의 accountId와 review의 accountId 비교
+            if (post.isPostSecret()) {  // 비공개일 경우 cookie의 accountId와 post의 accountId 비교
                 String token = JwtUtil.getAccessTokenFromCookie(request);
                 String accountId;
                 if (token == null) {    // token없는 경우 null반환
@@ -57,15 +61,15 @@ public class PostService {
                     accountId = JwtUtil.getAccountId(token,secretKey);
                 }
 
-                if (accountId.equals(post.getAccountId())) {     //cookie의 accountId와 review의 accountId 일치하는 경우
+                if (accountId.equals(post.getAccountId())) {     //cookie의 accountId와 post의 accountId 일치하는 경우
                     return post;
                 } else return null;
 
-            } else { // 공개 review일 경우 review 반환
+            } else { // 공개 post일 경우 post 반환
                 return post;
             }
 
-        } else {                            // reviewId에 해당하는 review가 없을 경우
+        } else {                            // postId 해당하는 post가 없을 경우
             return null;
         }
     }
@@ -95,5 +99,25 @@ public class PostService {
     public void deletePost(String postId) {
         elasticPostRepository.deleteById(postId);
         postRepository.deleteById(postId);
+    }
+
+    public List<Post> findBookmarkPosts(String accountId) {
+        String type = "post";
+        List<Bookmark> bookmarks = bookmarkRepository.findByAccountIdAndType(accountId, type);
+        List<Post> posts = new ArrayList<>();
+
+        for (Bookmark bookmark : bookmarks) {
+            Post post = postRepository.findById(bookmark.getPostId()).orElse(null);
+            if (post != null) {
+                posts.add(post);
+            }
+        }
+
+        return posts;
+    }
+
+    public List<Post> findTop4Posts() {
+        List<Post> posts = postRepository.findTop4ByOrderByLikeCountDesc();
+        return posts;
     }
 }

@@ -55,7 +55,7 @@ public class ReviewController {
         String reviewId = reviewService.updateReview(review, id, accountId).getId();
 
         Map<String, String> response = new HashMap<>();
-        response.put("message", "save success");
+        response.put("message", "update success");
         response.put("reviewId", reviewId);
         return ResponseEntity.ok()
                 .body(response);
@@ -116,5 +116,21 @@ public class ReviewController {
             return ResponseEntity.ok()
                     .body("{\"message\": \"" + message + "\"}");
         }
+    }
+
+    @GetMapping("/bookmarks")
+    public ResponseEntity getBookmarkReviews(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        List<Review> bookmarkReviews = reviewService.findBookmarkReviews(accountId);
+
+        return ResponseEntity.ok(bookmarkReviews);
+    }
+
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity reviewWithPlaceId(@PathVariable("placeId") String placeId) {
+        List<Review> reviews = reviewService.findReviewsWithPlaceId(placeId);
+
+        return ResponseEntity.ok(reviews);
     }
 }

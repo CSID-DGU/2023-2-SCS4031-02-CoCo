@@ -79,8 +79,8 @@ public class PostController {
         String postId = postService.updatePost(post, id, accountId).getId();
 
         Map<String, String> response = new HashMap<>();
-        response.put("message", "save success");
-        response.put("reviewId", postId);
+        response.put("message", "update success");
+        response.put("postId", postId);
         return ResponseEntity.ok()
                 .body(response);
     }
@@ -119,5 +119,18 @@ public class PostController {
         }
     }
 
+    @GetMapping("/bookmarks")
+    public ResponseEntity getBookmarkPosts(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        List<Post> bookmarkPosts = postService.findBookmarkPosts(accountId);
 
+        return ResponseEntity.ok(bookmarkPosts);
+    }
+
+    @GetMapping("/home")
+    public ResponseEntity getTop4Posts() {
+        List<Post> posts = postService.findTop4Posts();
+        return ResponseEntity.ok(posts);
+    }
 }

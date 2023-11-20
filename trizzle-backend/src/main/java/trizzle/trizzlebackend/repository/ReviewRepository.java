@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ReviewRepository extends MongoRepository<Review, String> {
     List<Review> findByAccountId(String accountId);
+
+    List<Review> findByPlaceIdAndReviewSecret(String placeId, boolean reviewSecret);
 }
