@@ -34,12 +34,12 @@ export const useAddPlaceToPlan = () => {
 };
 
 
-const deletePlaceFromPlan = (place:any, day:number, planList:any, index:number) => {
+const deletePlaceFromPlan = (day:number, planList:any, index:number) => {
   const updatedPlaceList = planList.map((dayPlan:any) => {
     if(dayPlan.day === day) {
       return {
         day: dayPlan.day,
-        placeList: dayPlan.placeList.filter((placeItem:any, idx:any) => idx !== index),
+        placeList: dayPlan.placeList.filter((_:any, idx:any) => idx !== index),
       }
     } else {
       return dayPlan;
@@ -50,8 +50,8 @@ const deletePlaceFromPlan = (place:any, day:number, planList:any, index:number) 
 
 export const useDeletePlaceFromPlan = () => {
   const setPlanList = useSetRecoilState(PlanListState);
-  const deletePlace = (place:any, day:number, planList:any, index:number) => {
-    const updatedPlaceList = deletePlaceFromPlan(place, day, planList, index);
+  const deletePlace = (day:number, planList:any, index:number) => {
+    const updatedPlaceList = deletePlaceFromPlan(day, planList, index);
     setPlanList(updatedPlaceList);
   };
   return deletePlace;
@@ -91,7 +91,7 @@ const onPlaceDragEnd = (result:any, planList:any) => {
     if(dayPlan.day === Number(sourceDay)){
       return {
         day: dayPlan.day,
-        placeList: dayPlan.placeList.filter((placeItem:any, idx:any) => {return idx !== Number(sourceIndex)}),
+        placeList: dayPlan.placeList.filter((_:any, idx:any) => {return idx !== Number(sourceIndex)}),
       }
     } else if(dayPlan.day === Number(destinationDay)) {
       console.log(dayPlan.placeList);
@@ -125,7 +125,7 @@ export const useOnPlaceDragEnd = () => {
 
 export const deleteDay = (day:number, planList:any) => {
   const filteredPlanList = planList.filter((dayPlan:any) => dayPlan.day !== day );
-  const updatePlanList = filteredPlanList.map((dayPlan:any, index:number) => {
+  const updatePlanList = filteredPlanList.map((dayPlan:any) => {
     if(dayPlan.day < day) {
       return {
         day : dayPlan.day,

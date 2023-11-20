@@ -1,8 +1,6 @@
 import React from "react";
 import ProfileImage from "../../components/ProfileImage";
 import * as S from "./UserProfile.style";
-import {FaMapMarkedAlt} from "react-icons/fa";
-import {BiSolidMap} from "react-icons/bi";
 import { AiOutlineSetting } from "react-icons/ai";
 
 type UserProfileProps = {

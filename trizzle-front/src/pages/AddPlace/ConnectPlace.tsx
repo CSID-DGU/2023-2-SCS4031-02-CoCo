@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Page from "../Page";
 import * as S from "./AddPlace.styles";
 import TextInput from "../../components/TextInput";
@@ -20,6 +20,7 @@ export default function ConnectPlace() {
   const [place, setPlace] = useState<any>({ placeName: planInfor.placeName });
   const [contents, setContents] = useState<string>('');
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
+  const [contentsText, setContentsText] = useState<string>('');
   const region: any = koreaRegions[0];
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
 

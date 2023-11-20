@@ -16,7 +16,7 @@ const Myfeed = () => {
   const [plan, setPlan] = useState<any[]>([]);
   const [place, setPlace] = useState<any[]>([]);
   const url = id? `/api/user/feed/${id}` : "/api/user/feed/my";
-  const [state, fetchData] = useAsync({url: url});
+  const [state, _] = useAsync({url: url});
 
   useEffect(() => {
     console.log(state.data);
@@ -45,7 +45,7 @@ const Myfeed = () => {
             <FaBoxArchive size="2rem" color="#8b8b8b" style={{marginBottom: "1rem"}}/>
             공유된 일정이 없습니다.</S.Empty>
         ) :
-        ((plan.map((item, index) => (
+        ((plan.map((item) => (
           <PlanCard 
           key={item.id} 
           region={item.plan.planLocation} 

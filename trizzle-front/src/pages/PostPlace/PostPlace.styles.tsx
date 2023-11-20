@@ -68,7 +68,7 @@ export const BookmarkButton = styled.button`
   align-items: center;
 `
 
-export const BookmarkButtonInnerText = styled.div`
+export const BookmarkButtonInnerText = styled.div<{isBookmark:boolean}>`
   margin: 0 0 0 0.3rem; 
   font-size: 1rem;
   font-weight: 400;
@@ -162,15 +162,6 @@ export const CommentVerticalFirstStartContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: first-start;
-`
-
-export const CommentImage = styled.div`
-  margin: 0.5rem 1rem 0 1rem;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  background-color: #D9D9D9;
-  background-image: url(${props => props.img});
 `
 
 export const CommentIdText = styled.div`

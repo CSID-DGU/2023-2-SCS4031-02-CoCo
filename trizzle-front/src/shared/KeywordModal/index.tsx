@@ -1,5 +1,5 @@
 import Modal from "../../components/Modal";
-import React, {useState, useEffect} from "react";
+import React from "react";
 import * as S from "./KeywordModal.style";
 import res from "../../assets/keywords/res.svg"
 import trans from "../../assets/keywords/trans.svg"

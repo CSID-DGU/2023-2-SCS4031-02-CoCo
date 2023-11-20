@@ -6,7 +6,6 @@ import PostPlace from '../pages/PostPlace/PostPlace';
 import Myfeed from '../pages/Myfeed';
 import PlanList from '../pages/PlanList';
 import PlanDetail from '../pages/PlanDetail';
-import MainLogin from '../pages/LoginPage/MainLogin';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
 import EditPlanPage from '../pages/AddPlan/ModPlan';
 import UserInfoEdit from '../pages/UserInfoEdit';

@@ -74,7 +74,6 @@ export const SearchLayout:React.FC<{children: React.ReactNode, selectTab:any}> =
   const keyword = decodeURI(search.split('=')[1]);
   const tabList = [{name: "일정", URL:`/search/${region}/plans${search}`}, {name:"장소", URL:`/search/${region}/places${search}`}]
   const [reg, setRegion] = useState<any>(koreaRegions[0]);
-  const [tabs, setTabs] = useState<any[]>(tabList);
   const [tab, setTab] = useState<any>(tabList.filter((tab) => tab.name === selectTab)[0]);
   useEffect(() => {
     if(region !== "전체") {
@@ -87,11 +86,10 @@ export const SearchLayout:React.FC<{children: React.ReactNode, selectTab:any}> =
     navigate(`${tab.URL}`);
   };
 
-  if(tabs.length !== 0) {
   return (
     <Page headersProps={{ isHome: false }}>
       <SearchBar type="normal" value={keyword} region={region}/>
-      <Tabs type="roundButton" tabs={tabs} selectedTab={tab} onClick={(tab) => {onTabClick(tab)}}/>
+      <Tabs type="roundButton" tabs={tabList} selectedTab={tab} onClick={(tab) => {onTabClick(tab)}}/>
       {/* {plan !== "전체" && (
       <S.RegionContainer>
         <Maps center={region.center} type="infor" />
@@ -109,11 +107,5 @@ export const SearchLayout:React.FC<{children: React.ReactNode, selectTab:any}> =
       </S.SearchContainer>
         {children}
       </Page>
-  )} else {
-    return (
-      <Page headersProps={{ isHome: false }}>
-        {children}
-      </Page>
-    )
-  }
+  )
 }

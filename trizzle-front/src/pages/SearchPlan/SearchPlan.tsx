@@ -1,13 +1,12 @@
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from './SearchPlan.styles';
 import { useAsync } from "../../utils/API/useAsync";
 import {SearchLayout} from "../Page";
-import img from '../../assets/images/default_festival.jpg'
 import PlanCard from "../../components/PlanCard";
 import DropdownMenu from "../../components/DropdownMenu";
-import { tripThema } from "../../utils/Data/tripThema";
-import { IoIosSearch } from "react-icons/io";
+// import { tripThema } from "../../utils/Data/tripThema";
+// import { IoIosSearch } from "react-icons/io";
 
 
 
@@ -15,18 +14,18 @@ const SearchPlan = () => {
   const [allPlanList, setAllPlanList] = useState<any>(null);
   const [planList, setPlanList] = useState<any[]>([]);
   const [sort, setSort] = useState<any>({name:"최신순", id: "new"});
-  const [thema, setThema] = useState<any[]>([]);
+  // const [thema, setThema] = useState<any[]>([]);
   const [page, setPage] = useState<number>(0);
   const [state, fetchData] = useAsync({url:`/api/posts/search?page=${page}&sort=${sort.id}`, method: 'GET'});
 
-  const onThemaBadgeClick = (select: any) => {
-    const itemExists = thema.some((item) => item.id === select.id);
-    if (itemExists) {
-      setThema((prev) => prev.filter((item) => item.id !== select.id));
-    } else {
-      setThema((prev) => [...prev, select]);
-    }
-  };
+  // const onThemaBadgeClick = (select: any) => {
+  //   const itemExists = thema.some((item) => item.id === select.id);
+  //   if (itemExists) {
+  //     setThema((prev) => prev.filter((item) => item.id !== select.id));
+  //   } else {
+  //     setThema((prev) => [...prev, select]);
+  //   }
+  // };
 
 
 
@@ -76,7 +75,7 @@ const SearchPlan = () => {
   return (
     <SearchLayout selectTab="일정" >
       <S.SearchResultContainer>
-      <S.FilterContainer number={thema.length}>
+      <S.FilterContainer number={0}>
         {allPlanList.totalElements} 개의 검색결과
         <S.MenuContainer >
           {/* <DropdownMenu type="search" name="여행 테마 필터" items={tripThema} selectedItem={thema}  onClick={(item:any) => onThemaBadgeClick(item)}/> */}

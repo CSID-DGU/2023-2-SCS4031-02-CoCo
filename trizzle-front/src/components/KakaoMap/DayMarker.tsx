@@ -27,7 +27,7 @@ const DayMarker: React.FC<{day:number, onClick?:() => void}> = ({day, onClick}) 
 export default DayMarker;
 
 export const DayPolyline: React.FC<{day:number, path:any}> = ({day, path}) => {
-  const [markerColor, setMarkerColor] = useState<string>(colors[day-1]);
+  const markerColor =colors[day-1];
   return (
     <Polyline
       path={path}
