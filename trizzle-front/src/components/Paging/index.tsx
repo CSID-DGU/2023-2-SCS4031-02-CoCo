@@ -94,7 +94,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
       <>
         <S.GridContainer>
           {currentItems.map((value, index) => (
-            <S.ListContainer key={index}>
+            <S.ListContainer key={index} onClick={() => onClicked(value)}>
               <S.RegionPlaceText>{value.placeName}</S.RegionPlaceText>
               <S.VerticalCenterContainer>
                 <S.TitleText>{value.placeTitle}</S.TitleText>
