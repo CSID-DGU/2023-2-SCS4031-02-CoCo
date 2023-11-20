@@ -3,7 +3,11 @@ import * as S from './DayPlanPost.styles';
 
 import { PiDotsThree } from 'react-icons/pi';
 import logo from '../../assets/logo/nonTextLogo.svg'
-
+import { Link } from "react-router-dom";
+import res from "src/assets/keywords/trans.svg"
+import trans from "../../assets/keywords/trans.svg"
+import rest from "../../assets/keywords/rest.svg"
+import shopping from "../../assets/keywords/shopping.svg"
 
 type DayPlanPostProps = {
   type?: string;
@@ -13,6 +17,13 @@ type DayPlanPostProps = {
   onNewPostPlace?: (value: any) => void;
   onConnetPostPlace?: (day: number, value: any) => void;
 }
+
+const KeywordList: { keyword: string; src: string; }[] = [
+  { keyword: "식사", src: res },
+  { keyword: "이동", src: trans },
+  { keyword: "휴식", src: rest },
+  { keyword: "쇼핑", src: shopping },
+];
 
 const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   const [data, setData] = useState<any>([]);
@@ -52,15 +63,20 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 </S.DayContainer>
                 {plans.placeList.map((place: any, innerIndex: number) => (
                   <div>
-                    {Object.prototype.hasOwnProperty.call(place, 'review') ? (
-                      <Link to={`${import.meta.env.VITE_PUBLIC_URL}/post/places/${place.reviewId}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
+                    {place.review !== null ? (
+                      <Link to={`${import.meta.env.VITE_PUBLIC_URL}post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
                         <S.PlacePostContainer>
-                          <S.PlaceLogo>
-                            <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
-                          </S.PlaceLogo>
+                          {
+                            place.review.thumbnail === '' ?
+                              <S.PlaceLogo>
+                                <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
+                              </S.PlaceLogo>
+                              :
+                              <S.PlaceImage src={place.review.thumbnail} alt="image" />
+                          }
                           <S.PlaceInfo>
-                            <S.PlaceName>리뷰 제목이라네!!</S.PlaceName>
-                            <S.PlacePostName>{place.placeName}</S.PlacePostName>
+                            <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
+                            <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
                           </S.PlaceInfo>
                         </S.PlacePostContainer>
                       </Link>
@@ -101,7 +117,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 </S.DayContainer>
                 {plans.placeList.map((place: any, innerIndex: number) => (
                   <div>
-                    {Object.prototype.hasOwnProperty.call(place, 'review') ? (
+                    {place.review !== null ? (
                       <S.PlacePostContainer>
                         <S.ThreeDotsButton >
                           수정
@@ -113,12 +129,17 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                             </S.ToggleButtonContainer>
                           }
                         </S.ThreeDotsButton>
-                        <S.PlaceLogo>
-                          <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
-                        </S.PlaceLogo>
+                        {
+                          place.review.thumbnail === '' ?
+                            <S.PlaceLogo>
+                              <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
+                            </S.PlaceLogo>
+                            :
+                            <S.PlaceImage src={place.review.thumbnail} alt="image" />
+                        }
                         <S.PlaceInfo>
-                          <S.PlaceName>리뷰 제목이라네!!</S.PlaceName>
-                          <S.PlacePostName>{place.placeName}</S.PlacePostName>
+                          <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
+                          <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
                         </S.PlaceInfo>
                       </S.PlacePostContainer>
                     ) : (
