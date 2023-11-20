@@ -36,7 +36,7 @@ export const SearchResultContainer = styled.div`
 `
 
 export const PlanCardContainer = styled.div`
-  margin: 2rem 0 0 0;
+  margin: 2rem 0 5rem 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;

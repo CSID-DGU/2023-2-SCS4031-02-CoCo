@@ -87,7 +87,7 @@ const SearchPlan = () => {
         </S.MenuContainer>
       </S.FilterContainer>
         <S.PlanCardContainer>
-          {planList.map((plan:any, index:number) => (
+          {planList.length !== 0 && planList.map((plan:any, index:number) => (
             <PlanCard
               key={index}
               userId={plan.accountId}
