@@ -20,12 +20,18 @@ const CommentRecord = () => {
             console.log(state.data);
         }
     }, [state]);
+    const onDelete = (id: string) => {
+      if(confirm("삭제하시겠습니까?")) {
+        fetchData(`/api/mypage/my/comments/${id}`, "DELETE");
+      }
+    };
+
     return (
         <Container>
-            {/* {commentLists.map((commentList, idx) => (
-                <MyComments myCommentData={commentList} onDelete={(id) => console.log(id)} key={idx}/>
+            {commentLists.length !== 0 && commentLists.map((commentList, idx) => (
+                <MyComments myCommentData={commentList} onDelete={(id) => onDelete(id)} key={idx}/>
             )
-            )} */}
+            )}
         </Container>
     );
 };

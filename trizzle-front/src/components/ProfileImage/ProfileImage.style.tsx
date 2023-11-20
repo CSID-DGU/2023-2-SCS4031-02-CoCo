@@ -12,6 +12,7 @@ export const BigContainer = styled.div<{margin?:string}>`
   width: 15rem;
   height: 15rem;
   border-radius: 50%;
+  border: 1px solid #D6D6D6;
   margin: ${({margin}) => margin? margin : "0"};
   position: relative;
 `
@@ -57,6 +58,7 @@ export const MidCameraContainer = styled.div`
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
+  cursor: pointer;
 `
 
 export const InputContainer = styled.div`

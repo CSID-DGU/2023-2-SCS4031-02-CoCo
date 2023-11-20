@@ -96,6 +96,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
         </S.Header>
       ) : (
         <S.Header isHome={isHome}>
+          <Link to={"/"}>
           <S.LogoImg>
             {isHome ? (
               <img src={homeLogo} alt="logo" width="100%" height="100%" />
@@ -103,6 +104,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
               <img src={logo} alt="logo" width="100%" height="100%" />
             )}
           </S.LogoImg>
+          </Link>
           <S.RightWrapper>
             <S.HeaderText onClick={() => setIsLoginModal(!isLoginModal)} >로그인</S.HeaderText>
           </S.RightWrapper>

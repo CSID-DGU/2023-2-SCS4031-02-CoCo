@@ -12,6 +12,7 @@ const url = import.meta.env.VITE_API_URL;
 
 type PostInputProps = {
   onChangeContents: (content: string) => void;
+  onChangeContentsText: (content: string) => void;
   onThumbnailImages: (content: string) => void;
   prevData: string;
 }
@@ -151,9 +152,11 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
   // 내용이 변경될 때 호출되는 함수
   const handleContentChange = (htmlContent: string) => {
+    const doc = new DOMParser().parseFromString(htmlContent, 'text/html');
     setData(htmlContent);
     findAndSetImages(htmlContent);
     props.onChangeContents(htmlContent);
+    props.onChangeContentsText(doc.body.textContent || '');
   };
 
   // HTML에서 이미지를 찾아서 이미지 목록 업데이트

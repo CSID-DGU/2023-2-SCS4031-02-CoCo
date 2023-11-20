@@ -3,18 +3,7 @@ import * as S from './DayPlanPost.styles';
 
 import { PiDotsThree } from 'react-icons/pi';
 import logo from '../../assets/logo/nonTextLogo.svg'
-import res from "src/assets/keywords/trans.svg"
-import trans from "../../assets/keywords/trans.svg"
-import rest from "../../assets/keywords/rest.svg"
-import shopping from "../../assets/keywords/shopping.svg"
-import { Link } from "react-router-dom";
 
-const KeywordList: { keyword: string; src: string; }[] = [
-  { keyword: "식사", src: res },
-  { keyword: "이동", src: trans },
-  { keyword: "휴식", src: rest },
-  { keyword: "쇼핑", src: shopping },
-];
 
 type DayPlanPostProps = {
   type?: string;
@@ -97,7 +86,6 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
           </>
         )
       }
-      break;
     default:
       if (!(data && data.length)) {
         return (
@@ -169,3 +157,4 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
 }
 
 export default DayPlanPost;
+

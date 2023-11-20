@@ -2,14 +2,23 @@ package trizzle.trizzlebackend.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
+import trizzle.trizzlebackend.domain.Bookmark;
+import trizzle.trizzlebackend.domain.ElasticReview;
 import trizzle.trizzlebackend.domain.Place;
 import trizzle.trizzlebackend.domain.Review;
+import trizzle.trizzlebackend.repository.BookmarkRepository;
+import trizzle.trizzlebackend.repository.ElasticReviewRepository;
 import trizzle.trizzlebackend.repository.ReviewRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,8 +26,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ReviewService {
 
+    @Autowired
+    private final ElasticReviewRepository elasticReviewRepository;
     private final ReviewRepository reviewRepository;
     private final PlaceService placeService;
+    private final BookmarkRepository bookmarkRepository;
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -32,8 +44,14 @@ public class ReviewService {
         if (!existingPlace.isPresent()) {    // place정보가 db에 없다면 저장
             placeService.savePlace(place);
         }
+        Review insert = reviewRepository.save(review);
+        ElasticReview elasticReview = new ElasticReview();
+        elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
+                insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
+                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret());
+        elasticReviewRepository.save(elasticReview);
 
-        return reviewRepository.save(review);
+        return insert;
     }
 
     public Review searchReview(String reviewId, HttpServletRequest request) {
@@ -63,14 +81,19 @@ public class ReviewService {
         }
     }
 
+    public Page<ElasticReview> findAllReview(Pageable pageable) {
+        Page<ElasticReview> reviews = elasticReviewRepository.findAll(pageable);
+        return reviews;
+    }
+
     public Review findReview(String reviewId) {
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
         return optionalReview.orElse(null);
     }
 
-    public Review updateReview(Review reivew, String reveiwId, String accountId) {
-        reivew.setId(reveiwId);
-        return insertReview(reivew, accountId);
+    public Review updateReview(Review review, String reviewId, String accountId) {
+        review.setId(reviewId);
+        return insertReview(review, accountId);
     }
 
     public List<Review> findMyReviews(String accountId) {
@@ -79,7 +102,29 @@ public class ReviewService {
     }
 
     public void deleteReview(String reviewId) {
+        elasticReviewRepository.deleteById(reviewId);
         reviewRepository.deleteById(reviewId);
+    }
+
+    public List<Review> findBookmarkReviews(String accountId) {
+        String type = "review";
+        List<Bookmark> bookmarks = bookmarkRepository.findByAccountIdAndType(accountId, type);
+        List<Review> reviews = new ArrayList<>();
+
+        for (Bookmark bookmark : bookmarks) {
+            Review review = reviewRepository.findById(bookmark.getReviewId()).orElse(null);
+            if (review != null) {
+                reviews.add(review);
+            }
+        }
+
+        return reviews;
+    }
+
+    public List<Review> findReviewsWithPlaceId(String placeId) {
+        Boolean secret = false;
+        List<Review> reviews = reviewRepository.findByPlaceIdAndReviewSecret(placeId, false);
+        return reviews;
     }
 
 }

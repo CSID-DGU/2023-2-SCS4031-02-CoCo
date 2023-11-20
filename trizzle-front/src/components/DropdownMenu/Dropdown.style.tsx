@@ -31,7 +31,7 @@ export const DropdownMenuContainer = styled.div`
   border-radius: 0.5rem;
   background-color: #ffffff;
   position: absolute;
-  top: 2.5rem;
+  top: 2.6rem;
   z-index: 50;
 `
 
@@ -39,10 +39,11 @@ export const DropdownMenuItem = styled.div`
   width: auto;
   min-width: 10rem;
   height: 1.2rem;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 400;
   color: #9e9e9e;
   display: flex;
+  border-radius: 0.5rem;
   align-items: center;
   padding: 0 0.5rem;
   cursor: pointer;
@@ -76,8 +77,8 @@ export const BadgeDropdownInput = styled.div<{ selectedItem: boolean }>`
   padding: 0 0.5rem;
   
 `
-export const BadgeDropdownMenuContainer = styled.div`
-  width: 100%;
+export const BadgeDropdownMenuContainer = styled.div<{type?:string}>`
+  width:${props => props.type === "search" ? "200%" : "100%"};
   max-width: 65rem;
   height: auto;
   padding: 1rem 0.5rem;
@@ -88,9 +89,9 @@ export const BadgeDropdownMenuContainer = styled.div`
   border-radius: 0.5rem;
   background-color: #ffffff;
   position: absolute;
-  top: 5rem;
+  top: 2.6rem;
   left: 0;
-  z-index: 150;
+  z-index: 50;
 `
 
 export const BadgeDropdownMenuItem = styled.div<{ selected: boolean }>`

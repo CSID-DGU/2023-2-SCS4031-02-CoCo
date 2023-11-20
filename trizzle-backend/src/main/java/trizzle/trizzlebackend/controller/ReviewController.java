@@ -3,9 +3,15 @@ package trizzle.trizzlebackend.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
+import trizzle.trizzlebackend.domain.ElasticPost;
+import trizzle.trizzlebackend.domain.ElasticReview;
 import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.service.ReviewService;
 
@@ -65,6 +71,29 @@ public class ReviewController {
                 .body(myReviews);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity getSearchPost(@RequestParam(value = "region", required = false) String region,
+                                        @RequestParam(value = "keyword", required = false) String keyword,
+                                        @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                        @RequestParam(value = "sort", required = false, defaultValue = "new") String sort) {
+        Pageable pageable = PageRequest.of(page, 20);
+
+        switch (sort) {
+            case "new":
+                pageable = PageRequest.of(page, 20, Sort.by("reviewRegistrationDate").descending());
+                break;
+            case "old":
+                pageable = PageRequest.of(page, 20, Sort.by("reviewRegistrationDate").ascending());
+                break;
+            case "like":
+                pageable = PageRequest.of(page, 20, Sort.by("likeCount").descending());
+                break;
+        }
+
+        Page<ElasticReview> posts = reviewService.findAllReview(pageable);
+        return ResponseEntity.ok().body(posts);
+    }
+
     @DeleteMapping("/myreviews/{reviewId}")
     public ResponseEntity deleteMyReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
@@ -87,5 +116,21 @@ public class ReviewController {
             return ResponseEntity.ok()
                     .body("{\"message\": \"" + message + "\"}");
         }
+    }
+
+    @GetMapping("/bookmarks")
+    public ResponseEntity getBookmarkReviews(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        List<Review> bookmarkReviews = reviewService.findBookmarkReviews(accountId);
+
+        return ResponseEntity.ok(bookmarkReviews);
+    }
+
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity reviewWithPlaceId(@PathVariable("placeId") String placeId) {
+        List<Review> reviews = reviewService.findReviewsWithPlaceId(placeId);
+
+        return ResponseEntity.ok(reviews);
     }
 }

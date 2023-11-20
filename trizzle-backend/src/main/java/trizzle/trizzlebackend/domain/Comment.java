@@ -1,6 +1,8 @@
 package trizzle.trizzlebackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
@@ -9,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Document(collection = "comments")
+@Getter
+@Setter
 public class Comment {
     @Id
     private String id;
@@ -26,100 +30,12 @@ public class Comment {
     private List<Post> postInfo;
     @Field("reviewInfo")
     private List<Review> reviewInfo;
+    private int likeCount;
 
-    public String getId() {
-        return id;
+    public void increaseLikes() {   // 좋아요 수 증가
+        this.likeCount++;
     }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getPostId() {
-        return postId;
-    }
-
-    public void setPostId(String postId) {
-        this.postId = postId;
-    }
-
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getCommentContent() {
-        return commentContent;
-    }
-
-    public void setCommentContent(String commentContent) {
-        this.commentContent = commentContent;
-    }
-
-    public LocalDateTime getCommentRegistrationDate() {
-        return commentRegistrationDate;
-    }
-
-    public void setCommentRegistrationDate(LocalDateTime commentRegistrationDate) {
-        this.commentRegistrationDate = commentRegistrationDate;
-    }
-
-    public boolean isFix() {
-        return fix;
-    }
-
-    public void setFix(boolean fix) {
-        this.fix = fix;
-    }
-
-    public Integer getCommentLike() {
-        return commentLike;
-    }
-
-    public void setCommentLike(Integer commentLike) {
-        this.commentLike = commentLike;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public void setIsDeleted(boolean isDeleted) {
-        this.isDeleted = isDeleted;
-    }
-
-    public String getReviewId() {
-        return reviewId;
-    }
-
-    public void setReviewId(String reviewId) {
-        this.reviewId = reviewId;
-    }
-
-    public List<Post> getPostInfo() {
-        return postInfo;
-    }
-
-    public void setPostInfo(List<Post> postInfo) {
-        this.postInfo = postInfo;
-    }
-
-    public List<Review> getReviewInfo() {
-        return reviewInfo;
-    }
-
-    public void setReviewInfo(List<Review> reviewInfo) {
-        this.reviewInfo = reviewInfo;
+    public void decreaseLikes() {   // 좋아요 수 감소
+        this.likeCount--;
     }
 }

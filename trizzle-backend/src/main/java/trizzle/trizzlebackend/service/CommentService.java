@@ -1,9 +1,7 @@
 package trizzle.trizzlebackend.service;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.aggregation.Aggregation;
-import org.springframework.data.mongodb.core.aggregation.AggregationResults;
-import org.springframework.data.mongodb.core.aggregation.LookupOperation;
+import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.controller.CommentController;
@@ -15,6 +13,8 @@ import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static org.springframework.data.mongodb.core.aggregation.AddFieldsOperation.addField;
 
 @Service
 public class CommentService {
@@ -40,13 +40,13 @@ public class CommentService {
         comment.setCommentRegistrationDate(localDateTime);
         comment.setCommentLike(0); //좋아요 0개
         comment.setFix(false);
-        comment.setIsDeleted(false);
+        comment.setDeleted(false);
 
         return commentRepository.save(comment);
     };
 
     public Comment deleteComment(Comment comment) {
-        comment.setIsDeleted(true);
+        comment.setDeleted(true);
         comment.setCommentContent("");
         //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직 추가
         return commentRepository.save(comment);
@@ -83,7 +83,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.getIsDeleted()) {
+            if(parentId == null && !comment.isDeleted()) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -113,7 +113,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.getIsDeleted()) {
+            if(parentId == null && !comment.isDeleted()) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -126,22 +126,8 @@ public class CommentService {
     };
 
    public List<Comment> findByAccount(String accountId) {
-        Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("accountId").is(accountId)),
-                LookupOperation.newLookup()
-                        .from("posts")
-                        .localField("postId")
-                        .foreignField("_id")
-                        .as("postInfo"),
-                LookupOperation.newLookup()
-                        .from("reviews")
-                        .localField("reviewId")
-                        .foreignField("_id")
-                        .as("reviewInfo")
-        );
-
-        AggregationResults<Comment> results = mongoTemplate.aggregate(aggregation, "comments", Comment.class);
-        return results.getMappedResults();
+       List<Comment> myComments = commentRepository.findByAccountId(accountId);
+       return myComments;
    };
 
    public Comment fixComment(String id) {
@@ -152,5 +138,10 @@ public class CommentService {
 
        return commentRepository.save(comment);
    };
+
+    public Comment findComment(String id) {
+        Optional<Comment> optionalComment = commentRepository.findById(id);
+        return optionalComment.orElse(null);
+    }
 
 }
