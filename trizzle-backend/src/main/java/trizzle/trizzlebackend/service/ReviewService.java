@@ -98,6 +98,7 @@ public class ReviewService {
     }
 
     public void deleteReview(String reviewId) {
+        elasticReviewRepository.deleteById(reviewId);
         reviewRepository.deleteById(reviewId);
     }
 

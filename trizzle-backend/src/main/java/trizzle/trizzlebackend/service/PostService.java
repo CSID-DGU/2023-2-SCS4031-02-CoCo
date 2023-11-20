@@ -93,6 +93,7 @@ public class PostService {
     }
 
     public void deletePost(String postId) {
+        elasticPostRepository.deleteById(postId);
         postRepository.deleteById(postId);
     }
 }
