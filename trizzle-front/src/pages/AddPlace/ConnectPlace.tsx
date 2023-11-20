@@ -14,7 +14,6 @@ export default function ConnectPlace() {
   const navigate = useNavigate();
   const planInfor = useParams<{ planId: string, placeName: string }>();
   const [state, fetchData] = useAsync({ url: "", method: "" });
-  
   const [title, setTitle] = useState<string>('');
   const [secretValue, setSecretValue] = useState<boolean>(true);
   const [visitDate, setVisitDate] = useState<any>(new Date());
@@ -31,7 +30,7 @@ export default function ConnectPlace() {
     } else if (state.data) {
       if (state.data.message === "save success") navigate(`/post/places/${state.data.reviewId}`);
     }
-    }, [state]);
+  }, [state]);
 
   const onSave = () => {
     if (title === '') {
@@ -50,20 +49,24 @@ export default function ConnectPlace() {
       visitDate: formattedDate,
       place: place,
       reviewContent: contents,
+      reviewContentText: contentsText,
       reviewSecret: secretValue,
       thumbnail: representImage,
       planId: planInfor.planId,
     }
 
-    const json = JSON.stringify(ResultData);
-    console.log(ResultData);
-    fetchData('/api/reviews', "POST", json);
+    const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
+    if (response) {
+      const json = JSON.stringify(ResultData);
+      console.log(ResultData);
+      fetchData('/api/reviews', "POST", json);
+    }
   }
 
   return (
     <Page headersProps={{ isHome: false }}>
       <S.PageTitleContainer>
-        <S.PageTitle>개별 장소 등록</S.PageTitle>
+        <S.PageTitle>장소 리뷰 연동</S.PageTitle>
       </S.PageTitleContainer>
       <form>
         <S.ButtonContainer>
@@ -92,7 +95,7 @@ export default function ConnectPlace() {
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
-          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} />
+          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} onChangeContentsText={(con)=> setContentsText(con)}/>
 
         </S.FormContainer>
       </form>

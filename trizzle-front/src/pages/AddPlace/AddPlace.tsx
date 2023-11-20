@@ -21,6 +21,7 @@ export default function AddPlacePage() {
   const [visitDate, setVisitDate] = useState<any>(new Date());
   const [place, setPlace] = useState<any>({ placeName: '' });
   const [contents, setContents] = useState<string>('');
+  const [contentsText, setContentsText] = useState<string>('');
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
   const region: any = koreaRegions[0];
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
@@ -70,6 +71,7 @@ export default function AddPlacePage() {
       visitDate: formattedDate,
       place: place,
       reviewContent: contents,
+      reviewContentText: contentsText,
       reviewSecret: secretValue,
       thumbnail: representImage,
     }
@@ -112,7 +114,7 @@ export default function AddPlacePage() {
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
-          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} />
+          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} onChangeContentsText={(con)=> setContentsText(con)}/>
 
         </S.FormContainer>
       </form>
