@@ -22,16 +22,16 @@ public class BookmarkController {
     private String secretKey;
 
     @PostMapping("/{type}/{contentId}/bookmarks")
-    public ResponseEntity postLike(@PathVariable("type") String type,
+    public ResponseEntity postBookmark(@PathVariable("type") String type,
                                    @PathVariable("contentId") String contentId,
                                    HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
         String message = bookmarkService.convertBookmark(type, contentId, accountId); // 좋아요 추가 : "add like success", 삭제: "delete like success"
 
-        Map<String, String> reponse = new HashMap<>();
-        reponse.put("message", message);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
 
-        return ResponseEntity.ok(reponse);
+        return ResponseEntity.ok(response);
     }
 }

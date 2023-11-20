@@ -52,6 +52,7 @@ public class LikeService {
                             .postId(contentId)
                             .accountId(accountId)
                             .likeRegistrationDate(dateTime)
+                            .type("post")
                             .build();
                     likeRepository.save(like);  // 좋아요 저장
 
@@ -66,6 +67,7 @@ public class LikeService {
                             .reviewId(contentId)
                             .accountId(accountId)
                             .likeRegistrationDate(dateTime)
+                            .type("review")
                             .build();
                     likeRepository.save(like);  // 좋아요 저장
 
@@ -80,6 +82,7 @@ public class LikeService {
                             .commentId(contentId)
                             .accountId(accountId)
                             .likeRegistrationDate(dateTime)
+                            .type("comment")
                             .build();
                     likeRepository.save(like);  // 좋아요 저장
 

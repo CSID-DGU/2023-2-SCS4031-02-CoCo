@@ -21,4 +21,5 @@ public class Bookmark {
     private String reviewId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime bookmarkRegistrationDate;
+    private String type;
 }

@@ -45,6 +45,7 @@ public class BookmarkService {
                             .postId(contentId)
                             .accountId(accountId)
                             .bookmarkRegistrationDate(dateTime)
+                            .type("post")
                             .build();
                     bookmarkRepository.save(bookmark);  // 북마크 저장
 
@@ -59,6 +60,7 @@ public class BookmarkService {
                             .reviewId(contentId)
                             .accountId(accountId)
                             .bookmarkRegistrationDate(dateTime)
+                            .type("review")
                             .build();
                     bookmarkRepository.save(bookmark);  // 북마크 저장
 

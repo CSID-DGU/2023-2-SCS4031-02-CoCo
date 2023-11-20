@@ -28,9 +28,9 @@ public class LikeController {
         String accountId = JwtUtil.getAccountId(token, secretKey);
         String message = likeService.convertLike(type, contentId, accountId); // 좋아요 추가 : "add like success", 삭제: "delete like success"
 
-        Map<String, String> reponse = new HashMap<>();
-        reponse.put("message", message);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", message);
 
-        return ResponseEntity.ok(reponse);
+        return ResponseEntity.ok(response);
     }
 }
