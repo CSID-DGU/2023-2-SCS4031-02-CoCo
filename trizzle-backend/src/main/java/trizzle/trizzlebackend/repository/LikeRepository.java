@@ -1,0 +1,10 @@
+package trizzle.trizzlebackend.repository;
+
+import org.springframework.data.mongodb.repository.MongoRepository;
+import trizzle.trizzlebackend.domain.Like;
+
+public interface LikeRepository extends MongoRepository<Like, String> {
+    Like findByPostIdAndAccountId(String postId, String accountId);
+    Like findByReviewIdAndAccountId(String reviewId, String accountId);
+    Like findByCommentIdAndAccountId(String commentId, String accountId);
+}
