@@ -39,8 +39,10 @@ const AddPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      console.log(state.data)
-      if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
+      console.log(state.data);
+      if (state.data.message === "연동 선공") setData(state.data);
+      // 저장 및 수정
+      else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
       else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
     }
   }, [state]);
@@ -83,13 +85,18 @@ const AddPostPlan: React.FC = () => {
   };
 
   const onPostPlace = (data: any) => {
-    window.open(`/post/places/add/?place_id=${data._id}&place_name=${data.place_name}`, '_blank');
+    window.open(`/post/places/add/${data._id}/${encodeURIComponent(data.placeName)}`, '_blank');
   }
 
   const connectPlace = (data: any) => {
-    // 데이터 가지고 있고
     setIsConnectPlaceModal(!isConnectPlaceModal);
-    setIsConnectPlaceModalData(data.placeName);
+    setIsConnectPlaceModalData(data);
+  }
+
+  //review에 planId 추가해서 디비로 put 보내기
+  const connectReview = (place: any) => {
+    const reviewData = { ...place, planId: data.id }
+    fetchData(`/api/reviews/${place._id}`, 'PUT', reviewData);
   }
 
   const onSave = (type: string) => {
@@ -171,8 +178,8 @@ const AddPostPlan: React.FC = () => {
       {/* </form> */}
 
       <div style={{ height: "10rem" }} />
-      {isUploadPlanModal && <UploadPlanModal data={[]} onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} onClickedPlan={(plan: any) => setData(plan)} />}
-      {isConnectPlaceModal && <ConnectPlaceModal data={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} />}
+      {isUploadPlanModal && <UploadPlanModal onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} onClickedPlan={(plan: any) => setData(plan)} />}
+      {isConnectPlaceModal && <ConnectPlaceModal placeInfor={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} onClickedPlace={(place: any) => connectReview(place)} />}
     </Page >
   )
 }

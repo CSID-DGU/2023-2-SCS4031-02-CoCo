@@ -14,13 +14,11 @@ export default function ConnectPlace() {
   const navigate = useNavigate();
   const planInfor = useParams<{ planId: string, placeName: string }>();
   const [state, fetchData] = useAsync({ url: "", method: "" });
-
   const [title, setTitle] = useState<string>('');
-  const [secretValue, setSecretValue] = useState<boolean>(false);
+  const [secretValue, setSecretValue] = useState<boolean>(true);
   const [visitDate, setVisitDate] = useState<any>(new Date());
   const [place, setPlace] = useState<any>({ placeName: planInfor.placeName });
   const [contents, setContents] = useState<string>('');
-  const [contentsText, setContentsText] = useState<string>('');
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
   const region: any = koreaRegions[0];
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
