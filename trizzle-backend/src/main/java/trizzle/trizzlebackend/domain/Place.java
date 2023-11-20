@@ -23,6 +23,7 @@ public class Place {
     private String placeUrl;
     private double distance;
     private String keyword;
+    private Review review;
 
     @Override
     public boolean equals(Object o) {
@@ -158,6 +159,12 @@ public class Place {
         this.distance = distance;
     }
 
+    public Review getReview() {
+        return review;
+    }
 
+    public void setReview(Review review) {
+        this.review = review;
+    }
 
 }
