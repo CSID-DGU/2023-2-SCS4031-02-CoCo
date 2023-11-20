@@ -101,4 +101,10 @@ public class ReviewService {
         return reviews;
     }
 
+    public List<Review> findReviewsWithPlaceId(String placeId) {
+        Boolean secret = false;
+        List<Review> reviews = reviewRepository.findByPlaceIdAndReviewSecret(placeId, false);
+        return reviews;
+    }
+
 }

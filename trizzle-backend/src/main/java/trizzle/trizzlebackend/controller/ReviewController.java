@@ -97,4 +97,11 @@ public class ReviewController {
 
         return ResponseEntity.ok(bookmarkReviews);
     }
+
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity reviewWithPlaceId(@PathVariable("placeId") String placeId) {
+        List<Review> reviews = reviewService.findReviewsWithPlaceId(placeId);
+
+        return ResponseEntity.ok(reviews);
+    }
 }
