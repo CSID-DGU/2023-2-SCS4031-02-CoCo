@@ -68,9 +68,9 @@ public class ReviewService {
         return optionalReview.orElse(null);
     }
 
-    public Review updateReview(Review reivew, String reveiwId, String accountId) {
-        reivew.setId(reveiwId);
-        return insertReview(reivew, accountId);
+    public Review updateReview(Review review, String reviewId, String accountId) {
+        review.setId(reviewId);
+        return insertReview(review, accountId);
     }
 
     public List<Review> findMyReviews(String accountId) {

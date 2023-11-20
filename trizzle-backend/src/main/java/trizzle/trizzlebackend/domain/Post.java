@@ -21,11 +21,20 @@ public class Post {
     private boolean postSecret;
     private Plan plan;
     private int likeCount;
+    private int bookmarkCount;
 
     public void increaseLikes() {   // 좋아요 수 증가
         this.likeCount++;
     }
     public void decreaseLikes() {   // 좋아요 수 감소
         this.likeCount--;
+    }
+
+    public void increaseBookmarks() {
+        this.bookmarkCount++;
+    }
+
+    public void decreaseBookmarks() {
+        this.bookmarkCount--;
     }
 }
