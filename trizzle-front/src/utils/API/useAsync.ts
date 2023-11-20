@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
 import { useReducer, useEffect } from "react";
-import { useCookies } from "react-cookie";
 
 
 //api 호출 커스텀 훅 -> useAsync
@@ -22,7 +21,7 @@ type Reducer<D = any> = (
   action: ActionType<D>,
 ) => StateType<D>;
 
-const reducer:Reducer = (state, action) => {
+const reducer:Reducer = (_, action) => {
     switch(action.type){
         case "LOADING":
             return {

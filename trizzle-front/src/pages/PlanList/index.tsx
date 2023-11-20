@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import {useState, useEffect} from "react";
 import { MyfeedLayout } from "../Page";
 import * as S from "./PlanList.style";
 import {AiOutlinePlus} from "react-icons/ai";
@@ -8,7 +8,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 
 const PlanList = () => {
-  const [allPlan, setAllPlan]= useState<any[]>([]);
   const [nextPlan, setNextPlan] = useState<any[]>([]);
   const [pastPlan, setPastPlan] = useState<any[]>([]);
   const [state, fetchData] = useAsync({url:"/api/plans/myplans"});
@@ -27,7 +26,6 @@ const PlanList = () => {
       } else{
         data = state.data;
       }
-        setAllPlan(data);
         const today = new Date();
         const nextArray:any[] = [];
         const pastArray:any[] = [];

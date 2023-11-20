@@ -58,7 +58,7 @@ export const Select = styled.select`
 `
 
 export const Option = styled.option`
-  fontSize: 1rem;
+  font-size: 1rem;
 `
 
 export const MapContainer = styled.div`

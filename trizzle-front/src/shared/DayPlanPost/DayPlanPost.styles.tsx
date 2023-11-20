@@ -81,6 +81,19 @@ export const PlaceLogo = styled.div`
   top: -1.2rem;
 `
 
+export const PlaceImage = styled.img`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+  height: 100%;
+  background-color: #FFECAA;
+  border-top-left-radius: 0.75rem;
+  border-bottom-left-radius: 0.75rem;
+  position: relative;
+  top: -1.2rem;
+`
+
 export const PlaceInfo = styled.div`
   width: 60%;
   height: 100%;

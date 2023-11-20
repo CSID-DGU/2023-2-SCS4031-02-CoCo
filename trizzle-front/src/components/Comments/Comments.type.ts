@@ -36,20 +36,11 @@ type commentData = {
   reviewId : string;
   postName : string;
   commentRegistrationDate : string;
+  registrationDate : string;
   fix : boolean;
   likeCount : number;
   isDeleted : boolean;
 };
-
-type myCommentData = {
-  id: string;
-  postId: string;
-  reviewId : string;
-  content : string;
-  registrationDate : string;
-  isDeleted : boolean;
-}
-
 
 
 //댓글 고려사항

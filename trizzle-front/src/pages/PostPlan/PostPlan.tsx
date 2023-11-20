@@ -11,21 +11,7 @@ import { useAsync } from "../../utils/API/useAsync";
 import { useParams } from "react-router-dom";
 import { tripThema } from "../../utils/Data/tripThema";
 
-const SampleComment = [
-  {
-    img: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_42E5B8F3E27A193D9A4A71E8A5511DB3.jpg&type=l340_165',
-    id: '날탱이탱날',
-    content: '너무 좋아요'
-  },
-  {
-    img: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_42E5B8F3E27A193D9A4A71E8A5511DB3.jpg&type=l340_165',
-    id: '날탱이탱날',
-    content: '너무 좋아요'
-  },
-]
-
 const PostPlan: React.FC = () => {
-  const [isLogin, setIsLogin] = useState<string>(true);
   const [data, setData] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -38,10 +24,10 @@ const PostPlan: React.FC = () => {
   
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  // const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const placeId = useParams<{ id: string }>();
-  const [state, fetchData] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
+  const [state, _] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
 
   useEffect(() => {
     console.log(state);
@@ -172,21 +158,6 @@ const PostPlan: React.FC = () => {
             }
           </S.CommentText>
         </S.HorizontalFirstStartContainer>
-        {isCommentOpen && (
-          SampleComment.map((value, index) => (
-            <S.CommentTextContainer key={index}>
-              <S.CommentImage />
-              <S.CommentVerticalFirstStartContainer>
-                <S.CommentIdText>
-                  {value.id}
-                </S.CommentIdText>
-                <S.CommentContent>
-                  {value.content}
-                </S.CommentContent>
-              </S.CommentVerticalFirstStartContainer>
-            </S.CommentTextContainer>
-          ))
-        )}
       </S.CommentContainer>
 
       <S.RecommendContainer>

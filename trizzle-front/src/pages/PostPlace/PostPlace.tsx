@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { AiOutlineDown, AiOutlineUp, AiOutlineHeart, AiTwotoneHeart, AiFillStar, AiOutlineStar } from "react-icons/ai";
-import UseAnimations from "react-useanimations";
-import star from 'react-useanimations/lib/star';
+// import UseAnimations from "react-useanimations";
+// import star from 'react-useanimations/lib/star';
 import 'react-quill/dist/quill.snow.css';
 
 import Page from "../Page";
@@ -15,14 +15,13 @@ export default function PostPlace() {
   let components;
   const location = useLocation();
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState<string>(true);
   const [data, setData] = useState<any>({});
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const placeId = useParams<{ id: string }>();
-  const [state, fetchData] = useAsync({ url: `/api/reviews/${placeId.id}` });
+  const [state, _] = useAsync({ url: `/api/reviews/${placeId.id}` });
 
   useEffect(() => {
     console.log(state);
@@ -38,7 +37,6 @@ export default function PostPlace() {
     console.log(data);
   }, [data]);
 
-  if (isLogin) {
     if (location.pathname.startsWith("/post/places/secret/")) {
       components = (
         <S.ModifiedButton type="button" onClick={()=> navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
@@ -55,11 +53,11 @@ export default function PostPlace() {
         </S.BookmarkButton>
       );
     }
-  }
+  
   if (data !== "") {
     return (
-      <Page headersProps={{ isHome: false, isLogin: true }}>
-        <SearchBar />
+      <Page headersProps={{ isHome: false}}>
+        <SearchBar type="normal"/>
 
         <S.InforFirstContainer>
           <div>제목 {data.reviewTitle}</div>
@@ -157,21 +155,7 @@ export default function PostPlace() {
               }
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          {isCommentOpen && (
-            SampleComment.map((value, index) => (
-              <S.CommentTextContainer key={index}>
-                <S.CommentImage />
-                <S.CommentVerticalFirstStartContainer>
-                  <S.CommentIdText>
-                    {value.id}
-                  </S.CommentIdText>
-                  <S.CommentContent>
-                    {value.content}
-                  </S.CommentContent>
-                </S.CommentVerticalFirstStartContainer>
-              </S.CommentTextContainer>
-            ))
-          )}
+          
         </S.CommentContainer>
 
         <S.RecommendContainer>
@@ -182,12 +166,4 @@ export default function PostPlace() {
       </Page>
     );
   }
-}
-
-function MyComponent({ htmlString }) {
-  return (
-    <div
-      dangerouslySetInnerHTML={{ __html: htmlString }}
-    />
-  );
 }

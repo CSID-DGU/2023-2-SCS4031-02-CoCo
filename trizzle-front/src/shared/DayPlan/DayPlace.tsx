@@ -30,7 +30,7 @@ const KeywordList: { keyword: string; src: string; }[] = [
 
 const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState<boolean>(false);
+  // const [open, setOpen] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<any>(null);
   const [menuItem, setMenuItem] = useState<any[]>([]);
 
@@ -55,11 +55,11 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
       const keywordSrc = KeywordList.filter((key) => props.place.keyword === key.keyword);
       setKeyword(keywordSrc);
       if (props.onDeleteClick) {
-        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick(props.place, props.day, props.index) }]);
+        setMenuItem([{ content: "삭제", onClick: () => {props.onDeleteClick && props.onDeleteClick(props.place, props.day, props.index) }}]);
       }
     } else {
       if (props.isPlan && props.onDeleteClick) {
-        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick(props.place, props.day, props.index), isDelete: true }]);
+        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick && props.onDeleteClick(props.place, props.day, props.index), isDelete: true }]);
       } else if (props.isPost && props.isPost === true) {
         setMenuItem([{ content: "게시글로 이동", onClick: onPostClick, isDelete: false }]);
       } else {

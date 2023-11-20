@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface ElasticPostRepository extends ElasticsearchRepository<ElasticPost, Long> {
     Page<ElasticPost> findByPostTitle(String keyword, Pageable pageable);
+    ElasticPost findById(String id);
     void deleteById(String id);
     void save(ElasticPost elasticPost);
 }
