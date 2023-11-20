@@ -91,4 +91,9 @@ public class PostService {
 
         return posts;
     }
+
+    public List<Post> findTop4Posts() {
+        List<Post> posts = postRepository.findTop4ByOrderByLikeCountDesc();
+        return posts;
+    }
 }

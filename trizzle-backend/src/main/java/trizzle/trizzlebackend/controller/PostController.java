@@ -99,4 +99,9 @@ public class PostController {
         return ResponseEntity.ok(bookmarkPosts);
     }
 
+    @GetMapping("/home")
+    public ResponseEntity getTop4Posts() {
+        List<Post> posts = postService.findTop4Posts();
+        return ResponseEntity.ok(posts);
+    }
 }
