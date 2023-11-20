@@ -48,7 +48,7 @@ public class ReviewService {
         ElasticReview elasticReview = new ElasticReview();
         elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
                 insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
-                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret());
+                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount());
         elasticReviewRepository.save(elasticReview);
 
         return insert;

@@ -40,7 +40,7 @@ public class PostService {
         Post insert = postRepository.save(post);
         ElasticPost elasticPost= new ElasticPost();
         elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
-                insert.isPostSecret(),insert.getPlan());
+                insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
         elasticPostRepository.save(elasticPost);
 
         return insert;
@@ -84,6 +84,11 @@ public class PostService {
     public Post findPost(String postId) {
         Optional<Post> postOptional = postRepository.findById((postId));
         return postOptional.orElse(null);
+    }
+
+    public ElasticPost findElasticPost(String postId) {
+        ElasticPost post = elasticPostRepository.findById(postId);
+        return post;
     }
 
     public Post updatePost(Post post, String postId, String accountId) {
