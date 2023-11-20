@@ -28,4 +28,12 @@ public class Review {
     private String postId;
     private String postName;
     private String thumbnail;
+    private int likeCount;
+
+    public void increaseLikes() {   // 좋아요 수 증가
+        this.likeCount++;
+    }
+    public void decreaseLikes() {   // 좋아요 수 감소
+        this.likeCount--;
+    }
 }
