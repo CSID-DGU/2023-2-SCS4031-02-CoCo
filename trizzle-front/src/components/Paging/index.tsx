@@ -94,11 +94,11 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
       <>
         <S.GridContainer>
           {currentItems.map((value, index) => (
-            <S.ListContainer key={index}>
-              <S.RegionPlaceText>{value.placeName}</S.RegionPlaceText>
+            <S.ListContainer key={index} onClick={() => onClicked(value)}>
+              <S.RegionPlaceText>{value.place.placeName}</S.RegionPlaceText>
               <S.VerticalCenterContainer>
-                <S.TitleText>{value.placeTitle}</S.TitleText>
-                <S.DateText>{value.visitedDate}</S.DateText>
+                <S.TitleText>{value.reviewTitle}</S.TitleText>
+                <S.DateText>{value.visitDate}</S.DateText>
               </S.VerticalCenterContainer>
             </S.ListContainer>
           ))}

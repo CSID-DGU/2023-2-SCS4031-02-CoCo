@@ -15,6 +15,8 @@ interface MainLoginProps {
   onClose: () => void;
 }
 
+const url = import.meta.env.VITE_API_URL;
+
 export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   const naviation = useNavigate();
   const token = data.token;
@@ -53,7 +55,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   const addUser = async () => {
     console.log(userData);
     try {
-      const response = await axios.post(`http://localhost:8080/login/additionalUserInfo?token=${token}`, userData);
+      const response = await axios.post(`${url}/login/additionalUserInfo?token=${token}`, userData);
       const data = response.data; // 응답 데이터
       if (data.message === "이미 존재하는 id 입니다.") {
         alert("이미 존재하는 id입니다.");

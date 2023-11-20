@@ -10,6 +10,7 @@ import UserPreview from "../../components/UserPreview";
 import SearchBar from "../../components/SearchBar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
+import CommentSection from "../../shared/CommentSection";
 
 export default function PostPlace() {
   let components;
@@ -41,7 +42,7 @@ export default function PostPlace() {
   if (isLogin) {
     if (location.pathname.startsWith("/post/places/secret/")) {
       components = (
-        <S.ModifiedButton type="button" onClick={()=> navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
+        <S.ModifiedButton type="button" onClick={() => navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
       );
     } else {
       components = (
@@ -158,19 +159,7 @@ export default function PostPlace() {
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
           {isCommentOpen && (
-            SampleComment.map((value, index) => (
-              <S.CommentTextContainer key={index}>
-                <S.CommentImage />
-                <S.CommentVerticalFirstStartContainer>
-                  <S.CommentIdText>
-                    {value.id}
-                  </S.CommentIdText>
-                  <S.CommentContent>
-                    {value.content}
-                  </S.CommentContent>
-                </S.CommentVerticalFirstStartContainer>
-              </S.CommentTextContainer>
-            ))
+            <CommentSection page='review' postId={data.id} />
           )}
         </S.CommentContainer>
 

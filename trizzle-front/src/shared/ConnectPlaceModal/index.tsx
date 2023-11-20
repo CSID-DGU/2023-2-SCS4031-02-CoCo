@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "react-js-pagination";
 
-import * as S from './ConnectPlaceModal.styles'
+import * as S from './ConnectPlaceModal.styles';
 import Modal from "../../components/Modal";
+import { useAsync } from "../../utils/API/useAsync";
+import Paging from "../../components/Paging";
 
-interface ScretDropdownPorps {
-  data: string;
+type ConnectPlaceModalPorps = {
+  placeInfor: any;
   onclose: () => void;
+  onClickedPlace: (value: any) => void;
 }
 
 const SampleData = [
@@ -21,102 +23,37 @@ const SampleData = [
   { placeName: "마곡사", placeTitle: "난 내가 좋아9", visitedDate: "2020-12-13" },
 ]
 
-const sliceArrayByLimit = (totalPage: number[], limit: number) => {
-  const totalPageArray = Array.from(totalPage);
-  return Array(Math.ceil(totalPageArray.length / limit))
-    .fill()
-    .map(() => totalPageArray.splice(0, limit));
-};
-
-export default function CoonectPlaceModal({ data, onclose }: ScretDropdownPorps) {
-  const [planData, setPlanData] = useState<any>(SampleData);
-  const [showData, setShowData] = useState<[]>([]);
-  const showNumber = 6;
-  const [page, setPage] = useState(1);
-  const [pageNext, setPageNext] = useState(0);
-  const totalPages = planData.length % showNumber !== 0 ? planData.length / showNumber + 1 : planData.length / showNumber;
-  const [totalPageList, setTotalPageList] = useState<[]>(Array.from({ length: totalPages }, (_, index) => index + 1));
-  const [totalPageListDividedCurrent, setTotalPageListDividedCurrent] = useState([]);
-  // const searchResult =  SampleData.filter((place) => place.placeName === data).length === 0;
+const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlaceModalPorps) => {
+  const [placeData, setPlanData] = useState<any>([]);
+  const [state, fetchData] = useAsync({ url: '/api/reviews/myreviews' });
 
   useEffect(() => {
-    const pageData = SampleData.slice(0, showNumber);
-    setShowData(pageData);
-    console.log(totalPageList);
-    const slicedPageArray = sliceArrayByLimit(totalPageList, 5);
-    setTotalPageList(slicedPageArray);
-    setTotalPageListDividedCurrent(slicedPageArray[0]);
-  }, []);
-;
-
-  const handlePageChange = (pages: number) => {
-    console.log(pages);
-    let pageData: any;
-    if (pages === 1) {
-      pageData = SampleData.slice(0, showNumber);
-    } else {
-      pageData = SampleData.slice((pages - 1) * showNumber, pages * showNumber);
+    console.log(state);
+    if (state.error) {
+      console.log(state.error);
+      setPlanData([]);
+    } else if (state.data) {
+      console.log(state.data);
+      setPlanData(state.data);
     }
-    setShowData(pageData);
-    setPage(pages);
+  }, [state]);
 
-  };
-
-  const handlePrevClick = () => {
-    const currentIndex = totalPageList.findIndex(chunk => chunk.includes(page));
-    if (currentIndex > 0) {
-      setTotalPageListDividedCurrent(totalPageList[currentIndex - 1]);
-      handlePageChange(totalPageList[currentIndex - 1][4]);
-    }
-  };
-
-  const handleNextClick = () => {
-    const currentIndex = totalPageList.findIndex(chunk => chunk.includes(page));
-    if (currentIndex < totalPageList.length - 1) {
-      setTotalPageListDividedCurrent(totalPageList[currentIndex + 1]);
-      handlePageChange(totalPageList[currentIndex + 1][0]);
-    }
-  };
-
-  const pageList = totalPageListDividedCurrent.map((value, index) => (
-    <S.PageNation
-      key={index}
-      isActive={value === page}
-      onClick={() => handlePageChange(value)}
-    >
-      {value}
-    </S.PageNation>
-  ));
+  const clickedPlace = (data: any) => {
+    props.onClickedPlace(data);
+    props.onclose();
+  }
 
   return (
-    <Modal title="게시글 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={onclose}>
+    <Modal title="일정 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
       <S.UploadModalContainer>
-        {
-          planData.length === 0 ? (
-            <div>불러올 장소 게시글이 없습니다</div>
-          ) : (
-            <>
-              <S.GridContainer>
-                {showData.map((value, index) => (
-                  <S.PlaceListContainer key={index}>
-                    <S.PlaceText>{value.placeName}</S.PlaceText>
-                    <S.VerticalCenterContainer>
-                      <S.PlaceTitleText>{value.placeTitle}</S.PlaceTitleText>
-                      <S.PlaceDateText>{value.visitedDate}</S.PlaceDateText>
-                    </S.VerticalCenterContainer>
-                  </S.PlaceListContainer>
-                ))}
-              </S.GridContainer>
-
-              <S.HorizontalCenterContainer>
-                <button onClick={handlePrevClick}>&lt;</button>
-                {pageList}
-                <button onClick={handleNextClick}>&gt;</button>
-              </S.HorizontalCenterContainer>
-            </>
-          )}
-
+        {placeData.length === 0 ? (
+          <div>불러올 리뷰가 없습니다</div>
+        ) : (
+          <Paging items={placeData} perPage={6} type="modalCommentPlace" onClickedData={(data: any) => clickedPlace(data)} />
+        )}
       </S.UploadModalContainer>
     </Modal>
   );
 }
+
+export default ConnectPlaceModal;

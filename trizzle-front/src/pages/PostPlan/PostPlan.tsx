@@ -10,6 +10,7 @@ import UserPreview from "../../components/UserPreview";
 import { useAsync } from "../../utils/API/useAsync";
 import { useParams } from "react-router-dom";
 import { tripThema } from "../../utils/Data/tripThema";
+import CommentSection from "../../shared/CommentSection";
 
 const SampleComment = [
   {
@@ -49,6 +50,7 @@ const PostPlan: React.FC = () => {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
+      console.log("akfdmf whaemfdjwnffo?", state.data)
       setData(state.data);
     }
   }, [state]);
@@ -143,7 +145,7 @@ const PostPlan: React.FC = () => {
         {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
         <S.DayPlanPostContainer>
           <S.DayPlanPostInnerContainer>
-            <DayPlanPost dayList={selectedDayPlan} selectDay={selectDay} />
+            <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
           </S.DayPlanPostInnerContainer>
         </S.DayPlanPostContainer>
       </S.MapAndDayPlanContainer>
@@ -155,7 +157,7 @@ const PostPlan: React.FC = () => {
           <S.CommentText>
             댓글
             <S.CommentTextNumber>
-              {data.comments}
+              
             </S.CommentTextNumber>
             {isCommentOpen ?
               <AiOutlineUp size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
@@ -173,19 +175,7 @@ const PostPlan: React.FC = () => {
           </S.CommentText>
         </S.HorizontalFirstStartContainer>
         {isCommentOpen && (
-          SampleComment.map((value, index) => (
-            <S.CommentTextContainer key={index}>
-              <S.CommentImage />
-              <S.CommentVerticalFirstStartContainer>
-                <S.CommentIdText>
-                  {value.id}
-                </S.CommentIdText>
-                <S.CommentContent>
-                  {value.content}
-                </S.CommentContent>
-              </S.CommentVerticalFirstStartContainer>
-            </S.CommentTextContainer>
-          ))
+          <CommentSection page='post' postId={data.id} />
         )}
       </S.CommentContainer>
 

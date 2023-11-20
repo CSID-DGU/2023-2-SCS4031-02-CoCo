@@ -17,12 +17,22 @@ export const DayContainer = styled.div`
   border-radius: 0.5rem;
 `
 
-export const PlaceContainer = styled.div`
+export const PlaceContainer = styled.div<{ type?: boolean }>`
+${(props) => props.type ? 'display: flex; justify-content: center; align-items: center; gap: 1rem;' : ''}
   margin: 1rem;
   width: 28rem;
   height: 8rem;
   border: 1.5px solid #FFDC61;
   border-radius: 1rem;
+`
+
+export const PlaceAddress = styled.div`
+  width: 100%;
+  max-width: 100%;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #5B5B5B;
+  white-space: pre-line;
 `
 
 export const PalceText = styled.div`
