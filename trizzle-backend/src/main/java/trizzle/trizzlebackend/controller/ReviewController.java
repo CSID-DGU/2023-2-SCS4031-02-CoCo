@@ -88,4 +88,20 @@ public class ReviewController {
                     .body("{\"message\": \"" + message + "\"}");
         }
     }
+
+    @GetMapping("/bookmarks")
+    public ResponseEntity getBookmarkReviews(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        List<Review> bookmarkReviews = reviewService.findBookmarkReviews(accountId);
+
+        return ResponseEntity.ok(bookmarkReviews);
+    }
+
+    @GetMapping("/place/{placeId}")
+    public ResponseEntity reviewWithPlaceId(@PathVariable("placeId") String placeId) {
+        List<Review> reviews = reviewService.findReviewsWithPlaceId(placeId);
+
+        return ResponseEntity.ok(reviews);
+    }
 }

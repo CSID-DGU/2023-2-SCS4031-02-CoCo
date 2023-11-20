@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
+import trizzle.trizzlebackend.domain.Bookmark;
 import trizzle.trizzlebackend.domain.Place;
 import trizzle.trizzlebackend.domain.Review;
+import trizzle.trizzlebackend.repository.BookmarkRepository;
 import trizzle.trizzlebackend.repository.ReviewRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +22,7 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final PlaceService placeService;
+    private final BookmarkRepository bookmarkRepository;
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -68,9 +72,9 @@ public class ReviewService {
         return optionalReview.orElse(null);
     }
 
-    public Review updateReview(Review reivew, String reveiwId, String accountId) {
-        reivew.setId(reveiwId);
-        return insertReview(reivew, accountId);
+    public Review updateReview(Review review, String reviewId, String accountId) {
+        review.setId(reviewId);
+        return insertReview(review, accountId);
     }
 
     public List<Review> findMyReviews(String accountId) {
@@ -80,6 +84,27 @@ public class ReviewService {
 
     public void deleteReview(String reviewId) {
         reviewRepository.deleteById(reviewId);
+    }
+
+    public List<Review> findBookmarkReviews(String accountId) {
+        String type = "review";
+        List<Bookmark> bookmarks = bookmarkRepository.findByAccountIdAndType(accountId, type);
+        List<Review> reviews = new ArrayList<>();
+
+        for (Bookmark bookmark : bookmarks) {
+            Review review = reviewRepository.findById(bookmark.getReviewId()).orElse(null);
+            if (review != null) {
+                reviews.add(review);
+            }
+        }
+
+        return reviews;
+    }
+
+    public List<Review> findReviewsWithPlaceId(String placeId) {
+        Boolean secret = false;
+        List<Review> reviews = reviewRepository.findByPlaceIdAndReviewSecret(placeId, false);
+        return reviews;
     }
 
 }
