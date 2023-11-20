@@ -22,6 +22,7 @@ public class Post {
     private Plan plan;
     private int likeCount;
     private int bookmarkCount;
+    private String thumnail;
 
     public void increaseLikes() {   // 좋아요 수 증가
         this.likeCount++;

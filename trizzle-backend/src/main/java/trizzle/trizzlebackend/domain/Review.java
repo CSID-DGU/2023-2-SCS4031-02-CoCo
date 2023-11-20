@@ -28,6 +28,7 @@ public class Review {
     private String postId;
     private String postName;
     private String thumbnail;
+    private String reviewContentText;
     private int likeCount;
     private int bookmarkCount;
 
