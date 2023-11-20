@@ -3,11 +3,13 @@ import * as S from './SnsLoginButton.styles';
 import kakaoImg from '../../assets/images/KakaoTalk_logo.png';
 import googleImg from '../../assets/images/GoogleLogo.png';
 
+const url = import.meta.env.VITE_API_URL;
+
 export const GoogleLogin = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const actionLogin = () => {
-    window.location.href = 'http://localhost:8080/login/google';
+    window.location.href = `${url}/login/google`;
   }
 
 
@@ -27,7 +29,7 @@ export const KakaoLogin = () => {
   const [isHovered, setIsHovered] = useState(false);
 
   const actionLogin = () => {
-    window.location.href = 'http://localhost:8080/login/kakao';
+    window.location.href = `${url}/login/kakao`;
   }
 
   return (
