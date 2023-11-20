@@ -1,115 +1,76 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
-import { koreaRegions } from "../../utils/Data/mapData";
+import React, { useEffect, useState } from "react";
 import * as S from './SearchPlace.styles';
 import {SearchLayout} from "../Page";
-import Maps from "../../components/KakaoMap";
 import PlaceCard from "../../components/PlaceCard";
+import DropdownMenu from "../../components/DropdownMenu";
+import { IoIosSearch } from "react-icons/io";
 import img from '../../assets/images/default_festival.jpg'
-import SearchBar from "../../components/SearchBar";
+import { useAsync } from "../../utils/API/useAsync";
 
-const regionInformation = {
-  region: "서울특별시",
-  information: "서울특별시는 대한민국의 수도이자, 최대 도시로, 한반도 중앙에 자리하고 있습니다. 한강이 도시를 가로지르며 현대적인 도시scape와 전통적인 문화가 공존합니다. 세계적으로 유명한 관광 명소와 현대 아이콘들이 모여 있으며, 글로벌 경제와 문화의 중심지로 크게 발전해왔습니다. 서울은 다양한 역사적 유적지, 높은 건물들, 현대 예술과 음악, 풍부한 음식 문화 등을 통해 독특한 매력을 지니고 있습니다. 도시는 현대화와 전통을 조화롭게 이어가며 국내외에서 많은 사람들이 찾는 명실상부한 국제도시입니다."
-}
 
-const placeSample = [{
-  src: img,
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}, {
-  src: '',
-  postId: 215838,
-  placeName: "과천과학관",
-  userName: "날탱이탱날",
-  postTitle: "과학의 날 행사",
-  postDate: "2019-11-13",
-  postContent: "시바시바견",
-}]
 
 const SearchPlace = () => {
+  const [allReview, setAllReview] = useState<any>(null);
+  const [review, setReview] = useState<any[]>([]);
+  const [sort, setSort] = useState<any>({name:"최신순"});
+  const [page, setPage] = useState<number>(0);
+  const [state, fetchData] = useAsync({url:`/api/reviews/search?sort=${sort.id}`, method: 'GET'});
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+
+    if (scrollTop + clientHeight === scrollHeight) {
+      // 스크롤이 가장 아래로 내려갔을 때의 처리
+      if(allReview && allReview.pageable.last) return;
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+     // 스크롤 이벤트를 추가
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+       // 컴포넌트가 언마운트될 때 이벤트 제거
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchData(`/api/reviews/search?page=${page}&sort=${sort.id}`);
+  },[page]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [sort]);
+
+
+  useEffect(() => {
+    if (state.data) {
+      if(page === 0) setReview(state.data.content);
+      else{
+        setReview((prev:any) => [...prev, ...state.data.content]);}
+        setAllReview(state.data);
+    }
+  }, [state]);
+
+
+
+  if(allReview === null) return (<div>loading...</div>);
+
   return (
     <SearchLayout selectTab="장소">
       <S.SearchResultContainer>
-        {placeSample.map((place, index) => (
+      <S.FilterContainer>
+        {allReview.totalElements} 개의 검색결과
+        <S.MenuContainer >
+          <DropdownMenu items={[{name: "최신순"}, {name: "오래된순"}, {name: "인기순"}]} onClick={(item:any) => setSort(item)} name="정렬 기준" selectedItem={sort}/>
+        </S.MenuContainer>
+      </S.FilterContainer>
+        {review.length !== 0 && review.map((item, index) => (
           <S.PlaceCardContainer key={index}>
-            <PlaceCard src={place.src} postId={place.postId} userName={place.userName} placeName={place.placeName} postTitle={place.postTitle} postContent={place.postContent} postDate={place.postDate} />
+            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContent} src={item.thumbnail} postId={item.id}/>
           </S.PlaceCardContainer>
         ))}
       </S.SearchResultContainer>

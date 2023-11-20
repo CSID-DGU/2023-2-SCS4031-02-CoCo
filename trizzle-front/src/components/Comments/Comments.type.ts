@@ -20,8 +20,7 @@ type Comment = {
 
 
 export type myCommentProps = {
-  myCommentData : myCommentData;
-  postName : string;
+  myCommentData : commentData;
   key: any;
   onDelete : (id : string) => void;
 };
@@ -36,7 +35,7 @@ type commentData = {
   postId: string;
   reviewId : string;
   postName : string;
-  registrationDate : string;
+  commentRegistrationDate : string;
   fix : boolean;
   likeCount : number;
   isDeleted : boolean;
