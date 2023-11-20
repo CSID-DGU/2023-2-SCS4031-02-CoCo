@@ -36,7 +36,9 @@ public class AuthenticationConfig {
                                 new AntPathRequestMatcher("/upload/preSignedUrl"),
                                 new AntPathRequestMatcher("/upload/complete"),
                                 new AntPathRequestMatcher("/comments", "GET"),
-                                new AntPathRequestMatcher("/user/header", "GET")
+                                new AntPathRequestMatcher("/user/header", "GET"),
+                                new AntPathRequestMatcher("/posts/search", "GET"),
+                                new AntPathRequestMatcher("/reviews/search", "GET")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
