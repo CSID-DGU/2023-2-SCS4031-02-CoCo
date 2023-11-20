@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import * as S from './SearchPlan.styles';
+import { useAsync } from "../../utils/API/useAsync";
 import {SearchLayout} from "../Page";
 import img from '../../assets/images/default_festival.jpg'
 import PlanCard from "../../components/PlanCard";
@@ -8,157 +9,15 @@ import DropdownMenu from "../../components/DropdownMenu";
 import { tripThema } from "../../utils/Data/tripThema";
 import { IoIosSearch } from "react-icons/io";
 
-const planContainer = [{
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: '',
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: '',
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: '',
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: '',
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: img,
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: '',
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-}, {
-  userId: 'ajtwoddl0425',
-  planId: 1235105,
-  thumbnail: '',
-  title: '나만의 사랑',
-  region: '서울특별시',
-  startDate: '2023-10-10',
-  endDate: '2023-10-13',
-  likeCount: 12,
-  commentCount: 21,
-  thema: ["도심속여행"],
-},]
 
 
 const SearchPlan = () => {
-  const [allPlanList, setAllPlanList] = useState<any>(planContainer);
-  const [planList, setPlanList] = useState<any>(planContainer);
-  const [sort, setSort] = useState<any>({name:"최신순"});
+  const [allPlanList, setAllPlanList] = useState<any>(null);
+  const [planList, setPlanList] = useState<any[]>([]);
+  const [sort, setSort] = useState<any>({name:"최신순", id: "new"});
   const [thema, setThema] = useState<any[]>([]);
+  const [page, setPage] = useState<number>(0);
+  const [state, fetchData] = useAsync({url:`/api/posts/search?page=${page}&sort=${sort.id}`, method: 'GET'});
 
   const onThemaBadgeClick = (select: any) => {
     const itemExists = thema.some((item) => item.id === select.id);
@@ -169,53 +28,78 @@ const SearchPlan = () => {
     }
   };
 
-  const onFilterClick = () => {
-    if (thema.length === 0) {
-      if (sort.name === "최신순") {
-        setPlanList(allPlanList);
-      } else if (sort.name === "오래된순") {
-        setPlanList(allPlanList.reverse());
-      } else if (sort.name === "인기순") {
-        setPlanList(allPlanList.sort((a:any, b:any) => b.likeCount - a.likeCount));
-      }
-    } else {
-      if (sort.name === "최신순") {
-        setPlanList(allPlanList.filter((plan:any) => thema.some((item) => plan.thema.includes(item.name))));
-      } else if (sort.name === "오래된순") {
-        setPlanList(allPlanList.filter((plan:any) => thema.some((item) => plan.thema.includes(item.name))).reverse());
-      } else if (sort.name === "인기순") {
-        setPlanList(allPlanList.filter((plan:any) => thema.some((item) => plan.thema.includes(item.name))).sort((a:any, b:any) => b.likeCount - a.likeCount));
-      }
-    }
-  }
 
+
+  const handleScroll = () => {
+    const scrollHeight = document.documentElement.scrollHeight;
+    const scrollTop = document.documentElement.scrollTop;
+    const clientHeight = document.documentElement.clientHeight;
+
+    if (scrollTop + clientHeight === scrollHeight) {
+      // 스크롤이 가장 아래로 내려갔을 때의 처리
+      if(allPlanList && allPlanList.pageable.last) return;
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+     // 스크롤 이벤트를 추가
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+       // 컴포넌트가 언마운트될 때 이벤트 제거
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchData(`/api/posts/search?page=${page}&sort=${sort.id}`);
+  },[page]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [sort]);
+
+
+  useEffect(() => {
+    if (state.data) {
+      if(page === 0) setPlanList(state.data.content);
+      else{
+      setPlanList((prev:any) => [...prev, ...state.data.content]);}
+      setAllPlanList(state.data);
+      
+    }
+  }, [state]);
+
+
+
+  if(allPlanList === null) return (<div>loading...</div>);
   return (
     <SearchLayout selectTab="일정" >
       <S.SearchResultContainer>
       <S.FilterContainer number={thema.length}>
-        {planList.length} 개의 검색결과
+        {allPlanList.totalElements} 개의 검색결과
         <S.MenuContainer >
-          <DropdownMenu type="search" name="여행 테마 필터" items={tripThema} selectedItem={thema}  onClick={(item:any) => onThemaBadgeClick(item)}/>
-          <DropdownMenu items={[{name: "최신순"}, {name: "오래된순"}, {name: "인기순"}]} onClick={(item:any) => setSort(item)} name="정렬 기준" selectedItem={sort}/>
-          <S.FilterButton onClick={onFilterClick}>
+          {/* <DropdownMenu type="search" name="여행 테마 필터" items={tripThema} selectedItem={thema}  onClick={(item:any) => onThemaBadgeClick(item)}/> */}
+          <DropdownMenu items={[{name: "최신순", id:"new"}, {name: "오래된순", id:"old"}, {name: "인기순", id:"like"}]} onClick={(item:any) => setSort(item)} name="정렬 기준" selectedItem={sort}/>
+          {/* <S.FilterButton onClick={onFilterClick}>
             <IoIosSearch size="1.5rem" className="icon"/>
-          </S.FilterButton>
+          </S.FilterButton> */}
         </S.MenuContainer>
       </S.FilterContainer>
         <S.PlanCardContainer>
           {planList.map((plan:any, index:number) => (
             <PlanCard
               key={index}
-              userId={plan.userId}
-              planId={plan.planId}
-              thumbnail={plan.thumbnail}
-              title={plan.title}
-              region={plan.region}
+              userId={plan.accountId}
+              planId={plan.id}
+              thumbnail={plan.thumbnail?plan.thumbnail:""}
+              title={plan.postTitle}
+              region={plan.plan.planLocation}
               startDate={plan.startDate}
               endDate={plan.endDate}
-              likeCount={plan.likeCount}
-              commentCount={plan.commentCount}
-              thema={plan.thema} />
+              likeCount={plan.likeCount===null?0:plan.likeCount}
+              commentCount={plan.commentCount?plan.commentCount:0}
+              thema={plan.plan.planThema} />
           ))}
         </S.PlanCardContainer>
       </S.SearchResultContainer>
