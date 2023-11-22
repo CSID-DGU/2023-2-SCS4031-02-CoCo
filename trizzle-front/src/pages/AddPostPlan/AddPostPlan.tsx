@@ -81,7 +81,7 @@ const AddPostPlan: React.FC = () => {
     const itemExists = thema.some((item: any) => item.id === select.id);
 
     if (itemExists) {
-      setThema((prev: any) => prev.filter((item: any) => item.id !== select.id));
+      setThema((prev: any) => prev.filter((item:any) => item.id !== select.id));
     } else {
       setThema((prev: any) => [...prev, select]);
     }

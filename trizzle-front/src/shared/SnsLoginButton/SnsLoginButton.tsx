@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import * as S from './SnsLoginButton.styles';
 import kakaoImg from '../../assets/images/KakaoTalk_logo.png';
 import googleImg from '../../assets/images/GoogleLogo.png';

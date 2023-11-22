@@ -13,7 +13,6 @@ import { tripThema } from "../../utils/Data/tripThema";
 import CommentSection from "../../shared/CommentSection";
 
 const PostPlan: React.FC = () => {
-  const [isLogin, setIsLogin] = useState<string>(true);
   const [data, setData] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -26,10 +25,10 @@ const PostPlan: React.FC = () => {
   
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
-  const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  // const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const placeId = useParams<{ id: string }>();
-  const [state, fetchData] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
+  const [state, _] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
 
   useEffect(() => {
     console.log(state);

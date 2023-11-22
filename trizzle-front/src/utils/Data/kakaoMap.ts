@@ -1,5 +1,3 @@
-import { categoryCode } from "./mapData";
-
 
 //좌표 결과 : 지번주소, 도로명 주소, 지역, 건물명
 export const getAddress = async (Location: { lat: number; lng: number; }) => {

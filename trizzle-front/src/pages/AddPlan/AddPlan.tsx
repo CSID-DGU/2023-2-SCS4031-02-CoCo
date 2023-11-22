@@ -86,8 +86,8 @@ const AddPlanPage:React.FC = () => {
     }
   };
   
-  const onDeleteButtonClick = (place:any, day:number, index:number) => {
-    deletePlaceFromPlan(place, day, placeList, index);
+  const onDeleteButtonClick = (day:number, index:number) => {
+    deletePlaceFromPlan( day, placeList, index);
   }
 
   const onSubmitButtonClick = () => {
@@ -126,7 +126,7 @@ const AddPlanPage:React.FC = () => {
     }, [state])
 
   return (
-    <Page headersProps={{isHome:false, isLogin:true}}>
+    <Page headersProps={{isHome:false}}>
       <S.PageTitleContainer>
         <S.PageTitle>나만의 일정 등록</S.PageTitle>
       </S.PageTitleContainer>
@@ -155,7 +155,7 @@ const AddPlanPage:React.FC = () => {
           </S.FormContainer>
           <PlanMap selectDay={selectDay} setSelectDay={setSelectDay} placeList={placeList} center={center} isSearchModalOpen={isSearchModalOpen} setIsSearchModalOpen={setIsSearchModalOpen} isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} onDayPlusButtonClick={onDayPlusButtonClick} setAddClickDay={setAddClickDay} page="add"/>
           
-          <DayPlan isPlan={true} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} onDeleteClick={(place, day, index) => onDeleteButtonClick(place, day, index)} onDayDeleteClick={(day) => onDeleteDayClick(day)}/>
+          <DayPlan isPlan={true} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} onDeleteClick={(day, index) => onDeleteButtonClick( day, index)} onDayDeleteClick={(day) => onDeleteDayClick(day)}/>
       
 
       {/* </form> */}

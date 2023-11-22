@@ -44,6 +44,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     input.addEventListener("change", async () => {
       //이미지를 담아 전송할 formData를 만든다
       const file = input.files?.[0] || undefined;
+      if(file !==undefined){
       const fileName = file.name;
       const fileSize = file.size;
 
@@ -55,7 +56,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
       try {
         //업로드할 파일의 이름으로 Date 사용
-        let start = new Date();
+        let start:any = new Date();
         //s3 관련 설정들
 
         let res = await axios.post(`${url}/upload/initiate`, { fileName: fileName });
@@ -73,7 +74,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
         console.log(`chunkCount: ${chunkCount}`);
 
         let multiUploadArray = [];
-        let end;
+        let end:any;
         for (let uploadCount = 1; uploadCount < chunkCount + 1; uploadCount++) {
           // 청크 크기에 맞게 파일을 자릅니다.
           start = (uploadCount - 1) * chunkSize;
@@ -92,7 +93,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
           console.log(fileBlob);
 
           // 3번에서 받은 미리 서명된 URL과 PUT을 사용해 AWS 서버에 청크를 업로드합니다,
-          let uploadChunck = await fetch(preSignedUrl, {
+          let uploadChunck:any = await fetch(preSignedUrl, {
             method: 'PUT',
             body: fileBlob
           });
@@ -122,9 +123,9 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
         setData(prev => prev + `<img src="${completeUpload.data.url}" alt="${fileName}"/>`);
       } catch (err) {
-        console.log(err, err.stack);
+        console.log(err);
       }
-    });
+  }});
   };
 
   const modules = useMemo(() => {

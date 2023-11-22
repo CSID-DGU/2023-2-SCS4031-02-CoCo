@@ -4,7 +4,6 @@ import Maps from "../../components/KakaoMap";
 import SearchInput from "../../components/SearchInput";
 import { searchKeyword } from "../../utils/Data/kakaoMap";
 import Modal from "../../components/Modal";
-import { PlaceInfoList } from "../../components/KakaoMap/Map.type";
 
 
 type props = {
@@ -165,9 +164,9 @@ const AddPlaceModal = (props: props) => {
                 <S.PlaceAdress>{place.addressName}</S.PlaceAdress>
                 <S.ButtonsWrapper>
                   {props.type === "place" ? (
-                    <S.Buttons onClick={() => props.onAddPlaceClick(place)}>장소 선택</S.Buttons>
+                    <S.Buttons onClick={() => {props.onAddPlaceClick && props.onAddPlaceClick(place)}}>장소 선택</S.Buttons>
                   ) : (
-                    <S.Buttons onClick={(day) => props.onAddButtonClick(place, day)}>일정에 추가</S.Buttons>
+                    <S.Buttons onClick={(day) => {props.onAddButtonClick && props.onAddButtonClick(place, day)}}>일정에 추가</S.Buttons>
                   )}
 
                   <S.Buttons>

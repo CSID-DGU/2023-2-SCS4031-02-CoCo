@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import * as S from "./UserInfo.style"
 import ProfileImage from "../../components/ProfileImage";
 import TextInput from "../../components/TextInput";

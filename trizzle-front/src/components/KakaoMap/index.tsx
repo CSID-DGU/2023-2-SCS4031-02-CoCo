@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import * as S from "./Map.styles";
 import { MapProps } from "./Map.type";
 import MapMarkers from "./MapMarkers";
-import { DayPolyline } from "./DayMarker";
 
 const Maps: React.FC<MapProps> = (props: MapProps) => {
-  const [polylineList, setPolylineList] = useState<any[]>([]);
-
-
-  console.log(polylineList);
 
   switch (props.type) {
     case "search":

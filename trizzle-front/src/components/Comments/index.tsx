@@ -8,14 +8,12 @@ import {BiLike, BiSolidLike} from 'react-icons/bi';
 import {AiFillCaretDown, AiFillCaretUp} from 'react-icons/ai';
 import Menu from '../Menu';
 import CommentInput from '../CommentInput';
-import { useAsync } from '../../utils/API/useAsync';
 
 
 const Comment:React.FC<CommentsProps> = (props: CommentsProps) => { 
   const [menuItems, setMenuItems] = useState<any[]>([]);
   const [value, setValue] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(true);
-  const [state, fetchData] = useAsync({url: ""});
   const [childCommentOpen, setChildCommentOpen] = useState<boolean>(false);
 
   if(props.commentData.commentData && props.commentData.commentData.parentId !== null) {
@@ -28,6 +26,8 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
   const onChild = () => {
     setChildCommentOpen(!childCommentOpen);
   }
+
+  const onHandleSubmit = () => {};
 
   useEffect(() => {
     if(value !== "") setDisabled(false);
@@ -70,7 +70,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           <S.PostCommentContent>
             <S.PostCommentContentHeader>
               {props.commentData.nickname}
-              <S.PostCommentContentDate>{props.commentData.commentData.registrationDate}</S.PostCommentContentDate>
+              <S.PostCommentContentDate>{props.commentData.commentData.commentRegistrationDate}</S.PostCommentContentDate>
             </S.PostCommentContentHeader>
             <S.PostCommentContentBody>
               {props.commentData.commentData.commentContent}
@@ -92,7 +92,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
                   placeholder="댓글 입력..."
                   value={value}
                   onChange={onChange}
-                  onSubmit={() => props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId)}
+                  onSubmit={() => props.onChildSubmit?props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId) : onHandleSubmit()}
                   disabled={disabled}
             />
                 }
@@ -108,6 +108,10 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
   const onMoreButtonClick = () => {
     setChildOpen(!childOpen);
   };
+
+  useEffect(() => {
+    setChildComments(props.commentData.childComment);
+  }, [])
   return (
     <>
     {props.commentData.childComment && props.commentData.childComment.length > 0 ? (

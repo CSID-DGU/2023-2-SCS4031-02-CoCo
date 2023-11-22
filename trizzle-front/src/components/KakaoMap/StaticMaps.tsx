@@ -1,10 +1,10 @@
 import React from "react";
 import { StaticMap } from "react-kakao-maps-sdk";
-import { StaticMapsProps } from './Map.type';
+import { StaticMaspProps } from './Map.type';
 import { koreaRegions } from "../../utils/Data/mapData";
 
 
-const StaticMaps: React.FC<StaticMapsProps> = (props: StaticMaspProps) => {
+const StaticMaps: React.FC<StaticMaspProps> = (props: StaticMaspProps) => {
     const regionCenter = koreaRegions.filter((region) => region.name === props.center)[0];
 
     return (
@@ -18,6 +18,7 @@ const StaticMaps: React.FC<StaticMapsProps> = (props: StaticMaspProps) => {
                 borderTopLeftRadius: "1.5rem",
             }}
             level={3} // 지도의 확대 레벨
+            marker={false}
         />
     )
 }

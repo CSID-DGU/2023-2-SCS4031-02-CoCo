@@ -13,7 +13,7 @@ type ConnectPlaceModalPorps = {
 
 const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlaceModalPorps) => {
   const [placeData, setPlanData] = useState<any>([]);
-  const [state, fetchData] = useAsync({ url: `/api/reviews/place/${props.placeInfor.id}` });
+  const [state, _] = useAsync({ url: `/api/reviews/place/${props.placeInfor.id}` });
 
   useEffect(() => {
     console.log(state);

@@ -3,7 +3,7 @@ import * as S from "./ScretDropdown.styles";
 import { AiOutlineDown } from "react-icons/ai";
 
 type ScretDropdownPorps = {
-  titleValue: string;
+  titleValue: boolean;
   onScret: (value: boolean) => void;
 }
 
@@ -31,10 +31,10 @@ const ScretDropdown: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) 
         </S.DropdownButton>
         {isOpen &&
           <S.OptionContainer>
-            <S.OptionButton type="button" onClick={() => onClick("나만 보기")} >
+            <S.OptionButton onClick={() => onClick("나만 보기")} >
               나만 보기
             </S.OptionButton>
-            <S.OptionButton type="button" onClick={() => onClick("게시하기")} >
+            <S.OptionButton onClick={() => onClick("게시하기")} >
               게시하기
             </S.OptionButton>
           </S.OptionContainer>}

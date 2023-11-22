@@ -1,7 +1,7 @@
 
 import styled from "@emotion/styled";
 
-export const MapContainer = styled.div<{ width: string }>`
+export const MapContainer = styled.div<{ width?: string | undefined }>`
   width: ${({ width }) => width ? width : '100%'};
   height: auto;
   display: flex;

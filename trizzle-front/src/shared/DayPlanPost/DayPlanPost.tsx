@@ -37,6 +37,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
 
   useEffect(() => {
     setData(props.dayList);
+    console.log("epdlxj", props.dayList);
   }, [props.dayList]);
 
   useEffect(() => {
@@ -155,8 +156,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                               isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                               <S.ToggleButtonContainer>
                                 {/* <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption> */}
-                                <S.ToggleButtonOption onClick={() => props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex])}>게시글 불러오기</S.ToggleButtonOption>
-                              </S.ToggleButtonContainer>
+                                <S.ToggleButtonOption onClick={() => props.onConnetPostPlace? props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]):null}>게시글 불러오기</S.ToggleButtonOption>
                             }
                           </S.ThreeDotsButton>
                           <S.PalceText>
@@ -177,4 +177,3 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
 }
 
 export default DayPlanPost;
-

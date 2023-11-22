@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as S from './SearchPlace.styles';
 import {SearchLayout} from "../Page";
 import PlaceCard from "../../components/PlaceCard";
 import DropdownMenu from "../../components/DropdownMenu";
-import { IoIosSearch } from "react-icons/io";
-import img from '../../assets/images/default_festival.jpg'
+// import { IoIosSearch } from "react-icons/io";
+// import img from '../../assets/images/default_festival.jpg'
 import { useAsync } from "../../utils/API/useAsync";
 
 

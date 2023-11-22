@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import * as S from './MainLogin.styles';
 import { GoogleLogin, KakaoLogin } from "../../shared/SnsLoginButton/SnsLoginButton";
-import { useAsync } from "../../utils/API/useAsync";
 import { tripThema } from "../../utils/Data/tripThema";
 import DropdownMenu from "../../components/DropdownMenu";
 import LogoImg from '../../assets/logo/nonTextLogo.svg'
 
 interface MainLoginProps {
   type: string;
-  data: {};
+  data: any;
   onClose: () => void;
 }
 
@@ -27,7 +26,6 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     "thema": [],
     "registrationId": data.registrationId,
   });
-  const [state, fetchData] = useAsync({ url: "" });
   let components;
 
   const onThemaBadgeClick = (select: any) => {
@@ -93,7 +91,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     if (thema.length > 0) {
       const themaNames = thema.map((item) => item.name); // 첫 번째 항목을 선택하거나 다른 방식으로 선택
 
-      setUserData((prevUserData) => {
+      setUserData((prevUserData:any) => {
         return {
           ...prevUserData,
           thema: themaNames
@@ -112,7 +110,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
             <S.UserContents>아이디를 입력해주세요</S.UserContents>
             <S.UserInput
               type="text"
-              value={userData.accounId}
+              value={userData.accountId}
               onChange={handleAccountIdChange} />
             <S.UserContents>어떤 이름으로 활동하시겠습니까?</S.UserContents>
             <S.UserInput
