@@ -11,21 +11,9 @@ type ConnectPlaceModalPorps = {
   onClickedPlace: (value: any) => void;
 }
 
-const SampleData = [
-  { placeName: "과천과학관", placeTitle: "난 내가 좋아1", visitedDate: "2020-12-13" },
-  { placeName: "천문대", placeTitle: "난 내가 좋아2", visitedDate: "2020-12-13" },
-  { placeName: "무령왕릉", placeTitle: "난 내가 좋아3", visitedDate: "2020-12-13" },
-  { placeName: "철도박물관", placeTitle: "난 내가 좋아4", visitedDate: "2020-12-13" },
-  { placeName: "조폐박물관", placeTitle: "난 내가 좋아5", visitedDate: "2020-12-13" },
-  { placeName: "보광사", placeTitle: "난 내가 좋아6", visitedDate: "2020-12-13" },
-  { placeName: "흥국사", placeTitle: "난 내가 좋아7", visitedDate: "2020-12-13" },
-  { placeName: "삼성리움미술관", placeTitle: "난 내가 좋아8", visitedDate: "2020-12-13" },
-  { placeName: "마곡사", placeTitle: "난 내가 좋아9", visitedDate: "2020-12-13" },
-]
-
 const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlaceModalPorps) => {
   const [placeData, setPlanData] = useState<any>([]);
-  const [state, fetchData] = useAsync({ url: '/api/reviews/myreviews' });
+  const [state, fetchData] = useAsync({ url: `/api/reviews/place/${props.placeInfor.id}` });
 
   useEffect(() => {
     console.log(state);
@@ -37,6 +25,11 @@ const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlace
       setPlanData(state.data);
     }
   }, [state]);
+
+  useEffect(() => {
+    console.log("확인", props.placeInfor.id);
+  }, [props.placeInfor]);
+
 
   const clickedPlace = (data: any) => {
     props.onClickedPlace(data);

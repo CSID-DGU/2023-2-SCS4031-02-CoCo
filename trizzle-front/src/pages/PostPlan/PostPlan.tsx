@@ -12,19 +12,6 @@ import { useParams } from "react-router-dom";
 import { tripThema } from "../../utils/Data/tripThema";
 import CommentSection from "../../shared/CommentSection";
 
-const SampleComment = [
-  {
-    img: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_42E5B8F3E27A193D9A4A71E8A5511DB3.jpg&type=l340_165',
-    id: '날탱이탱날',
-    content: '너무 좋아요'
-  },
-  {
-    img: 'https://search.pstatic.net/sunny/?src=https%3A%2F%2Fcdn.crowdpic.net%2Fdetail-thumb%2Fthumb_d_42E5B8F3E27A193D9A4A71E8A5511DB3.jpg&type=l340_165',
-    id: '날탱이탱날',
-    content: '너무 좋아요'
-  },
-]
-
 const PostPlan: React.FC = () => {
   const [isLogin, setIsLogin] = useState<string>(true);
   const [data, setData] = useState<any>([]);
@@ -50,7 +37,6 @@ const PostPlan: React.FC = () => {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      console.log("akfdmf whaemfdjwnffo?", state.data)
       setData(state.data);
     }
   }, [state]);

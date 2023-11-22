@@ -37,7 +37,6 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
 
   useEffect(() => {
     setData(props.dayList);
-    console.log("epdlxj", props.dayList);
   }, [props.dayList]);
 
   useEffect(() => {
@@ -63,7 +62,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 </S.DayContainer>
                 {plans.placeList.map((place: any, innerIndex: number) => (
                   <div>
-                    {place.review !== null ? (
+                    {place.review && place.review !== null ? (
                       <Link to={`${import.meta.env.VITE_PUBLIC_URL}post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
                         <S.PlacePostContainer>
                           {
@@ -117,14 +116,14 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 </S.DayContainer>
                 {plans.placeList.map((place: any, innerIndex: number) => (
                   <div>
-                    {place.review !== null ? (
+                    {place.review && place.review !== null  ? (
                       <S.PlacePostContainer>
                         <S.ThreeDotsButton >
                           수정
                           {
                             isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                             <S.ToggleButtonContainer>
-                              {/* <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption> */}
+                              <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption>
                               <S.ToggleButtonOption onClick={() => props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex])}>게시글 불러오기</S.ToggleButtonOption>
                             </S.ToggleButtonContainer>
                           }

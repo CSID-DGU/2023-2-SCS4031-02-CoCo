@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BiCameraOff } from "react-icons/bi";
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -32,7 +32,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
   useEffect(() => {
     console.log("에디터에 들어온 데이터", props.prevData);
-    setData(props.prevData);
+    setData('<p><img src="https://trizzle-review.s3.ap-northeast-2.amazonaws.com/image/24ba9a7f-a017-4cc9-9d67-cd794a51f00b_%EC%9B%B9%20%EC%BA%A1%EC%B2%98_12-11-2023_21556_localhost.jpeg" alt="웹 캡처_12-11-2023_21556_localhost.jpeg"><img src="https://trizzle-review.s3.ap-northeast-2.amazonaws.com/image/24ba9a7f-a017-4cc9-9d67-cd794a51f00b_%EC%9B%B9%20%EC%BA%A1%EC%B2%98_12-11-2023_21556_localhost.jpeg" alt="웹 캡처_12-11-2023_21556_localhost.jpeg"></p>');
   }, [props.prevData]);
 
   const imageHandler = async () => {
@@ -148,7 +148,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
   useEffect(() => {
     props.onThumbnailImages(clickedImageHtml);
-  }, [clickedImageHtml]);
+  }, [clickedImage]);
 
   // 내용이 변경될 때 호출되는 함수
   const handleContentChange = (htmlContent: string) => {
@@ -187,7 +187,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     setClickedImage(thumbnailImages[idx]);
   }
 
-  // HTML > 텍스트 변환
+  // 텍스트 변환 > html
   const sanitizeHTML = (dirtyHTML: string) => {
     const cleanHTML = DOMPurify.sanitize(dirtyHTML);
     return { __html: cleanHTML };

@@ -78,12 +78,12 @@ const AddPostPlan: React.FC = () => {
   }, [prevThema]);
 
   const onThemaBadgeClick = (select: any) => {
-    const itemExists = thema.some((item) => item.id === select.id);
+    const itemExists = thema.some((item: any) => item.id === select.id);
 
     if (itemExists) {
-      setThema((prev) => prev.filter((item) => item.id !== select.id));
+      setThema((prev: any) => prev.filter((item: any) => item.id !== select.id));
     } else {
-      setThema((prev) => [...prev, select]);
+      setThema((prev: any) => [...prev, select]);
     }
   };
 
@@ -125,7 +125,6 @@ const AddPostPlan: React.FC = () => {
         postSecret: false,
         plan: { ...data }
       }
-      console.log(ResultData);
 
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
@@ -150,7 +149,7 @@ const AddPostPlan: React.FC = () => {
   }
 
   return (
-    <Page headersProps={{ isHome: false, isLogin: true }}>
+    <Page headersProps={{ isHome: false }}>
       <S.PageTitleContainer>
         <S.PageTitle>일정 게시글 등록</S.PageTitle>
       </S.PageTitleContainer>
