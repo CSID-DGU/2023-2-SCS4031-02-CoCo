@@ -28,7 +28,8 @@ const AddPostPlan: React.FC = () => {
   const [isUploadPlanModal, setIsUploadPlanModal] = useState<boolean>(false);
 
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
-  const [ConnectPlaceModalData, setIsConnectPlaceModalData] = useState<string>('');
+  const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<string>('');
+  const [ConnectPlaceModalDay, setConnectPlaceModalDay] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [state, fetchData] = useAsync({ url: "", method: "" });
 
@@ -40,7 +41,9 @@ const AddPostPlan: React.FC = () => {
       console.error(state.error);
     } else if (state.data) {
       console.log(state.data);
-      if (state.data.message === "연동 선공") setData(state.data);
+      if (state.data.message === "update success" && state.data.reviewId) {
+        // setData({ ...state.data, reviewId: state.data.reviewId });
+      }
       // 저장 및 수정
       else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
       else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
@@ -66,7 +69,7 @@ const AddPostPlan: React.FC = () => {
       const newArray = [dayPlan[selectDay - 1]];
       setSelectedDayPlan(newArray);
     }
-  }, [selectDay]);
+  }, [selectDay, dayPlan]);
 
   useEffect(() => {
     if (prevThema.length !== 0) {
@@ -75,12 +78,12 @@ const AddPostPlan: React.FC = () => {
   }, [prevThema]);
 
   const onThemaBadgeClick = (select: any) => {
-    const itemExists = thema.some((item:any) => item.id === select.id);
+    const itemExists = thema.some((item: any) => item.id === select.id);
 
     if (itemExists) {
-      setThema((prev:any) => prev.filter((item:any) => item.id !== select.id));
+      setThema((prev: any) => prev.filter((item:any) => item.id !== select.id));
     } else {
-      setThema((prev:any) => [...prev, select]);
+      setThema((prev: any) => [...prev, select]);
     }
   };
 
@@ -88,28 +91,40 @@ const AddPostPlan: React.FC = () => {
     window.open(`/post/places/add/${data._id}/${encodeURIComponent(data.placeName)}`, '_blank');
   }
 
-  const connectPlace = (data: any) => {
+  const connectPlace = (day: number, data: any) => {
     setIsConnectPlaceModal(!isConnectPlaceModal);
-    setIsConnectPlaceModalData(data);
+    setConnectPlaceModalDay(day);
+    setConnectPlaceModalData(data);
   }
 
   //review에 planId 추가해서 디비로 put 보내기
-  const connectReview = (place: any) => {
-    const reviewData = { ...place, planId: data.id }
-    fetchData(`/api/reviews/${place._id}`, 'PUT', reviewData);
+  const connectReview = (review: any) => {
+    const newArray = [...dayPlan];
+    newArray[ConnectPlaceModalDay - 1].placeList = dayPlan[ConnectPlaceModalDay - 1].placeList.map((place: any) => {
+      // _id와 ConnectPlaceModalData.placeId를 비교하여 객체를 찾습니다.
+      if (place.id === ConnectPlaceModalData.id) {
+        // 객체를 복사하여 reviewId를 추가한 후 반환합니다.
+        return { ...place, review: review };
+      }
+      // 찾지 못한 경우 해당 객체를 그대로 반환합니다.
+      return place;
+    });
+    setDayPlan(newArray);
+    const reviewData = { ...review, reviewSecret: false, planId: data.id }
+    fetchData(`/api/reviews/${review.id}`, 'PUT', reviewData);
   }
 
   const onSave = (type: string) => {
     const newArray = thema.map((value: any) => value.name);
     if (type === "save") {
       setSecret(false);
+      data.content = dayPlan;
       data.planThema = newArray;
       const ResultData = {
         postTitle: title,
         postSecret: false,
         plan: { ...data }
       }
-      console.log(ResultData);
 
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
@@ -119,6 +134,7 @@ const AddPostPlan: React.FC = () => {
       }
     } else if (type === "secret") {
       setSecret(true);
+      data.content = dayPlan;
       data.planThema = newArray;
       const ResultData = {
         postTitle: title,
@@ -133,7 +149,7 @@ const AddPostPlan: React.FC = () => {
   }
 
   return (
-    <Page headersProps={{ isHome: false}}>
+    <Page headersProps={{ isHome: false }}>
       <S.PageTitleContainer>
         <S.PageTitle>일정 게시글 등록</S.PageTitle>
       </S.PageTitleContainer>
@@ -166,7 +182,7 @@ const AddPostPlan: React.FC = () => {
           {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
           <S.DayPlanPostContainer>
             <S.DayPlanPostInnerContainer>
-              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={(data: any) => connectPlace(data)} />
+              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
             </S.DayPlanPostInnerContainer>
           </S.DayPlanPostContainer>
         </S.MapAndDayPlanContainer>

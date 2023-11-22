@@ -11,10 +11,9 @@ type ConnectPlaceModalPorps = {
   onClickedPlace: (value: any) => void;
 }
 
-
 const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlaceModalPorps) => {
   const [placeData, setPlanData] = useState<any>([]);
-  const [state, _] = useAsync({ url: '/api/post/myplans' });
+  const [state, _] = useAsync({ url: `/api/reviews/place/${props.placeInfor.id}` });
 
   useEffect(() => {
     console.log(state);
@@ -26,6 +25,11 @@ const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlace
       setPlanData(state.data);
     }
   }, [state]);
+
+  useEffect(() => {
+    console.log("확인", props.placeInfor.id);
+  }, [props.placeInfor]);
+
 
   const clickedPlace = (data: any) => {
     props.onClickedPlace(data);
