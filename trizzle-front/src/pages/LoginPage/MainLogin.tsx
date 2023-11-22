@@ -70,7 +70,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   }
 
   const closeModal = () => {
-    onClose(false);
+    onClose();
   }
 
   const handleAccountIdChange = (event: any) => {
