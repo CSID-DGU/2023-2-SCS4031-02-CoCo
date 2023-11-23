@@ -30,16 +30,16 @@ public class AuthenticationConfig {
                                 new AntPathRequestMatcher("/login/oauth2/code/google"),
                                 new AntPathRequestMatcher("/login/oauth2/code/kakao"),
                                 new AntPathRequestMatcher("/login/additionalUserInfo"),
-                                new AntPathRequestMatcher("/reviews/{reviewId}", "GET"),
-                                new AntPathRequestMatcher("/posts/{postId}", "GET"),
+                                new AntPathRequestMatcher("/api/reviews/{reviewId}", "GET"),
+                                new AntPathRequestMatcher("/api/posts/{postId}", "GET"),
                                 new AntPathRequestMatcher("/upload/initiate"),
                                 new AntPathRequestMatcher("/v2/video"),
                                 new AntPathRequestMatcher("/upload/preSignedUrl"),
                                 new AntPathRequestMatcher("/upload/complete"),
-                                new AntPathRequestMatcher("/comments", "GET"),
-                                new AntPathRequestMatcher("/user/header", "GET"),
-                                new AntPathRequestMatcher("/posts/search", "GET"),
-                                new AntPathRequestMatcher("/reviews/search", "GET")
+                                new AntPathRequestMatcher("/api/comments", "GET"),
+                                new AntPathRequestMatcher("/api/user/header", "GET"),
+                                new AntPathRequestMatcher("/api/posts/search", "GET"),
+                                new AntPathRequestMatcher("/api/reviews/search", "GET")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
