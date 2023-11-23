@@ -1,16 +1,42 @@
 import styled from "@emotion/styled";
 
 export const PageTitleContainer = styled.div`
-  width: 100%;
-  height: 9rem;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FFF7DA;
-  position:absolute;
-  top: 4.5rem;
-  left: 0;
-`;
+  width: 100%;
+  height: 9rem;
+  background-color: #FFF7DA;  
+`
+
+export const UploadThumnailButton = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.5rem;
+  height: 2rem;
+  border: 1px solid #000000;
+  border-radius: 0.5rem;
+  color: #000000;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 1; /* 수정: z-index 추가 */
+  &:hover {
+    border: 1.5px solid #000000;
+    color: #000000;
+    font-weight: 700;
+  }
+`
+
+export const UploadThumnailInput = styled.input`
+  display: none;
+  position: relative;
+  width: 100%;
+  height: 9rem;
+  background-color: #FFF7DA; 
+`
 
 export const PageTitle = styled.div`
   font-size: 2rem;
@@ -20,7 +46,7 @@ export const PageTitle = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-top: 11rem;
+  margin-top: 1.5rem;
   margin-bottom: 1.5rem;
   gap: 1rem;
 `
