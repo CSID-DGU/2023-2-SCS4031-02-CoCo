@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import Page from "../Page";
 import * as S from "./AddPlace.styles";
 import TextInput from "../../components/TextInput";
@@ -6,32 +7,87 @@ import AddPlaceModal from "../../shared/SearchPlaceModal";
 import PostInput from "../../shared/PostEditor";
 import ScretDropdown from "../../shared/ScretDropdown";
 import DatePicker from "../../components/DatePicker";
-import { useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import { koreaRegions } from "../../utils/Data/mapData";
 
 export default function ConnectPlace() {
-  const navigate = useNavigate();
-  const planInfor = useParams<{ planId: string, placeName: string }>();
-  const [state, fetchData] = useAsync({ url: "", method: "" });
+  const path = window.location.pathname;
+  const planInfor = useParams<{ planDay: string, planId: string, placeId: string }>();
+  const [state, fetchData] = useAsync({ url: `/api/plans/${planInfor.planId}` });
+  const [planData, setPlanData] = useState<any>({});
+  const [planDataContent, setPlanDataContent] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
-  const [secretValue, setSecretValue] = useState<boolean>(true);
+  const [secretValue, setSecretValue] = useState<boolean>(false);
   const [visitDate, setVisitDate] = useState<any>(new Date());
-  const [place, setPlace] = useState<any>({ placeName: planInfor.placeName });
+  const [place, setPlace] = useState<any>({ placeName: planInfor.placeId });
   const [contents, setContents] = useState<string>('');
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
   const [contentsText, setContentsText] = useState<string>('');
   const region: any = koreaRegions[0];
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
+  const [resultData, setResultData] = useState<any>({});
+
+  useEffect(()=>{
+    if (path.includes('places')) {
+      // 
+    } else if (path.includes('plans')) {
+      // 사용자 선택할 수 있게
+    }
+  },[path])
 
   useEffect(() => {
     console.log(state);
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      if (state.data.message === "save success") navigate(`/post/places/${state.data.reviewId}`);
+      if (state.data.message === "save success") {
+        setResultData({ ...resultData, id: state.data.reviewId })
+        const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
+        const newArray = [...planDataContent];
+
+        if (!newArray[dayValue - 1]) {
+          newArray[dayValue - 1] = { placeList: [] };
+        }
+
+        // dayValue에 해당하는 placeList를 업데이트
+        newArray[dayValue - 1].placeList = (newArray[dayValue - 1].placeList || []).map((place: any) => {
+          // _id와 ConnectPlaceModalData.placeId를 비교하여 객체를 찾습니다.
+          if (place.id === planInfor.placeId) {
+            // 객체를 복사하여 reviewId를 추가한 후 반환합니다.
+            return { ...place, review: resultData };
+          }
+          // 찾지 못한 경우 해당 객체를 그대로 반환합니다.
+          return place;
+        });
+        setPlanData({ ...planData, content: newArray });
+        console.log("잘 들어갔는가?", planData);
+        fetchData(`/api/plans/${planInfor.planId}`, "PUT", planData);
+
+        opener.location.reload();
+        window.close();
+      }
+      else if (planInfor) {
+        setPlanData(state.data);
+        setPlanDataContent(state.data.content);
+      }
     }
   }, [state]);
+
+  useEffect(() => {
+    if (planDataContent.length !== 0) {
+      const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
+      const placeInfor = planDataContent[(dayValue - 1)].placeList.filter((item: any) => item.id === planInfor.placeId) || [];
+      setPlace(placeInfor[0]);
+    }
+  }, [planDataContent, planInfor.planDay, planInfor.placeId]);
+
+  useEffect(() => {
+    if (planData.length !== 0 && planInfor.planDay !== '0') {
+      const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
+      const formatDate = new Date(planData.planStartDate);
+      setVisitDate( formatDate.setDate(formatDate.getDate() + (dayValue - 1)));
+    }
+  }, [planData, planInfor.planDay]);
 
   const onSave = () => {
     if (title === '') {
@@ -40,26 +96,35 @@ export default function ConnectPlace() {
     } else if (new Date() < visitDate) {
       alert("아직 지나지 않은 날짜입니다");
       return;
+    } else if (contents === '') {
+      alert("내용이 입력되지 않았습니다");
+      return;
     }
 
-    const formattedDate = visitDate.toISOString().slice(0, 10);
+    const date = new Date(visitDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; 
+    const day = date.getDate();
+
+    const formattedDate = `${year}-${month}-${day}`
 
     // 정보 보내기
-    const ResultData = {
+    const result = {
       reviewTitle: title,
       visitDate: formattedDate,
       place: place,
       reviewContent: contents,
       reviewContentText: contentsText,
-      reviewSecret: secretValue,
+      reviewSecret: false,
       thumbnail: representImage,
       planId: planInfor.planId,
     }
+    setResultData(result)
 
     const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
     if (response) {
-      const json = JSON.stringify(ResultData);
-      console.log(ResultData);
+      const json = JSON.stringify(result);
+      console.log(json);
       fetchData('/api/reviews', "POST", json);
     }
   }
@@ -71,9 +136,9 @@ export default function ConnectPlace() {
       </S.PageTitleContainer>
       <form>
         <S.ButtonContainer>
-          <ScretDropdown titleValue={secretValue} onScret={(e) => setSecretValue(e)} />
+          <ScretDropdown titleValue={secretValue} onScret={(e) => setSecretValue(e)} disapled={true} />
           <div>
-            <S.Button type="button" onClick={onSave}>저장</S.Button>
+            <S.Button type="button" onClick={onSave} >저장</S.Button>
           </div>
         </S.ButtonContainer>
         <S.FormContainer>
@@ -81,14 +146,9 @@ export default function ConnectPlace() {
           <S.HorizontalSpaceBetweenContainer>
             <S.HorizontalFirstStartContainer>
               <S.SelectTitle>장소</S.SelectTitle>
-              {place && place.placeName !== '' ?
-                <S.HorizontalFirstStartContainer style={{ width: 'auto' }}>
-                  <div style={{ marginRight: '1.5rem', color: '#747474', fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif', fontSize: '1rem' }}>{place.placeName}</div>
-                  <S.SelectPlaceButton onClick={() => setIsPlusPlaceModal(!isPlusPlaceModal)} type="button">장소 변경</S.SelectPlaceButton>
-                </S.HorizontalFirstStartContainer>
-                :
-                <S.SelectPlaceButton onClick={() => setIsPlusPlaceModal(!isPlusPlaceModal)} type="button">장소 추가</S.SelectPlaceButton>
-              }
+              <S.HorizontalFirstStartContainer style={{ width: 'auto' }}>
+                <div style={{ marginRight: '1.5rem', color: '#747474', fontFamily: 'Inter, system-ui, Avenir, Helvetica, Arial, sans-serif', fontSize: '1rem' }}>{place.placeName}</div>
+              </S.HorizontalFirstStartContainer>
             </S.HorizontalFirstStartContainer>
             <S.HorizontalFirstStartContainer>
               <S.SelectTitle>방문날짜</S.SelectTitle>
@@ -96,7 +156,7 @@ export default function ConnectPlace() {
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
-          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} onChangeContentsText={(con)=> setContentsText(con)}/>
+          <PostInput prevData={contents} onChangeContents={(con) => setContents(con)} onThumbnailImages={(img) => setRepresentImage(img)} onChangeContentsText={(con) => setContentsText(con)} />
 
         </S.FormContainer>
       </form>

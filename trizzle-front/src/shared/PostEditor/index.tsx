@@ -31,8 +31,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
   }, []);
 
   useEffect(() => {
-    console.log("에디터에 들어온 데이터", props.prevData);
-    setData('<p><img src="https://trizzle-review.s3.ap-northeast-2.amazonaws.com/image/24ba9a7f-a017-4cc9-9d67-cd794a51f00b_%EC%9B%B9%20%EC%BA%A1%EC%B2%98_12-11-2023_21556_localhost.jpeg" alt="웹 캡처_12-11-2023_21556_localhost.jpeg"><img src="https://trizzle-review.s3.ap-northeast-2.amazonaws.com/image/24ba9a7f-a017-4cc9-9d67-cd794a51f00b_%EC%9B%B9%20%EC%BA%A1%EC%B2%98_12-11-2023_21556_localhost.jpeg" alt="웹 캡처_12-11-2023_21556_localhost.jpeg"></p>');
+    setData(props.prevData);
   }, [props.prevData]);
 
   const imageHandler = async () => {

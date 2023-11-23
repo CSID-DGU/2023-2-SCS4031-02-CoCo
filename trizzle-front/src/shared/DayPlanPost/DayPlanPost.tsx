@@ -63,7 +63,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 {plans.placeList.map((place: any, innerIndex: number) => (
                   <div>
                     {place.review && place.review !== null ? (
-                      <Link to={`${import.meta.env.VITE_PUBLIC_URL}post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
+                      <Link to={`/post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
                         <S.PlacePostContainer>
                           <div style={{ width: '100%', height: '100%' }}>
                             {

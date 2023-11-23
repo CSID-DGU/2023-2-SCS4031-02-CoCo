@@ -27,7 +27,7 @@ public class CommentController {
         this.userService = userService;
     };
 
-    @PostMapping("/comments")
+    @PostMapping("/api/comments")
     public ResponseEntity postComment(@RequestBody Comment comment, HttpServletRequest request) {
         try {
             String token = JwtUtil.getAccessTokenFromCookie(request);
@@ -49,7 +49,7 @@ public class CommentController {
         }
     };
 
-    @GetMapping("/comments")
+    @GetMapping("/api/comments")
     public ResponseEntity getComments(@RequestParam(value = "postId", required = false) String postId,
                                       @RequestParam(value = "reviewId", required = false) String reviewId,
                                       HttpServletRequest request) {
@@ -72,7 +72,7 @@ public class CommentController {
             return ResponseEntity.ok().body(comments);
     }
 
-    @DeleteMapping("/{type}/{postId}/comments/{commentId}")
+    @DeleteMapping("/api/{type}/{postId}/comments/{commentId}")
     public ResponseEntity deleteComment(
             @PathVariable("type") String type,
             @PathVariable("postId") String postId,
@@ -105,7 +105,7 @@ public class CommentController {
     }
 
 
-    @PatchMapping("/{type}/comments/fix/{commentId}")
+    @PatchMapping("/api/{type}/comments/fix/{commentId}")
     public ResponseEntity fixComment(@PathVariable("type") String type,@PathVariable("commentId") String commentId, HttpServletRequest request) {
         Comment comment = commentService.fixComment(commentId);
         String token = JwtUtil.getAccessTokenFromCookie(request);

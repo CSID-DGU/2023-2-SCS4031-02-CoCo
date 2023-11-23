@@ -10,13 +10,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Bookmark;
+import trizzle.trizzlebackend.domain.Like;
 import trizzle.trizzlebackend.domain.Post;
-import trizzle.trizzlebackend.repository.BookmarkRepository;
-import trizzle.trizzlebackend.repository.ElasticPostRepository;
+import trizzle.trizzlebackend.dto.response.PostDto;
+import trizzle.trizzlebackend.repository.*;
 import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.elasticSearch.ElasticsearchOperations;
 import trizzle.trizzlebackend.repository.ElasticPostRepository;
-import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final LikeRepository likeRepository;
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
@@ -47,10 +48,12 @@ public class PostService {
 
     }
 
-    public Post searchPost(String postId, HttpServletRequest request) {
+    public PostDto searchPost(String postId, HttpServletRequest request) {
         Optional<Post> postOptional = postRepository.findById((postId));
         if (postOptional.isPresent()) {   // postId에 해당하는 post가 있을 경우
             Post post = postOptional.get();
+            PostDto postDto = new PostDto();
+            postDto.setPost(post);
 
             if (post.isPostSecret()) {  // 비공개일 경우 cookie의 accountId와 post의 accountId 비교
                 String token = JwtUtil.getAccessTokenFromCookie(request);
@@ -62,11 +65,33 @@ public class PostService {
                 }
 
                 if (accountId.equals(post.getAccountId())) {     //cookie의 accountId와 post의 accountId 일치하는 경우
-                    return post;
+                    return postDto;
                 } else return null;
 
             } else { // 공개 post일 경우 post 반환
-                return post;
+                String token = JwtUtil.getAccessTokenFromCookie(request);
+                String accountId;
+                if (token == null) { // token 없다면(로그인 안했다면 post정보만)
+                    return postDto;
+                } else {
+                    accountId = JwtUtil.getAccountId(token,secretKey);
+                }
+                
+                Like like = likeRepository.findByPostIdAndAccountId(postId, accountId);
+                if (like != null) { // 좋아요 했으면 isLike true로
+                    postDto.setLike(true);
+                } else {   // 좋아요 안했으면 isLike false로
+                    postDto.setLike(false);
+                }
+
+                Bookmark bookmark = bookmarkRepository.findByPostIdAndAccountId(postId, accountId);
+                if (bookmark != null) { // 북마크 했으면 isBookmark true로
+                    postDto.setBookmark(true);
+                } else { // 북마크 안했으면 isBookmark false로
+                    postDto.setBookmark(false);
+                } 
+                
+                return postDto;
             }
 
         } else {                            // postId 해당하는 post가 없을 경우
@@ -119,6 +144,11 @@ public class PostService {
         }
 
         return posts;
+    }
+
+    public Post checkMyPost(String postId, String accountId) {
+        return postRepository.findByIdAndAccountId(postId, accountId);
+
     }
 
     public List<Post> findTop4Posts() {

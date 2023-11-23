@@ -13,6 +13,7 @@ import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.domain.ElasticReview;
 import trizzle.trizzlebackend.domain.Post;
+import trizzle.trizzlebackend.dto.response.PostDto;
 import trizzle.trizzlebackend.service.PostService;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 @RequiredArgsConstructor
 public class PostController {
 
@@ -44,9 +45,9 @@ public class PostController {
 
     @GetMapping("/{postId}")
     public ResponseEntity getPost(@PathVariable("postId") String postId, HttpServletRequest request) {
-        Post post = postService.searchPost(postId, request);
+        PostDto postDto = postService.searchPost(postId, request);
         return ResponseEntity.ok()
-                .body(post);
+                .body(postDto);
     }
 
     @GetMapping("/search")
@@ -99,7 +100,7 @@ public class PostController {
     public ResponseEntity deleteMyPost(@PathVariable("postId") String postId, HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
-        Post post = postService.searchPost(postId, request);
+        Post post = postService.checkMyPost(postId, accountId);
 
         if (post != null) {
             postService.deletePost(postId);

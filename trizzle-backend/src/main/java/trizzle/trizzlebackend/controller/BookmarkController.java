@@ -21,7 +21,7 @@ public class BookmarkController {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @PostMapping("/{type}/{contentId}/bookmarks")
+    @PostMapping("/api/{type}/{contentId}/bookmarks")
     public ResponseEntity postBookmark(@PathVariable("type") String type,
                                    @PathVariable("contentId") String contentId,
                                    HttpServletRequest request) {

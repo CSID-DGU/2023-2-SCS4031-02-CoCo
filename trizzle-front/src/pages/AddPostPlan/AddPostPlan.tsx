@@ -6,9 +6,8 @@ import DropdownMenu from "../../components/DropdownMenu";
 import Page from "../Page";
 import { koreaRegions } from "../../utils/Data/mapData";
 import { tripThema } from "../../utils/Data/tripThema";
-import UploadPlanModal from "../../shared/UploadPlanModal";
 import PlanMap from "../../shared/PlanMap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import ConnectPlaceModal from "../../shared/ConnectPlaceModal";
@@ -25,13 +24,12 @@ const AddPostPlan: React.FC = () => {
   const [secret, setSecret] = useState<boolean>(true);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
-  const [isUploadPlanModal, setIsUploadPlanModal] = useState<boolean>(false);
 
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
   const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<any>({});
   const [ConnectPlaceModalDay, setConnectPlaceModalDay] = useState<number>(0);
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-  const [state, fetchData] = useAsync({ url: "", method: "" });
+  const planId = useParams<{ id: string }>();
+  const [state, fetchData] = useAsync({ url: `/api/plans/${planId.id}` });
 
   const navigate = useNavigate();
 
@@ -40,18 +38,19 @@ const AddPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      console.log(state.data);
+      console.log(state.data)
       if (state.data.message === "update success" && state.data.reviewId) {
         // setData({ ...state.data, reviewId: state.data.reviewId });
       }
-      // 저장 및 수정
       else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
       else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
+      else setData(state.data);
     }
   }, [state]);
 
   useEffect(() => {
     if (data.length !== 0) {
+      console.log("새로고참", data);
       setTitle(data.planName);
       setStartDate(data.planStartDate);
       setEndDate(data.planEndDate);
@@ -81,14 +80,15 @@ const AddPostPlan: React.FC = () => {
     const itemExists = thema.some((item: any) => item.id === select.id);
 
     if (itemExists) {
-      setThema((prev: any) => prev.filter((item:any) => item.id !== select.id));
+      setThema((prev: any) => prev.filter((item: any) => item.id !== select.id));
     } else {
       setThema((prev: any) => [...prev, select]);
     }
   };
 
-  const onPostPlace = (data: any) => {
-    window.open(`/post/places/add/${data._id}/${encodeURIComponent(data.placeName)}`, '_blank');
+  const onPostPlace = (day: number, placeData: any) => {
+    console.log("들어온 장소 데이터", placeData);
+    window.open(`/post/plans/add/${day}/${planId.id}/${placeData.id}`, '_blank');
   }
 
   const connectPlace = (day: number, data: any) => {
@@ -177,24 +177,17 @@ const AddPostPlan: React.FC = () => {
         <S.HorizontalLine />
       </S.FormContainer>
 
-      {data.length !== 0 ? (
         <S.MapAndDayPlanContainer>
           {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
           <S.DayPlanPostContainer>
             <S.DayPlanPostInnerContainer>
-              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(data: any) => onPostPlace(data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
+              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
             </S.DayPlanPostInnerContainer>
           </S.DayPlanPostContainer>
         </S.MapAndDayPlanContainer>
-      ) : (
-        <S.UploadContainer onClick={() => setIsUploadPlanModal(!isUploadPlanModal)} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-          <S.UploadPlanButton onClick={() => setIsUploadPlanModal(!isUploadPlanModal)} isHovered={isHovered} >일정 불러오기</S.UploadPlanButton>
-        </S.UploadContainer>
-      )}
-      {/* </form> */}
-
+      
       <div style={{ height: "10rem" }} />
-      {isUploadPlanModal && <UploadPlanModal onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} onClickedPlan={(plan: any) => setData(plan)} />}
+      
       {isConnectPlaceModal && <ConnectPlaceModal placeInfor={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} onClickedPlace={(place: any) => connectReview(place)} />}
     </Page >
   )

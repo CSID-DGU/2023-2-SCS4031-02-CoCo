@@ -11,7 +11,7 @@ const PlanCard: React.FC<PlanCardProps> = (props: PlanCardProps) => {
     props.thema.splice(3, props.thema.length - 3);
   }
   return (
-    <Link to={`/post/plans/${props.planId}`}>
+    <Link to={`/post/plan/${props.planId}`}>
       <S.Container>
         <S.Thumbnail >
           {props.thumbnail === "" ?  <StaticMaps center={props.region} width="100%" height="17.5rem" /> : <S.ThumbnailImg src={props.thumbnail} />}
