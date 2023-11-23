@@ -25,10 +25,10 @@ public class AuthenticationConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                new AntPathRequestMatcher("/api/login/google"),
-                                new AntPathRequestMatcher("/api/login/kakao"),
-                                new AntPathRequestMatcher("/api/login/oauth2/code/google"),
-                                new AntPathRequestMatcher("/api/login/oauth2/code/kakao"),
+                                new AntPathRequestMatcher("/login/google"),
+                                new AntPathRequestMatcher("/login/kakao"),
+                                new AntPathRequestMatcher("/login/oauth2/code/google"),
+                                new AntPathRequestMatcher("/login/oauth2/code/kakao"),
                                 new AntPathRequestMatcher("/api/login/additionalUserInfo"),
                                 new AntPathRequestMatcher("/api/reviews/{reviewId}", "GET"),
                                 new AntPathRequestMatcher("/api/posts/{postId}", "GET"),

@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/login")
+@RequestMapping("/login")
 public class OauthController {
 
     private final LoginService loginService;
@@ -59,7 +59,7 @@ public class OauthController {
         return responseMethod(result, response);
     }
 
-    @PostMapping("/additionalUserInfo") // user정보 추가 입력 요청(account_id, nickname, thema)
+    @PostMapping("/api/additionalUserInfo") // user정보 추가 입력 요청(account_id, nickname, thema)
     public ResponseEntity putAdditionalUserInfo(@RequestParam String token, @RequestBody User additionaluserInfo, HttpServletResponse response) {
         Map<String, String> result = loginService.putUserInfo(token, additionaluserInfo);
         return responseMethod(result, response);
