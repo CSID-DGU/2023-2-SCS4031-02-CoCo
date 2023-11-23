@@ -31,6 +31,7 @@ public class AuthenticationConfig {
                                 new AntPathRequestMatcher("/login/oauth2/code/kakao"),
                                 new AntPathRequestMatcher("/login/additionalUserInfo"),
                                 new AntPathRequestMatcher("/reviews/{reviewId}", "GET"),
+                                new AntPathRequestMatcher("/posts/{postId}", "GET"),
                                 new AntPathRequestMatcher("/upload/initiate"),
                                 new AntPathRequestMatcher("/v2/video"),
                                 new AntPathRequestMatcher("/upload/preSignedUrl"),

@@ -2,7 +2,7 @@ package trizzle.trizzlebackend.controller;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.OauthService.GoogleOauthService;
@@ -74,12 +74,20 @@ public class OauthController {
             String accessToken = result.get("accessToken");
 
             // cookie 설정 (cookie에 accessToken 담아서 응답)
-            Cookie cookie = new Cookie("accessToken", accessToken);
-            cookie.setPath("/");
-            cookie.setMaxAge(3600);
-            cookie.setSecure(true);
-            cookie.setHttpOnly(true);
-            response.addCookie(cookie);
+            ResponseCookie cookie = ResponseCookie.from("accessToken", accessToken)
+                    .path("/")
+                    .sameSite("None")
+                    .httpOnly(true)
+                    .secure(true)
+                    .maxAge(3600)
+                    .build();
+            response.addHeader("Set-Cookie", cookie.toString());
+
+//            Cookie cookie = new Cookie("accessToken", accessToken);
+//            cookie.setPath("/");
+//            cookie.setMaxAge(3600);
+//            cookie.setSecure(true);
+//            cookie.setHttpOnly(true);
 
             return ResponseEntity.ok()
                     .body("{\"message\": \"" + responseMessage + "\"}");    // {"message":"login access"}
