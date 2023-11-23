@@ -33,6 +33,7 @@ const Router = () => {
 
         <Route path='/post/plans/add' element={<AddPostPlanOpen />} />
         <Route path='/post/plans/add/:id' element={<AddPostPlan />} />
+        <Route path="/post/places/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
         <Route path="/post/plans/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
         <Route path='/post/plan/:id' element={<PostPlan />} />
 

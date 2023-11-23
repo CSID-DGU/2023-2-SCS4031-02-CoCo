@@ -39,7 +39,7 @@ export const InforFirstContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 7rem;
   margin-bottom: 1.5rem;
 
   font-size: 2rem;
@@ -50,7 +50,7 @@ export const InforContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.5rem;
-  width: 5rem;
+  width: auto;
   font-weight: bold;
   font-size: 1.1rem;
 `
@@ -61,7 +61,6 @@ export const InforInputContainer = styled.div`
   font-size: 1rem;
 `
 
-
 export const Content = styled.div`
   width: auto;
   height: auto;
@@ -70,7 +69,7 @@ export const Content = styled.div`
   color: #747474;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.7rem;
 `
 
 export const ThemaBadge = styled.div`

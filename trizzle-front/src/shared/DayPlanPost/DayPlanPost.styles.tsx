@@ -39,9 +39,8 @@ export const PalceText = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0 2rem 0;
+  margin: 1.15rem;
   width: auto;
-  height: 3.2rem;
 
   font-size: 1.5rem;
   font-weight: 700;
@@ -49,18 +48,44 @@ export const PalceText = styled.div`
 
 export const ThreeDotsButton = styled.button`
   position: relative;
-  margin: 0.2rem 0 0 0;
-  top: 0.25rem;
+  top: 0;
   left: 25.5rem;
+  margin: 0.2rem 0 0 0;
   width: auto;
-  color: #BEBEBE;
+  color: #000000;
+  z-index: 100;
+  &:hover {
+    font-weight: 600;
+  }
+`
+
+export const ModifyButton = styled.button`
+  margin: 0.5rem 0.5rem 0 0;
+  width: 2rem;
+  font-size: 1rem;
+  color: #000000;
+  z-index: 100;
   &:hover {
     font-weight: 600;
   }
 `
 
 export const PlacePostContainer = styled.div`
-  display: block;
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+  width: 28rem;
+  height: 8rem;
+  border: 1.5px solid #FFDC61;
+  border-radius: 1rem;
+  &:hover{
+    background-color: rgba(255, 220, 97, 0.2);
+  }
+`
+
+export const PlacePostNoneContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
   margin: 1rem;
   width: 28rem;
   height: 8rem;
@@ -75,9 +100,8 @@ export const PlaceLogo = styled.div`
   width: 30%;
   height: 100%;
   background-color: #FFECAA;
-  border-top-left-radius: 0.75rem;
-  border-bottom-left-radius: 0.75rem;
-  position: relative;
+  border-top-left-radius: 0.9rem;
+  border-bottom-left-radius: 0.9rem;
   top: -1.2rem;
 `
 
@@ -95,13 +119,12 @@ export const PlaceImage = styled.img`
 `
 
 export const PlaceInfo = styled.div`
-  width: 60%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   justify-content: center;
-  padding: 0 0.5rem;
+  margin: 1.1rem 0 0 0.5rem;
+  width: 60%;
+  height: 100%;
 `
 
 export const PlaceName = styled.div`
@@ -126,6 +149,7 @@ export const ToggleButtonContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0.5rem;
   background-color: #FFFFFF;
   border-radius: 0.5rem;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -136,7 +160,7 @@ export const ToggleButtonContainer = styled.div`
 
   position: absolute;
   top: 1rem;
-  left: -4rem;
+  left: -5rem;
 `
 
 export const ToggleButtonOption = styled.button`
@@ -153,5 +177,7 @@ export const ToggleButtonOption = styled.button`
   cursor: pointer;
   &:hover{
     background-color: #E9E9E9;
+    font-weight: 500;
+    color: #000000;
   }
 `

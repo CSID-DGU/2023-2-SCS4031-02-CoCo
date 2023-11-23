@@ -11,6 +11,7 @@ import { useAsync } from "../../utils/API/useAsync";
 import { useParams } from "react-router-dom";
 import { tripThema } from "../../utils/Data/tripThema";
 import CommentSection from "../../shared/CommentSection";
+import SearchBar from "../../components/SearchBar";
 
 const PostPlan: React.FC = () => {
   const [data, setData] = useState<any>([]);
@@ -37,6 +38,7 @@ const PostPlan: React.FC = () => {
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
       setData(state.data);
+      console.log(state.data);
     }
   }, [state]);
 
@@ -63,6 +65,8 @@ const PostPlan: React.FC = () => {
 
   return (
     <Page headersProps={{ isHome: false }}>
+      <SearchBar type="normal"/>
+
       <S.InforFirstContainer>
         <div>제목 {title}</div>
       </S.InforFirstContainer>
@@ -113,7 +117,7 @@ const PostPlan: React.FC = () => {
             추천수
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.bookmarks}
+            {data.likeCount}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -121,7 +125,7 @@ const PostPlan: React.FC = () => {
             북마크수
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.comments}
+            {data.bookmarkCount}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
       </S.HorizontalContainer>
@@ -135,7 +139,7 @@ const PostPlan: React.FC = () => {
         </S.DayPlanPostContainer>
       </S.MapAndDayPlanContainer>
 
-      <UserPreview nickName="날탱이탱날" keyword={["배낭", "자전거"]} />
+      <UserPreview nickName={data.accountId} keyword={["배낭", "자전거"]} />
 
       <S.CommentContainer>
         <S.HorizontalFirstStartContainer>
