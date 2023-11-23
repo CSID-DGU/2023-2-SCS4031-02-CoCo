@@ -80,7 +80,7 @@ public class PostService {
                 Like like = likeRepository.findByPostIdAndAccountId(postId, accountId);
                 if (like != null) { // 좋아요 했으면 isLike true로
                     postDto.setLike(true);
-                } else {   // 좋아요 했으면 isLike false로
+                } else {   // 좋아요 안했으면 isLike false로
                     postDto.setLike(false);
                 }
                 return postDto;
