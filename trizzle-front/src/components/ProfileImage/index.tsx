@@ -69,7 +69,7 @@ const ProfileImage: React.FC<ProfileImageProps> = (props: ProfileImageProps) => 
             console.log(fileBlob);
   
             // 3번에서 받은 미리 서명된 URL과 PUT을 사용해 AWS 서버에 청크를 업로드합니다,
-            let uploadChunck = await axios.put(preSignedUrl, fileBlob);
+            let uploadChunck:any = await axios.put(preSignedUrl, fileBlob);
             console.log(uploadChunck);
             // 응답 헤더에 있는 Etag와 파트 번호를 가지고 있습니다.
             if(uploadChunck.headers.get('ETag') === null) throw new Error("ETag is null");
@@ -93,7 +93,7 @@ const ProfileImage: React.FC<ProfileImageProps> = (props: ProfileImageProps) => 
           });
           end = new Date();
           console.log("파일 업로드 하는데 걸린 시간 : " + (end - start) + "ms")
-          props.setPreviewURL(completeUpload.data.url);
+          props.setPreviewURL? props.setPreviewURL(completeUpload.data.url):console.log();
           console.log(completeUpload.data.url, ' 업로드 완료 응답값');
         } catch (err:any) {
           console.log(err, err.stack);

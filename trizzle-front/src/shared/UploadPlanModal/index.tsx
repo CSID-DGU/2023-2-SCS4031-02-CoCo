@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Pagination from "react-js-pagination";
 
 import * as S from './UploadPlanModal.styles'
 import Modal from "../../components/Modal";
@@ -13,7 +12,7 @@ type ScretDropdownPorps = {
 
 const UploadPlanModal: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) => {
   const [planData, setPlanData] = useState<any>([]);
-  const [state, fetchData] = useAsync({ url: '/api/plans/myplans' });
+  const [state, _] = useAsync({ url: '/api/plans/myplans' });
 
   useEffect(() => {
     console.log(state);

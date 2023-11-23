@@ -38,7 +38,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
   }, [currentPage]);
 
   const onClicked = (data: any) => {
-    props.onClickedData(data);
+    props.onClickedData? props.onClickedData(data) : console.log(data);
   }
 
   if (props.type === "horizontalPlan") {
@@ -62,7 +62,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
     return (
       <S.VerticalContainer>
         {/* 현재 페이지의 컴포넌트들을 표시 */}
-        {currentItems.map((item, index) => (
+        {currentItems.map((item) => (
           <Comments {...item} />
         ))}
         <S.PageButtonContainer>
@@ -95,10 +95,10 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
         <S.GridContainer>
           {currentItems.map((value, index) => (
             <S.ListContainer key={index} onClick={() => onClicked(value)}>
-              <S.RegionPlaceText>{value.placeName}</S.RegionPlaceText>
+              <S.RegionPlaceText>{value.place.placeName}</S.RegionPlaceText>
               <S.VerticalCenterContainer>
-                <S.TitleText>{value.placeTitle}</S.TitleText>
-                <S.DateText>{value.visitedDate}</S.DateText>
+                <S.TitleText>{value.reviewTitle}</S.TitleText>
+                <S.DateText>{value.visitDate}</S.DateText>
               </S.VerticalCenterContainer>
             </S.ListContainer>
           ))}

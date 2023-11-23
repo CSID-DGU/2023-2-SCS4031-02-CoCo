@@ -13,19 +13,21 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   let headerContent;
   const location = useLocation();
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  const [state, fetchData] = useAsync({ url: "/api/user/header" });
+  const [state, _] = useAsync({ url: "/api/user/header" });
   const isHome = props.isHome || false;
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('로그인');
   const [userData, setUserData] = useState<any>({});
-  const [propsData, setPropsData] = useState<any>({
+  const propsData ={
     registrationId : props.isRegistrationId,
     message: props.isMessage,
     token: props.isToken
-  });
+  };
   console.log(propsData);
 
   useEffect(() => {
+    if(state.error) console.log(state.error);
+    else {
     if(state.data){
       if(state.data.message&&state.data.message==="not login") setIsLogin(false);
       else {
@@ -33,6 +35,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
         setUserData(state.data);
       }
     }
+  }
   }, [state]);
 
   if (isLogin) {

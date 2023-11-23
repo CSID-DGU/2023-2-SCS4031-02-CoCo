@@ -50,7 +50,7 @@ export const InforContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 1.5rem;
-  widrh: 5rem;
+  width: 5rem;
   font-weight: bold;
   font-size: 1.1rem;
 `
@@ -135,7 +135,7 @@ export const DayPlanPostInnerContainer = styled.div`
 `
 
 export const DayPlanCopyButton = styled.button`
-  maigin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem 0;
   width: 28rem;
   text-align: end;
 `
@@ -193,14 +193,6 @@ export const CommentVerticalFirstStartContainer = styled.div`
   align-items: first-start;
 `
 
-export const CommentImage = styled.div`
-  margin: 0.5rem 1rem 0 1rem;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  background-color: #D9D9D9;
-  background-image: url(${props => props.img});
-`
 
 export const CommentIdText = styled.div`
   margin: 1rem 0 0 0;

@@ -1,4 +1,4 @@
-import React,{useEffect, useState} from "react";
+import React from "react";
 import * as S from "./DayPlan.style";
 import DayPlace from "./DayPlace";
 import { Draggable, Droppable, DragDropContext } from "react-beautiful-dnd";
@@ -6,7 +6,6 @@ import HorizontalScrollContainer from "../../components/HorizontalScrollComponen
 import { useOnPlaceDragEnd } from "../../recoil/PlanList";
 import {PlanListState} from "../../recoil/PlanList/selector";
 import { useRecoilValue } from "recoil";
-import { AiOutlineEllipsis } from "react-icons/ai";
 import Menu from "../../components/Menu";
 
 //Drag & Drop 가능하도록 수정 예정
@@ -21,43 +20,39 @@ type DayPlanProps = {
   onDayDeleteClick: (day:any) => void;
 }
 
-type dayPlan = {
-  day: number;
-  placeList: any[];
-}
 
 const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
   const onPlaceDragEnd = useOnPlaceDragEnd();
   const placeList = useRecoilValue(PlanListState);
-  const [open, setOpen] = useState<boolean[]>([]);
+  // const [open, setOpen] = useState<boolean[]>([]);
 
-  useEffect(() => {
-    let array = [];
+  // useEffect(() => {
+  //   let array = [];
 
-    for(let i=0; i<placeList.length; i++) {
-      array.push(false);
-    };
-    setOpen(array);
-  },[placeList]);
+  //   for(let i=0; i<placeList.length; i++) {
+  //     array.push(false);
+  //   };
+  //   setOpen(array);
+  // },[placeList]);
 
-  const onOpen = (index:number) => {
-    const newOpen = open.map((dayOpen, idx) => {
-      if(idx === index) return !open[idx];
-      else return open[idx];
-  })
-  setOpen(newOpen);
-  }
+  // const onOpen = (index:number) => {
+  //   const newOpen = open.map((_, idx) => {
+  //     if(idx === index) return !open[idx];
+  //     else return open[idx];
+  // })
+  // setOpen(newOpen);
+  // }
 
-  const onDayDelete = (day:number) => {
-    props.onDayDeleteClick(day)
-  }
+  // const onDayDelete = (day:number) => {
+  //   props.onDayDeleteClick(day)
+  // }
 
 
 
   return(
     <DragDropContext onDragEnd={(result) => onPlaceDragEnd(result, placeList)}>
       <HorizontalScrollContainer moveDistance={200}>
-        {placeList.map((dayPlan, index) => (
+        {placeList.map((dayPlan) => (
           <S.DayPlanContainer>
             <S.DayPlanTitle>{dayPlan.day}일차
             <Menu item={[{ content: "삭제", onClick: () => props.onDayDeleteClick(dayPlan.day), isDelete: true }]} />

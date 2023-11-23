@@ -2,7 +2,6 @@ export type CommentsProps = {
   commentData : Comment;
   key: any;
   onDelete : (id : string) => void;
-  onLike : (id : string) => void;
   onFix : (id : string) => void;
   onChildSubmit ?: (parentId:string,content : string, postId:string, reviewId:string) => void;
 };
@@ -12,7 +11,7 @@ type Comment = {
   postAccountId : string;
   profileImg : any;
   accountId : string;
-  isLiked? : boolean | false;
+  isLike? : boolean | false;
   nickname : string;
   isMe : boolean; //본인 댓글이면 메뉴 뜸 (삭제)
   childComment?: any[];
@@ -36,20 +35,11 @@ type commentData = {
   reviewId : string;
   postName : string;
   commentRegistrationDate : string;
+  registrationDate : string;
   fix : boolean;
   likeCount : number;
   isDeleted : boolean;
 };
-
-type myCommentData = {
-  id: string;
-  postId: string;
-  reviewId : string;
-  content : string;
-  registrationDate : string;
-  isDeleted : boolean;
-}
-
 
 
 //댓글 고려사항

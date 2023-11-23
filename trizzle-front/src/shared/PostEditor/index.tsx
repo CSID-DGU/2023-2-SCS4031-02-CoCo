@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { BiCameraOff } from "react-icons/bi";
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -32,7 +32,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
   useEffect(() => {
     console.log("에디터에 들어온 데이터", props.prevData);
-    setData(props.prevData);
+    setData('<p><img src="https://trizzle-review.s3.ap-northeast-2.amazonaws.com/image/24ba9a7f-a017-4cc9-9d67-cd794a51f00b_%EC%9B%B9%20%EC%BA%A1%EC%B2%98_12-11-2023_21556_localhost.jpeg" alt="웹 캡처_12-11-2023_21556_localhost.jpeg"><img src="https://trizzle-review.s3.ap-northeast-2.amazonaws.com/image/24ba9a7f-a017-4cc9-9d67-cd794a51f00b_%EC%9B%B9%20%EC%BA%A1%EC%B2%98_12-11-2023_21556_localhost.jpeg" alt="웹 캡처_12-11-2023_21556_localhost.jpeg"></p>');
   }, [props.prevData]);
 
   const imageHandler = async () => {
@@ -44,6 +44,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     input.addEventListener("change", async () => {
       //이미지를 담아 전송할 formData를 만든다
       const file = input.files?.[0] || undefined;
+      if(file !==undefined){
       const fileName = file.name;
       const fileSize = file.size;
 
@@ -55,7 +56,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
       try {
         //업로드할 파일의 이름으로 Date 사용
-        let start = new Date();
+        let start:any = new Date();
         //s3 관련 설정들
 
         let res = await axios.post(`${url}/upload/initiate`, { fileName: fileName });
@@ -73,7 +74,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
         console.log(`chunkCount: ${chunkCount}`);
 
         let multiUploadArray = [];
-        let end;
+        let end:any;
         for (let uploadCount = 1; uploadCount < chunkCount + 1; uploadCount++) {
           // 청크 크기에 맞게 파일을 자릅니다.
           start = (uploadCount - 1) * chunkSize;
@@ -92,7 +93,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
           console.log(fileBlob);
 
           // 3번에서 받은 미리 서명된 URL과 PUT을 사용해 AWS 서버에 청크를 업로드합니다,
-          let uploadChunck = await fetch(preSignedUrl, {
+          let uploadChunck:any = await fetch(preSignedUrl, {
             method: 'PUT',
             body: fileBlob
           });
@@ -122,9 +123,9 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
         setData(prev => prev + `<img src="${completeUpload.data.url}" alt="${fileName}"/>`);
       } catch (err) {
-        console.log(err, err.stack);
+        console.log(err);
       }
-    });
+  }});
   };
 
   const modules = useMemo(() => {
@@ -148,7 +149,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
 
   useEffect(() => {
     props.onThumbnailImages(clickedImageHtml);
-  }, [clickedImageHtml]);
+  }, [clickedImage]);
 
   // 내용이 변경될 때 호출되는 함수
   const handleContentChange = (htmlContent: string) => {
@@ -187,7 +188,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     setClickedImage(thumbnailImages[idx]);
   }
 
-  // HTML > 텍스트 변환
+  // 텍스트 변환 > html
   const sanitizeHTML = (dirtyHTML: string) => {
     const cleanHTML = DOMPurify.sanitize(dirtyHTML);
     return { __html: cleanHTML };

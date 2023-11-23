@@ -44,6 +44,7 @@ public class PlanService {
             Optional<Place> existingPlace = placeService.findByPlaceId(place.getId());      // place 중복 저장 막기 위해 저장되어 있는지 확인
 
             if(!existingPlace.isPresent()) {    // 존재하지 않을 경우
+                place.setReview(null);
                 placeService.savePlace(place);
             }
         }

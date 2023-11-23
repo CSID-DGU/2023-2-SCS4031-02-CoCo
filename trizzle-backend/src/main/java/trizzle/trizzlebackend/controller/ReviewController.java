@@ -13,6 +13,7 @@ import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.domain.ElasticReview;
 import trizzle.trizzlebackend.domain.Review;
+import trizzle.trizzlebackend.dto.response.ReviewDto;
 import trizzle.trizzlebackend.service.ReviewService;
 
 import java.util.HashMap;
@@ -43,9 +44,9 @@ public class ReviewController {
 
     @GetMapping("/{reviewId}")
     public ResponseEntity getReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
-        Review review = reviewService.searchReview(reviewId, request);
+        ReviewDto reviewDto = reviewService.searchReview(reviewId, request);
         return ResponseEntity.ok()
-                .body(review);
+                .body(reviewDto);
     }
 
     @PutMapping("/{reviewId}")
@@ -98,7 +99,7 @@ public class ReviewController {
     public ResponseEntity deleteMyReview(@PathVariable("reviewId") String reviewId, HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
-        Review review = reviewService.searchReview(reviewId, request);
+        Review review = reviewService.checkMyReview(reviewId, accountId);
 
         if (review != null) {
             reviewService.deleteReview(reviewId);

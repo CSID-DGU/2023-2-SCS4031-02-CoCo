@@ -91,17 +91,17 @@ const PlanMap: React.FC<PlanMapProps> = (props: PlanMapProps) => {
         {props.placeList.map((dayPlan, index) => (
           <S.Day key={index} isClicked={props.selectDay === dayPlan.day ? true : false} onClick={() => props.setSelectDay(dayPlan.day)}>{dayPlan.day}일차</S.Day>
         ))}
-        {props.page === "add" && <S.Day onClick={() => props.onDayPlusButtonClick()} isClicked={false} >추가</S.Day>
+        {props.page === "add" && <S.Day onClick={() => props.onDayPlusButtonClick && props.onDayPlusButtonClick()} isClicked={false} >추가</S.Day>
         }
       </S.DaysContainer>
       <Maps markerList={markerList} center={props.center} type="plan" />
       {
         props.page === "add" &&
         <S.OverlayButtonContainer>
-          <S.OverlayButton onClick={() => { props.setIsSearchModalOpen(!props.isSearchModalOpen); props.setAddClickDay(props.selectDay) }} type="button">장소 추가
+          <S.OverlayButton onClick={() => { props.setIsSearchModalOpen && props.setIsSearchModalOpen(!props.isSearchModalOpen); props.setAddClickDay && props.setAddClickDay(props.selectDay) }} type="button">장소 추가
             <AiOutlinePlus color="#FCC400" />
           </S.OverlayButton>
-          <S.OverlayButton onClick={() => { props.setIsKeywordModalOpen(!props.isKeywordModalOpen); props.setAddClickDay(props.selectDay) }} type="button">키워드 추가
+          <S.OverlayButton onClick={() => { props.setIsKeywordModalOpen && props.setIsKeywordModalOpen(!props.isKeywordModalOpen); props.setAddClickDay && props.setAddClickDay(props.selectDay) }} type="button">키워드 추가
             <AiOutlinePlus color="#FCC400" />
           </S.OverlayButton>
         </S.OverlayButtonContainer>

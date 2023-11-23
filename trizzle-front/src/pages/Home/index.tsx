@@ -7,7 +7,6 @@ import SearchBar from "../../components/SearchBar";
 import FestivalCard from "../../shared/FestivalCard";
 import HorizontalScrollContainer from "../../components/HorizontalScrollComponent";
 import Paging from "../../components/Paging";
-import CommentSection from "../../shared/CommentSection";
 
 
 
