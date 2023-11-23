@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/api/login")
 public class OauthController {
 
     private final LoginService loginService;
