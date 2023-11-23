@@ -66,7 +66,7 @@ const PlanDetail: React.FC = () => {
         <PlanMap selectDay={selectDay} setSelectDay={(day:number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => {return region.name === data.planLocation})[0].center} page="detail"/>
         <HorizontalScrollContainer moveDistance={200}>
           {data.content.map((dayPlan:any, index:number) => (
-            <DetailDayPlan key={index} dayPlan={dayPlan} isPlan={false} onPostClick={() => {}}/>
+            <DetailDayPlan key={index} dayPlan={dayPlan} isPlan={false} onPostClick={() => {}} id={data.id}/>
           ))}
         </HorizontalScrollContainer>
       </S.Container>

@@ -35,14 +35,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const [menuItem, setMenuItem] = useState<any[]>([]);
 
   const handleNavigation = () => {
-
-    const data = {
-      placeId: props.place.id,
-      placeName: props.place.placeName,
-    };
-
-    const queryString = new URLSearchParams(data).toString();
-    navigate(`/post/places/add/?${queryString}`);
+    navigate(`/post/places/add/${props.day}/${{/** planId 넣는 법*/}}/${props.place.id}`);
   };
 
   const onPostClick =() => {

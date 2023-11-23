@@ -6,6 +6,7 @@ import DayPlace from "./DayPlace";
 
 type DayPlanProps = {
   dayPlan: dayPlan;
+  id: string;
   isPlan: boolean;
   isPost?: boolean;
   onPostClick?: () => void;
@@ -25,7 +26,7 @@ const DetailDayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
     <S.DayPlanContainer>
         <S.DayPlanTitle>{props.dayPlan.day}일차</S.DayPlanTitle>
         {props.dayPlan.placeList.length > 0 && props.dayPlan.placeList.map((place, index) => (
-          <DayPlace key={index} place={place} day={props.dayPlan.day} isPlan={props.isPlan} isPost={props.isPost} onPostClick={props.onPostClick} index={index} />
+          <DayPlace key={index} place={place} day={props.dayPlan.day} isPlan={props.isPlan} isPost={props.isPost} onPostClick={props.onPostClick} index={index} id={props.id} />
         ))
         }
     </S.DayPlanContainer>

@@ -28,7 +28,7 @@ const AddPostPlan: React.FC = () => {
   const [isUploadPlanModal, setIsUploadPlanModal] = useState<boolean>(false);
 
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
-  const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<string>('');
+  const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<any>({});
   const [ConnectPlaceModalDay, setConnectPlaceModalDay] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [state, fetchData] = useAsync({ url: "", method: "" });
