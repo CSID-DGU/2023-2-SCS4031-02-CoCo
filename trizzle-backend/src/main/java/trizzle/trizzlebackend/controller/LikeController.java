@@ -20,7 +20,7 @@ public class LikeController {
     private final LikeService likeService;
     @Value("${jwt.secret}")
     private String secretKey;
-    @PostMapping("/{type}/{contentId}/likes")
+    @PostMapping("/api/{type}/{contentId}/likes")
     public ResponseEntity postLike(@PathVariable("type") String type,
                                    @PathVariable("contentId") String contentId,
                                    HttpServletRequest request) {

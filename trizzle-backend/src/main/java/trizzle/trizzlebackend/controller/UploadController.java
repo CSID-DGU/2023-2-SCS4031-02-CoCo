@@ -7,7 +7,7 @@ import trizzle.trizzlebackend.dto.upload.*;
 import trizzle.trizzlebackend.service.UploadService;
 
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("/api/upload")
 @RequiredArgsConstructor
 public class UploadController {
     private final UploadService uploadService;
