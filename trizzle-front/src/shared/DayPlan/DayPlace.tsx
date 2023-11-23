@@ -22,10 +22,10 @@ type DayPlaceProps = {
 }
 
 const KeywordList: { keyword: string; src: string; }[] = [
-  {keyword:"식사", src: res},
-  {keyword:"이동", src: trans},
-  {keyword:"휴식", src: rest},
-  {keyword:"쇼핑", src: shopping},
+  { keyword: "식사", src: res },
+  { keyword: "이동", src: trans },
+  { keyword: "휴식", src: rest },
+  { keyword: "쇼핑", src: shopping },
 ];
 
 const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
@@ -35,18 +35,11 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   const [menuItem, setMenuItem] = useState<any[]>([]);
 
   const handleNavigation = () => {
-
-    const data = {
-      placeId: props.place.id,
-      placeName: props.place.placeName,
-    };
-
-    const queryString = new URLSearchParams(data).toString();
-    navigate(`/post/places/add/?${queryString}`);
+    navigate(`/post/places/add/${props.day}/${props.id ? props.id : '' }/${props.place.id}`);
   };
 
-  const onPostClick =() => {
-    if(props.secret && props.secret === true) navigate(`/post/places/secret/${props.id}`)
+  const onPostClick = () => {
+    if (props.secret && props.secret === true) navigate(`/post/places/secret/${props.id}`)
     navigate(`/post/places/secret/${props.id}`)
   }
 
@@ -55,7 +48,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
       const keywordSrc = KeywordList.filter((key) => props.place.keyword === key.keyword);
       setKeyword(keywordSrc);
       if (props.onDeleteClick) {
-        setMenuItem([{ content: "삭제", onClick: () => {props.onDeleteClick && props.onDeleteClick(props.place, props.day, props.index) }}]);
+        setMenuItem([{ content: "삭제", onClick: () => { props.onDeleteClick && props.onDeleteClick(props.place, props.day, props.index) } }]);
       }
     } else {
       if (props.isPlan && props.onDeleteClick) {
@@ -67,7 +60,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
       }
     }
   }, [props.place, props.day, props.index, props.onDeleteClick, props.isPlan, props.isPost, props.id]);
-  
+
 
   if (keyword === null) {
     return (
@@ -85,16 +78,17 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
       </S.PlaceContainer>
     )
   } else {
-    if(keyword !== null){
-    return (
-      <S.PlaceContainer>
-        {menuItem.length !== 0 &&
-          <Menu item={menuItem} />
-        }
-        <img src={keyword[0].src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
-        <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{keyword[0].keyword}</S.PlaceAddress>
-      </S.PlaceContainer>
-    )} else {
+    if (keyword !== null) {
+      return (
+        <S.PlaceContainer>
+          {menuItem.length !== 0 &&
+            <Menu item={menuItem} />
+          }
+          <img src={keyword[0].src} alt="keywordImg" style={{ width: "3.2rem", height: "auto" }} />
+          <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{keyword[0].keyword}</S.PlaceAddress>
+        </S.PlaceContainer>
+      )
+    } else {
       <></>
     }
   }

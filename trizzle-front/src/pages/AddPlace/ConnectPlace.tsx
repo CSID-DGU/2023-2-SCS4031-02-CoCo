@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Page from "../Page";
 import * as S from "./AddPlace.styles";
 import TextInput from "../../components/TextInput";
@@ -11,6 +11,7 @@ import { useAsync } from "../../utils/API/useAsync";
 import { koreaRegions } from "../../utils/Data/mapData";
 
 export default function ConnectPlace() {
+  const path = window.location.pathname;
   const planInfor = useParams<{ planDay: string, planId: string, placeId: string }>();
   const [state, fetchData] = useAsync({ url: `/api/plans/${planInfor.planId}` });
   const [planData, setPlanData] = useState<any>({});
@@ -25,6 +26,14 @@ export default function ConnectPlace() {
   const region: any = koreaRegions[0];
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
   const [resultData, setResultData] = useState<any>({});
+
+  useEffect(()=>{
+    if (path.includes('places')) {
+      // 
+    } else if (path.includes('plans')) {
+      // 사용자 선택할 수 있게
+    }
+  },[path])
 
   useEffect(() => {
     console.log(state);
@@ -51,6 +60,7 @@ export default function ConnectPlace() {
           return place;
         });
         setPlanData({ ...planData, content: newArray });
+        console.log("잘 들어갔는가?", planData);
         fetchData(`/api/plans/${planInfor.planId}`, "PUT", planData);
 
         opener.location.reload();
@@ -91,10 +101,15 @@ export default function ConnectPlace() {
       return;
     }
 
-    const formattedDate = visitDate.toISOString().slice(0, 10);
+    const date = new Date(visitDate);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; 
+    const day = date.getDate();
+
+    const formattedDate = `${year}-${month}-${day}`
 
     // 정보 보내기
-    setResultData({
+    const result = {
       reviewTitle: title,
       visitDate: formattedDate,
       place: place,
@@ -103,11 +118,13 @@ export default function ConnectPlace() {
       reviewSecret: false,
       thumbnail: representImage,
       planId: planInfor.planId,
-    })
+    }
+    setResultData(result)
 
     const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
     if (response) {
-      const json = JSON.stringify(resultData);
+      const json = JSON.stringify(result);
+      console.log(json);
       fetchData('/api/reviews', "POST", json);
     }
   }
