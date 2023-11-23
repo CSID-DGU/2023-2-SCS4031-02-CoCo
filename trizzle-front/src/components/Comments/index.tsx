@@ -4,7 +4,7 @@ import * as S from './Comments.style';
 import { CommentsProps, myCommentProps } from './Comments.type';
 import {BsFillPinAngleFill} from 'react-icons/bs';
 import ProfileImage from '../ProfileImage';
-import {BiLike, BiSolidLike} from 'react-icons/bi';
+import IconButton from '../IconButton';
 import {AiFillCaretDown, AiFillCaretUp} from 'react-icons/ai';
 import Menu from '../Menu';
 import CommentInput from '../CommentInput';
@@ -76,7 +76,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
               {props.commentData.commentData.commentContent}
             </S.PostCommentContentBody>
             <S.PostCommentContentFooter>
-              {props.commentData.isLiked ? <BiSolidLike size="1rem" onClick={() => props.onLike(props.commentData.commentData.id)}/> : <BiLike size="1rem" onClick={() => props.onLike(props.commentData.commentData.id)}/>}
+              <IconButton icon="like" type="comment" contentId={props.commentData.commentData.id} filled={props.commentData.isLike ? props.commentData.isLike : false} />
               <S.PostCommentContentFooterLike>{props.commentData.commentData.likeCount}</S.PostCommentContentFooterLike>
               {props.commentData.commentData.parentId === null ? (
                 <S.PostCommentContentFooterReply onClick={() => onChild()}>답글</S.PostCommentContentFooterReply>       
@@ -136,7 +136,6 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
               <Comment
                 commentData={childComment}
                 onDelete={props.onDelete}
-                onLike={props.onLike}
                 onFix={props.onFix}
                 key={index}
                 />
