@@ -45,12 +45,12 @@ export default function AddPlacePage() {
   }, [state]);
 
   useEffect(() => {
-    setTitle(data && data.reviewTitle ? data.reviewTitle : '');
-    setSecretValue(data && data.reviewSecret ? data.reviewSecret : '');
-    setVisitDate(data && data.visitDate ? new Date(data.visitDate) : '');
-    setPlace(data && data.place ? data.place : '');
-    setContents(data && data.reviewContent ? data.reviewContent : '');
-    setRepresentImage(data && data.thumbnail ? data.thumbnail : '');
+    setTitle(data && data.review.reviewTitle ? data.review.reviewTitle : '');
+    setSecretValue(data && data.review.reviewSecret ? data.review.reviewSecret : '');
+    setVisitDate(data && data.review.visitDate ? new Date(data.review.visitDate) : '');
+    setPlace(data && data.review.place ? data.review.place : '');
+    setContents(data && data.review.reviewContent ? data.review.reviewContent : '');
+    setRepresentImage(data && data.review.thumbnail ? data.review.thumbnail : '');
   }, [data]);
 
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import * as S from './PostPlan.styles';
 import Page from "../Page";
-import { AiOutlineDown, AiOutlineHeart, AiOutlineUp, AiTwotoneHeart } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import PlanMap from "../../shared/PlanMap";
 import { koreaRegions } from "../../utils/Data/mapData";
@@ -12,9 +12,10 @@ import { useParams } from "react-router-dom";
 import { tripThema } from "../../utils/Data/tripThema";
 import CommentSection from "../../shared/CommentSection";
 import SearchBar from "../../components/SearchBar";
+import IconButton from "../../components/IconButton";
 
 const PostPlan: React.FC = () => {
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<any>(null);
   const [title, setTitle] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
@@ -26,31 +27,34 @@ const PostPlan: React.FC = () => {
   
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
-  // const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const placeId = useParams<{ id: string }>();
   const [state, _] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
 
   useEffect(() => {
-    console.log(state);
+
     if (state.error) {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
+      console.log(state);
       setData(state.data);
       console.log(state.data);
     }
   }, [state]);
 
   useEffect(() => {
-    if (data.length !== 0) {
-      setTitle(data.plan.planName);
-      setStartDate(data.plan.planStartDate);
-      setEndDate(data.plan.planEndDate);
-      setRegions(data.plan.planLocation);
-      setThema(data.plan.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
-      setDayPlan(data.plan.content);
-      setSelectedDayPlan(data.plan.content);
+    if (data !== null) {
+      setTitle(data.post.plan.planName);
+      setStartDate(data.post.plan.planStartDate);
+      setEndDate(data.post.plan.planEndDate);
+      setRegions(data.post.plan.planLocation);
+      setThema(data.post.plan.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setDayPlan(data.post.plan.content);
+      setSelectedDayPlan(data.post.plan.content);
+      setIsLike(data.isLike);
+      setIsBookmark(data.isBookmark);
     }
   }, [data]);
 
@@ -62,13 +66,14 @@ const PostPlan: React.FC = () => {
       setSelectedDayPlan(newArray);
     }
   }, [selectDay]);
-
+  if(data !== null) {
   return (
     <Page headersProps={{ isHome: false }}>
       <SearchBar type="normal"/>
 
       <S.InforFirstContainer>
         <div>제목 {title}</div>
+        <IconButton icon="bookmark" type="post" contentId={data.post.id} filled={isBookmark} />
       </S.InforFirstContainer>
       <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -76,7 +81,7 @@ const PostPlan: React.FC = () => {
             작성일자
           </S.InforContainer>
           <S.InforInputContainer>
-          {data.postRegistrationDate}
+          {data.post.postRegistrationDate.slice(0,10)}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
       </S.HorizontalFirstStartContainer>
@@ -109,7 +114,7 @@ const PostPlan: React.FC = () => {
             조회수
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.views}
+            {data.post.views}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -117,7 +122,7 @@ const PostPlan: React.FC = () => {
             추천수
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.likeCount}
+            {data.post.likeCount}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -125,7 +130,7 @@ const PostPlan: React.FC = () => {
             북마크수
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.bookmarkCount}
+            {data.post.bookmarkCount}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
       </S.HorizontalContainer>
@@ -156,11 +161,7 @@ const PostPlan: React.FC = () => {
           </S.CommentText>
           <S.CommentText>
             좋아요
-            {isLike ?
-              <AiTwotoneHeart size={"1rem"} style={{ margin: "0 0 0 0.5rem", color: "#FF0000" }} onClick={() => setIsLike(!isLike)} />
-              :
-              <AiOutlineHeart size={"1rem"} style={{ margin: "0 0 0 0.5rem", color: "#FF0000" }} onClick={() => setIsLike(!isLike)} />
-            }
+            <IconButton icon="like" type="post" filled={isLike} contentId={data.post.id}/>
           </S.CommentText>
         </S.HorizontalFirstStartContainer>
         {isCommentOpen && (
@@ -168,13 +169,14 @@ const PostPlan: React.FC = () => {
         )}
       </S.CommentContainer>
 
-      <S.RecommendContainer>
+      {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.
         </S.RecommendText>
-      </S.RecommendContainer>
+      </S.RecommendContainer> */}
     </Page>
   )
+        }
 }
 
 export default PostPlan;

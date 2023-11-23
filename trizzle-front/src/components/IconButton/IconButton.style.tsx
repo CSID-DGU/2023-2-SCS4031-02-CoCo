@@ -1,14 +1,15 @@
 import styled from "@emotion/styled";
 
-export const BackButton = styled.div`
-  width: 1.6rem;
-  height: 1.6rem;
+export const BackButton = styled.div<{type?:string}>`
+  width: ${props => props.type==="bookmark" ? "3rem" : "2rem"};
+  height: ${props => props.type==="bookmark" ? "3rem" : "2rem"};
   border-radius: 50%;
   background-color: transparent;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  margin-left: 0.5rem;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out; 
   &:hover {
     background-color: #f2f2f2;
@@ -23,12 +24,12 @@ export const BackButton = styled.div`
     color: #000;
     transition: transform 0.3s ease-in-out;
     &:active {
-      transform: scale(1.05);
+      transform: scale(1.2);
     }
   }
   .like-icon {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.3rem;
+    height: 1.3rem;
     color: #FF0000;
   }
   .unthumb-icon{
@@ -45,4 +46,5 @@ export const BackButton = styled.div`
     height: 1rem;
     color: #000;
   }
+
 `
