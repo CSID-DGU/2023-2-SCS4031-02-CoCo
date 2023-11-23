@@ -18,12 +18,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('로그인');
   const [userData, setUserData] = useState<any>({});
-  const propsData ={
-    registrationId : props.isRegistrationId,
-    message: props.isMessage,
-    token: props.isToken
-  };
-  console.log(propsData);
+  const [propsData, setPropsData] = useState<any>(null);
 
   useEffect(() => {
     if(state.error) console.log(state.error);
@@ -61,12 +56,29 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   }
 
   useEffect(() => {
-    if (propsData.message === "id 입력이 필요합니다") {
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const reIdValue:any = params.get('reId');
+    const reIdResult = decodeURIComponent(reIdValue);
+    const dataValue:any = params.get('data');
+    const dataResult = decodeURIComponent(dataValue);
+    const tokenValue:any = params.get('token');
+    const tokenResult = decodeURIComponent(tokenValue);
+    setPropsData({
+      registrationId : reIdResult,
+      message: dataResult,
+      token: tokenResult
+    }
+    )
+
+    // 상태를 업데이트
+    if (dataResult === "id 입력이 필요합니다") {
       setIsLoginModal(!isLoginModal);
       setModalType('회원가입');
     }
   }, []);
 
+  if(propsData !== null) {
   return (
     <>
       {isLogin ? (
@@ -121,6 +133,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
 
 
   )
+    }
 };
 
 export default Headers;

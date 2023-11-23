@@ -24,7 +24,7 @@ export const LoginModalWrapper = styled.div`
   width: 25rem;
   height: 35rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  z-index: 600;
+  z-index: 900;
 `
 
 export const UserModalWrapper = styled.div`
@@ -41,7 +41,7 @@ export const UserModalWrapper = styled.div`
   width: 25rem;
   height: 35rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  z-index: 100;
+  z-index: 900;
 `
 
 export const Container = styled.div`

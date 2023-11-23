@@ -47,27 +47,10 @@ const PlanCardLists = [
 ];
 
 const Home = () => {
-  const [registrationId, setRegistrationId] = useState<string>('');
-  const [message, setMessage] = useState<string>('');
-  const [token, setToken] = useState<string>('');
   const [festivalLists, setFestivalLists] = useState<any[]>([]);
 
 
   useEffect(() => {
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const reIdValue:any = params.get('reId');
-    const reIdResult = decodeURIComponent(reIdValue);
-    const dataValue:any = params.get('data');
-    const dataResult = decodeURIComponent(dataValue);
-    const tokenValue:any = params.get('token');
-    const tokenResult = decodeURIComponent(tokenValue);
-
-    // 상태를 업데이트
-    setRegistrationId(reIdResult);
-    setMessage(dataResult);
-    setToken(tokenResult);
-  
     const getFestivalData = async () => {
       const festivalData = await getFestivalList();
       setFestivalLists(festivalData);
@@ -78,13 +61,9 @@ const Home = () => {
 
   return (
     <>
-      {registrationId && message && token && (
         <Page
           headersProps={{
             isHome: true,
-            isRegistrationId: registrationId,
-            isMessage: message,
-            isToken: token,
           }}
         >
           <SearchBar type="main"/>
@@ -102,7 +81,7 @@ const Home = () => {
           <S.SectionTitle style={{marginBottom:"2rem"}}>이런 일정은 어떠세요?</S.SectionTitle>
           <Paging items={PlanCardLists} type="horizontalPlan" perPage={3}/>
         </Page>
-      )}
+      
     </>
   )
 
