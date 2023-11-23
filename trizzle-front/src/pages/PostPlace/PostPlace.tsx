@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AiOutlineDown, AiOutlineUp, AiOutlineHeart, AiTwotoneHeart, AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp} from "react-icons/ai";
 // import UseAnimations from "react-useanimations";
 // import star from 'react-useanimations/lib/star';
 import 'react-quill/dist/quill.snow.css';
@@ -11,12 +11,13 @@ import SearchBar from "../../components/SearchBar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import CommentSection from "../../shared/CommentSection";
+import IconButton from "../../components/IconButton";
 
 export default function PostPlace() {
   let components;
   const location = useLocation();
   const navigate = useNavigate();
-  const [data, setData] = useState<any>({});
+  const [data, setData] = useState<any>(null);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
@@ -25,37 +26,30 @@ export default function PostPlace() {
   const [state, _] = useAsync({ url: `/api/reviews/${placeId.id}` });
 
   useEffect(() => {
-    console.log(state);
     if (state.error) {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      setData(state.data);
+      console.log(state.data);
+      setData(state.data.review);
+      setIsLike(state.data.isLike);
+      setIsBookmark(state.data.isBookmark);
     }
   }, [state]);
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-    if (location.pathname.startsWith("/post/places/secret/")) {
-      components = (
-        <S.ModifiedButton type="button" onClick={() => navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
-      );
-    } else {
-      components = (
-        <S.BookmarkButton onClick={() => setIsBookmark(!isBookmark)}>
-          {isBookmark ?
-            <AiFillStar size={15} style={{ color: "#EBB700" }} />
-            :
-            <AiOutlineStar size={15} style={{ color: "#EBB700" }} />
-          }
-          <S.BookmarkButtonInnerText isBookmark={isBookmark}>장소 북마크</S.BookmarkButtonInnerText>
-        </S.BookmarkButton>
-      );
-    }
+    if(data !== null) {
+      if (location.pathname.startsWith("/post/places/secret/")) {
+        components = (
+          <S.ModifiedButton type="button" onClick={() => navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
+        );
+      } else {
+        components = (
+          <IconButton icon="bookmark" type="review" contentId={data.id} filled={isBookmark} />
+        );
+      }
+  }
   
-  if (data !== "") {
+  if (data !== null) {
     return (
       <Page headersProps={{ isHome: false}}>
         <SearchBar type="normal"/>
@@ -70,14 +64,14 @@ export default function PostPlace() {
               작성일자
             </S.InforContainer>
             <S.InforInputContainer>
-              {data.reviewRegistrationDate}
+              {data.reviewRegistrationDate.slice(0,10)}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer>
+          <S.HorizontalFirstStartContainer style={{margin:"0 0 0 5rem"}}>
             <S.InforContainer>
-              수정일자
+              방문일자
             </S.InforContainer>
-            <S.InforInputContainer>
+            <S.InforInputContainer >
               {data.visitDate}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
@@ -87,16 +81,16 @@ export default function PostPlace() {
             장소명
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.reviewTitle}
+            {data.place.placeName}
           </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
-        {data.planTitle != null && (
+        {data.postName != null && (
           <S.HorizontalFirstStartContainer>
             <S.InforContainer>
               장소명
             </S.InforContainer>
             <S.InforInputContainer>
-              {data.reviewTitle}
+              {data.postName}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
         )}
@@ -114,14 +108,14 @@ export default function PostPlace() {
             추천수
           </S.InforContainer>
           <S.InforInputContainer>
-            {data.bookmarks}
+            {data.likeCount}
           </S.InforInputContainer>
           <S.HorizontalFirstStartContainer>
             <S.InforContainer>
               북마크수
             </S.InforContainer>
             <S.InforInputContainer>
-              {data.comments}
+              {data.bookmarkCount}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
@@ -149,11 +143,7 @@ export default function PostPlace() {
             </S.CommentText>
             <S.CommentText>
               좋아요
-              {isLike ?
-                <AiTwotoneHeart size={"1rem"} style={{ margin: "0 0 0 0.5rem", color: "#FF0000" }} onClick={() => setIsLike(!isLike)} />
-                :
-                <AiOutlineHeart size={"1rem"} style={{ margin: "0 0 0 0.5rem", color: "#FF0000" }} onClick={() => setIsLike(!isLike)} />
-              }
+              <IconButton icon="like" type="review" contentId={data.id} filled={isLike} />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
           {isCommentOpen && (
@@ -161,11 +151,11 @@ export default function PostPlace() {
           )}
         </S.CommentContainer>
 
-        <S.RecommendContainer>
+        {/* <S.RecommendContainer>
           <S.RecommendText>
             검색결과에 대한 다른 장소 추천 결과 입니다.
           </S.RecommendText>
-        </S.RecommendContainer>
+        </S.RecommendContainer> */}
       </Page>
     );
   }

@@ -129,9 +129,11 @@ export const PlaceInfo = styled.div`
 
 export const PlaceName = styled.div`
   position: relative;
+  width: auto;
+  max-width: 14rem;
   top: -10rem;
   left: 9rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
 `
 

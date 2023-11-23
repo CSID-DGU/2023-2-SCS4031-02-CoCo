@@ -119,7 +119,7 @@ export const PostContainer = styled.div`
 
 // 댓글
 export const CommentContainer = styled.div`
-  margin-top: 2rem;
+  margin: 2rem 0 5rem 0;
   width: auto;
   height: auto;
   border-top: 1px solid black;

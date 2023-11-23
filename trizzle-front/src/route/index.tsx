@@ -16,6 +16,7 @@ import PostPlan from '../pages/PostPlan/PostPlan';
 import GoogleRedirectPage from '../pages/GoogleRedirectPage/GoogleRedirectPage';
 import ConnectPlace from '../pages/AddPlace/ConnectPlace';
 import AddPostPlanOpen from '../pages/AddPostPlan/AddPostPlanOpen';
+import Bookmark from '../pages/Bookmark';
 
 const Router = () => {
   return (
@@ -45,6 +46,7 @@ const Router = () => {
         <Route path="/myfeed/plans/:id" element={<PlanDetail />} />
         <Route path="/myfeed/info" element={<UserInfoEdit />} />
         <Route path="/feed/:id" element={<Myfeed />} />
+        <Route path="/myfeed/bookmarks" element={<Bookmark />} />
 
         <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
         <Route path="/login/oauth2/code/Google" element={<GoogleRedirectPage />} />

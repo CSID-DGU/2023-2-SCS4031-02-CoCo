@@ -30,12 +30,12 @@ const IconButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
   },[state]);
 
   return (
-    <S.BackButton onClick={props.icon === "like" ? onLike : onBookmark}>
+    <S.BackButton onClick={props.icon === "like" ? onLike : onBookmark} type={props.icon}>
       {props.type === "comment" ? (
         isFilled ? <BiSolidLike className="thumb-icon"/> : <BiLike className="unthumb-icon"/>
-      ) : (
+      ) : ( 
         props.icon === "bookmark" ? (
-          isFilled ? <AiFillStar className="thumb-icon"/> : <AiOutlineStar className="unthumb-icon"/> ) : (
+          isFilled ? <AiFillStar size="1.5rem" /> : <AiOutlineStar size="1.5rem"/> ) : (
           isFilled ? <FcLike className="like-icon"/> : <FcLikePlaceholder className="unlike-icon"/>
       )
       )}

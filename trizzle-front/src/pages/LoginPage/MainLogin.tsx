@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useAsync } from "../../utils/API/useAsync";
 
 import * as S from './MainLogin.styles';
 import { GoogleLogin, KakaoLogin } from "../../shared/SnsLoginButton/SnsLoginButton";
@@ -14,7 +14,6 @@ interface MainLoginProps {
   onClose: () => void;
 }
 
-const url = import.meta.env.VITE_API_URL;
 
 export default function MainLogin({ type, data, onClose }: MainLoginProps) {
   const naviation = useNavigate();
@@ -26,6 +25,7 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     "thema": [],
     "registrationId": data.registrationId,
   });
+  const [state, fetchData] = useAsync({url: ""});
   let components;
 
   const onThemaBadgeClick = (select: any) => {
@@ -44,28 +44,41 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
 
   };
 
-  // const addUser = () => {
-  //   fetchData(`/login/additionalUserInfo?token=${token}`, "POST", userData);
-  //   console.log(userData);
-  //   console.log(state);
-  // }
-
-  const addUser = async () => {
-    console.log(userData);
-    try {
-      const response = await axios.post(`${url}/login/additionalUserInfo?token=${token}`, userData);
-      const data = response.data; // 응답 데이터
-      if (data.message === "이미 존재하는 id 입니다.") {
-        alert("이미 존재하는 id입니다.");
-      } else if (data.message === "login success") {
-        alert("성공적으로 회원가입이 되었습니다. 로그인을 진행해주세요.");
-        onClose()
-        naviation('/')
-      }
-    } catch (e: any) {
-      console.log(e);
-    }
+  const addUser = () => {
+    fetchData(`/api/login/additionalUserInfo?token=${token}`, "POST", userData);
   }
+
+  useEffect(() => {
+    if(state.error) {
+      console.log(state.error);
+      alert("로그인에 실패했습니다")}
+    else {
+      if(state.data) {
+        if(state.data.message === "이미 존재하는 id 입니다.") alert("이미 존재하는 id입니다.");
+        else if(state.data.message === "login success") {
+          alert("성공적으로 회원가입이 되었습니다. 로그인을 진행해주세요");
+          onClose();
+          naviation('/')
+        }
+      }
+    }
+  }, [state]);
+
+  // const addUser = async () => {
+  //   try {
+  //     const response = await axios.post(`${url}/login/additionalUserInfo?token=${token}`, userData);
+  //     const data = response.data; // 응답 데이터
+  //     if (data.message === "이미 존재하는 id 입니다.") {
+  //       alert("이미 존재하는 id입니다.");
+  //     } else if (data.message === "login success") {
+  //       alert("성공적으로 회원가입이 되었습니다. 로그인을 진행해주세요.");
+  //       onClose()
+  //       naviation('/')
+  //     }
+  //   } catch (e: any) {
+  //     console.log(e);
+  //   }
+  // }
 
   const closeModal = () => {
     onClose();

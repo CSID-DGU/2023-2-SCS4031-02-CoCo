@@ -26,7 +26,7 @@ const AddPostPlan: React.FC = () => {
   const [selectDay, setSelectDay] = useState<number>(0);
 
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
-  const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<string>('');
+  const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<any>({});
   const [ConnectPlaceModalDay, setConnectPlaceModalDay] = useState<number>(0);
   const planId = useParams<{ id: string }>();
   const [state, fetchData] = useAsync({ url: `/api/plans/${planId.id}` });
@@ -51,13 +51,13 @@ const AddPostPlan: React.FC = () => {
   useEffect(() => {
     if (data.length !== 0) {
       console.log("새로고참", data);
-      setTitle(data.planName);
-      setStartDate(data.planStartDate);
-      setEndDate(data.planEndDate);
-      setRegions(data.planLocation);
-      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
-      setDayPlan(data.content);
-      setSelectedDayPlan(data.content);
+      setTitle(data.post.planName);
+      setStartDate(data.post.planStartDate);
+      setEndDate(data.post.planEndDate);
+      setRegions(data.post.planLocation);
+      setPrevThema(data.post.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setDayPlan(data.post.content);
+      setSelectedDayPlan(data.post.content);
     }
   }, [data]);
 
