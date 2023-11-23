@@ -83,6 +83,14 @@ public class PostService {
                 } else {   // 좋아요 안했으면 isLike false로
                     postDto.setLike(false);
                 }
+
+                Bookmark bookmark = bookmarkRepository.findByPostIdAndAccountId(postId, accountId);
+                if (bookmark != null) { // 북마크 했으면 isBookmark true로
+                    postDto.setBookmark(true);
+                } else { // 북마크 안했으면 isBookmark false로
+                    postDto.setBookmark(false);
+                } 
+                
                 return postDto;
             }
 

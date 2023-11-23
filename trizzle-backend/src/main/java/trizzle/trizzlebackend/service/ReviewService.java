@@ -82,11 +82,19 @@ public class ReviewService {
                 } else {
                     accountId = JwtUtil.getAccountId(token, secretKey);
                 }
+
                 Like like = likeRepository.findByReviewIdAndAccountId(reviewId, accountId);
                 if (like != null) {     // 좋아요 했으면 isLike true로
                     reviewDto.setLike(true);
                 } else { // 좋아요 안했으면 isLike false로
                     reviewDto.setLike(false);
+                }
+
+                Bookmark bookmark = bookmarkRepository.findByReviewIdAndAccountId(reviewId, accountId);
+                if (bookmark != null) { // 북마크 했으면 isBookmark true로
+                    reviewDto.setBookmark(true);
+                } else {    // 북마크 안했으면 isBookmark false로
+                    reviewDto.setBookmark(false);
                 }
                 return reviewDto;
             }
