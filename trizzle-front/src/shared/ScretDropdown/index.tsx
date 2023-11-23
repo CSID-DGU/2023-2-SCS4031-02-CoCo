@@ -5,6 +5,7 @@ import { AiOutlineDown } from "react-icons/ai";
 type ScretDropdownPorps = {
   titleValue: boolean;
   onScret: (value: boolean) => void;
+  disapled?: boolean;
 }
 
 const ScretDropdown: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) => {
@@ -24,8 +25,8 @@ const ScretDropdown: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) 
 
   return (
     <>
-      <S.DropdownContainer>
-        <S.DropdownButton type="button" onClick={() => setIsOpen(!isOpen)}>
+      <S.DropdownContainer >
+        <S.DropdownButton type="button" onClick={() => setIsOpen(!isOpen)} disabled={props.disapled ? props.disapled : false}>
           {title}
           <AiOutlineDown size="1.1rem" />
         </S.DropdownButton>
