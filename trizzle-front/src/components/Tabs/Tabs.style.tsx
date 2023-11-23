@@ -30,7 +30,7 @@ export const RoundTabContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2rem;
-  margin: 8rem 0 3rem 0;
+  margin: 2rem 0 3rem 0;
 `
 
 export const RoundTab = styled.div<{active: boolean}>`

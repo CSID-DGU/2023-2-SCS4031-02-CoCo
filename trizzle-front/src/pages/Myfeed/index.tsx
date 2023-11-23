@@ -6,7 +6,7 @@ import UserProfile from "../../shared/UserProfile";
 import PlaceCard from "../../components/PlaceCard";
 import PlanCard from "../../components/PlanCard";
 import * as S from "./Myfeed.style";
-import { FaBoxArchive } from "react-icons/fa6";
+import NullList from "../../components/NullList";
 
 
 
@@ -41,9 +41,7 @@ const Myfeed = () => {
       </S.HorizontalContainer>
       <S.PlanListContainer>
         {plan.length === 0 ?(
-          <S.Empty>
-            <FaBoxArchive size="2rem" color="#8b8b8b" style={{marginBottom: "1rem"}}/>
-            공유된 일정이 없습니다.</S.Empty>
+          <NullList content="공유된 일정이 없습니다"/>
         ) :
         ((plan.map((item) => (
           <PlanCard 
@@ -67,9 +65,7 @@ const Myfeed = () => {
       </S.HorizontalContainer>
       <S.PlaceListContainer>
         {place.length === 0 ?(
-          <S.Empty>
-            <FaBoxArchive size="2rem" color="#8b8b8b" style={{marginBottom: "1rem"}}/>
-            여행지가 없습니다.</S.Empty>
+          <NullList content="공유된 여행지가 없습니다"/>
         ): (
           place.map((item, index) => (
             <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContent} src={item.thumbnail} postId={item.id}/>
