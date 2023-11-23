@@ -14,7 +14,7 @@ type DayPlanPostProps = {
   planId?: string;
   dayList: any;
   selectDay: number;
-  onNewPostPlace?: (value: any) => void;
+  onNewPostPlace?: (day: number, value: any) => void;
   onConnetPostPlace?: (day: number, value: any) => void;
 }
 
@@ -29,7 +29,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   const [data, setData] = useState<any>([]);
   const [isDdetailOpen, setIsDdetailOpen] = useState<any>([])
 
-  const openDetail = (idx: number, innerIdx: number) => {
+  const openAndCloseDetail = (idx: number, innerIdx: number) => {
     const newArray = [...isDdetailOpen];
     newArray[idx][innerIdx] = !newArray[idx][innerIdx];
     setIsDdetailOpen(newArray);
@@ -37,7 +37,6 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
 
   useEffect(() => {
     setData(props.dayList);
-    console.log("epdlxj", props.dayList);
   }, [props.dayList]);
 
   useEffect(() => {
@@ -64,33 +63,39 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 {plans.placeList.map((place: any, innerIndex: number) => (
                   <div>
                     {place.review && place.review !== null ? (
-                      <Link to={`${import.meta.env.VITE_PUBLIC_URL}post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
+                      <Link to={`/post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
                         <S.PlacePostContainer>
-                          {
-                            place.review.thumbnail === '' ?
-                              <S.PlaceLogo>
-                                <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
-                              </S.PlaceLogo>
-                              :
-                              <S.PlaceImage src={place.review.thumbnail} alt="image" />
-                          }
-                          <S.PlaceInfo>
-                            <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
-                            <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
-                          </S.PlaceInfo>
+                          <div style={{ width: '100%', height: '100%' }}>
+                            {
+                              place.review.thumbnail === '' ?
+                                <S.PlaceLogo>
+                                  <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
+                                </S.PlaceLogo>
+                                :
+                                <S.PlaceImage src={place.review.thumbnail} alt="image" />
+                            }
+                            <S.PlaceInfo>
+                              <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
+                              <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
+                            </S.PlaceInfo>
+                          </div>
                         </S.PlacePostContainer>
                       </Link>
                     ) : (
                       place.keyword !== null ? (
                         <S.PlaceContainer key={innerIndex} type={true}>
-                          <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
-                          <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
+                          <div style={{ width: '100%', height: '100%' }}>
+                            <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
+                            <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
+                          </div>
                         </S.PlaceContainer>
                       ) : (
                         <S.PlaceContainer key={innerIndex} >
-                          <S.PalceText>
-                            {place.placeName}
-                          </S.PalceText>
+                          <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <S.PalceText>
+                              {place.placeName}
+                            </S.PalceText>
+                          </div>
                         </S.PlaceContainer>
                       )
                     )}
@@ -115,58 +120,91 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 <S.DayContainer key={index}>
                   {plans.day}일차
                 </S.DayContainer>
-                {plans.placeList.map((place: any, innerIndex: number) => (
+                {plans.placeList.map((place: any, innerIndex: number) =>
                   <div>
-                    {place.review && place.review !== null  ? (
-                      <S.PlacePostContainer>
-                        <S.ThreeDotsButton >
-                          수정
+                    {place.review && place.review !== null ? (
+                      <S.PlacePostNoneContainer>
+                        <div style={{ width: '100%', height: '100%' }}>
                           {
-                            isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
+                            place.review.thumbnail === '' ?
+                              <S.PlaceLogo>
+                                <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
+                              </S.PlaceLogo>
+                              :
+                              <S.PlaceImage src={place.review.thumbnail} alt="image" />
+                          }
+                          <S.PlaceInfo>
+                            <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
+                            <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
+                          </S.PlaceInfo>
+                        </div>
+                        <S.ModifyButton onClick={() => openAndCloseDetail(index, innerIndex)}>
+                          수정
+                          {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                             <S.ToggleButtonContainer>
-                              <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption>
-                              <S.ToggleButtonOption onClick={() => props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex])}>게시글 불러오기</S.ToggleButtonOption>
+                              <S.ToggleButtonOption onClick={() => {
+                                if (props.onNewPostPlace) {
+                                  props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                  openAndCloseDetail(index, innerIndex);
+                                }
+                              }}>
+                                새 리뷰 작성
+                              </S.ToggleButtonOption>
+                              <S.ToggleButtonOption onClick={() => {
+                                if (props.onConnetPostPlace) {
+                                  props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                  openAndCloseDetail(index, innerIndex);
+                                }
+                              }}>
+                                리뷰 불러오기
+                              </S.ToggleButtonOption>
                             </S.ToggleButtonContainer>
                           }
-                        </S.ThreeDotsButton>
-                        {
-                          place.review.thumbnail === '' ?
-                            <S.PlaceLogo>
-                              <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
-                            </S.PlaceLogo>
-                            :
-                            <S.PlaceImage src={place.review.thumbnail} alt="image" />
-                        }
-                        <S.PlaceInfo>
-                          <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
-                          <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
-                        </S.PlaceInfo>
-                      </S.PlacePostContainer>
+                        </S.ModifyButton>
+                      </S.PlacePostNoneContainer>
                     ) : (
                       place.keyword !== null ? (
                         <S.PlaceContainer key={innerIndex} type={true}>
-                          <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
-                          <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
+                          <div>
+                            <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
+                            <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
+                          </div>
                         </S.PlaceContainer>
                       ) : (
                         <S.PlaceContainer key={innerIndex} >
-                          <S.ThreeDotsButton onClick={() => openDetail(index, innerIndex)}>
-                            <PiDotsThree size={20} />
-                            {
-                              isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
+                          <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
+                            <PiDotsThree size={25} />
+                            {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                               <S.ToggleButtonContainer>
-                                {/* <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption> */}
-                                <S.ToggleButtonOption onClick={() => props.onConnetPostPlace? props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]):null}>게시글 불러오기</S.ToggleButtonOption>
+                                <S.ToggleButtonOption onClick={() => {
+                                  if (props.onNewPostPlace) {
+                                    props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                    openAndCloseDetail(index, innerIndex);
+                                  }
+                                }}>
+                                  새 리뷰 작성
+                                </S.ToggleButtonOption>
+                                <S.ToggleButtonOption onClick={() => {
+                                  if (props.onConnetPostPlace) {
+                                    props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                    openAndCloseDetail(index, innerIndex);
+                                  }
+                                }}>
+                                  리뷰 불러오기
+                                </S.ToggleButtonOption>
+                              </S.ToggleButtonContainer>
                             }
                           </S.ThreeDotsButton>
-                          <S.PalceText>
-                            {place.placeName}
-                          </S.PalceText>
+                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <S.PalceText>
+                              {place.placeName}
+                            </S.PalceText>
+                          </div>
                         </S.PlaceContainer>
                       )
                     )}
                   </div >
-                ))}
+                )}
               </>
             ))
             }
