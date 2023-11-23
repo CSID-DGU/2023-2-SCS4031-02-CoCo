@@ -14,7 +14,7 @@ type DayPlanPostProps = {
   planId?: string;
   dayList: any;
   selectDay: number;
-  onNewPostPlace?: (value: any) => void;
+  onNewPostPlace?: (day: number, value: any) => void;
   onConnetPostPlace?: (day: number, value: any) => void;
 }
 
@@ -29,7 +29,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   const [data, setData] = useState<any>([]);
   const [isDdetailOpen, setIsDdetailOpen] = useState<any>([])
 
-  const openDetail = (idx: number, innerIdx: number) => {
+  const openAndCloseDetail = (idx: number, innerIdx: number) => {
     const newArray = [...isDdetailOpen];
     newArray[idx][innerIdx] = !newArray[idx][innerIdx];
     setIsDdetailOpen(newArray);
@@ -37,7 +37,6 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
 
   useEffect(() => {
     setData(props.dayList);
-    console.log("epdlxj", props.dayList);
   }, [props.dayList]);
 
   useEffect(() => {
@@ -115,17 +114,30 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 <S.DayContainer key={index}>
                   {plans.day}일차
                 </S.DayContainer>
-                {plans.placeList.map((place: any, innerIndex: number) => (
+                {plans.placeList.map((place: any, innerIndex: number) =>
                   <div>
-                    {place.review && place.review !== null  ? (
+                    {place.review && place.review !== null ? (
                       <S.PlacePostContainer>
-                        <S.ThreeDotsButton >
+                        <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
                           수정
-                          {
-                            isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
+                          {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                             <S.ToggleButtonContainer>
-                              <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption>
-                              <S.ToggleButtonOption onClick={() => props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex])}>게시글 불러오기</S.ToggleButtonOption>
+                              <S.ToggleButtonOption onClick={() => {
+                                if (props.onNewPostPlace) {
+                                  props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                  openAndCloseDetail(index, innerIndex);
+                                }
+                              }}>
+                                새 게시글 작성
+                                </S.ToggleButtonOption>
+                              <S.ToggleButtonOption onClick={() => {
+                                if (props.onConnetPostPlace) {
+                                  props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                  openAndCloseDetail(index, innerIndex);
+                                }
+                              }}>
+                                게시글 불러오기
+                              </S.ToggleButtonOption>
                             </S.ToggleButtonContainer>
                           }
                         </S.ThreeDotsButton>
@@ -150,13 +162,27 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                         </S.PlaceContainer>
                       ) : (
                         <S.PlaceContainer key={innerIndex} >
-                          <S.ThreeDotsButton onClick={() => openDetail(index, innerIndex)}>
+                          <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
                             <PiDotsThree size={20} />
-                            {
-                              isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
+                            {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                               <S.ToggleButtonContainer>
-                                {/* <S.ToggleButtonOption onClick={() => props.onNewPostPlace(data[index].placeList[innerIndex])}>새 게시글 작성</S.ToggleButtonOption> */}
-                                <S.ToggleButtonOption onClick={() => props.onConnetPostPlace? props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]):null}>게시글 불러오기</S.ToggleButtonOption>
+                                <S.ToggleButtonOption onClick={() => {
+                                  if (props.onNewPostPlace) {
+                                    props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                    openAndCloseDetail(index, innerIndex);
+                                  }
+                                }}>
+                                  새 게시글 작성
+                                </S.ToggleButtonOption>
+                                <S.ToggleButtonOption onClick={() => {
+                                  if (props.onConnetPostPlace) {
+                                    props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                    openAndCloseDetail(index, innerIndex);
+                                  }
+                                }}>
+                                  게시글 불러오기
+                                </S.ToggleButtonOption>
+                              </S.ToggleButtonContainer>
                             }
                           </S.ThreeDotsButton>
                           <S.PalceText>
@@ -166,7 +192,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                       )
                     )}
                   </div >
-                ))}
+                )}
               </>
             ))
             }
