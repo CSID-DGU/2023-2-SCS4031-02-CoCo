@@ -10,6 +10,7 @@ import UserPreview from "../../components/UserPreview";
 import SearchBar from "../../components/SearchBar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
+import CommentSection from "../../shared/CommentSection";
 
 export default function PostPlace() {
   let components;
@@ -39,7 +40,7 @@ export default function PostPlace() {
 
     if (location.pathname.startsWith("/post/places/secret/")) {
       components = (
-        <S.ModifiedButton type="button" onClick={()=> navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
+        <S.ModifiedButton type="button" onClick={() => navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
       );
     } else {
       components = (
@@ -155,7 +156,9 @@ export default function PostPlace() {
               }
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          
+          {isCommentOpen && (
+            <CommentSection page='review' postId={data.id} />
+          )}
         </S.CommentContainer>
 
         <S.RecommendContainer>

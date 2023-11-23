@@ -7,7 +7,7 @@ export const Blur = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 500;
 `
 
 export const LoginModalWrapper = styled.div`
@@ -24,7 +24,7 @@ export const LoginModalWrapper = styled.div`
   width: 25rem;
   height: 35rem;
   box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  z-index: 100;
+  z-index: 600;
 `
 
 export const UserModalWrapper = styled.div`
