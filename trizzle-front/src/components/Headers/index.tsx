@@ -26,6 +26,8 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   console.log(propsData);
 
   useEffect(() => {
+    if(state.error) console.log(state.error);
+    else {
     if(state.data){
       if(state.data.message&&state.data.message==="not login") setIsLogin(false);
       else {
@@ -33,6 +35,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
         setUserData(state.data);
       }
     }
+  }
   }, [state]);
 
   if (isLogin) {
