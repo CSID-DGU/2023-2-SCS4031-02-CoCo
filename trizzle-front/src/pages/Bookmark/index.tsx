@@ -5,6 +5,8 @@ import PlaceCard from "../../components/PlaceCard";
 import { useAsync } from "../../utils/API/useAsync";
 import Tabs from "../../components/Tabs";
 import NullList from "../../components/NullList";
+import * as S from "./Bookmark.style";
+
 
 const Bookmark: React.FC = () => {
   const [tab, setTab] = useState<any>({name: "일정 북마크", id:"post"});
@@ -39,15 +41,21 @@ const Bookmark: React.FC = () => {
     <MyfeedLayout isMe={true} selectTab={{ name: "북마크", URL: "bookmark" }}>
       <Tabs tabs={tabs} selectedTab={tab} onClick={(tab) => {setTab(tab)}} type="roundButton"/>
       {tab.id === "post" ? (
-        planList.length === 0 ? <NullList content="북마크한 일정이 없습니다." /> : (
+        <S.PostContainer>
+        {planList.length === 0 ? <NullList content="북마크한 일정이 없습니다." /> : (
           planList.map((plan: any) => (
             <PlanCard {...plan} key={plan.id}/>
           ))
-        )
-      ) : placeList.length === 0 ? <NullList content="북마크한 리뷰가 없습니다" /> : (
+        )}
+        </S.PostContainer>
+      ) : (
+        <S.ReviewContainer>
+        {placeList.length === 0 ? <NullList content="북마크한 리뷰가 없습니다" /> : (
         placeList.map((place: any) => (
           <PlaceCard {...place} key={place.id}/>
         ))
+      )}
+    </S.ReviewContainer>
       )}
     </MyfeedLayout>
   )
