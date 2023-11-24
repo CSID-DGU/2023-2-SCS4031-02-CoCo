@@ -11,9 +11,9 @@ import { tripThema } from "../../utils/Data/tripThema";
 
 const AddPostPlanOpen: React.FC = () => {
   const [title, setTitle] = useState<string>('');
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
-  const [regions, setRegions] = useState<string>('서울특별시');
+  const [startDate, ] = useState<string>('');
+  const [endDate, ] = useState<string>('');
+  const [regions, ] = useState<string>('서울특별시');
   const [thema, setThema] = useState<any>([]);
   const [isUploadPlanModal, setIsUploadPlanModal] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -122,6 +122,16 @@ const AddPostPlanOpen: React.FC = () => {
 
     imageHandler();
   }, [file]);
+
+  const onThemaBadgeClick = (select: any) => {
+    const itemExists = thema.some((item: any) => item.id === select.id);
+
+    if (itemExists) {
+      setThema((prev: any) => prev.filter((item: any) => item.id !== select.id));
+    } else {
+      setThema((prev: any) => [...prev, select]);
+    }
+  };
 
   return (
     <Page headersProps={{ isHome: false }}>

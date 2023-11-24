@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Page from "../Page";
 import * as S from "./AddPlace.styles";
 import TextInput from "../../components/TextInput";
