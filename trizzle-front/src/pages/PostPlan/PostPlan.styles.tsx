@@ -41,7 +41,7 @@ export const InforFirstContainer = styled.div`
   align-items: center;
   margin-top: 7rem;
   margin-bottom: 1.5rem;
-
+  position: relative;
   font-size: 2rem;
   font-weight: bold;
 `

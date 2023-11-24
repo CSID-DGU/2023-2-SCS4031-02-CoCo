@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import Page from "../Page";
 import * as S from './PostPlace.styles';
 import UserPreview from "../../components/UserPreview";
+import Menu from "../../components/Menu";
 import SearchBar from "../../components/SearchBar";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
@@ -14,41 +15,42 @@ import CommentSection from "../../shared/CommentSection";
 import IconButton from "../../components/IconButton";
 
 export default function PostPlace() {
-  let components;
   const location = useLocation();
   const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  const [reviewUser, setReviewUser] = useState<any>(null);
+  const [isMe, setIsMe] = useState<boolean>(false);
+  const [menuItems, setMenuItems] = useState<any[]>([{ content: "삭제", onClick: () => {
+    fetchData(`/api/reviews/myreviews/${placeId.id}`, "DELETE");
+}, isDelete: true }]);
 
   const placeId = useParams<{ id: string }>();
-  const [state, _] = useAsync({ url: `/api/reviews/${placeId.id}` });
+  const [state, fetchData] = useAsync({ url: `/api/reviews/${placeId.id}` });
 
   useEffect(() => {
     if (state.error) {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      console.log(state.data);
       setData(state.data.review);
       setIsLike(state.data.isLike);
       setIsBookmark(state.data.isBookmark);
+      setReviewUser(state.data.reviewUser);
+      if (state.data.reviewUser.accountId === sessionStorage.getItem("accountId")) {
+        setIsMe(true);
+      }
     }
   }, [state]);
 
     if(data !== null) {
       if (location.pathname.startsWith("/post/places/secret/")) {
-        components = (
-          <S.ModifiedButton type="button" onClick={() => navigate(`/post/places/${placeId.id}/modify`)}>수정</S.ModifiedButton>
-        );
-      } else {
-        components = (
-          <IconButton icon="bookmark" type="review" contentId={data.id} filled={isBookmark} />
-        );
+        setMenuItems((...prev) => [...prev, { content: "수정", onClick: () => {navigate(`/post/places/${placeId.id}/modify`)}, isDelete: false }]);
       }
   }
-  
+
   if (data !== null) {
     return (
       <Page headersProps={{ isHome: false}}>
@@ -56,21 +58,22 @@ export default function PostPlace() {
 
         <S.InforFirstContainer>
           <div>제목 {data.reviewTitle}</div>
-          {components}
+          {isMe ?
+          <>
+          <Menu item={menuItems}/>
+        </>:
+        <IconButton icon="bookmark" type="post" contentId={data.id} filled={isBookmark} />
+      }
         </S.InforFirstContainer>
         <S.HorizontalFirstStartContainer>
           <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              작성일자
-            </S.InforContainer>
+            <S.InforContainer>작성일자</S.InforContainer>
             <S.InforInputContainer>
               {data.reviewRegistrationDate.slice(0,10)}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
           <S.HorizontalFirstStartContainer style={{margin:"0 0 0 5rem"}}>
-            <S.InforContainer>
-              방문일자
-            </S.InforContainer>
+            <S.InforContainer>방문일자</S.InforContainer>
             <S.InforInputContainer >
               {data.visitDate}
             </S.InforInputContainer>
@@ -126,7 +129,7 @@ export default function PostPlace() {
           dangerouslySetInnerHTML={{ __html: data.reviewContent }}
         />
 
-        <UserPreview nickName="날탱이탱날" keyword={["배낭", "자전거"]} />
+        <UserPreview accountId={reviewUser.accountId} nickName={reviewUser.nickname} keyword={reviewUser.thema} />
 
         <S.CommentContainer>
           <S.HorizontalFirstStartContainer>
