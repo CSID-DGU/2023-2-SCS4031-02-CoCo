@@ -126,20 +126,20 @@ const AddPostPlanOpen: React.FC = () => {
   return (
     <Page headersProps={{ isHome: false }}>
       {thumnail !== null ? (
-        <S.PageTitleContainer>
+        <S.ThumbnailContainer>
           <img style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} src={thumnail} alt="thumbnail" />
           <label htmlFor="file">
             <S.UploadThumnailButton>썸네일 등록</S.UploadThumnailButton>
           </label>
           <S.UploadThumnailInput type="file" id="file" accept="image/*" onChange={handleFileChange} />
-        </S.PageTitleContainer>
+        </S.ThumbnailContainer>
       ) : (
-        <S.PageTitleContainer>
+        <S.ThumbnailNoneContainer>
           <label htmlFor="file">
             <S.UploadThumnailButton>썸네일 등록</S.UploadThumnailButton>
           </label>
           <S.UploadThumnailInput type="file" id="file" accept="image/*" onChange={handleFileChange} />
-        </S.PageTitleContainer>
+        </S.ThumbnailNoneContainer>
       )}
 
         <S.ButtonContainer>

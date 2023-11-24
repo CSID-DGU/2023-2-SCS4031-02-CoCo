@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const PageTitleContainer = styled.div`
+export const ThumbnailNoneContainer = styled.div`
   position: relative;
   display: flex;
   align-items: center;
@@ -8,6 +8,15 @@ export const PageTitleContainer = styled.div`
   width: 100%;
   height: 9rem;
   background-color: #FFF7DA;  
+`
+
+export const ThumbnailContainer = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 9rem;
 `
 
 export const UploadThumnailButton = styled.div`
