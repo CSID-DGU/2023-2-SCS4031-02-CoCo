@@ -40,7 +40,7 @@ public class AuthenticationConfig {
                                 new AntPathRequestMatcher("/api/user/header", "GET"),
                                 new AntPathRequestMatcher("/api/posts/search", "GET"),
                                 new AntPathRequestMatcher("/api/reviews/search", "GET"),
-                                new AntPathRequestMatcher(("/api/inquiries"), "GET")
+                                new AntPathRequestMatcher(("/api/inquiries/"), "GET")
                         ).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtFilter(secretKey), UsernamePasswordAuthenticationFilter.class)
