@@ -134,7 +134,7 @@ export const DayPlanPostInnerContainer = styled.div`
 `
 
 export const DayPlanCopyButton = styled.button`
-  maigin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem 0;
   width: 28rem;
   text-align: end;
 `
