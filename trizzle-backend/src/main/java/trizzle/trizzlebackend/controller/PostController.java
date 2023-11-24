@@ -96,6 +96,13 @@ public class PostController {
                 .body(myPosts);
     }
 
+    @GetMapping("/otherposts/{accountId}")
+    public ResponseEntity getOtherPosts(@PathVariable("accountId") String accountId) {
+        List<Post> posts = postService.findMyPosts(accountId);
+        return ResponseEntity.ok()
+                .body(posts);
+    }
+
     @DeleteMapping("/myposts/{postId}")
     public ResponseEntity deleteMyPost(@PathVariable("postId") String postId, HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
@@ -132,6 +139,11 @@ public class PostController {
     @GetMapping("/home")
     public ResponseEntity getTop4Posts() {
         List<Post> posts = postService.findTop4Posts();
-        return ResponseEntity.ok(posts);
+        Page<ElasticPost> leasts = postService.findRandomPosts();
+        Map<String, Object> response = new HashMap<>();
+        response.put("top4", posts);
+        response.put("least", leasts);
+
+        return ResponseEntity.ok(response);
     }
 }

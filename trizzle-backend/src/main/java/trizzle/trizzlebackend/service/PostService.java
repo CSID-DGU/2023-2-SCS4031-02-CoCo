@@ -1,20 +1,18 @@
 package trizzle.trizzlebackend.service;
 
-import com.tdunning.math.stats.Sort;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
-import trizzle.trizzlebackend.domain.Bookmark;
-import trizzle.trizzlebackend.domain.Like;
-import trizzle.trizzlebackend.domain.Post;
+import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.dto.response.PostDto;
 import trizzle.trizzlebackend.repository.*;
-import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.elasticSearch.ElasticsearchOperations;
 import trizzle.trizzlebackend.repository.ElasticPostRepository;
 
@@ -30,6 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final BookmarkRepository bookmarkRepository;
     private final LikeRepository likeRepository;
+    private final UserService userService;
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
@@ -52,8 +51,10 @@ public class PostService {
         Optional<Post> postOptional = postRepository.findById((postId));
         if (postOptional.isPresent()) {   // postId에 해당하는 post가 있을 경우
             Post post = postOptional.get();
+            User postUser = userService.searchUser(post.getAccountId());
             PostDto postDto = new PostDto();
             postDto.setPost(post);
+            postDto.setPostUser(postUser);
 
             if (post.isPostSecret()) {  // 비공개일 경우 cookie의 accountId와 post의 accountId 비교
                 String token = JwtUtil.getAccessTokenFromCookie(request);
@@ -153,6 +154,12 @@ public class PostService {
 
     public List<Post> findTop4Posts() {
         List<Post> posts = postRepository.findTop4ByOrderByLikeCountDesc();
+        return posts;
+    }
+
+    public Page<ElasticPost> findRandomPosts(){
+        Pageable pageable = PageRequest.of(0, 6, Sort.by("postRegistrationDate").descending());
+        Page<ElasticPost> posts = elasticPostRepository.findAll(pageable);
         return posts;
     }
 }

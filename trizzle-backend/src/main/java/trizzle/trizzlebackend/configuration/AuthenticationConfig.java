@@ -38,8 +38,12 @@ public class AuthenticationConfig {
                                 new AntPathRequestMatcher("/api/upload/complete"),
                                 new AntPathRequestMatcher("/api/comments", "GET"),
                                 new AntPathRequestMatcher("/api/user/header", "GET"),
+                                new AntPathRequestMatcher("/api/user/feed/{accountId}", "GET"),
                                 new AntPathRequestMatcher("/api/posts/search", "GET"),
+                                new AntPathRequestMatcher("/api/posts/home", "GET"),
+                                new AntPathRequestMatcher("/api/posts/otherposts/{accountId}", "GET"),
                                 new AntPathRequestMatcher("/api/reviews/search", "GET"),
+                                new AntPathRequestMatcher("/api/reviews/otherreviews/{accountId}", "GET"),
                                 new AntPathRequestMatcher(("/api/inquiries/"), "GET")
                         ).permitAll()
                         .anyRequest().authenticated())
