@@ -18,6 +18,7 @@ import ConnectPlace from '../pages/AddPlace/ConnectPlace';
 import AddPostPlanOpen from '../pages/AddPostPlan/AddPostPlanOpen';
 import Bookmark from '../pages/Bookmark';
 import FQA from '../pages/FQA';
+import PersonalInformationPage from '../pages/PersonalInformationPage';
 
 const Router = () => {
   return (
@@ -52,7 +53,10 @@ const Router = () => {
         <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
         <Route path="/login/oauth2/code/Google" element={<GoogleRedirectPage />} />
 
+
         <Route path='/help' element={<FQA />} />
+        <Route path='/information/service' element={<></>} />
+        <Route path='/information/personal' element={<PersonalInformationPage />} />
       </Routes>
     </BrowserRouter>
   );
