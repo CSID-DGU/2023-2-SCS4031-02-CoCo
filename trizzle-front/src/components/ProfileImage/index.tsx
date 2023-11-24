@@ -6,7 +6,7 @@ import avatar from "../../assets/images/default_avatar.png"
 import axios from "axios";
 
 const ProfileImage: React.FC<ProfileImageProps> = (props: ProfileImageProps) => {
-  const imageSrc = props.src !== ""? props.src : avatar;
+  const imageSrc = props.src !== "" && props.src !== null? props.src : avatar;
   const [file, setFile] = useState<File | null>(null);
 
 

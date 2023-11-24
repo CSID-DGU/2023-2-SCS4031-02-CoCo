@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import * as S from "./HomePlanSlider.style";
 import { HomePlanSliderProps } from "./HomePlanSlider.type";
 import { Link } from "react-router-dom";
+import defaultBanner from "../../assets/images/default_banner.jpg";
 
 
 
@@ -34,7 +35,7 @@ const HomePlanSlider: React.FC<HomePlanSliderProps> = (props: HomePlanSliderProp
 
         return (
           <S.Container key={index} ref={planRef}>
-            <S.Tumbnail src={plan.thumnail? plan.thumnail : ""}/>
+            <S.Tumbnail src={plan.thumnail? plan.thumnail : defaultBanner}/>
             <S.ContentContainer>
               <S.Title>{plan.postTitle}</S.Title>
               <S.TagContainer>
