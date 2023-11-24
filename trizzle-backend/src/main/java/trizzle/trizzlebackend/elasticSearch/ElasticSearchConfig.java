@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfig
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomConversions;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import trizzle.trizzlebackend.converter.ElasticConverter;
+import trizzle.trizzlebackend.converter.LocalDateConverter;
 import trizzle.trizzlebackend.converter.ReadElasticConverter;
 
 import java.util.List;
@@ -29,7 +30,8 @@ public class ElasticSearchConfig extends AbstractElasticsearchConfiguration {
     public ElasticsearchCustomConversions elasticsearchCustomConversions() {
         return new ElasticsearchCustomConversions(List.of(
                 new ElasticConverter(),
-                new ReadElasticConverter()
+                new ReadElasticConverter(),
+                new LocalDateConverter()
         ));
     };
 
