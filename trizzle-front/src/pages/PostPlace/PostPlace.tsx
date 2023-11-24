@@ -35,6 +35,10 @@ export default function PostPlace() {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
+      if(state.data.message && state.data.message === "delete success") {
+        alert("삭제되었습니다");
+        navigate("/myfeed");
+      } else {
       setData(state.data.review);
       setIsLike(state.data.isLike);
       setIsBookmark(state.data.isBookmark);
@@ -42,6 +46,7 @@ export default function PostPlace() {
       if (state.data.reviewUser.accountId === sessionStorage.getItem("accountId")) {
         setIsMe(true);
       }
+    }
     }
   }, [state]);
 
