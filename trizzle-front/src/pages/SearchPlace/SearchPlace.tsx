@@ -47,6 +47,7 @@ const SearchPlace = () => {
 
 
   useEffect(() => {
+    console.log(state.data);
     if (state.data) {
       if(page === 0) setReview(state.data.content);
       else{
@@ -70,7 +71,7 @@ const SearchPlace = () => {
       </S.FilterContainer>
         {review.length !== 0 && review.map((item, index) => (
           <S.PlaceCardContainer key={index}>
-            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContent} src={item.thumbnail} postId={item.id}/>
+            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText} src={item.thumbnail} postId={item.id}/>
           </S.PlaceCardContainer>
         ))}
       </S.SearchResultContainer>

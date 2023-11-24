@@ -5,6 +5,7 @@ import {AiOutlinePlus} from "react-icons/ai";
 import { PlanListContainer } from "../../shared/PlanListContainer";
 import { useAsync } from "../../utils/API/useAsync";
 import { Link, useNavigate } from "react-router-dom";
+import NullList from "../../components/NullList";
 
 
 const PlanList = () => {
@@ -58,7 +59,7 @@ const PlanList = () => {
         </S.HeadContainer>
         <S.HorizontalLine/>
 
-          {nextPlan.length === 0 ? <div>다음 여행이 없습니다.</div> : (
+          {nextPlan.length === 0 ? <NullList content="다음 여행 일정이 없습니다" />: (
             <S.PlanList>
             {nextPlan.map((plan:any) => (
               <Link to={`/myfeed/plans/${plan.id}`}>
@@ -69,7 +70,7 @@ const PlanList = () => {
           )}
 
           <S.PastTitle>지난 일정</S.PastTitle>
-          {pastPlan.length === 0 ? <div>지난 일정이 없습니다.</div> : (
+          {pastPlan.length === 0 ? <NullList content="지난 여행 일정이 없습니다"/> : (
             <S.PlanList>
               {pastPlan.map((plan:any) => (
                 <Link to={`/myfeed/plans/${plan.id}`}>

@@ -39,6 +39,15 @@ const IconButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
           isFilled ? <FcLike className="like-icon"/> : <FcLikePlaceholder className="unlike-icon"/>
       )
       )}
+      
+    </S.BackButton>
+  )
+}
+
+export const OtherIconButton: React.FC<{children: React.ReactNode, onClick:()=>void}> = ({children, onClick}) => {
+  return (
+    <S.BackButton onClick={onClick}>
+      {children}
     </S.BackButton>
   )
 }

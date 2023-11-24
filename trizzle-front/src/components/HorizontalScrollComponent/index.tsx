@@ -31,13 +31,13 @@ const HorizontalScrollContainer: React.FC<{ children: React.ReactNode, moveDista
   return (
     <S.Wrapper type={type? type : "normal"}>
       <button onClick={handleScrollLeft} style={{ display: isScrollable ? 'block' : 'none' }} type='button'>
-        <AiOutlineLeft size="2rem" color={type? "#D6D6D6" :"#EBB700"}/>
+        <AiOutlineLeft size={type && type==="page"? "1rem":"2rem"} color={type? "#D6D6D6" :"#EBB700"}/>
       </button>
       <S.HorizontalScrollContainer ref={containerRef}>
         {children}
       </S.HorizontalScrollContainer>
       <button onClick={handleScrollRight} style={{ display: isScrollable ? 'block' : 'none' }} type='button'>
-        <AiOutlineRight size="2rem" color={type? "#D6D6D6" :"#EBB700"}/>
+        <AiOutlineRight size={type && type==="page"? "1rem":"2rem"} color={type? "#D6D6D6" :"#EBB700"}/>
       </button>
     </S.Wrapper>
   );

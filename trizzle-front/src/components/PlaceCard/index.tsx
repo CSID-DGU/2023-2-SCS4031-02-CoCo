@@ -17,7 +17,7 @@ const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
           </S.HorizontalContainer>
           <S.Title>{props.postTitle}</S.Title>
           <S.Site>{props.userName} | {props.postDate}</S.Site>
-          <S.Content>{props.postContent}</S.Content>
+          <S.Content>{props.postContent.length > 30 ? props.postContent.slice(0,30) : props.postContent}</S.Content>
         </S.LeftContainer>
         {props.src === '' ? (
           <S.NonoThumbnailContainer>

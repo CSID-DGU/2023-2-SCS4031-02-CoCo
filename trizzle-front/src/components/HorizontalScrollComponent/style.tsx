@@ -3,7 +3,7 @@ import styled from "@emotion/styled"
 export const Wrapper = styled.div<{type: any}>`
   width: 100%;
   display: flex;
-  align-items: ${props => props.type === "main" ? "center" : "flex-start"};
+  align-items: ${props => props.type !== "normal" ? "center" : "flex-start"};
 `
 
 export const HorizontalScrollContainer = styled.div`

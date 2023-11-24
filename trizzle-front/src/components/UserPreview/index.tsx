@@ -1,19 +1,20 @@
-import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import * as S from './UserPreview.styles';
-import { AiOutlineRight } from "react-icons/ai";
 
 interface UserPreviewProps {
+  accountId: string;
   nickName: string;
   keyword: string[];
 }
 
-export default function UserPreview({ nickName, keyword }: UserPreviewProps) {
-  const [isHovered, setIsHovered] = useState(false);
+export default function UserPreview({ accountId, nickName, keyword }: UserPreviewProps) {
+  const navigate = useNavigate();
 
   return (
     <S.Container
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        navigate(`/feed/${accountId}`);
+      }}
       >
       <S.HorizontalFirstStartContainer>
         <S.UserImage />
@@ -32,16 +33,6 @@ export default function UserPreview({ nickName, keyword }: UserPreviewProps) {
           </S.HorizontalFirstStartContainer>
         </S.VerticalFirstStartContainer>
       </S.HorizontalFirstStartContainer>
-      <AiOutlineRight
-        style={{
-          width: "5rem",
-          height: "2.5rem",
-          color: isHovered ? "#EBB700" : "#BDBDBD",
-          opacity: 0.5
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      />
     </S.Container>
   );
 }
