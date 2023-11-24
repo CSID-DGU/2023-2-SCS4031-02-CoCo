@@ -52,14 +52,13 @@ const AddPostPlan: React.FC = () => {
 
   useEffect(() => {
     if (data.length !== 0) {
-      console.log("새로고참", data);
-      setTitle(data.post.planName);
-      setStartDate(data.post.planStartDate);
-      setEndDate(data.post.planEndDate);
-      setRegions(data.post.planLocation);
-      setPrevThema(data.post.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
-      setDayPlan(data.post.content);
-      setSelectedDayPlan(data.post.content);
+      setTitle(data.planName);
+      setStartDate(data.planStartDate);
+      setEndDate(data.planEndDate);
+      setRegions(data.planLocation);
+      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setDayPlan(data.content);
+      setSelectedDayPlan(data.content);
     }
   }, [data]);
 
@@ -132,7 +131,6 @@ const AddPostPlan: React.FC = () => {
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
         const json = JSON.stringify(ResultData);
-        console.log(json);
         fetchData(`/api/posts`, 'Post', json);
       }
     } else if (type === "secret") {
@@ -146,7 +144,6 @@ const AddPostPlan: React.FC = () => {
       }
 
       const json = JSON.stringify(ResultData);
-      console.log(json);
       fetchData(`/api/posts`, 'Post', json);
     }
   }
