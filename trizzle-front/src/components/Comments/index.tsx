@@ -16,9 +16,6 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [childCommentOpen, setChildCommentOpen] = useState<boolean>(false);
 
-  if(props.commentData.commentData && props.commentData.commentData.parentId !== null) {
-    console.log(props);
-  }
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
   }
@@ -45,9 +42,12 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
 
     setMenuItems(menuItem);
   }
+
+
+  
   }, []);
     
-    if(props.commentData.commentData && props.commentData.commentData.isDeleted){
+    if(props.commentData.commentData && props.commentData.commentData.deleted){
       return (
         <S.PostCommentContainer>
           <S.PostCommentContentBody>
@@ -66,7 +66,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           </S.Fixed>
         }
           {menuItems.length > 0 && <Menu item={menuItems}/>}
-          <ProfileImage type='small'/>
+          <ProfileImage type='small' src={props.commentData.profileImg}/>
           <S.PostCommentContent>
             <S.PostCommentContentHeader>
               {props.commentData.nickname}
@@ -145,7 +145,7 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
       </S.ParentCommentContainer>
     ): (
       <>
-      {!props.commentData.commentData.isDeleted && <Comment {...props} /> }
+      {!props.commentData.commentData.deleted && <Comment {...props} /> }
       </>
     )
     }
@@ -154,7 +154,7 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
 };
 
 export const MyComments:React.FC<myCommentProps> = (props: myCommentProps) => {
-  if(!props.myCommentData.isDeleted) {
+  if(!props.myCommentData.deleted) {
   return(
     <S.MyCommentContainer>
       <S.MyCommentContent>
@@ -165,7 +165,7 @@ export const MyComments:React.FC<myCommentProps> = (props: myCommentProps) => {
         <Link 
       to={props.myCommentData.postId? `/post/plan/${props.myCommentData.postId}` : `/post/places/${props.myCommentData.reviewId}`}
       style={{color:"#B8B8B8"}}
-      >원글이동</Link> | {props.myCommentData.commentRegistrationDate}</S.MyCommentPostText>
+      >원글이동</Link> | {props.myCommentData.commentRegistrationDate.slice(0,16)}</S.MyCommentPostText>
     </S.MyCommentContainer>
   )
   }

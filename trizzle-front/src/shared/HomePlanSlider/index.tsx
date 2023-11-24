@@ -34,17 +34,17 @@ const HomePlanSlider: React.FC<HomePlanSliderProps> = (props: HomePlanSliderProp
 
         return (
           <S.Container key={index} ref={planRef}>
-            <S.Tumbnail src={plan.image}/>
+            <S.Tumbnail src={plan.thumnail? plan.thumnail : ""}/>
             <S.ContentContainer>
-              <S.Title>{plan.title}</S.Title>
+              <S.Title>{plan.postTitle}</S.Title>
               <S.TagContainer>
-                {plan.tags.map((tag, index) => {
+                {plan.plan.planThema.map((tag:string, index:number) => {
                   return (
                     <S.Tag key={index}>#{tag}</S.Tag>
                   )
                 })}
               </S.TagContainer>
-              <Link to={`/plans/${plan.id}`}>
+              <Link to={`/post/plan/${plan.id}`}>
                 <S.DetailLink>자세히</S.DetailLink>
               </Link>
             </S.ContentContainer>
