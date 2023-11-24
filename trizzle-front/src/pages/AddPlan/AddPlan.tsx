@@ -35,11 +35,9 @@ const AddPlanPage:React.FC = () => {
   const deleteDay = useDeleteDay();
   const [state, fetchData] = useAsync({url:"", method:""});
 
-  console.log(placeList);
 
   const onPlaceAddButtonClick = (place:any, day:number) => {
     addPlaceToPlan(place, day, placeList, allDay);
-    console.log(place);
     setIsSearchModalOpen(!isSearchModalOpen);
     setCenter({lat: place.y, lng: place.x});
   }
@@ -112,14 +110,12 @@ const AddPlanPage:React.FC = () => {
 
 
     const json = JSON.stringify(data);
-    console.log(json);
     const url = `/api/plans`;
     fetchData(url, "POST",json);
     
     };
 
     useEffect(() => {
-      console.log(state)
       if(state.data && state.data.message === "save success") {
         setPlaceList([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]);
         navigate(`/myfeed/plans/${state.data.planId}`);}

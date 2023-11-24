@@ -16,9 +16,8 @@ const GoogleRedirectPage = () => {
       // 카카오로부터 받아온 code를 서버에 전달하여 카카오로 회원가입 & 로그인한다
       const response = await axios.get(`${url}/login/oauth2/code/google?code=${code}`, axiosConfig);
       const data = response.data; // 응답 데이터
-      console.log(data)
       navigate(`/?reId=${data.registration_id}&data=${data.message}&token=${data.token}`);
-    } catch (error) {
+    } catch (error) { 
       navigate("/fail");
     }
   };

@@ -17,7 +17,6 @@ const CommentRecord = () => {
     useEffect(() => {
         if (state.data) {
             setCommentLists(state.data);
-            console.log(state.data);
         }
     }, [state]);
     const onDelete = (id: string) => {

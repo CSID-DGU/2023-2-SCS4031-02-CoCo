@@ -31,7 +31,6 @@ const Myfeed = () => {
       setUserData(state.data.profile);
     }
   },[state]);
-  console.log(plan.length)
 
   if(userData === null) return (<div>로딩중</div>)
   else {

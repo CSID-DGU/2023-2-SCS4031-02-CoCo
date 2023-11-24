@@ -15,12 +15,10 @@ const UploadPlanModal: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps
   const [state, _] = useAsync({ url: '/api/plans/myplans' });
 
   useEffect(() => {
-    console.log(state);
     if (state.error) {
       console.log(state.error);
       setPlanData([]);
     } else if (state.data) {
-      console.log(state.data);
       setPlanData(state.data);
     }
   }, [state]);

@@ -17,7 +17,6 @@ const PlanDetail: React.FC = () => {
 
 
   useEffect(() => {
-    console.log(state);
     if(state.error) {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");

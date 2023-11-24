@@ -60,7 +60,6 @@ const SearchPlan = () => {
 
 
   useEffect(() => {
-    console.log(state.data);
     if (state.data) {
       if(page === 0) setPlanList(state.data.content);
       else{

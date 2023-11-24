@@ -36,7 +36,6 @@ export default function ConnectPlace() {
   },[path])
 
   useEffect(() => {
-    console.log(state);
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
@@ -60,7 +59,6 @@ export default function ConnectPlace() {
           return place;
         });
         setPlanData({ ...planData, content: newArray });
-        console.log("잘 들어갔는가?", planData);
         fetchData(`/api/plans/${planInfor.planId}`, "PUT", planData);
 
         opener.location.reload();

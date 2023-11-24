@@ -47,7 +47,6 @@ const SearchPlace = () => {
 
 
   useEffect(() => {
-    console.log(state.data);
     if (state.data) {
       if(page === 0) setReview(state.data.content);
       else{

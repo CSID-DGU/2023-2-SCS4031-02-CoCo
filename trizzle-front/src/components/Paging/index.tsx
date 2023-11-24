@@ -51,7 +51,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
   }, [currentPage]);
 
   const onClicked = (data: any) => {
-    props.onClickedData? props.onClickedData(data) : console.log(data);
+    props.onClickedData? props.onClickedData(data) : null;
   }
 
   if (props.type === "horizontalPlan") {
