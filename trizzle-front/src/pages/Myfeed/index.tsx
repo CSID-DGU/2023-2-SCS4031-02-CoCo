@@ -16,7 +16,9 @@ const Myfeed = () => {
   const [userData, setUserData] = useState<any>(null);
   const [plan, setPlan] = useState<any[]>([]);
   const [place, setPlace] = useState<any[]>([]);
-  const url = id? `/api/user/feed/${id}` : "/api/user/feed/my";
+  const isMe = (id && id !== sessionStorage.getItem("accountId"))? false : true;
+  console.log(isMe);
+  const url = id ? `/api/user/feed/${id}` : "/api/user/feed/my";
   const [state, _] = useAsync({url: url});
   const navigate = useNavigate();
 
@@ -35,12 +37,12 @@ const Myfeed = () => {
   if(userData === null) return (<div>로딩중</div>)
   else {
   return (
-    <MyfeedLayout isMe={id? false : true}>
-      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={["김희진", "김희진", "김희진"]} following={["김희진", "김희진", "김희진"]} isMe={id? false : true} planCount={1} placeCount={4}
+    <MyfeedLayout isMe={isMe}>
+      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={["김희진", "김희진", "김희진"]} following={["김희진", "김희진", "김희진"]} isMe={isMe} planCount={1} placeCount={4}
       src={userData.profileImage}
       />
       <S.HorizontalContainer>
-        <S.ListTitle>{id? `${userData.nickname}님이 공유한 일정` : <>나의 여행 일정 목록
+        <S.ListTitle>{isMe? `${userData.nickname}님이 공유한 일정` : <>나의 여행 일정 목록
           <S.PostButton onClick={() => navigate("/post/plans/add")}>
             <HiOutlinePencilAlt className="icon"/>작성
           </S.PostButton>
@@ -68,7 +70,7 @@ const Myfeed = () => {
         }
       </S.PlanListContainer>
       <S.HorizontalContainer>
-        <S.ListTitle>{id? `${userData.nickname}님이 공유한 여행지`  : 
+        <S.ListTitle>{!isMe? `${userData.nickname}님이 공유한 여행지`  : 
         <>
         나의 여행지
         <S.PostButton onClick={() => navigate("/post/places/add")}>
