@@ -4,6 +4,7 @@ import * as S from './ConnectPlaceModal.styles';
 import Modal from "../../components/Modal";
 import { useAsync } from "../../utils/API/useAsync";
 import Paging from "../../components/Paging";
+import NullList from "../../components/NullList";
 
 type ConnectPlaceModalPorps = {
   placeInfor: any;
@@ -33,7 +34,7 @@ const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlace
     <Modal title="일정 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
       <S.UploadModalContainer>
         {placeData.length === 0 ? (
-          <div>불러올 리뷰가 없습니다</div>
+          <NullList content="불러올 리뷰가 없습니다" />
         ) : (
           <Paging items={placeData} perPage={6} type="modalCommentPlace" onClickedData={(data: any) => clickedPlace(data)} />
         )}
