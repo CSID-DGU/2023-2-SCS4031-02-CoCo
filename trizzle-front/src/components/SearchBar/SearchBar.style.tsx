@@ -39,7 +39,7 @@ export const InputContainer = styled.div`
 `
 
 export const InputValueContainer = styled.input`
-  width:50rem;
+  width: fit-content;
   height: 100%;
   margin: 0 0 0 1rem;
   font-size: 1.2rem;

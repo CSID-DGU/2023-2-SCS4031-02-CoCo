@@ -5,8 +5,7 @@ export const HorizontalContainer = styled.div`
   height: auto;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 3.125rem;
+  justify-content: space-between;
   flex-wrap: wrap;
 `
 
