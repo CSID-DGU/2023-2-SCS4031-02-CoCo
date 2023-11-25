@@ -25,6 +25,7 @@ public class ElasticReview {
     private Place place;
     private String reviewContent;
     private boolean reviewSecret;
+    private String reviewContentText;
     private String planId;
     private String postId;
     private String postName;
@@ -48,7 +49,7 @@ public class ElasticReview {
 
     public void setData(String id, String accountId, String reviewTitle, LocalDateTime reviewRegistrationDate,
                    LocalDate visitDate, Place place, String reviewContent, String planId, String postId,
-                   String postName, String thumbnail, boolean reviewSecret, Integer likeCount, Integer bookmarkCount){
+                   String postName, String thumbnail, boolean reviewSecret, Integer likeCount, Integer bookmarkCount, String reviewContentText){
         this.id = id;
         this.accountId = accountId;
         this.reviewTitle = reviewTitle;
@@ -62,6 +63,7 @@ public class ElasticReview {
         this.thumbnail = thumbnail;
         this.reviewSecret = reviewSecret;
         this.likeCount = likeCount;
-        this.bookmarkCount = likeCount;
+        this.bookmarkCount = bookmarkCount;
+        this.reviewContentText = reviewContentText;
     }
 }

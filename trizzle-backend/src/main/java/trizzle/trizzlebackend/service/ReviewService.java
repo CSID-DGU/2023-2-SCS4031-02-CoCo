@@ -31,6 +31,7 @@ public class ReviewService {
     private final PlaceService placeService;
     private final BookmarkRepository bookmarkRepository;
     private final LikeRepository likeRepository;
+    private final UserService userService;
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -48,7 +49,7 @@ public class ReviewService {
         ElasticReview elasticReview = new ElasticReview();
         elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
                 insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
-                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount());
+                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
         elasticReviewRepository.save(elasticReview);
 
         return insert;
@@ -58,8 +59,10 @@ public class ReviewService {
         Optional<Review> reviewOptional = reviewRepository.findById((reviewId));
         if (reviewOptional.isPresent()) {   // reviewId에 해당하는 review가 있을 경우
             Review review = reviewOptional.get();
+            User reviewUser = userService.searchUser(review.getAccountId());
             ReviewDto reviewDto = new ReviewDto();
             reviewDto.setReview(review);
+            reviewDto.setReviewUser(reviewUser);
 
             if (review.isReviewSecret()) {  // 비공개일 경우 cookie의 accountId와 review의 accountId 비교
                 String token = JwtUtil.getAccessTokenFromCookie(request);
