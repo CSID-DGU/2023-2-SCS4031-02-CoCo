@@ -61,9 +61,9 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                   {plans.day}일차
                 </S.DayContainer>
                 {plans.placeList.map((place: any, innerIndex: number) => (
-                  <div>
+                  <div key={innerIndex}>
                     {place.review && place.review !== null ? (
-                      <Link to={`/post/places/${place.review.id}`} target="_blank"> {/**잠시 고민 좀 해봐야겠어 */}
+                      <Link to={`/post/places/${place.review.id}`} target="_blank">
                         <S.PlacePostContainer>
                           <div style={{ width: '100%', height: '100%' }}>
                             {
@@ -99,7 +99,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                         </S.PlaceContainer>
                       )
                     )}
-                  </div >
+                  </div>
                 ))}
               </>
             ))
@@ -116,12 +116,12 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
         return (
           <>
             {data.map((plans: any, index: number) => (
-              <>
-                <S.DayContainer key={index}>
+              <div key={index}>
+                <S.DayContainer>
                   {plans.day}일차
                 </S.DayContainer>
                 {plans.placeList.map((place: any, innerIndex: number) =>
-                  <div>
+                  <div key={innerIndex}>
                     {place.review && place.review !== null ? (
                       <S.PlacePostNoneContainer>
                         <div style={{ width: '100%', height: '100%' }}>
@@ -205,7 +205,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                     )}
                   </div >
                 )}
-              </>
+              </div>
             ))
             }
           </>

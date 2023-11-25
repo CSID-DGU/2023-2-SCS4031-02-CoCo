@@ -12,7 +12,7 @@ import { useAsync } from "../../utils/API/useAsync";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import ConnectPlaceModal from "../../shared/ConnectPlaceModal";
 
-const AddPostPlan: React.FC = () => {
+const ModPostPlan: React.FC = () => {
   const [data, setData] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
@@ -31,7 +31,7 @@ const AddPostPlan: React.FC = () => {
   const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<any>({});
   const [ConnectPlaceModalDay, setConnectPlaceModalDay] = useState<number>(0);
   const planId = useParams<{ id: string }>();
-  const [state, fetchData] = useAsync({ url: `/api/plans/${planId.id}` });
+  const [state, fetchData] = useAsync({ url: `/api/posts/${planId.id}` });
 
   const navigate = useNavigate();
 
@@ -39,24 +39,23 @@ const AddPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
+      console.log(state.data);
       if (state.data.message === "update success" && state.data.reviewId) {
-        // setData({ ...state.data, reviewId: state.data.reviewId });
-      }
-      else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
-      else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
-      else setData(state.data);
+        navigate(`/post/plan/${state.data.postId}`);
+      } else setData(state.data);
     }
   }, [state]);
 
   useEffect(() => {
     if (data.length !== 0) {
-      setTitle(data.planName);
-      setStartDate(data.planStartDate);
-      setEndDate(data.planEndDate);
-      setRegions(data.planLocation);
-      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
-      setDayPlan(data.content);
-      setSelectedDayPlan(data.content);
+      setTitle(data.post.postTitle);
+      setStartDate(data.post.plan.planStartDate);
+      setEndDate(data.post.plan.planEndDate);
+      setRegions(data.post.plan.planLocation);
+      setThema(data.post.plan.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)[0]));
+      setDayPlan(data.post.plan.content);
+      setSelectedDayPlan(data.post.plan.content);
+      setThumnail(data.post.thumnail);
     }
   }, [data]);
 
@@ -128,7 +127,7 @@ const AddPostPlan: React.FC = () => {
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
         const json = JSON.stringify(ResultData);
-        fetchData(`/api/posts`, 'Post', json);
+        fetchData(`/api/posts`, 'PUT', json);
       }
     } else if (type === "secret") {
       setSecret(true);
@@ -141,7 +140,7 @@ const AddPostPlan: React.FC = () => {
       }
 
       const json = JSON.stringify(ResultData);
-      fetchData(`/api/posts`, 'Post', json);
+      fetchData(`/api/posts`, 'PUT', json);
     }
   }
 
@@ -231,6 +230,11 @@ const AddPostPlan: React.FC = () => {
     imageHandler();
   }, [file]);
 
+  useEffect(()=>{
+    console.log("썸네일 들어옴?", thumnail);
+  },[thumnail]);
+
+  
   return (
     <Page headersProps={{ isHome: false }}>
       {thumnail !== null ? (
@@ -273,20 +277,20 @@ const AddPostPlan: React.FC = () => {
         <S.HorizontalLine />
       </S.FormContainer>
 
-        <S.MapAndDayPlanContainer>
-          {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
-          <S.DayPlanPostContainer>
-            <S.DayPlanPostInnerContainer>
-              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
-            </S.DayPlanPostInnerContainer>
-          </S.DayPlanPostContainer>
-        </S.MapAndDayPlanContainer>
-      
+      <S.MapAndDayPlanContainer>
+        {dayPlan !== null && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+        <S.DayPlanPostContainer>
+          <S.DayPlanPostInnerContainer>
+            <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
+          </S.DayPlanPostInnerContainer>
+        </S.DayPlanPostContainer>
+      </S.MapAndDayPlanContainer>
+
       <div style={{ height: "10rem" }} />
-      
+
       {isConnectPlaceModal && <ConnectPlaceModal placeInfor={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} onClickedPlace={(place: any) => connectReview(place)} />}
     </Page >
   )
 }
 
-export default AddPostPlan;
+export default ModPostPlan;

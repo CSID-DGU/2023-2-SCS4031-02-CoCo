@@ -72,6 +72,13 @@ public class ReviewController {
                 .body(myReviews);
     }
 
+    @GetMapping("/otherreviews/{accountId}")
+    public ResponseEntity getOtherReviews(@PathVariable("accountId") String accountId) {
+        List<Review> reviews = reviewService.findMyReviews(accountId);
+        return ResponseEntity.ok()
+                .body(reviews);
+    }
+
     @GetMapping("/search")
     public ResponseEntity getSearchPost(@RequestParam(value = "region", required = false) String region,
                                         @RequestParam(value = "keyword", required = false) String keyword,

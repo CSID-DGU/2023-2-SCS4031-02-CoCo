@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AiOutlineDown, AiOutlineUp} from "react-icons/ai";
+import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 // import UseAnimations from "react-useanimations";
 // import star from 'react-useanimations/lib/star';
 import 'react-quill/dist/quill.snow.css';
@@ -9,13 +9,12 @@ import * as S from './PostPlace.styles';
 import UserPreview from "../../components/UserPreview";
 import Menu from "../../components/Menu";
 import SearchBar from "../../components/SearchBar";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import CommentSection from "../../shared/CommentSection";
 import IconButton from "../../components/IconButton";
 
 export default function PostPlace() {
-  const location = useLocation();
   const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
@@ -23,9 +22,12 @@ export default function PostPlace() {
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
   const [reviewUser, setReviewUser] = useState<any>(null);
   const [isMe, setIsMe] = useState<boolean>(false);
-  const [menuItems, setMenuItems] = useState<any[]>([{ content: "삭제", onClick: () => {
-    fetchData(`/api/reviews/myreviews/${placeId.id}`, "DELETE");
-}, isDelete: true }]);
+  const [menuItems, setMenuItems] = useState<any[]>([{
+    content: "삭제", onClick: () => {
+      alert("게시글을 삭제하시겠습니까?")
+      fetchData(`/api/reviews/myreviews/${placeId.id}`, "DELETE");
+    }, isDelete: true
+  }]);
 
   const placeId = useParams<{ id: string }>();
   const [state, fetchData] = useAsync({ url: `/api/reviews/${placeId.id}` });
@@ -35,31 +37,36 @@ export default function PostPlace() {
       console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      if(state.data.message && state.data.message === "delete success") {
+      if (state.data.message && state.data.message === "delete success") {
         alert("삭제되었습니다");
         navigate("/myfeed");
       } else {
-      setData(state.data.review);
-      setIsLike(state.data.isLike);
-      setIsBookmark(state.data.isBookmark);
-      setReviewUser(state.data.reviewUser);
-      if (state.data.reviewUser.accountId === sessionStorage.getItem("accountId")) {
-        setIsMe(true);
+        // console.log(state.data.review.reviewSecret);
+        setData(state.data.review);
+        setIsLike(state.data.isLike);
+        setIsBookmark(state.data.isBookmark);
+        setReviewUser(state.data.reviewUser);
+        if (state.data.reviewUser.accountId === sessionStorage.getItem("accountId")) {
+          setIsMe(true);
+        }
       }
-    }
     }
   }, [state]);
 
-    if(data !== null) {
-      if (location.pathname.startsWith("/post/places/secret/")) {
-        setMenuItems((...prev) => [...prev, { content: "수정", onClick: () => {navigate(`/post/places/${placeId.id}/modify`)}, isDelete: false }]);
+  useEffect(() => {
+    if (data !== null) {
+      if (data.reviewSecret) {
+        const NewArray = [...menuItems];
+        NewArray.push({ content: "수정", onClick: () => { navigate(`/post/places/${placeId.id}/modify`) }, isDelete: false });
+        setMenuItems(NewArray);
       }
-  }
+    }
+  }, [data]);
 
   if (data !== null) {
     return (
-      <Page headersProps={{ isHome: false}}>
-        <SearchBar type="normal"/>
+      <Page headersProps={{ isHome: false }}>
+        <SearchBar type="normal" />
 
         <S.InforFirstContainer>
           <div>{data.reviewTitle}</div>
@@ -74,10 +81,10 @@ export default function PostPlace() {
           <S.HorizontalFirstStartContainer>
             <S.InforContainer>작성일자</S.InforContainer>
             <S.InforInputContainer>
-              {data.reviewRegistrationDate.slice(0,10)}
+              {data.reviewRegistrationDate.slice(0, 10)}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer style={{margin:"0 0 0 5rem"}}>
+          <S.HorizontalFirstStartContainer style={{ margin: "0 0 0 5rem" }}>
             <S.InforContainer>방문일자</S.InforContainer>
             <S.InforInputContainer >
               {data.visitDate}

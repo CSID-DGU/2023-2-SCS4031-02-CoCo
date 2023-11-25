@@ -14,7 +14,6 @@ import java.net.URI;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/login")
 public class OauthController {
 
     private final LoginService loginService;
@@ -27,21 +26,21 @@ public class OauthController {
         this.kakaoOauthService = kakaoOauthService;
     }
 
-    @GetMapping("/google")
+    @GetMapping("/login/google")
     public ResponseEntity<Void> redirectGoogle() {
         String redirectUri = googleOauthService.googleRedirectUri();
 
         return  ResponseEntity.status(302).location(URI.create(redirectUri)).build();
     }
 
-    @GetMapping("/kakao")
+    @GetMapping("/login/kakao")
     public ResponseEntity<Void> redirectKakao() {
         String redirectUri = kakaoOauthService.kakaoRedirectUri();
 
         return ResponseEntity.status(302).location(URI.create(redirectUri)).build();
     }
 
-    @GetMapping("/oauth2/code/google")  // google oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
+    @GetMapping("/login/oauth2/code/google")  // google oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
     public ResponseEntity googleLogin(@RequestParam String code, HttpServletResponse response) {
         String token = googleOauthService.getAccessToken(code);
         User userInfo = googleOauthService.getUserInfo(token);
@@ -50,7 +49,7 @@ public class OauthController {
         return responseMethod(result, response);
     }
 
-    @GetMapping("/oauth2/code/kakao")   // kakao oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
+    @GetMapping("/login/oauth2/code/kakao")   // kakao oauth2 redirect uri -> /login/oauth2/code/google?code={} 형식
     public ResponseEntity kakaoLogin(@RequestParam String code, HttpServletResponse response) {
         String token = kakaoOauthService.getAccessToken(code);
         User userInfo = kakaoOauthService.getUserInfo(token);
@@ -59,7 +58,7 @@ public class OauthController {
         return responseMethod(result, response);
     }
 
-    @PostMapping("/api/additionalUserInfo") // user정보 추가 입력 요청(account_id, nickname, thema)
+    @PostMapping("/api/login/additionalUserInfo") // user정보 추가 입력 요청(account_id, nickname, thema)
     public ResponseEntity putAdditionalUserInfo(@RequestParam String token, @RequestBody User additionaluserInfo, HttpServletResponse response) {
         Map<String, String> result = loginService.putUserInfo(token, additionaluserInfo);
         return responseMethod(result, response);

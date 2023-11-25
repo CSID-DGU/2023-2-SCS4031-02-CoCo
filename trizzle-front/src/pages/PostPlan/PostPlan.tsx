@@ -27,10 +27,16 @@ const PostPlan: React.FC = () => {
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [planUser, setPlanUser] = useState<any>(null);
   const [isMe, setIsMe] = useState<boolean>(false);
-  
+
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  const [menuItems, setMenuItems] = useState<any[]>([{
+    content: "삭제", onClick: () => {
+      alert("게시글을 삭제하시겠습니까?")
+      fetchData(`/api/posts/myposts/${placeId.id}`, "DELETE");
+    }, isDelete: true
+  }]);
 
   const placeId = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -41,13 +47,14 @@ const PostPlan: React.FC = () => {
     if (state.error) {
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      if(state.data.message && state.data.message === "delete success") navigate("/myfeed");
+      if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
       else setData(state.data);
     }
   }, [state]);
 
   useEffect(() => {
     if (data !== null) {
+      console.log(data);
       setTitle(data.post.plan.planName);
       setStartDate(data.post.plan.planStartDate);
       setEndDate(data.post.plan.planEndDate);
@@ -60,7 +67,12 @@ const PostPlan: React.FC = () => {
       setPlanUser(data.postUser);
       if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
         setIsMe(true);
-  
+
+      }
+      if (data.post.postSecret) {
+        const NewArray = [...menuItems];
+        NewArray.push({ content: "수정", onClick: () => { navigate(`/post/plans/modify/${placeId.id}`) }, isDelete: false });
+        setMenuItems(NewArray);
       }
     }
   }, [data]);
@@ -73,18 +85,20 @@ const PostPlan: React.FC = () => {
       setSelectedDayPlan(newArray);
     }
   }, [selectDay]);
-  if(dayPlan !== null) {
-  return (
-    <Page headersProps={{ isHome: false }}>
-      <SearchBar type="normal"/>
+
+  if (dayPlan !== null) {
+    return (
+      <Page headersProps={{ isHome: false }}>
+        <SearchBar type="normal" />
 
       <S.InforFirstContainer>
         <div>{title}</div>
-        {isMe ? <Menu item={[{ content: "삭제", onClick: () => {
-            fetchData(`/api/posts/myposts/${placeId.id}`, "DELETE");
-        }, isDelete: true }]}/>:
-        <IconButton icon="bookmark" type="post" contentId={data.post.id} filled={isBookmark} />
-      }
+        {isMe ?
+            <>
+              <Menu item={menuItems} />
+            </> :
+            <IconButton icon="bookmark" type="post" contentId={data.id} filled={isBookmark} />
+          }
       </S.InforFirstContainer>
       <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -146,16 +160,16 @@ const PostPlan: React.FC = () => {
         </S.HorizontalFirstStartContainer>
       </S.HorizontalContainer>
 
-      <S.MapAndDayPlanContainer>
-        {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
-        <S.DayPlanPostContainer>
-          <S.DayPlanPostInnerContainer>
-            <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
-          </S.DayPlanPostInnerContainer>
-        </S.DayPlanPostContainer>
-      </S.MapAndDayPlanContainer>
+        <S.MapAndDayPlanContainer>
+          {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+          <S.DayPlanPostContainer>
+            <S.DayPlanPostInnerContainer>
+              <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
+            </S.DayPlanPostInnerContainer>
+          </S.DayPlanPostContainer>
+        </S.MapAndDayPlanContainer>
 
-      <UserPreview accountId={planUser.accountId} nickName={planUser.nickname} keyword={planUser.thema} />
+        <UserPreview accountId={planUser.accountId} nickName={planUser.nickname} keyword={planUser.thema} />
 
       <S.CommentContainer>
         <S.HorizontalFirstStartContainer>
@@ -180,14 +194,14 @@ const PostPlan: React.FC = () => {
         )}
       </S.CommentContainer>
 
-      {/* <S.RecommendContainer>
+        {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.
         </S.RecommendText>
       </S.RecommendContainer> */}
-    </Page>
-  )
-        }
+      </Page>
+    )
+  }
 }
 
 export default PostPlan;
