@@ -18,10 +18,10 @@ const ModPostPlan: React.FC = () => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [regions, setRegions] = useState<string>('서울특별시');
-  const [prevThema, setPrevThema] = useState<any>([]);
+  const [prevThema, ] = useState<any>([]);
   const [thema, setThema] = useState<any>([]);
   const [dayPlan, setDayPlan] = useState<any>(null);
-  const [secret, setSecret] = useState<boolean>(true);
+  const [, setSecret] = useState<boolean>(true);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);

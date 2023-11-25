@@ -6,9 +6,17 @@ import { AiOutlineEllipsis } from "react-icons/ai";
 const Menu:React.FC<MenuProps> = (props:MenuProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
+  const onClick = () => {
+    if(props.onClick) {
+      props.onClick();
+      setOpen(!open);
+    } else {
+      setOpen(!open);
+    }
+  }
   return (
-  <S.MenuButtonContainer >
-          <AiOutlineEllipsis size="1.5rem" onClick={() => setOpen(!open)} />
+  <S.MenuButtonContainer onClick={onClick}>
+          <AiOutlineEllipsis size="1.5rem" />
           {open && (
             <S.MenuContainer>
               {props.item.map((item) => (
