@@ -27,10 +27,16 @@ const PostPlan: React.FC = () => {
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [planUser, setPlanUser] = useState<any>(null);
   const [isMe, setIsMe] = useState<boolean>(false);
-  
+
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
+  const [menuItems, setMenuItems] = useState<any[]>([{
+    content: "삭제", onClick: () => {
+      alert("게시글을 삭제하시겠습니까?")
+      fetchData(`/api/posts/myposts/${placeId.id}`, "DELETE");
+    }, isDelete: true
+  }]);
 
   const placeId = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -41,13 +47,14 @@ const PostPlan: React.FC = () => {
     if (state.error) {
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      if(state.data.message && state.data.message === "delete success") navigate("/myfeed");
+      if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
       else setData(state.data);
     }
   }, [state]);
 
   useEffect(() => {
     if (data !== null) {
+      console.log(data);
       setTitle(data.post.plan.planName);
       setStartDate(data.post.plan.planStartDate);
       setEndDate(data.post.plan.planEndDate);
@@ -60,7 +67,12 @@ const PostPlan: React.FC = () => {
       setPlanUser(data.postUser);
       if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
         setIsMe(true);
-  
+
+      }
+      if (data.post.postSecret) {
+        const NewArray = [...menuItems];
+        NewArray.push({ content: "수정", onClick: () => { navigate(`/post/plans/modify/${placeId.id}`) }, isDelete: false });
+        setMenuItems(NewArray);
       }
     }
   }, [data]);
@@ -73,121 +85,123 @@ const PostPlan: React.FC = () => {
       setSelectedDayPlan(newArray);
     }
   }, [selectDay]);
-  if(dayPlan !== null) {
-  return (
-    <Page headersProps={{ isHome: false }}>
-      <SearchBar type="normal"/>
 
-      <S.InforFirstContainer>
-        <div>제목 {title}</div>
-        {isMe ? <Menu item={[{ content: "삭제", onClick: () => {
-            fetchData(`/api/posts/myposts/${placeId.id}`, "DELETE");
-        }, isDelete: true }]}/>:
-        <IconButton icon="bookmark" type="post" contentId={data.post.id} filled={isBookmark} />
-      }
-      </S.InforFirstContainer>
-      <S.HorizontalFirstStartContainer>
-        <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            작성일자
-          </S.InforContainer>
-          <S.InforInputContainer>
-          {data.post.postRegistrationDate.slice(0,10)}
-          </S.InforInputContainer>
-        </S.HorizontalFirstStartContainer>
-      </S.HorizontalFirstStartContainer>
-      <S.HorizontalFirstStartContainer>
-        <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            여행 기간
-          </S.InforContainer>
-          <S.InforInputContainer>
-            {startDate} ~ {endDate}
-          </S.InforInputContainer>
-        </S.HorizontalFirstStartContainer>
-      </S.HorizontalFirstStartContainer>
-      <S.HorizontalFirstStartContainer>
-        <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            여행 테마
-          </S.InforContainer>
-          <S.Content>
-            {thema.map((thema: any) => (
-              <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
-            ))}
-          </S.Content>
-        </S.HorizontalFirstStartContainer>
-      </S.HorizontalFirstStartContainer>
+  if (dayPlan !== null) {
+    return (
+      <Page headersProps={{ isHome: false }}>
+        <SearchBar type="normal" />
 
-      <S.HorizontalContainer>
+        <S.InforFirstContainer>
+          <div>제목 {title}</div>
+          {isMe ?
+            <>
+              <Menu item={menuItems} />
+            </> :
+            <IconButton icon="bookmark" type="post" contentId={data.id} filled={isBookmark} />
+          }
+        </S.InforFirstContainer>
         <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            조회수
-          </S.InforContainer>
-          <S.InforInputContainer>
-            {data.post.views}
-          </S.InforInputContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.InforContainer>
+              작성일자
+            </S.InforContainer>
+            <S.InforInputContainer>
+              {data.post.postRegistrationDate.slice(0, 10)}
+            </S.InforInputContainer>
+          </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            추천수
-          </S.InforContainer>
-          <S.InforInputContainer>
-            {data.post.likeCount}
-          </S.InforInputContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.InforContainer>
+              여행 기간
+            </S.InforContainer>
+            <S.InforInputContainer>
+              {startDate} ~ {endDate}
+            </S.InforInputContainer>
+          </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            북마크수
-          </S.InforContainer>
-          <S.InforInputContainer>
-            {data.post.bookmarkCount}
-          </S.InforInputContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.InforContainer>
+              여행 테마
+            </S.InforContainer>
+            <S.Content>
+              {thema.map((thema: any) => (
+                <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
+              ))}
+            </S.Content>
+          </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
-      </S.HorizontalContainer>
 
-      <S.MapAndDayPlanContainer>
-        {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
-        <S.DayPlanPostContainer>
-          <S.DayPlanPostInnerContainer>
-            <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
-          </S.DayPlanPostInnerContainer>
-        </S.DayPlanPostContainer>
-      </S.MapAndDayPlanContainer>
+        <S.HorizontalContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.InforContainer>
+              조회수
+            </S.InforContainer>
+            <S.InforInputContainer>
+              {data.post.views}
+            </S.InforInputContainer>
+          </S.HorizontalFirstStartContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.InforContainer>
+              추천수
+            </S.InforContainer>
+            <S.InforInputContainer>
+              {data.post.likeCount}
+            </S.InforInputContainer>
+          </S.HorizontalFirstStartContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.InforContainer>
+              북마크수
+            </S.InforContainer>
+            <S.InforInputContainer>
+              {data.post.bookmarkCount}
+            </S.InforInputContainer>
+          </S.HorizontalFirstStartContainer>
+        </S.HorizontalContainer>
 
-      <UserPreview accountId={planUser.accountId} nickName={planUser.nickname} keyword={planUser.thema} />
+        <S.MapAndDayPlanContainer>
+          {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+          <S.DayPlanPostContainer>
+            <S.DayPlanPostInnerContainer>
+              <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
+            </S.DayPlanPostInnerContainer>
+          </S.DayPlanPostContainer>
+        </S.MapAndDayPlanContainer>
 
-      <S.CommentContainer>
-        <S.HorizontalFirstStartContainer>
-          <S.CommentText>
-            댓글
-            <S.CommentTextNumber>
-              
-            </S.CommentTextNumber>
-            {isCommentOpen ?
-              <AiOutlineUp size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
-              :
-              <AiOutlineDown size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
-            }
-          </S.CommentText>
-          <S.CommentText>
-            좋아요
-            <IconButton icon="like" type="post" filled={isLike} contentId={data.post.id}/>
-          </S.CommentText>
-        </S.HorizontalFirstStartContainer>
-        {isCommentOpen && (
-          <CommentSection page='post' postId={data.id} />
-        )}
-      </S.CommentContainer>
+        <UserPreview accountId={planUser.accountId} nickName={planUser.nickname} keyword={planUser.thema} />
 
-      {/* <S.RecommendContainer>
+        <S.CommentContainer>
+          <S.HorizontalFirstStartContainer>
+            <S.CommentText>
+              댓글
+              <S.CommentTextNumber>
+
+              </S.CommentTextNumber>
+              {isCommentOpen ?
+                <AiOutlineUp size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
+                :
+                <AiOutlineDown size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
+              }
+            </S.CommentText>
+            <S.CommentText>
+              좋아요
+              <IconButton icon="like" type="post" filled={isLike} contentId={data.post.id} />
+            </S.CommentText>
+          </S.HorizontalFirstStartContainer>
+          {isCommentOpen && (
+            <CommentSection page='post' postId={data.id} />
+          )}
+        </S.CommentContainer>
+
+        {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.
         </S.RecommendText>
       </S.RecommendContainer> */}
-    </Page>
-  )
-        }
+      </Page>
+    )
+  }
 }
 
 export default PostPlan;

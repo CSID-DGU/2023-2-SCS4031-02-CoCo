@@ -152,6 +152,7 @@ export const ToggleButtonContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0.5rem;
+  width: 7rem;
   background-color: #FFFFFF;
   border-radius: 0.5rem;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -160,8 +161,8 @@ export const ToggleButtonContainer = styled.div`
   font-size: 0.8rem;
   cursor: pointer;
 
-  position: absolute;
-  top: 1rem;
+  position: relative;
+  top: 0;
   left: -5rem;
 `
 

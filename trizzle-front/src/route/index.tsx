@@ -21,6 +21,7 @@ import AddPostPlanOpen from '../pages/AddPostPlan/AddPostPlanOpen';
 import Bookmark from '../pages/Bookmark';
 import FQA from '../pages/FQA';
 import PersonalInformationPage from '../pages/PersonalInformationPage';
+import ModPostPlan from '../pages/AddPostPlan/ModPostPlan';
 
 const Router = () => {
   return (
@@ -38,12 +39,12 @@ const Router = () => {
 
         <Route path='/post/plans/add' element={<AddPostPlanOpen />} />
         <Route path='/post/plans/add/:id' element={<AddPostPlan />} />
+        <Route path='/post/plans/modify/:id' element={<ModPostPlan />} />
         <Route path="/post/places/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
         <Route path="/post/plans/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
         <Route path='/post/plan/:id' element={<PostPlan />} />
 
         <Route path="/post/places/:id" element={<PostPlace />} />
-        <Route path="/post/places/secret/:id" element={<PostPlace />} />
 
         <Route path="/myfeed" element={<Myfeed />} />
         <Route path="/myfeed/posts" element={<MorePosts />} />
