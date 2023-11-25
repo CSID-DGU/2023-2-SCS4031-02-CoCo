@@ -50,13 +50,13 @@ const AddPostPlan: React.FC = () => {
 
   useEffect(() => {
     if (data.length !== 0) {
-      setTitle(data.post.planName);
-      setStartDate(data.post.planStartDate);
-      setEndDate(data.post.planEndDate);
-      setRegions(data.post.planLocation);
-      setPrevThema(data.post.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
-      setDayPlan(data.post.content);
-      setSelectedDayPlan(data.post.content);
+      setTitle(data.planName);
+      setStartDate(data.planStartDate);
+      setEndDate(data.planEndDate);
+      setRegions(data.planLocation);
+      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setDayPlan(data.content);
+      setSelectedDayPlan(data.content);
     }
   }, [data]);
 

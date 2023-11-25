@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 @WritingConverter
+@ReadingConverter
 public class ElasticConverter implements Converter<LocalDateTime, Long> {
     @Override
     public Long convert(LocalDateTime ldt) {
