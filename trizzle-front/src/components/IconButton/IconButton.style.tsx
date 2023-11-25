@@ -19,17 +19,17 @@ export const BackButton = styled.div<{type?:string}>`
     transform: scale(1.05);
   }
   .unlike-icon {
-    width: 1.1rem;
-    height: 1.1rem;
+    width: 1.4rem;
+    height: 1.4rem;
     color: #000;
     transition: transform 0.3s ease-in-out;
     &:active {
-      transform: scale(1.2);
+      transform: scale(1.5);
     }
   }
   .like-icon {
-    width: 1.3rem;
-    height: 1.3rem;
+    width: 1.4rem;
+    height: 1.4rem;
     color: #FF0000;
   }
   .unthumb-icon{

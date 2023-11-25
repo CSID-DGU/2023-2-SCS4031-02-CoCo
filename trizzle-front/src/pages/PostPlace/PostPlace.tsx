@@ -106,21 +106,21 @@ export default function PostPlace() {
         <S.HorizontalFirstStartContainer>
           <S.HorizontalFirstStartContainer>
             <S.InforContainer>
-              조회수
+              조회
             </S.InforContainer>
             <S.InforInputContainer>
               {data.views}
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
           <S.InforContainer>
-            추천수
+            좋아요
           </S.InforContainer>
           <S.InforInputContainer>
             {data.likeCount}
           </S.InforInputContainer>
           <S.HorizontalFirstStartContainer>
             <S.InforContainer>
-              북마크수
+              북마크
             </S.InforContainer>
             <S.InforInputContainer>
               {data.bookmarkCount}

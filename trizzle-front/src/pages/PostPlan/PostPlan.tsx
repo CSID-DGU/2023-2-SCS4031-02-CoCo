@@ -122,7 +122,7 @@ const PostPlan: React.FC = () => {
       <S.HorizontalContainer>
         <S.HorizontalFirstStartContainer>
           <S.InforContainer>
-            조회수
+            조회
           </S.InforContainer>
           <S.InforInputContainer>
             {data.post.views}
@@ -130,7 +130,7 @@ const PostPlan: React.FC = () => {
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
           <S.InforContainer>
-            추천수
+            좋아요
           </S.InforContainer>
           <S.InforInputContainer>
             {data.post.likeCount}
@@ -138,7 +138,7 @@ const PostPlan: React.FC = () => {
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
           <S.InforContainer>
-            북마크수
+            북마크
           </S.InforContainer>
           <S.InforInputContainer>
             {data.post.bookmarkCount}
