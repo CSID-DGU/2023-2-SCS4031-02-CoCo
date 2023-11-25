@@ -166,7 +166,7 @@ public class PostService {
     }
 
     public List<Post> findTop4Posts() {
-        List<Post> posts = postRepository.findTop4ByOrderByLikeCountDesc();
+        List<Post> posts = postRepository.findTop4ByPostSecretOrderByLikeCountDesc(false);
         return posts;
     }
 
