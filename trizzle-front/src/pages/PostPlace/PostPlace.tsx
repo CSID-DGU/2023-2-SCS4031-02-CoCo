@@ -62,7 +62,7 @@ export default function PostPlace() {
         <SearchBar type="normal"/>
 
         <S.InforFirstContainer>
-          <div>제목 {data.reviewTitle}</div>
+          <div>{data.reviewTitle}</div>
           {isMe ?
           <>
           <Menu item={menuItems}/>

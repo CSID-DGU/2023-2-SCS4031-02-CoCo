@@ -79,7 +79,7 @@ const PostPlan: React.FC = () => {
       <SearchBar type="normal"/>
 
       <S.InforFirstContainer>
-        <div>제목 {title}</div>
+        <div>{title}</div>
         {isMe ? <Menu item={[{ content: "삭제", onClick: () => {
             fetchData(`/api/posts/myposts/${placeId.id}`, "DELETE");
         }, isDelete: true }]}/>:
