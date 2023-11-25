@@ -56,7 +56,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
         return (
           <>
             {data.map((plans: any, index: number) => (
-              <>
+              <div key={index}>
                 <S.DayContainer key={index}>
                   {plans.day}일차
                 </S.DayContainer>
@@ -101,7 +101,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                     )}
                   </div>
                 ))}
-              </>
+              </div>
             ))
             }
           </>
@@ -114,7 +114,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
         )
       } else {
         return (
-          <>
+          <div key={index}>
             {data.map((plans: any, index: number) => (
               <div key={index}>
                 <S.DayContainer>
@@ -164,12 +164,10 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                       </S.PlacePostNoneContainer>
                     ) : (
                       place.keyword !== null ? (
-                        <S.PlaceContainer key={innerIndex} type={true}>
-                          <div>
-                            <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
-                            <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
-                          </div>
-                        </S.PlaceContainer>
+                        <S.KeywordContainer key={innerIndex} type={true}>
+                          <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
+                          <S.KeywordAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.KeywordAddress>
+                        </S.KeywordContainer>
                       ) : (
                         <S.PlaceContainer key={innerIndex} >
                           <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
@@ -208,7 +206,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
               </div>
             ))
             }
-          </>
+          </div>
         )
       }
   }
