@@ -27,6 +27,7 @@ const PostPlan: React.FC = () => {
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [planUser, setPlanUser] = useState<any>(null);
   const [isMe, setIsMe] = useState<boolean>(false);
+  const [placeCenter, setPlaceCenter] = useState<any>({ center: { lat: 0, lng: 0 } });
 
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
@@ -67,7 +68,6 @@ const PostPlan: React.FC = () => {
       setPlanUser(data.postUser);
       if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
         setIsMe(true);
-
       }
       if (data.post.postSecret) {
         const NewArray = [...menuItems];
@@ -80,11 +80,21 @@ const PostPlan: React.FC = () => {
   useEffect(() => {
     if (selectDay === 0) {
       setSelectedDayPlan(dayPlan);
-    } else {
+    } else if (selectDay <= dayPlan.length) {
       const newArray = [dayPlan[selectDay - 1]];
       setSelectedDayPlan(newArray);
     }
   }, [selectDay]);
+
+  useEffect(() => {
+    if (selectedDayPlan !== null) {
+      const rePlace = selectedDayPlan[0].placeList;
+      if (rePlace.length !== 0) {
+        const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
+        setPlaceCenter(newCenter);
+      }
+    }
+  }, [selectedDayPlan]);
 
   if (dayPlan !== null) {
     return (
@@ -126,8 +136,8 @@ const PostPlan: React.FC = () => {
               여행 테마
             </S.InforContainer>
             <S.Content>
-              {thema.map((thema: any) => (
-                <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
+              {thema.map((thema: any, index: number) => (
+                <S.ThemaBadge key={index}>{thema[0].name}</S.ThemaBadge>
               ))}
             </S.Content>
           </S.HorizontalFirstStartContainer>
@@ -161,7 +171,7 @@ const PostPlan: React.FC = () => {
         </S.HorizontalContainer>
 
         <S.MapAndDayPlanContainer>
-          {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+          {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={placeCenter.center} page="detail" width="50%" />}
           <S.DayPlanPostContainer>
             <S.DayPlanPostInnerContainer>
               <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
