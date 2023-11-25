@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from "react";
 import * as S from "./HomePlanSlider.style";
 import { HomePlanSliderProps } from "./HomePlanSlider.type";
 import { Link } from "react-router-dom";
+import defaultBanner from "../../assets/images/default_banner.jpg";
 
 
 
@@ -34,17 +35,17 @@ const HomePlanSlider: React.FC<HomePlanSliderProps> = (props: HomePlanSliderProp
 
         return (
           <S.Container key={index} ref={planRef}>
-            <S.Tumbnail src={plan.image}/>
+            <S.Tumbnail src={plan.thumnail? plan.thumnail : defaultBanner}/>
             <S.ContentContainer>
-              <S.Title>{plan.title}</S.Title>
+              <S.Title>{plan.postTitle}</S.Title>
               <S.TagContainer>
-                {plan.tags.map((tag, index) => {
+                {plan.plan.planThema.map((tag:string, index:number) => {
                   return (
                     <S.Tag key={index}>#{tag}</S.Tag>
                   )
                 })}
               </S.TagContainer>
-              <Link to={`/plans/${plan.id}`}>
+              <Link to={`/post/plan/${plan.id}`}>
                 <S.DetailLink>자세히</S.DetailLink>
               </Link>
             </S.ContentContainer>

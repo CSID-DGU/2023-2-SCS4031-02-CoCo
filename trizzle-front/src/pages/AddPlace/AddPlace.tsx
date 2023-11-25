@@ -27,7 +27,6 @@ export default function AddPlacePage() {
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
 
   useEffect(() => {
-    console.log(state);
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
@@ -77,7 +76,6 @@ export default function AddPlacePage() {
     }
 
     const json = JSON.stringify(ResultData);
-    console.log(ResultData);
     if (placeId.id) fetchData(`/api/reviews/${placeId.id}`, "PUT", json);
     else fetchData('/api/reviews', "POST", json);
   }

@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import {MyfeedLayout} from "../Page";
 import { useAsync } from "../../utils/API/useAsync";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import UserProfile from "../../shared/UserProfile";
 import PlaceCard from "../../components/PlaceCard";
 import PlanCard from "../../components/PlanCard";
 import * as S from "./Myfeed.style";
 import NullList from "../../components/NullList";
+import { HiOutlinePencilAlt } from "react-icons/hi";
 
 
 
@@ -17,16 +18,19 @@ const Myfeed = () => {
   const [place, setPlace] = useState<any[]>([]);
   const url = id? `/api/user/feed/${id}` : "/api/user/feed/my";
   const [state, _] = useAsync({url: url});
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(state.data);
+    if(state.error) {
+      alert("로그인이 필요합니다");
+      navigate("/");
+    }
     if (state.data) {
       setPlan(state.data.posts);
       setPlace(state.data.reviews);
       setUserData(state.data.profile);
     }
   },[state]);
-  console.log(plan.length)
 
   if(userData === null) return (<div>로딩중</div>)
   else {
@@ -36,8 +40,12 @@ const Myfeed = () => {
       src={userData.profileImage}
       />
       <S.HorizontalContainer>
-        <S.ListTitle>{id? "김희진님의 여행 일정 목록" : "나의 여행 일정 목록"}</S.ListTitle>
-        <S.PlusButton>더보기</S.PlusButton>
+        <S.ListTitle>{id? `${userData.nickname}님이 공유한 일정` : <>나의 여행 일정 목록
+          <S.PostButton onClick={() => navigate("/post/plans/add")}>
+            <HiOutlinePencilAlt className="icon"/>작성
+          </S.PostButton>
+        </>}</S.ListTitle>
+        <S.PlusButton onClick={() => navigate(id?`/feed/${id}/posts`:"/myfeed/posts")}>더보기</S.PlusButton>
       </S.HorizontalContainer>
       <S.PlanListContainer>
         {plan.length === 0 ?(
@@ -60,15 +68,22 @@ const Myfeed = () => {
         }
       </S.PlanListContainer>
       <S.HorizontalContainer>
-        <S.ListTitle>{id? "김희진님의 여행지" : "나의 여행지"}</S.ListTitle>
-        <S.PlusButton>더보기</S.PlusButton>
+        <S.ListTitle>{id? `${userData.nickname}님이 공유한 여행지`  : 
+        <>
+        나의 여행지
+        <S.PostButton onClick={() => navigate("/post/places/add")}>
+          <HiOutlinePencilAlt className="icon"/>작성
+        </S.PostButton>
+        </>}
+        </S.ListTitle>
+        <S.PlusButton onClick={() => navigate(id?`/feed/${id}/reviews`:"/myfeed/reviews")}>더보기</S.PlusButton>
       </S.HorizontalContainer>
       <S.PlaceListContainer>
         {place.length === 0 ?(
           <NullList content="공유된 여행지가 없습니다"/>
         ): (
           place.map((item, index) => (
-            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContent} src={item.thumbnail} postId={item.id}/>
+            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText ? item.reviewContentText : ""} src={item.thumbnail} postId={item.id}/>
           ))
         )}
         

@@ -15,6 +15,10 @@ export const ListTitle = styled.div`
   font-size: 1.6rem;
   font-weight: 500;
   color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3rem;
 `
 
 export const PlusButton = styled.button`
@@ -61,4 +65,43 @@ export const Empty = styled.div`
   font-size: 1.2rem;
   font-weight: 400;
   color: #868686;
+`
+
+export const PostButton = styled.button`
+  width: 5rem;
+  height: 2.5rem;
+  border-radius: 1rem;
+  background-color: #FCC400;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  .icon{
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+  }
+`
+
+
+export const PostContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin: 2rem 0 5rem 0;
+  align-items: flex-end;
+  justify-content: space-between;
+`
+
+export const ReviewContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin: 2rem 0 5rem 0;
+  gap: 2rem;
+  flex-direction: column;
 `

@@ -1,7 +1,6 @@
 import React from "react";
 import ProfileImage from "../../components/ProfileImage";
 import * as S from "./UserProfile.style";
-import { AiOutlineSetting } from "react-icons/ai";
 
 type UserProfileProps = {
   nickName: string;
@@ -24,7 +23,7 @@ const UserProfile: React.FC<UserProfileProps> = (props: UserProfileProps) => {
       <S.RightContainer>
         <S.HorizontalContainer>
           <S.Nickname>{props.nickName}</S.Nickname>
-          {props.isMe === true && <AiOutlineSetting size="1.8rem" color="#dadada"/>}
+          
         </S.HorizontalContainer>
         
         {/* <S.HorizontalContainer>

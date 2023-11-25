@@ -110,7 +110,6 @@ const EditPlanPage:React.FC = () => {
       content: placeList
     }
     const json = JSON.stringify(data);
-    console.log(json);
     const url = `/api/plans/${planId.id}`;
     fetchData(url, "PUT",json);
     };
@@ -121,7 +120,6 @@ const EditPlanPage:React.FC = () => {
       else if(state.data){
       if(state.data && state.data.message === "save success") {navigate(`/myfeed/plans/${state.data.planId}`) }
       else{
-        console.log(state.data);
         setLoadingData(state.data);
         setPlaceList(state.data.content);
         setDay(state.data.content.length);

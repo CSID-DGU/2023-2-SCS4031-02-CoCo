@@ -38,7 +38,7 @@ type commentData = {
   registrationDate : string;
   fix : boolean;
   likeCount : number;
-  isDeleted : boolean;
+  deleted : boolean;
 };
 
 

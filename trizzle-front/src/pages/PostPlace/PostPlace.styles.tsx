@@ -83,11 +83,11 @@ export const BookmarkButtonInnerText = styled.div<{isBookmark:boolean}>`
 
 export const InforFirstContainer = styled.div`
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   margin-top: 6rem;
   margin-bottom: 1.5rem;
-
   font-size: 2rem;
   font-weight: bold;
 `

@@ -45,10 +45,6 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
     fetchData(`/api/${props.page}/${props.postId}/comments/${id}`, "DELETE");
   }
 
-  const onLike = (id: string) => {
-    console.log(id);
-  }
-
   const onFix = (id: string) => {
     fetchData(`/api/${props.page}/${props.postId}/comments/${id}`, "PATCH");
   }
@@ -74,7 +70,6 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
         commentData : comment,
         key: comment.id,
         onDelete : (id:string) => onDelete(id),
-        onLike : (id : string) => onLike(id),
         onFix : (id : string) => onFix(id),
         onChildSubmit: (id: string, value: string, postId: string, reviewId: string) => onChildSubmit(id, value, postId, reviewId)
       }

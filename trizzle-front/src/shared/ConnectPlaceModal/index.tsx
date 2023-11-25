@@ -16,20 +16,13 @@ const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlace
   const [state, _] = useAsync({ url: `/api/reviews/place/${props.placeInfor.id}` });
 
   useEffect(() => {
-    console.log(state);
     if (state.error) {
       console.log(state.error);
       setPlanData([]);
     } else if (state.data) {
-      console.log(state.data);
       setPlanData(state.data);
     }
   }, [state]);
-
-  useEffect(() => {
-    console.log("확인", props.placeInfor.id);
-  }, [props.placeInfor]);
-
 
   const clickedPlace = (data: any) => {
     props.onClickedPlace(data);

@@ -94,7 +94,6 @@ const onPlaceDragEnd = (result:any, planList:any) => {
         placeList: dayPlan.placeList.filter((_:any, idx:any) => {return idx !== Number(sourceIndex)}),
       }
     } else if(dayPlan.day === Number(destinationDay)) {
-      console.log(dayPlan.placeList);
       if(dayPlan.placeList.length === 0) {
         return {
           day: dayPlan.day,

@@ -21,13 +21,23 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   const [propsData, setPropsData] = useState<any>(null);
 
   useEffect(() => {
-    if(state.error) console.log(state.error);
+    if(state.error) {
+      console.log(state.error);
+      sessionStorage.setItem("accountId", "");
+      sessionStorage.setItem("profileImg", "");
+    }
     else {
     if(state.data){
-      if(state.data.message&&state.data.message==="not login") setIsLogin(false);
+      if(state.data.message&&state.data.message==="not login") {
+        setIsLogin(false);
+        sessionStorage.setItem("accountId", "");
+        sessionStorage.setItem("profileImg", "");
+      }
       else {
         setIsLogin(true);
         setUserData(state.data);
+        sessionStorage.setItem("accountId", state.data.id);
+        sessionStorage.setItem("profileImg", state.data.profileImg);
       }
     }
   }

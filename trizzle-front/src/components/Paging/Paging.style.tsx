@@ -5,7 +5,9 @@ export const HorizontalContainer = styled.div`
   height: auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 3.125rem;
+  flex-wrap: wrap;
 `
 
 export const VerticalContainer = styled.div`
@@ -17,13 +19,13 @@ export const VerticalContainer = styled.div`
 `
 
 export const PageButtonContainer = styled.div`
-  width: 100%;
+  width: 60%;
   height: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto 5rem auto;
   gap: 1rem;
-  margin-bottom: 5rem;
 `
 
 export const NumberButton = styled.button<{isCurrent:boolean}>`

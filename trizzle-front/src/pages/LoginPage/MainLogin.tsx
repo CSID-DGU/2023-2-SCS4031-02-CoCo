@@ -26,25 +26,44 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
     "registrationId": data.registrationId,
   });
   const [state, fetchData] = useAsync({url: ""});
+  
+  const isValidId = (id: string) => {
+    const idReg = /^[a-zA-Z0-9]{4,12}$/;
+    return idReg.test(id);
+  }
+
+  const isValidNickname = (nickname: string) => {
+    const nicknameReg = /^[가-힣|a-z|A-Z|0-9|\*]{2,10}$/;
+    return nicknameReg.test(nickname);
+  }
+
   let components;
 
   const onThemaBadgeClick = (select: any) => {
-
-    // 선택한 아이템이 thema 배열에 이미 존재하는지 확인
     const itemExists = thema.some((item) => item.id === select.id);
-
     if (itemExists) {
-      // 이미 선택한 아이템이 있는 경우, 해당 아이템을 제거
       setThema((prev) => prev.filter((item) => item.id !== select.id));
     } else {
-      // 선택한 아이템이 없는 경우, 해당 아이템을 추가
       if (thema.length > 4) alert("5개 이하로 선택해주세요");
       else setThema((prev) => [...prev, select]);
     }
-
   };
 
+
+
   const addUser = () => {
+    if(!isValidId(userData.accountId)) {
+      alert("아이디는 4~12자의 영문 대소문자와 숫자로만 입력해주세요");
+      return;
+    }
+    if(!isValidNickname(userData.nickname)) {
+      alert("닉네임은 2~10자의 한글, 영문, 숫자로만 입력해주세요");
+      return;
+    }
+    if(thema.length === 0) {
+      alert("테마를 선택해주세요");
+      return;
+    }
     fetchData(`/api/login/additionalUserInfo?token=${token}`, "POST", userData);
   }
 
@@ -63,22 +82,6 @@ export default function MainLogin({ type, data, onClose }: MainLoginProps) {
       }
     }
   }, [state]);
-
-  // const addUser = async () => {
-  //   try {
-  //     const response = await axios.post(`${url}/login/additionalUserInfo?token=${token}`, userData);
-  //     const data = response.data; // 응답 데이터
-  //     if (data.message === "이미 존재하는 id 입니다.") {
-  //       alert("이미 존재하는 id입니다.");
-  //     } else if (data.message === "login success") {
-  //       alert("성공적으로 회원가입이 되었습니다. 로그인을 진행해주세요.");
-  //       onClose()
-  //       naviation('/')
-  //     }
-  //   } catch (e: any) {
-  //     console.log(e);
-  //   }
-  // }
 
   const closeModal = () => {
     onClose();

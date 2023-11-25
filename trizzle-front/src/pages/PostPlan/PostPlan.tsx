@@ -8,11 +8,12 @@ import PlanMap from "../../shared/PlanMap";
 import { koreaRegions } from "../../utils/Data/mapData";
 import UserPreview from "../../components/UserPreview";
 import { useAsync } from "../../utils/API/useAsync";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { tripThema } from "../../utils/Data/tripThema";
 import CommentSection from "../../shared/CommentSection";
 import SearchBar from "../../components/SearchBar";
 import IconButton from "../../components/IconButton";
+import Menu from "../../components/Menu";
 
 const PostPlan: React.FC = () => {
   const [data, setData] = useState<any>(null);
@@ -24,23 +25,24 @@ const PostPlan: React.FC = () => {
   const [dayPlan, setDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
+  const [planUser, setPlanUser] = useState<any>(null);
+  const [isMe, setIsMe] = useState<boolean>(false);
   
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
 
   const placeId = useParams<{ id: string }>();
-  const [state, _] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
+  const navigate = useNavigate();
+  const [state, fetchData] = useAsync({ url: `/api/posts/${placeId.id}`, method: "GET" });
 
   useEffect(() => {
 
     if (state.error) {
-      console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
-      console.log(state);
-      setData(state.data);
-      console.log(state.data);
+      if(state.data.message && state.data.message === "delete success") navigate("/myfeed");
+      else setData(state.data);
     }
   }, [state]);
 
@@ -55,6 +57,11 @@ const PostPlan: React.FC = () => {
       setSelectedDayPlan(data.post.plan.content);
       setIsLike(data.isLike);
       setIsBookmark(data.isBookmark);
+      setPlanUser(data.postUser);
+      if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
+        setIsMe(true);
+  
+      }
     }
   }, [data]);
 
@@ -66,14 +73,18 @@ const PostPlan: React.FC = () => {
       setSelectedDayPlan(newArray);
     }
   }, [selectDay]);
-  if(data !== null) {
+  if(dayPlan !== null) {
   return (
     <Page headersProps={{ isHome: false }}>
       <SearchBar type="normal"/>
 
       <S.InforFirstContainer>
         <div>제목 {title}</div>
+        {isMe ? <Menu item={[{ content: "삭제", onClick: () => {
+            fetchData(`/api/posts/myposts/${placeId.id}`, "DELETE");
+        }, isDelete: true }]}/>:
         <IconButton icon="bookmark" type="post" contentId={data.post.id} filled={isBookmark} />
+      }
       </S.InforFirstContainer>
       <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
@@ -144,7 +155,7 @@ const PostPlan: React.FC = () => {
         </S.DayPlanPostContainer>
       </S.MapAndDayPlanContainer>
 
-      <UserPreview nickName={data.accountId} keyword={["배낭", "자전거"]} />
+      <UserPreview accountId={planUser.accountId} nickName={planUser.nickname} keyword={planUser.thema} />
 
       <S.CommentContainer>
         <S.HorizontalFirstStartContainer>

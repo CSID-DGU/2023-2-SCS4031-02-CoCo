@@ -4,6 +4,8 @@ import Home from '../pages/Home';
 import AddPlacePage from '../pages/AddPlace/AddPlace';
 import PostPlace from '../pages/PostPlace/PostPlace';
 import Myfeed from '../pages/Myfeed';
+import MorePosts from '../pages/Myfeed/MorePosts';
+import MoreReviews from '../pages/Myfeed/MoreReviews';
 import PlanList from '../pages/PlanList';
 import PlanDetail from '../pages/PlanDetail';
 import KakaoRedirectPage from '../pages/KakaoRedirectPage/KakaoRedirectPage';
@@ -44,10 +46,14 @@ const Router = () => {
         <Route path="/post/places/secret/:id" element={<PostPlace />} />
 
         <Route path="/myfeed" element={<Myfeed />} />
+        <Route path="/myfeed/posts" element={<MorePosts />} />
+        <Route path="/myfeed/reviews" element={<MoreReviews />} />
         <Route path="/myfeed/plans" element={<PlanList />} />
         <Route path="/myfeed/plans/:id" element={<PlanDetail />} />
         <Route path="/myfeed/info" element={<UserInfoEdit />} />
         <Route path="/feed/:id" element={<Myfeed />} />
+        <Route path="/feed/posts/:id" element={<MorePosts />} />
+        <Route path="/feed/reviews/:id" element={<MoreReviews />} />
         <Route path="/myfeed/bookmarks" element={<Bookmark />} />
 
         <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />

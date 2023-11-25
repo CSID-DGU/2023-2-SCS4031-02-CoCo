@@ -94,8 +94,8 @@ const SearchPlan = () => {
               thumbnail={plan.thumbnail?plan.thumbnail:""}
               title={plan.postTitle}
               region={plan.plan.planLocation}
-              startDate={plan.startDate}
-              endDate={plan.endDate}
+              startDate={plan.plan.planStartDate}
+              endDate={plan.plan.planEndDate}
               likeCount={plan.likeCount===null?0:plan.likeCount}
               commentCount={plan.commentCount?plan.commentCount:0}
               thema={plan.plan.planThema} />

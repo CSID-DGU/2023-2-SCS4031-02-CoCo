@@ -48,7 +48,7 @@ const SearchBar:React.FC<SearchBarProps> = (props: SearchBarProps) => {
             {isFieldOpen &&
               <S.PlaceOptionContainer type={props.type? props.type: "normal"}>
               {koreaRegions.map((place, index) => (
-                <S.PlaceOptionButton key={index} onClick={() => setSearchField(place.name)} >
+                <S.PlaceOptionButton key={index} onClick={() =>{ setSearchField(place.name); setIsFieldOpen(!isFieldOpen)}} >
                   {place.name}
                 </S.PlaceOptionButton>
               ))}
@@ -57,7 +57,7 @@ const SearchBar:React.FC<SearchBarProps> = (props: SearchBarProps) => {
           </S.DropdownContainer>
 
           <S.InputValueContainer
-            placeholder="검색어를 입려해주세요"
+            placeholder="검색어를 입력해주세요"
             type="text"
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}

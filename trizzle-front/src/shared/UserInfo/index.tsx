@@ -76,6 +76,10 @@ const UserInfo = () => {
       // 이미 선택한 아이템이 있는 경우, 해당 아이템을 제거
       setThema((prev) => prev.filter((item) => item.id !== select.id));
     } else {
+      if(thema.length >= 5) {
+        alert("5개까지만 선택 가능합니다");
+        return;
+      }
       // 선택한 아이템이 없는 경우, 해당 아이템을 추가
       setThema((prev) => [...prev, select]);
     }
@@ -110,7 +114,7 @@ const UserInfo = () => {
   return (
     <S.Container>
       <S.SubmmitButton onClick={onUpdateData} disabled={!ableSubmit}>저장</S.SubmmitButton>
-      <ProfileImage type="mid" isMe={true} margin="0 auto 0.5rem auto" previewURL={previewURL} setPreviewURL={(previewURL:string) => setPreviewURL(previewURL)}/>
+      <ProfileImage type="mid" isMe={true} margin="0 auto 0.5rem auto" previewURL={previewURL} setPreviewURL={(previewURL:string) => setPreviewURL(previewURL)} src={previewURL}/>
       <S.HorizontalContainer>
         <S.Title>이름</S.Title>
         <S.Content>{userData.name}</S.Content>
