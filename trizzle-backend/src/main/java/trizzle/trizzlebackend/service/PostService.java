@@ -46,12 +46,13 @@ public class PostService {
         plan.setPostId(insert.getId());
         planService.updatePlan(plan, plan.getId(), plan.getAccountId());
 
-
+        /*elasticSearch 위해*/
+        if (!insert.isPostSecret()) { // 공개 post만 검색가능하게 저장되도록
             ElasticPost elasticPost= new ElasticPost();
             elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
                     insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
             elasticPostRepository.save(elasticPost);
-
+        }
         return insert;
 
     }

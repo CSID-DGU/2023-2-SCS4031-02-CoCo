@@ -45,13 +45,15 @@ public class ReviewService {
         if (!existingPlace.isPresent()) {    // place정보가 db에 없다면 저장
             placeService.savePlace(place);
         }
+        /*elasticSearch 위해*/
         Review insert = reviewRepository.save(review);
-        ElasticReview elasticReview = new ElasticReview();
-        elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
-                insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
-                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
-        elasticReviewRepository.save(elasticReview);
-
+        if (!review.isReviewSecret()) { //공개 review만 검색가능하게 저장되도록
+            ElasticReview elasticReview = new ElasticReview();
+            elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
+                    insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
+                    insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
+            elasticReviewRepository.save(elasticReview);
+        }
         return insert;
     }
 
