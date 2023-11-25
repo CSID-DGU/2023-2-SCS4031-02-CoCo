@@ -42,8 +42,7 @@ const AddPostPlan: React.FC = () => {
       if (state.data.message === "update success" && state.data.reviewId) {
         // setData({ ...state.data, reviewId: state.data.reviewId });
       }
-      else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
-      else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
+      else if (state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
       else setData(state.data);
     }
   }, [state]);
@@ -128,7 +127,7 @@ const AddPostPlan: React.FC = () => {
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
         const json = JSON.stringify(ResultData);
-        fetchData(`/api/posts`, 'Post', json);
+        fetchData(`/api/posts`, 'POST', json);
       }
     } else if (type === "secret") {
       setSecret(true);
@@ -141,7 +140,7 @@ const AddPostPlan: React.FC = () => {
       }
 
       const json = JSON.stringify(ResultData);
-      fetchData(`/api/posts`, 'Post', json);
+      fetchData(`/api/posts`, 'POST', json);
     }
   }
 
