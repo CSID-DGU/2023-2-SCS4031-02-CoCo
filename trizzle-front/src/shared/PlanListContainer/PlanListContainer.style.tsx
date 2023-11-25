@@ -26,7 +26,11 @@ export const LeftContainer = styled.div<{past:boolean}>`
   height: 100%;
   border-top-left-radius: 0.75rem;
   border-bottom-left-radius: 0.75rem;
-  background-color: ${props => props.past ? "#BDBDBD" : "#F9E0E3"};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: ${props => props.past ? "#FFF7DA" : "#FCC400"};
 `
 
 export const RightContainer = styled.div`

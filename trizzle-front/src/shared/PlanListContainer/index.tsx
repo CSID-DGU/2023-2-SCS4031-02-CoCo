@@ -1,6 +1,7 @@
 import React from "react";
 import * as S from "./PlanListContainer.style";
 import {BiMapPin} from "react-icons/bi";
+import { FaMapSigns } from "react-icons/fa";
 
 
 
@@ -17,7 +18,9 @@ export const PlanListContainer: React.FC<PlanListContainerProps> = (props: PlanL
 
   return (
         <S.Container past={props.past}>
-          <S.LeftContainer past={props.past}/>
+          <S.LeftContainer past={props.past}>
+            {props.plan.postId && <FaMapSigns size="1.5rem" color={props.past? "#808080" : "#89711B"}/>}
+          </S.LeftContainer>
           <S.RightContainer>
             <S.Title past={props.past}>{props.plan.planName}</S.Title>
             <S.Location past={props.past}>
