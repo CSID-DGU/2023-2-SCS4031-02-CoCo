@@ -9,13 +9,12 @@ import * as S from './PostPlace.styles';
 import UserPreview from "../../components/UserPreview";
 import Menu from "../../components/Menu";
 import SearchBar from "../../components/SearchBar";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import CommentSection from "../../shared/CommentSection";
 import IconButton from "../../components/IconButton";
 
 export default function PostPlace() {
-  const location = useLocation();
   const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
   const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
@@ -25,6 +24,7 @@ export default function PostPlace() {
   const [isMe, setIsMe] = useState<boolean>(false);
   const [menuItems, setMenuItems] = useState<any[]>([{
     content: "삭제", onClick: () => {
+      alert("게시글을 삭제하시겠습니까?")
       fetchData(`/api/reviews/myreviews/${placeId.id}`, "DELETE");
     }, isDelete: true
   }]);
@@ -41,6 +41,7 @@ export default function PostPlace() {
         alert("삭제되었습니다");
         navigate("/myfeed");
       } else {
+        // console.log(state.data.review.reviewSecret);
         setData(state.data.review);
         setIsLike(state.data.isLike);
         setIsBookmark(state.data.isBookmark);
@@ -52,11 +53,15 @@ export default function PostPlace() {
     }
   }, [state]);
 
-  if (data !== null) {
-    if (location.pathname.startsWith("/post/places/secret/")) {
-      setMenuItems((...prev) => [...prev, { content: "수정", onClick: () => { navigate(`/post/places/${placeId.id}/modify`) }, isDelete: false }]);
+  useEffect(() => {
+    if (data !== null) {
+      if (data.reviewSecret) {
+        const NewArray = [...menuItems];
+        NewArray.push({ content: "수정", onClick: () => { navigate(`/post/places/${placeId.id}/modify`) }, isDelete: false });
+        setMenuItems(NewArray);
+      }
     }
-  }
+  }, [data]);
 
   if (data !== null) {
     return (
