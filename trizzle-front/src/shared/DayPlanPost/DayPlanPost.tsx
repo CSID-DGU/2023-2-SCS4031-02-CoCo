@@ -84,18 +84,14 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                     ) : (
                       place.keyword !== null ? (
                         <S.PlaceContainer key={innerIndex} type={true}>
-                          <div style={{ width: '100%', height: '100%' }}>
                             <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
                             <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
-                          </div>
                         </S.PlaceContainer>
                       ) : (
                         <S.PlaceContainer key={innerIndex} >
-                          <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <S.PalceText>
                               {place.placeName}
                             </S.PalceText>
-                          </div>
                         </S.PlaceContainer>
                       )
                     )}
