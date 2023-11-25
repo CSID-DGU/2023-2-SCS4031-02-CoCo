@@ -56,7 +56,7 @@ public class LikeService {
                     /* 좋아요 누르면 count 1 증가 */
                     Post post = postService.findPost(contentId);
                     post.increaseLikes();
-                    postRepository.save(post);
+                    postService.insertPost(post, accountId);
                     break;
 
                 case "review":
@@ -71,7 +71,7 @@ public class LikeService {
                     /* 좋아요 누르면 count 1 증가 */
                     Review review = reviewService.findReview(contentId);
                     review.increaseLikes();
-                    reviewRepository.save(review);
+                    reviewService.insertReview(review, accountId);
                     break;
 
                 case "comment":
@@ -99,14 +99,14 @@ public class LikeService {
                     /* 좋아요 취소하면 count 1 감소 */
                     Post post = postService.findPost(contentId);
                     post.decreaseLikes();
-                    postRepository.save(post);
+                    postService.insertPost(post, accountId);
                     break;
 
                 case "review":
                     /* 좋아요 취소하면 count 1 감소 */
                     Review review = reviewService.findReview(contentId);
                     review.decreaseLikes();
-                    reviewRepository.save(review);
+                    reviewService.insertReview(review, accountId);
                     break;
 
                 case "comment":

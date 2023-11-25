@@ -35,10 +35,12 @@ public class PostService {
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
     private String secretKey;
-    public Post insertPost(Post post, String accountId) {
-        post.setAccountId(accountId);
-        LocalDateTime dateTime = LocalDateTime.now();
-        post.setPostRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+    public Post insertPost(Post post, String accountId) {   // 게시글 저장, 수정, 좋아요 수 업데이트에 사용
+        if (post.getId() == null) {
+            post.setAccountId(accountId);
+            LocalDateTime dateTime = LocalDateTime.now();
+            post.setPostRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        }
 
         /*post로 게시한 plan일 경우 plan에 postId 저장하기 위해*/
         Post insert = postRepository.save(post);

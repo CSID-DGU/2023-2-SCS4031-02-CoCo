@@ -36,9 +36,11 @@ public class ReviewService {
     private String secretKey;
 
     public Review insertReview(Review review, String accountId) {
-        review.setAccountId(accountId);
-        LocalDateTime dateTime = LocalDateTime.now();
-        review.setReviewRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        if (review.getId() == null) {
+            review.setAccountId(accountId);
+            LocalDateTime dateTime = LocalDateTime.now();
+            review.setReviewRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        }
 
         Place place = review.getPlace();
         Optional<Place> existingPlace = placeService.findByPlaceId(place.getId());
