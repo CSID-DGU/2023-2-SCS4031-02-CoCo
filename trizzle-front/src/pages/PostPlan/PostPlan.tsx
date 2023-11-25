@@ -176,7 +176,7 @@ const PostPlan: React.FC = () => {
           </S.CommentText>
         </S.HorizontalFirstStartContainer>
         {isCommentOpen && (
-          <CommentSection page='post' postId={data.id} />
+          <CommentSection page='post' postId={data.post.id} />
         )}
       </S.CommentContainer>
 

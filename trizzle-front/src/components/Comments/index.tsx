@@ -24,8 +24,6 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
     setChildCommentOpen(!childCommentOpen);
   }
 
-  const onHandleSubmit = () => {};
-
   useEffect(() => {
     if(value !== "") setDisabled(false);
     else setDisabled(true);
@@ -42,10 +40,16 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
 
     setMenuItems(menuItem);
   }
-
-
-  
   }, []);
+
+  const onChildSubmit = () => {
+    if(props.onChildSubmit) {
+      props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId);
+      setValue("");
+    } else {
+      return;
+    }
+  }
     
     if(props.commentData.commentData && props.commentData.commentData.deleted){
       return (
@@ -88,13 +92,15 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           </S.PostCommentContent>
         </S.PostCommentContainer>
           {childCommentOpen &&
+          <S.ChildCommentContainer>
                   <CommentInput
                   placeholder="댓글 입력..."
                   value={value}
                   onChange={onChange}
-                  onSubmit={() => props.onChildSubmit?props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId) : onHandleSubmit()}
+                  onSubmit={onChildSubmit}
                   disabled={disabled}
-            />
+                  />
+            </S.ChildCommentContainer>
                 }
         </>
       )
@@ -103,7 +109,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
 
 const Comments:React.FC<CommentsProps> = (props: CommentsProps) => { 
   const [childOpen, setChildOpen] = useState<boolean>(false);
-  const [childComments, setChildComments] = useState<any>(props.commentData.childComment);
+  const [childComments, setChildComments] = useState<any>([]);
 
   const onMoreButtonClick = () => {
     setChildOpen(!childOpen);
@@ -111,7 +117,7 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
 
   useEffect(() => {
     setChildComments(props.commentData.childComment);
-  }, [])
+  }, [props])
   return (
     <>
     {props.commentData.childComment && props.commentData.childComment.length > 0 ? (

@@ -67,7 +67,7 @@ export default function PostPlace() {
           <>
           <Menu item={menuItems}/>
         </>:
-        <IconButton icon="bookmark" type="post" contentId={data.id} filled={isBookmark} />
+        <IconButton icon="bookmark" type="review" contentId={data.id} filled={isBookmark} />
       }
         </S.InforFirstContainer>
         <S.HorizontalFirstStartContainer>

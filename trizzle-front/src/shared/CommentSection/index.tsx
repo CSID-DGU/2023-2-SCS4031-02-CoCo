@@ -31,14 +31,16 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
     fetchData("/api/comments", "POST", submitData);
   }
 
-  const onChildSubmit = (id: string, value: string, postId: string, reviewId: string) => {
+  const onChildSubmit = (id: string, val: string, postId: string, reviewId: string) => {
     const submitData = {
-      commentContent: value,
+      commentContent: val,
       postId: postId,
       reviewId: reviewId,
       parentId: id
     };
-    fetchData("/api/comments", "POST", submitData);
+
+    const json = JSON.stringify(submitData);
+    fetchData("/api/comments", "POST", json);
   };
 
   const onDelete = (id: string) => {
@@ -54,18 +56,19 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
       console.log(state.error);
     }
     else {
+
+      if(state.error) console.log(state.error);
       if(state.data) {
         let data;
         if(state.data.message === "success") data=state.data.comments;
         else data = state.data;
         setCommentList(data);
-        
       }
     }
   }, [state]);
 
   useEffect(() => {
-    setCommentPropList(commentList.map((comment:any) => {
+    const updateLists = commentList.map((comment:any) => {
       return {
         commentData : comment,
         key: comment.id,
@@ -73,9 +76,10 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
         onFix : (id : string) => onFix(id),
         onChildSubmit: (id: string, value: string, postId: string, reviewId: string) => onChildSubmit(id, value, postId, reviewId)
       }
-    }));
-  }, [commentList]);
+    });
 
+    setCommentPropList(updateLists);
+  }, [commentList]);
 
   useEffect(() => {
     if(value !== "") setAbleSubmit(true);

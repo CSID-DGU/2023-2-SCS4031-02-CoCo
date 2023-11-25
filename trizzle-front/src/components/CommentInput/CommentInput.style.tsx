@@ -18,7 +18,7 @@ export const ContentContainer = styled.div`
 ` 
 
 export const TextArea = styled.textarea`
-  width: 66rem;
+  width: 97%;
   height: fit-content;
   word-wrap: break-word;
   border: none;

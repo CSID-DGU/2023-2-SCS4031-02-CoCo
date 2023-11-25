@@ -5,7 +5,7 @@ import ProfileImage from "../ProfileImage";
 
 const CommentInput: React.FC<CommentInputProps> = (props: CommentInputProps) => {
     const textarea = useRef<HTMLTextAreaElement>(null);
-    const src = sessionStorage.getItem("profileImg") !== null ? sessionStorage.getItem("profileImg") : "";
+    const src = sessionStorage.getItem("profileImg") !== null && sessionStorage.getItem("profileImg") !== "" ? sessionStorage.getItem("profileImg") : "";
 
     useEffect(() => {
       textarea.current!.style.height = "auto";
