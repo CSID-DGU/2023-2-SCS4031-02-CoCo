@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.dto.response.PostDto;
@@ -47,10 +48,13 @@ public class PostService {
 
     }
 
+    @Transactional
     public PostDto searchPost(String postId, HttpServletRequest request) {
         Optional<Post> postOptional = postRepository.findById((postId));
         if (postOptional.isPresent()) {   // postId에 해당하는 post가 있을 경우
             Post post = postOptional.get();
+            post.increaseViewCounts();  // 조회수 증가
+            postRepository.save(post);
             User postUser = userService.searchUser(post.getAccountId());
             PostDto postDto = new PostDto();
             postDto.setPost(post);

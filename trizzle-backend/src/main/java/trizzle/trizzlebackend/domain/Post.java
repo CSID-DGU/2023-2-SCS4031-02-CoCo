@@ -22,6 +22,7 @@ public class Post {
     private Plan plan;
     private int likeCount;
     private int bookmarkCount;
+    private int viewCount;
     private String thumnail;
 
     public void increaseLikes() {   // 좋아요 수 증가
@@ -38,4 +39,9 @@ public class Post {
     public void decreaseBookmarks() {
         this.bookmarkCount--;
     }
+
+    public void increaseViewCounts() {
+        this.viewCount++;
+    }
+
 }

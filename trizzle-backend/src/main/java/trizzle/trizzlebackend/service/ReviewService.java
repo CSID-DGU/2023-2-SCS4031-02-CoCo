@@ -59,6 +59,8 @@ public class ReviewService {
         Optional<Review> reviewOptional = reviewRepository.findById((reviewId));
         if (reviewOptional.isPresent()) {   // reviewId에 해당하는 review가 있을 경우
             Review review = reviewOptional.get();
+            review.increaseViewCounts();    //조회수 증가
+            reviewRepository.save(review);
             User reviewUser = userService.searchUser(review.getAccountId());
             ReviewDto reviewDto = new ReviewDto();
             reviewDto.setReview(review);
