@@ -30,6 +30,7 @@ public class PostService {
     private final BookmarkRepository bookmarkRepository;
     private final LikeRepository likeRepository;
     private final UserService userService;
+    private final PlanService planService;
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
@@ -38,11 +39,18 @@ public class PostService {
         post.setAccountId(accountId);
         LocalDateTime dateTime = LocalDateTime.now();
         post.setPostRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+
+        /*post로 게시한 plan일 경우 plan에 postId 저장하기 위해*/
         Post insert = postRepository.save(post);
-        ElasticPost elasticPost= new ElasticPost();
-        elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
-                insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
-        elasticPostRepository.save(elasticPost);
+        Plan plan = insert.getPlan();
+        plan.setPostId(insert.getId());
+        planService.updatePlan(plan, plan.getId(), plan.getAccountId());
+
+
+            ElasticPost elasticPost= new ElasticPost();
+            elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
+                    insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
+            elasticPostRepository.save(elasticPost);
 
         return insert;
 
