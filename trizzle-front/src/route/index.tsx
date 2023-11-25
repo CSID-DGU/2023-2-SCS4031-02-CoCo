@@ -45,7 +45,6 @@ const Router = () => {
         <Route path='/post/plan/:id' element={<PostPlan />} />
 
         <Route path="/post/places/:id" element={<PostPlace />} />
-        <Route path="/post/places/secret/:id" element={<PostPlace />} />
 
         <Route path="/myfeed" element={<Myfeed />} />
         <Route path="/myfeed/posts" element={<MorePosts />} />
