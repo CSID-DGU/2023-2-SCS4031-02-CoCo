@@ -26,25 +26,6 @@ const Footer: React.FC = () => {
             </div>
           </S.VerticalContainer>
 
-          {/**추후 설명 페이지 추가 */}
-          <S.VerticalContainer>
-            <S.LargeText>제공 서비스</S.LargeText>
-            <S.HorizontalContainer style={{ margin: '0.2rem 0 0 0.5rem' }}>
-              <S.MIddleText>리뷰 등록</S.MIddleText>
-              <S.Sortation>|</S.Sortation>
-              <S.MIddleText>내 일정 등록</S.MIddleText>
-              <S.Sortation>|</S.Sortation>
-              <S.MIddleText>일정 리뷰 연동</S.MIddleText>
-              <S.Sortation>|</S.Sortation>
-              <S.MIddleText>일정 복사</S.MIddleText>
-              <S.Sortation>|</S.Sortation>
-              <S.MIddleText>일정 / 장소 검색</S.MIddleText>
-              <S.Sortation>|</S.Sortation>
-              <S.MIddleText>일정 / 장소 추천</S.MIddleText>
-            </S.HorizontalContainer>
-
-          </S.VerticalContainer>
-
         </S.HorizontalContainer>
         <Link style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }} to='https://github.com/CSID-DGU/2023-2-SCS4031-02-CoCo.git' target="_blank">
           <img src={githubLogo} alt="github" style={{ margin: '0 1rem 0 0', width: '1.5rem' }} />
