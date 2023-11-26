@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.dto.response.PostDto;
@@ -29,28 +30,42 @@ public class PostService {
     private final BookmarkRepository bookmarkRepository;
     private final LikeRepository likeRepository;
     private final UserService userService;
+    private final PlanService planService;
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
     private String secretKey;
-    public Post insertPost(Post post, String accountId) {
-        post.setAccountId(accountId);
-        LocalDateTime dateTime = LocalDateTime.now();
-        post.setPostRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
-        Post insert = postRepository.save(post);
-        ElasticPost elasticPost= new ElasticPost();
-        elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
-                insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
-        elasticPostRepository.save(elasticPost);
+    public Post insertPost(Post post, String accountId) {   // 게시글 저장, 수정, 좋아요 수 업데이트에 사용
+        if (post.getId() == null) {
+            post.setAccountId(accountId);
+            LocalDateTime dateTime = LocalDateTime.now();
+            post.setPostRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        }
 
+        /*post로 게시한 plan일 경우 plan에 postId 저장하기 위해*/
+        Post insert = postRepository.save(post);
+        Plan plan = insert.getPlan();
+        plan.setPostId(insert.getId());
+        planService.updatePlan(plan, plan.getId(), plan.getAccountId());
+
+        /*elasticSearch 위해*/
+        if (!insert.isPostSecret()) { // 공개 post만 검색가능하게 저장되도록
+            ElasticPost elasticPost= new ElasticPost();
+            elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
+                    insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
+            elasticPostRepository.save(elasticPost);
+        }
         return insert;
 
     }
 
+    @Transactional
     public PostDto searchPost(String postId, HttpServletRequest request) {
         Optional<Post> postOptional = postRepository.findById((postId));
         if (postOptional.isPresent()) {   // postId에 해당하는 post가 있을 경우
             Post post = postOptional.get();
+            post.increaseViewCounts();  // 조회수 증가
+            postRepository.save(post);
             User postUser = userService.searchUser(post.getAccountId());
             PostDto postDto = new PostDto();
             postDto.setPost(post);
@@ -153,7 +168,7 @@ public class PostService {
     }
 
     public List<Post> findTop4Posts() {
-        List<Post> posts = postRepository.findTop4ByOrderByLikeCountDesc();
+        List<Post> posts = postRepository.findTop4ByPostSecretOrderByLikeCountDesc(false);
         return posts;
     }
 
