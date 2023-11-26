@@ -48,7 +48,7 @@ export type PlaceList = {
 
 
 export type StaticMaspProps = {
-  center: string;
+  center: any;
   width: string;
   height: string;
 }

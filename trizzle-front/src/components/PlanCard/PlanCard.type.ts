@@ -4,6 +4,7 @@ export type PlanCardProps = {
   thumbnail: string;
   title: string;
   region: string;
+  placeCenter: any;
   startDate: string;
   endDate: string;
   likeCount: number;
