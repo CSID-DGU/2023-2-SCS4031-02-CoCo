@@ -8,6 +8,7 @@ import res from "src/assets/keywords/trans.svg"
 import trans from "../../assets/keywords/trans.svg"
 import rest from "../../assets/keywords/rest.svg"
 import shopping from "../../assets/keywords/shopping.svg"
+import NullList from "../../components/NullList";
 
 type DayPlanPostProps = {
   type?: string;
@@ -36,6 +37,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   }
 
   useEffect(() => {
+    console.log("컴온", props.dayList[0].placeList);
     setData(props.dayList);
   }, [props.dayList]);
 
@@ -60,11 +62,76 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 <S.DayContainer key={index}>
                   {plans.day}일차
                 </S.DayContainer>
-                {plans.placeList.map((place: any, innerIndex: number) => (
-                  <div key={innerIndex}>
-                    {place.review && place.review !== null ? (
-                      <Link to={`/post/places/${place.review.id}`} target="_blank">
-                        <S.PlacePostContainer>
+                {plans.placeList.length === 0 ? (
+                  <NullList content="공유된 일정이 없습니다" />
+                ) : (
+                  plans.placeList.map((place: any, innerIndex: number) => (
+                    <div key={innerIndex}>
+                      {place.review && place.review !== null ? (
+                        <Link to={`/post/places/${place.review.id}`} target="_blank">
+                          <S.PlacePostContainer>
+                            <div style={{ width: '100%', height: '100%' }}>
+                              {
+                                place.review.thumbnail === '' ?
+                                  <S.PlaceLogo>
+                                    <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
+                                  </S.PlaceLogo>
+                                  :
+                                  <S.PlaceImage src={place.review.thumbnail} alt="image" />
+                              }
+                              <S.PlaceInfo>
+                                <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
+                                <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
+                              </S.PlaceInfo>
+                            </div>
+                          </S.PlacePostContainer>
+                        </Link>
+                      ) : (
+                        place.keyword !== null ? (
+                          <S.PlaceContainer key={innerIndex} type={true}>
+                            <div style={{ width: '100%', height: '100%' }}>
+                              <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
+                              <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
+                            </div>
+                          </S.PlaceContainer>
+                        ) : (
+                          <S.PlaceContainer key={innerIndex} >
+                            <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                              <S.PalceText>
+                                {place.placeName}
+                              </S.PalceText>
+                            </div>
+                          </S.PlaceContainer>
+                        )
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            ))}
+          </>
+        )
+      }
+    default:
+      if (!(data && data.length)) {
+        return (
+          <div>정해진 일정이 없습니다.</div>
+        )
+      } else {
+        return (
+          <>
+            {data.map((plans: any, index: number) => (
+              <div key={index}>
+                <S.DayContainer>
+                  {plans.day}일차
+                </S.DayContainer>
+                {plans.placeList.length === 0 ? (
+                  <NullList content="공유된 일정이 없습니다" />
+                ) : (
+                  plans.placeList.map((place: any, innerIndex: number) =>
+                    <div key={innerIndex}>
+                      {place.review && place.review !== null ? (
+                        <S.PlacePostNoneContainer>
                           <div style={{ width: '100%', height: '100%' }}>
                             {
                               place.review.thumbnail === '' ?
@@ -79,99 +146,8 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                               <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
                             </S.PlaceInfo>
                           </div>
-                        </S.PlacePostContainer>
-                      </Link>
-                    ) : (
-                      place.keyword !== null ? (
-                        <S.PlaceContainer key={innerIndex} type={true}>
-                          <div style={{ width: '100%', height: '100%' }}>
-                            <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
-                            <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
-                          </div>
-                        </S.PlaceContainer>
-                      ) : (
-                        <S.PlaceContainer key={innerIndex} >
-                          <div style={{ width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <S.PalceText>
-                              {place.placeName}
-                            </S.PalceText>
-                          </div>
-                        </S.PlaceContainer>
-                      )
-                    )}
-                  </div>
-                ))}
-              </div>
-            ))
-            }
-          </>
-        )
-      }
-    default:
-      if (!(data && data.length)) {
-        return (
-          <div>정해진 일정이 없습니다.</div>
-        )
-      } else {
-        return (
-          <div key={index}>
-            {data.map((plans: any, index: number) => (
-              <div key={index}>
-                <S.DayContainer>
-                  {plans.day}일차
-                </S.DayContainer>
-                {plans.placeList.map((place: any, innerIndex: number) =>
-                  <div key={innerIndex}>
-                    {place.review && place.review !== null ? (
-                      <S.PlacePostNoneContainer>
-                        <div style={{ width: '100%', height: '100%' }}>
-                          {
-                            place.review.thumbnail === '' ?
-                              <S.PlaceLogo>
-                                <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
-                              </S.PlaceLogo>
-                              :
-                              <S.PlaceImage src={place.review.thumbnail} alt="image" />
-                          }
-                          <S.PlaceInfo>
-                            <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
-                            <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
-                          </S.PlaceInfo>
-                        </div>
-                        <S.ModifyButton onClick={() => openAndCloseDetail(index, innerIndex)}>
-                          수정
-                          {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
-                            <S.ToggleButtonContainer>
-                              <S.ToggleButtonOption onClick={() => {
-                                if (props.onNewPostPlace) {
-                                  props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
-                                  openAndCloseDetail(index, innerIndex);
-                                }
-                              }}>
-                                새 리뷰 작성
-                              </S.ToggleButtonOption>
-                              <S.ToggleButtonOption onClick={() => {
-                                if (props.onConnetPostPlace) {
-                                  props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
-                                  openAndCloseDetail(index, innerIndex);
-                                }
-                              }}>
-                                리뷰 불러오기
-                              </S.ToggleButtonOption>
-                            </S.ToggleButtonContainer>
-                          }
-                        </S.ModifyButton>
-                      </S.PlacePostNoneContainer>
-                    ) : (
-                      place.keyword !== null ? (
-                        <S.KeywordContainer key={innerIndex} type={true}>
-                          <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
-                          <S.KeywordAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.KeywordAddress>
-                        </S.KeywordContainer>
-                      ) : (
-                        <S.PlaceContainer key={innerIndex} >
-                          <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
-                            <PiDotsThree size={25} />
+                          <S.ModifyButton onClick={() => openAndCloseDetail(index, innerIndex)}>
+                            수정
                             {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                               <S.ToggleButtonContainer>
                                 <S.ToggleButtonOption onClick={() => {
@@ -192,21 +168,53 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                                 </S.ToggleButtonOption>
                               </S.ToggleButtonContainer>
                             }
-                          </S.ThreeDotsButton>
-                          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                            <S.PalceText>
-                              {place.placeName}
-                            </S.PalceText>
-                          </div>
-                        </S.PlaceContainer>
-                      )
-                    )}
-                  </div >
+                          </S.ModifyButton>
+                        </S.PlacePostNoneContainer>
+                      ) : (
+                        place.keyword !== null ? (
+                          <S.KeywordContainer key={innerIndex} type={true}>
+                            <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
+                            <S.KeywordAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.KeywordAddress>
+                          </S.KeywordContainer>
+                        ) : (
+                          <S.PlaceContainer key={innerIndex} >
+                            <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
+                              <PiDotsThree size={25} />
+                              {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
+                                <S.ToggleButtonContainer>
+                                  <S.ToggleButtonOption onClick={() => {
+                                    if (props.onNewPostPlace) {
+                                      props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                      openAndCloseDetail(index, innerIndex);
+                                    }
+                                  }}>
+                                    새 리뷰 작성
+                                  </S.ToggleButtonOption>
+                                  <S.ToggleButtonOption onClick={() => {
+                                    if (props.onConnetPostPlace) {
+                                      props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                      openAndCloseDetail(index, innerIndex);
+                                    }
+                                  }}>
+                                    리뷰 불러오기
+                                  </S.ToggleButtonOption>
+                                </S.ToggleButtonContainer>
+                              }
+                            </S.ThreeDotsButton>
+                            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                              <S.PalceText>
+                                {place.placeName}
+                              </S.PalceText>
+                            </div>
+                          </S.PlaceContainer>
+                        )
+                      )}
+                    </div>
+                  )
                 )}
               </div>
-            ))
-            }
-          </div>
+            ))}
+          </>
         )
       }
   }
