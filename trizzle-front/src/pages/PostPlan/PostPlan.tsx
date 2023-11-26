@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import * as S from './PostPlan.styles';
 import Page from "../Page";
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
 import PlanMap from "../../shared/PlanMap";
-import { koreaRegions } from "../../utils/Data/mapData";
 import UserPreview from "../../components/UserPreview";
 import { useAsync } from "../../utils/API/useAsync";
 import { useParams, useNavigate } from "react-router-dom";
@@ -14,6 +12,7 @@ import CommentSection from "../../shared/CommentSection";
 import SearchBar from "../../components/SearchBar";
 import IconButton from "../../components/IconButton";
 import Menu from "../../components/Menu";
+import { koreaRegions } from "../../utils/Data/mapData";
 
 const PostPlan: React.FC = () => {
   const [data, setData] = useState<any>(null);
@@ -27,8 +26,8 @@ const PostPlan: React.FC = () => {
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [planUser, setPlanUser] = useState<any>(null);
   const [isMe, setIsMe] = useState<boolean>(false);
+  const [placeCenter, setPlaceCenter] = useState<any>({ center: { lat: 0, lng: 0 } });
 
-  const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
   const [menuItems, setMenuItems] = useState<any[]>([{
@@ -67,7 +66,6 @@ const PostPlan: React.FC = () => {
       setPlanUser(data.postUser);
       if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
         setIsMe(true);
-
       }
       if (data.post.postSecret) {
         const NewArray = [...menuItems];
@@ -80,11 +78,25 @@ const PostPlan: React.FC = () => {
   useEffect(() => {
     if (selectDay === 0) {
       setSelectedDayPlan(dayPlan);
-    } else {
+    } else if (selectDay <= dayPlan.length) {
       const newArray = [dayPlan[selectDay - 1]];
       setSelectedDayPlan(newArray);
+      console.log(newArray);
     }
   }, [selectDay]);
+
+  useEffect(() => {
+    if (selectedDayPlan !== null) {
+      const rePlace = selectedDayPlan[0].placeList;
+      if (rePlace.length !== 0) {
+        const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
+        setPlaceCenter(newCenter);
+      } else {
+        const newCenter = { center: koreaRegions.filter((region) => { return region.name === regions })[0].center }
+        setPlaceCenter(newCenter);
+      }
+    }
+  }, [selectedDayPlan]);
 
   if (dayPlan !== null) {
     return (
@@ -92,7 +104,7 @@ const PostPlan: React.FC = () => {
         <SearchBar type="normal" />
 
         <S.InforFirstContainer>
-          <div>제목 {title}</div>
+          <div>{title}</div>
           {isMe ?
             <>
               <Menu item={menuItems} />
@@ -126,8 +138,8 @@ const PostPlan: React.FC = () => {
               여행 테마
             </S.InforContainer>
             <S.Content>
-              {thema.map((thema: any) => (
-                <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
+              {thema.map((thema: any, index: number) => (
+                <S.ThemaBadge key={index}>{thema[0].name}</S.ThemaBadge>
               ))}
             </S.Content>
           </S.HorizontalFirstStartContainer>
@@ -161,7 +173,7 @@ const PostPlan: React.FC = () => {
         </S.HorizontalContainer>
 
         <S.MapAndDayPlanContainer>
-          {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
+          {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={placeCenter.center} page="detail" width="50%" />}
           <S.DayPlanPostContainer>
             <S.DayPlanPostInnerContainer>
               <DayPlanPost type='post' dayList={selectedDayPlan} selectDay={selectDay} />
@@ -175,23 +187,14 @@ const PostPlan: React.FC = () => {
           <S.HorizontalFirstStartContainer>
             <S.CommentText>
               댓글
-              <S.CommentTextNumber>
-
-              </S.CommentTextNumber>
-              {isCommentOpen ?
-                <AiOutlineUp size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
-                :
-                <AiOutlineDown size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
-              }
+              <S.CommentTextNumber></S.CommentTextNumber>
             </S.CommentText>
             <S.CommentText>
               좋아요
               <IconButton icon="like" type="post" filled={isLike} contentId={data.post.id} />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          {isCommentOpen && (
-            <CommentSection page='post' postId={data.id} />
-          )}
+          <CommentSection page='post' postId={data.id} />
         </S.CommentContainer>
 
         {/* <S.RecommendContainer>

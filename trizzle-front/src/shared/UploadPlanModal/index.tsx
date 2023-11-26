@@ -4,6 +4,7 @@ import * as S from './UploadPlanModal.styles'
 import Modal from "../../components/Modal";
 import { useAsync } from "../../utils/API/useAsync";
 import Paging from "../../components/Paging";
+import NullList from "../../components/NullList";
 
 type ScretDropdownPorps = {
   onclose: () => void;
@@ -32,7 +33,7 @@ const UploadPlanModal: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps
     <Modal title="일정 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
       <S.UploadModalContainer>
         {planData.length === 0 ? (
-          <div>불러올 일정이 없습니다</div>
+          <NullList content="불러올 일정이 없습니다" />
         ) : (
           <Paging items={planData} perPage={6} type="modalCommentPlan" onClickedData={(data: any) => clickedPlace(data)} />
         )}

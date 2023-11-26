@@ -26,6 +26,7 @@ const AddPostPlan: React.FC = () => {
   const [selectDay, setSelectDay] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);
   const [thumnail, setThumnail] = useState<string | null>(null);
+  const [placeCenter, setPlaceCenter] = useState<any>({ center: { lat: 0, lng: 0 } });
 
   const [isConnectPlaceModal, setIsConnectPlaceModal] = useState<boolean>(false);
   const [ConnectPlaceModalData, setConnectPlaceModalData] = useState<any>({});
@@ -42,8 +43,7 @@ const AddPostPlan: React.FC = () => {
       if (state.data.message === "update success" && state.data.reviewId) {
         // setData({ ...state.data, reviewId: state.data.reviewId });
       }
-      else if (!secret && state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
-      else if (secret && state.data.message === "save success") navigate(`/post/plan/secret/${state.data.postId}`);
+      else if (state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
       else setData(state.data);
     }
   }, [state]);
@@ -68,6 +68,19 @@ const AddPostPlan: React.FC = () => {
       setSelectedDayPlan(newArray);
     }
   }, [selectDay, dayPlan]);
+
+  useEffect(() => {
+    if (selectedDayPlan !== null) {
+      const rePlace = selectedDayPlan[0].placeList;
+      if (rePlace.length !== 0) {
+        const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
+        setPlaceCenter(newCenter);
+      } else {
+        const newCenter = { center: koreaRegions.filter((region) => { return region.name === regions })[0].center }
+        setPlaceCenter(newCenter);
+      }
+    }
+  }, [selectedDayPlan]);
 
   useEffect(() => {
     if (prevThema.length !== 0) {
@@ -128,7 +141,7 @@ const AddPostPlan: React.FC = () => {
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
         const json = JSON.stringify(ResultData);
-        fetchData(`/api/posts`, 'Post', json);
+        fetchData(`/api/posts`, 'POST', json);
       }
     } else if (type === "secret") {
       setSecret(true);
@@ -141,7 +154,7 @@ const AddPostPlan: React.FC = () => {
       }
 
       const json = JSON.stringify(ResultData);
-      fetchData(`/api/posts`, 'Post', json);
+      fetchData(`/api/posts`, 'POST', json);
     }
   }
 
@@ -273,17 +286,17 @@ const AddPostPlan: React.FC = () => {
         <S.HorizontalLine />
       </S.FormContainer>
 
-        <S.MapAndDayPlanContainer>
-          {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={data.content} center={koreaRegions.filter((region) => { return region.name === regions })[0].center} page="detail" width="50%" />}
-          <S.DayPlanPostContainer>
-            <S.DayPlanPostInnerContainer>
-              <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
-            </S.DayPlanPostInnerContainer>
-          </S.DayPlanPostContainer>
-        </S.MapAndDayPlanContainer>
-      
+      <S.MapAndDayPlanContainer>
+        {data.content && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={data.content} center={placeCenter.center} page="detail" width="50%" />}
+        <S.DayPlanPostContainer>
+          <S.DayPlanPostInnerContainer>
+            <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
+          </S.DayPlanPostInnerContainer>
+        </S.DayPlanPostContainer>
+      </S.MapAndDayPlanContainer>
+
       <div style={{ height: "10rem" }} />
-      
+
       {isConnectPlaceModal && <ConnectPlaceModal placeInfor={ConnectPlaceModalData} onclose={() => setIsConnectPlaceModal(!isConnectPlaceModal)} onClickedPlace={(place: any) => connectReview(place)} />}
     </Page >
   )

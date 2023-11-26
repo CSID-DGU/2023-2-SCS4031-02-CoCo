@@ -86,7 +86,7 @@ export const InforFirstContainer = styled.div`
   position: relative;
   justify-content: space-between;
   align-items: center;
-  margin-top: 6rem;
+  margin-top: 7rem;
   margin-bottom: 1.5rem;
   font-size: 2rem;
   font-weight: bold;

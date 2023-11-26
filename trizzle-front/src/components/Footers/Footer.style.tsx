@@ -10,7 +10,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin: 1rem 5rem;
+  margin: 1rem 10rem;
   width: 100%;
 `
 export const HorizontalContainer = styled.div`
