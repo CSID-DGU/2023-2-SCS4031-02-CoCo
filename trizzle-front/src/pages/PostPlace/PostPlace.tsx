@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
 // import UseAnimations from "react-useanimations";
 // import star from 'react-useanimations/lib/star';
 import 'react-quill/dist/quill.snow.css';
@@ -17,7 +16,6 @@ import IconButton from "../../components/IconButton";
 export default function PostPlace() {
   const navigate = useNavigate();
   const [data, setData] = useState<any>(null);
-  const [isCommentOpen, setIsCommentOpen] = useState<boolean>(false);
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
   const [reviewUser, setReviewUser] = useState<any>(null);
@@ -69,7 +67,7 @@ export default function PostPlace() {
         <SearchBar type="normal" />
 
         <S.InforFirstContainer>
-          <div>제목 {data.reviewTitle}</div>
+          <div>{data.reviewTitle}</div>
           {isMe ?
             <>
               <Menu item={menuItems} />
@@ -147,23 +145,15 @@ export default function PostPlace() {
           <S.HorizontalFirstStartContainer>
             <S.CommentText>
               댓글
-              <S.CommentTextNumber>
-                {data.comments}
-              </S.CommentTextNumber>
-              {isCommentOpen ?
-                <AiOutlineUp size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
-                :
-                <AiOutlineDown size={"1rem"} onClick={() => setIsCommentOpen(!isCommentOpen)} />
-              }
+              <S.CommentTextNumber>{data.comments}</S.CommentTextNumber>
             </S.CommentText>
             <S.CommentText>
               좋아요
               <IconButton icon="like" type="review" contentId={data.id} filled={isLike} />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          {isCommentOpen && (
-            <CommentSection page='review' postId={data.id} />
-          )}
+          <CommentSection page='review' postId={data.id} />
+
         </S.CommentContainer>
 
         {/* <S.RecommendContainer>
