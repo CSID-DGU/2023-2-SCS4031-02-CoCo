@@ -42,7 +42,7 @@ const Myfeed = () => {
       src={userData.profileImage}
       />
       <S.HorizontalContainer>
-        <S.ListTitle>{isMe? `${userData.nickname}님이 공유한 일정` : <>나의 여행 일정 목록
+        <S.ListTitle>{!isMe? `${userData.nickname}님이 공유한 일정` : <>나의 여행 일정 목록
           <S.PostButton onClick={() => navigate("/post/plans/add")}>
             <HiOutlinePencilAlt className="icon"/>작성
           </S.PostButton>
