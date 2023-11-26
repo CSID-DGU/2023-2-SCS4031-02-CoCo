@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import { MyfeedLayout } from "../Page";
-import PlanCard from "../../components/PlanCard";
-import PlaceCard from "../../components/PlaceCard";
 import { useAsync } from "../../utils/API/useAsync";
 import Tabs from "../../components/Tabs";
 import NullList from "../../components/NullList";
