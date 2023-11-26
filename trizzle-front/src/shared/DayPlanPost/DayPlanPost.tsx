@@ -37,7 +37,6 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   }
 
   useEffect(() => {
-    console.log("컴온", props.dayList[0].placeList);
     setData(props.dayList);
   }, [props.dayList]);
 
