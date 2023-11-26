@@ -60,7 +60,8 @@ const Myfeed = () => {
           endDate={item.plan.planEndDate.slice(0,10)} 
           thumbnail={item.thumbnail? item.thumbnail : ""} 
           likeCount={item.likeCount? item.likeCount : 0} 
-          commentCount={item.commentCount? item.commentCount : 0} 
+          commentCount={item.commentCount? item.commentCount : 0}
+          placeCenter={[item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y]}
           planId={item.id} 
           thema={item.plan.planThema} 
           userId={item.accountId}/>
