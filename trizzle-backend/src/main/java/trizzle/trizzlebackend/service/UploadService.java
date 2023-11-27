@@ -25,6 +25,8 @@ public class UploadService {
 
     @Value("${cloud.aws.s3.bucket}")
     private String targetBucket;
+    @Value("${cloud.aws.cloufront.url}")
+    private String cloutFrontUrl;
 
     /*MultipartUpload 시작 시 UloadID S3에서 받아옴 */
     public S3UploadDto initiateUpload(String originFileName, String targetObjectDir) {
@@ -97,7 +99,8 @@ public class UploadService {
         CompleteMultipartUploadResponse completeMultipartUploadResponse = s3Client.completeMultipartUpload(completeMultipartUploadRequest);
 
         String objectKey = completeMultipartUploadResponse.key();    //s3 업로드된 파일이름
-        String url = s3Client.utilities().getUrl(builder -> builder.bucket(targetBucket).key(objectKey)).toString(); // s3 bucket에 저장된 파일의 url
+//        String url = s3Client.utilities().getUrl(builder -> builder.bucket(targetBucket).key(objectKey)).toString(); // s3 bucket에 저장된 파일의 url
+        String url = cloutFrontUrl + fileName;  // cloudfront 이용함 (이미지 불러올 떄 cloud front활용)
         String bucket = completeMultipartUploadResponse.bucket();
         long fileSize = getFileSizeFromS3Url(bucket, objectKey);
 
