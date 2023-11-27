@@ -21,7 +21,6 @@ const AddPostPlan: React.FC = () => {
   const [prevThema, setPrevThema] = useState<any>([]);
   const [thema, setThema] = useState<any>([]);
   const [dayPlan, setDayPlan] = useState<any>(null);
-  const [secret, setSecret] = useState<boolean>(true);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);
@@ -125,7 +124,6 @@ const AddPostPlan: React.FC = () => {
   const onSave = (type: string) => {
     const newArray = thema.map((value: any) => value.name);
     if (type === "save") {
-      setSecret(false);
       data.content = dayPlan;
       data.planThema = newArray;
       const ResultData = {
@@ -141,7 +139,6 @@ const AddPostPlan: React.FC = () => {
         fetchData(`/api/posts`, 'POST', json);
       }
     } else if (type === "secret") {
-      setSecret(true);
       data.content = dayPlan;
       data.planThema = newArray;
       const ResultData = {

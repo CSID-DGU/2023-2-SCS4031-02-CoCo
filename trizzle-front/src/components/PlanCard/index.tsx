@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as S from "./PlanCard.style";
 import { PlanCardProps } from "./PlanCard.type";
 import { Link } from "react-router-dom";
