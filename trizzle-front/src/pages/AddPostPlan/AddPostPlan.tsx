@@ -41,6 +41,7 @@ const AddPostPlan: React.FC = () => {
       console.error(state.error);
     } else if (state.data) {
       if (state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
+      else if (state.data.message === "update success") console.log("update review");
       else setData(state.data);
     }
   }, [state]);
@@ -51,7 +52,8 @@ const AddPostPlan: React.FC = () => {
       setStartDate(data.planStartDate);
       setEndDate(data.planEndDate);
       setRegions(data.planLocation);
-      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      // console.log(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
+      setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)[0]));
       setDayPlan(data.content);
       setSelectedDayPlan(data.content);
     }
@@ -81,7 +83,7 @@ const AddPostPlan: React.FC = () => {
 
   useEffect(() => {
     if (prevThema.length !== 0) {
-      prevThema.map((value: any) => onThemaBadgeClick(value[0]));
+      prevThema.map((value: any) => onThemaBadgeClick(value));
     }
   }, [prevThema]);
 
@@ -103,7 +105,6 @@ const AddPostPlan: React.FC = () => {
     setIsConnectPlaceModal(!isConnectPlaceModal);
     setConnectPlaceModalDay(day);
     setConnectPlaceModalData(data);
-    console.log(data);
   }
 
   //review에 planId 추가해서 디비로 put 보내기
@@ -120,7 +121,8 @@ const AddPostPlan: React.FC = () => {
     });
     setDayPlan(newArray);
     const reviewData = { ...review, reviewSecret: false, planId: data.id }
-    fetchData(`/api/reviews/${review.id}`, 'PUT', reviewData);
+    console.log(JSON.stringify(review));
+    fetchData(`/api/reviews/${review.id}`, 'PUT', review);
   }
 
   const onSave = (type: string) => {
