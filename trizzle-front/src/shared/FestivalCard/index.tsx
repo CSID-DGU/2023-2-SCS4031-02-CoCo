@@ -14,19 +14,22 @@ type festival = {
   endDate: string;
   region: string;
   address: string;
+  homepage: string;
 };
 
 const FestivalCard: React.FC<FestivalCardProps> = (props: FestivalCardProps) => {
 
   return (
-    <S.Container>
-      <S.Tumbnail src={props.festival.image ==="" ?DefaultFestival : props.festival.image}/>
-      <S.ContentContainer>
-        <S.Title>{props.festival.name}</S.Title>
-        <S.Date>{props.festival.startDate} ~ {props.festival.endDate}</S.Date>
-        <S.Date>{props.festival.region} {props.festival.address.split(" ")[1]}</S.Date>
-      </S.ContentContainer>
-    </S.Container>
+    <a href={props.festival.homepage} target="_blank" rel="noreferrer" style={{textDecoration:"none"}}>
+      <S.Container>
+        <S.Tumbnail src={props.festival.image ==="" ?DefaultFestival : props.festival.image}/>
+        <S.ContentContainer>
+          <S.Title>{props.festival.name}</S.Title>
+          <S.Date>{props.festival.startDate} ~ {props.festival.endDate}</S.Date>
+          <S.Date>{props.festival.region}</S.Date>
+        </S.ContentContainer>
+      </S.Container>
+    </a>
   )
 };
 

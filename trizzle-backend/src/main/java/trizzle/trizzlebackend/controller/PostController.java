@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.domain.ElasticReview;
+import trizzle.trizzlebackend.domain.Festival;
 import trizzle.trizzlebackend.domain.Post;
 import trizzle.trizzlebackend.dto.response.PostDto;
+import trizzle.trizzlebackend.service.FestivalService;
 import trizzle.trizzlebackend.service.PostService;
 
 import java.util.HashMap;
@@ -28,6 +30,7 @@ public class PostController {
     @Value("${jwt.secret}")
     private String secretKey;
     private final PostService postService;
+    private final FestivalService festivalService;
 
     @PostMapping("")
     public ResponseEntity createPost(@RequestBody Post post, HttpServletRequest request) {
@@ -140,9 +143,11 @@ public class PostController {
     public ResponseEntity getTop4Posts() {
         List<Post> posts = postService.findTop4Posts();
         Page<ElasticPost> leasts = postService.findRandomPosts();
+        List<Festival> festivals = festivalService.findFestival();
         Map<String, Object> response = new HashMap<>();
         response.put("top4", posts);
         response.put("least", leasts);
+        response.put("festival", festivals);
 
         return ResponseEntity.ok(response);
     }

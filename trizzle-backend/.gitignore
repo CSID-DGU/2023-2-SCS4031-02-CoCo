@@ -19,6 +19,7 @@ bin/
 application-mongodb.properties
 application-oauth.properties
 application-awsS3.properties
+application-tourapi.properties
 
 ### IntelliJ IDEA ###
 .idea
