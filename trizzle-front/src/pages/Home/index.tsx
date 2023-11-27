@@ -1,6 +1,5 @@
 import Page from "../Page";
 import { useEffect, useState } from "react";
-import { getFestivalList} from "../../utils/Data/tourData";
 import * as S from "./Home.style";
 import HomePlanSlider from "../../shared/HomePlanSlider";
 import SearchBar from "../../components/SearchBar";
@@ -17,16 +16,11 @@ const Home = () => {
 
 
   useEffect(() => {
-    const getFestivalData = async () => {
-      const festivalData = await getFestivalList();
-      setFestivalLists(festivalData);
-    };
-    getFestivalData();
-
     if(state.error) console.log(state.error);
     else if(state.data) {
       setTopPlanLists(state.data.top4);
       setLeastPlanLists(state.data.least.content);
+      setFestivalLists(state.data.festival);
     }
   }, [state]);
 
@@ -46,7 +40,9 @@ const Home = () => {
           <HorizontalScrollContainer moveDistance={355} type="main">
             {festivalLists !== null && festivalLists.map((festival:any, index:number) => {
               return (
-                <FestivalCard key={index} festival={festival}/>
+                <a href={festival.hompage} target="_blank" rel="noreferrer" key={index} style={{textDecoration:"none"}}>
+                  <FestivalCard key={index} festival={festival}/>
+                </a>
               )
             })}
           </HorizontalScrollContainer>
