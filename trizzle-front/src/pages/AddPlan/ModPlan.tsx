@@ -46,7 +46,7 @@ const EditPlanPage:React.FC = () => {
 
   useEffect(() => {
     const furturDate = new Date(startDate);
-    furturDate.setDate(furturDate.getDate() + allDay);
+    furturDate.setDate(furturDate.getDate() + (allDay-1));
     const formattedDate = furturDate.toISOString().slice(0, 10);
     setEndDate(formattedDate);
   

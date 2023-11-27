@@ -18,6 +18,13 @@ export const PageTitleImage = styled.img`
   z-index: -1; 
 `
 
+export const HorizontalLine = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: #BEBEBE;
+  border:none;
+`
+
 export const PageTitle = styled.div`
   font-size: 2rem;
   font-weight: 600;

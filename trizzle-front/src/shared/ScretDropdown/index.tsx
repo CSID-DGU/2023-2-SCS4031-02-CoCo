@@ -16,9 +16,9 @@ const ScretDropdown: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) 
     setIsOpen(!isOpen)
     if (value === "나만 보기") {
       setTitle(value);
-      props.onScret(false);
-    } else {
       props.onScret(true);
+    } else {
+      props.onScret(false);
       setTitle(value);
     }
   }

@@ -132,7 +132,7 @@ export default function PostPlace() {
             </S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
-
+        <S.HorizontalLine />
         {/* <div dangerouslySetInnerHTML={{ __html: data.review_content }} /> */}
         <div
           className="ql-editor"

@@ -33,19 +33,17 @@ export default function AddPlacePage() {
       if (placeId.id) {
         setData(state.data);
         if (state.data.message === "update success") {
-          if (secretValue) navigate(`/post/places/secret/${state.data.reviewId}`);
-          else navigate(`/post/places/${state.data.reviewId}`);
+          navigate(`/post/places/${state.data.reviewId}`);
         }
       } else if (state.data.message === "save success") {
-        if (secretValue) navigate(`/post/places/secret/${state.data.reviewId}`);
-        else navigate(`/post/places/${state.data.reviewId}`);
+        navigate(`/post/places/${state.data.reviewId}`);
       }
     }
   }, [state]);
 
   useEffect(() => {
     setTitle(data && data.review.reviewTitle ? data.review.reviewTitle : '');
-    setSecretValue(data && data.review.reviewSecret ? data.review.reviewSecret : '');
+    setSecretValue(data && data.review.reviewSecret ? data.review.reviewSecret : true);
     setVisitDate(data && data.review.visitDate ? new Date(data.review.visitDate) : '');
     setPlace(data && data.review.place ? data.review.place : '');
     setContents(data && data.review.reviewContent ? data.review.reviewContent : '');
@@ -76,6 +74,7 @@ export default function AddPlacePage() {
     }
 
     const json = JSON.stringify(ResultData);
+
     if (placeId.id) fetchData(`/api/reviews/${placeId.id}`, "PUT", json);
     else fetchData('/api/reviews', "POST", json);
   }

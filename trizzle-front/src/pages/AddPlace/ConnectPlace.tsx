@@ -6,7 +6,7 @@ import TextInput from "../../components/TextInput";
 import AddPlaceModal from "../../shared/SearchPlaceModal";
 import PostInput from "../../shared/PostEditor";
 import ScretDropdown from "../../shared/ScretDropdown";
-import DatePicker from "../../components/DatePicker";
+import {CustomInput} from "../../components/DatePicker";
 import { useAsync } from "../../utils/API/useAsync";
 import { koreaRegions } from "../../utils/Data/mapData";
 
@@ -100,11 +100,7 @@ export default function ConnectPlace() {
     }
 
     const date = new Date(visitDate);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1; 
-    const day = date.getDate();
-
-    const formattedDate = `${year}-${month}-${day}`
+    const formattedDate = date.toISOString().slice(0, 10);
 
     // 정보 보내기
     const result = {
@@ -150,7 +146,7 @@ export default function ConnectPlace() {
             </S.HorizontalFirstStartContainer>
             <S.HorizontalFirstStartContainer>
               <S.SelectTitle>방문날짜</S.SelectTitle>
-              <DatePicker setStartDate={setVisitDate} startDate={visitDate} />
+              <CustomInput value={visitDate} onClick={() => {}}/>
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
