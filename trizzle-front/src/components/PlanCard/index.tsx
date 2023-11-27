@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as S from "./PlanCard.style";
 import { PlanCardProps } from "./PlanCard.type";
 import { Link } from "react-router-dom";
@@ -7,15 +7,15 @@ import { BsChatDots } from "react-icons/bs";
 import StaticMaps from "../KakaoMap/StaticMaps";
 
 const PlanCard: React.FC<PlanCardProps> = (props: PlanCardProps) => {
-  
   if (props.thema.length > 3) {
     props.thema.splice(3, props.thema.length - 3);
   }
+
   return (
     <Link to={`/post/plan/${props.planId}`}>
       <S.Container>
         <S.Thumbnail >
-          {props.thumbnail === "" ?  <StaticMaps center={props.placeCenter} width="100%" height="17.5rem" /> : <S.ThumbnailImg src={props.thumbnail} />}
+          {props.thumbnail === "" ? <StaticMaps center={props.placeCenter} width="100%" height="17.5rem" /> : <S.ThumbnailImg src={props.thumbnail} />}
 
           <S.SiteBadge>{props.region}</S.SiteBadge>
           <S.LikeContainer>

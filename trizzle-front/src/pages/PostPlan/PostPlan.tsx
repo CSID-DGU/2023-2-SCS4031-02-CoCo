@@ -88,7 +88,7 @@ const PostPlan: React.FC = () => {
   useEffect(() => {
     if (selectedDayPlan !== null) {
       const rePlace = selectedDayPlan[0].placeList;
-      if (rePlace.length !== 0) {
+      if (rePlace.length !== 0 && rePlace[0].keyword === null) {
         const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
         setPlaceCenter(newCenter);
       } else {
@@ -138,8 +138,8 @@ const PostPlan: React.FC = () => {
             여행 테마
           </S.InforContainer>
           <S.Content>
-            {thema.map((thema: any) => (
-              <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
+            {thema.map((thema: any, index: number) => (
+              <S.ThemaBadge key={index}>{thema[0].name}</S.ThemaBadge>
             ))}
           </S.Content>
         </S.HorizontalFirstStartContainer>
