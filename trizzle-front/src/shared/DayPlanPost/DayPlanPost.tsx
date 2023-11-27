@@ -57,7 +57,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
         return (
           <>
             {data.map((plans: any, index: number) => (
-              <>
+              <div key={index}>
                 <S.DayContainer key={index}>
                   {plans.day}일차
                 </S.DayContainer>
@@ -101,7 +101,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                       )}
                     </div>
                   )))}
-              </>
+              </div>
             ))
             }
           </>

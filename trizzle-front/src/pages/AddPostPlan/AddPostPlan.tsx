@@ -40,10 +40,7 @@ const AddPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      if (state.data.message === "update success" && state.data.reviewId) {
-        // setData({ ...state.data, reviewId: state.data.reviewId });
-      }
-      else if (state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
+      if (state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
       else setData(state.data);
     }
   }, [state]);
@@ -72,7 +69,7 @@ const AddPostPlan: React.FC = () => {
   useEffect(() => {
     if (selectedDayPlan !== null) {
       const rePlace = selectedDayPlan[0].placeList;
-      if (rePlace.length !== 0) {
+      if (rePlace.length !== 0 && rePlace[0].keyword === null) {
         const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
         setPlaceCenter(newCenter);
       } else {

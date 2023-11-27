@@ -72,7 +72,7 @@ const ModPostPlan: React.FC = () => {
   useEffect(() => {
     if (selectedDayPlan !== null) {
       const rePlace = selectedDayPlan[0].placeList;
-      if (rePlace.length !== 0) {
+      if (rePlace.length !== 0  && rePlace[0].keyword === null) {
         const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
         setPlaceCenter(newCenter);
       } else {
