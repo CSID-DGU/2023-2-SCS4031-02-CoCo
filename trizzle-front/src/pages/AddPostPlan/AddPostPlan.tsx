@@ -103,6 +103,7 @@ const AddPostPlan: React.FC = () => {
     setIsConnectPlaceModal(!isConnectPlaceModal);
     setConnectPlaceModalDay(day);
     setConnectPlaceModalData(data);
+    console.log(data);
   }
 
   //review에 planId 추가해서 디비로 put 보내기

@@ -33,12 +33,10 @@ export default function AddPlacePage() {
       if (placeId.id) {
         setData(state.data);
         if (state.data.message === "update success") {
-          if (secretValue) navigate(`/post/places/secret/${state.data.reviewId}`);
-          else navigate(`/post/places/${state.data.reviewId}`);
+          navigate(`/post/places/${state.data.reviewId}`);
         }
       } else if (state.data.message === "save success") {
-        if (secretValue) navigate(`/post/places/secret/${state.data.reviewId}`);
-        else navigate(`/post/places/${state.data.reviewId}`);
+        navigate(`/post/places/${state.data.reviewId}`);
       }
     }
   }, [state]);
@@ -112,7 +110,7 @@ export default function AddPlacePage() {
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}
-          <PostInput prevData={contents} onChangeContents={(con: any) => setContents(con)} onThumbnailImages={(img: string) => setRepresentImage(img)} onChangeContentsText={(con: any)=> setContentsText(con)}/>
+          <PostInput prevData={contents} onChangeContents={(con: any) => setContents(con)} onThumbnailImages={(img: string) => setRepresentImage(img)} onChangeContentsText={(con: any) => setContentsText(con)} />
 
         </S.FormContainer>
       </form>
