@@ -8,6 +8,7 @@ import res from "src/assets/keywords/trans.svg"
 import trans from "../../assets/keywords/trans.svg"
 import rest from "../../assets/keywords/rest.svg"
 import shopping from "../../assets/keywords/shopping.svg"
+import NullList from "../../components/NullList";
 
 type DayPlanPostProps = {
   type?: string;
@@ -60,43 +61,46 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 <S.DayContainer key={index}>
                   {plans.day}일차
                 </S.DayContainer>
-                {plans.placeList.map((place: any, innerIndex: number) => (
-                  <div key={innerIndex}>
-                    {place.review && place.review !== null ? (
-                      <Link to={`/post/places/${place.review.id}`} target="_blank">
-                        <S.PlacePostContainer>
-                          <div style={{ width: '100%', height: '100%' }}>
-                            {
-                              place.review.thumbnail === '' ?
-                                <S.PlaceLogo>
-                                  <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
-                                </S.PlaceLogo>
-                                :
-                                <S.PlaceImage src={place.review.thumbnail} alt="image" />
-                            }
-                            <S.PlaceInfo>
-                              <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
-                              <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
-                            </S.PlaceInfo>
-                          </div>
-                        </S.PlacePostContainer>
-                      </Link>
-                    ) : (
-                      place.keyword !== null ? (
-                        <S.PlaceContainer key={innerIndex} type={true}>
+                {plans.placeList.length === 0 ? (
+                  <NullList content="공유된 일정이 없습니다" />
+                ) : (
+                  plans.placeList.map((place: any, innerIndex: number) => (
+                    <div key={innerIndex}>
+                      {place.review && place.review !== null ? (
+                        <Link to={`/post/places/${place.review.id}`} target="_blank">
+                          <S.PlacePostContainer>
+                            <div style={{ width: '100%', height: '100%' }}>
+                              {
+                                place.review.thumbnail === '' ?
+                                  <S.PlaceLogo>
+                                    <img src={logo} alt="logo" style={{ width: "2.2rem", height: "auto" }} />
+                                  </S.PlaceLogo>
+                                  :
+                                  <S.PlaceImage src={place.review.thumbnail} alt="image" />
+                              }
+                              <S.PlaceInfo>
+                                <S.PlaceName>{place.review.reviewTitle}</S.PlaceName>
+                                <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
+                              </S.PlaceInfo>
+                            </div>
+                          </S.PlacePostContainer>
+                        </Link>
+                      ) : (
+                        place.keyword !== null ? (
+                          <S.PlaceContainer key={innerIndex} type={true}>
                             <img src={KeywordList.filter((item) => item.keyword === place.keyword)[0].src} alt="keywordImg" style={{ width: "4rem", height: "auto" }} />
                             <S.PlaceAddress style={{ width: "auto", marginLeft: "0.4rem" }}>{place.keyword}</S.PlaceAddress>
-                        </S.PlaceContainer>
-                      ) : (
-                        <S.PlaceContainer key={innerIndex} >
+                          </S.PlaceContainer>
+                        ) : (
+                          <S.PlaceContainer key={innerIndex} >
                             <S.PalceText>
                               {place.placeName}
                             </S.PalceText>
-                        </S.PlaceContainer>
-                      )
-                    )}
-                  </div>
-                ))}
+                          </S.PlaceContainer>
+                        )
+                      )}
+                    </div>
+                  )))}
               </>
             ))
             }
@@ -116,7 +120,9 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                 <S.DayContainer>
                   {plans.day}일차
                 </S.DayContainer>
-                {plans.placeList.map((place: any, innerIndex: number) =>
+                {plans.placeList.length === 0 ? (
+                  <NullList content="공유된 일정이 없습니다" />
+                ) : (plans.placeList.map((place: any, innerIndex: number) =>
                   <div key={innerIndex}>
                     {place.review && place.review !== null ? (
                       <S.PlacePostNoneContainer>
@@ -200,10 +206,9 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                       )
                     )}
                   </div >
-                )}
+                ))}
               </div>
-            ))
-            }
+            ))}
           </>
         )
       }
