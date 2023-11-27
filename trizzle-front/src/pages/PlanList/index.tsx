@@ -12,6 +12,7 @@ const PlanList = () => {
   const [nextPlan, setNextPlan] = useState<any[]>([]);
   const [pastPlan, setPastPlan] = useState<any[]>([]);
   const [state, fetchData] = useAsync({url:"/api/plans/myplans"});
+  const [dDay, setDDay] = useState<number>(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,9 +33,18 @@ const PlanList = () => {
         const pastArray:any[] = [];
         data.map((plan:any) => {
           const end_date = new Date(plan.planEndDate);
+          const start_date = new Date(plan.planStartDate);
           if(today.getTime() > end_date.getTime()){
             pastArray.push(plan);
           } else {
+            const diff = start_date.getTime() - today.getTime();
+            const diffDay = Math.ceil(diff / (1000 * 3600 * 24));
+            let dday;
+            if(diffDay <= 0 ) dday = -1;
+            else dday=diffDay;
+
+            if(dDay === 0) setDDay(dday);
+            else if(dDay > dday) setDDay(dday);
             nextArray.push(plan);
           };
         });
@@ -51,7 +61,9 @@ const PlanList = () => {
     <MyfeedLayout isMe={true} selectTab={{name:"여행 계획", URL:"plans"}}>
       <S.Container>
         <S.HeadContainer>
-          <S.DDay>다음 여행</S.DDay>
+          {dDay === 0 ? <S.DDay>다음 여행</S.DDay> :
+          <S.DDay>다음 여행 {dDay === -1 ? " - TODAY!" : `D-${dDay}`}</S.DDay>
+          }
           <S.PlusButton onClick={() => navigate("/mypage/plans/add")}>
             <AiOutlinePlus size="1.5rem"/>
             새 일정 추가

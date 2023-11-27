@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./PlanListContainer.style";
 import {BiMapPin} from "react-icons/bi";
-import Menu from "../../components/Menu";
+import { FaMapSigns } from "react-icons/fa";
 
 
 
@@ -14,14 +14,13 @@ type PlanListContainerProps = {
 
 
 export const PlanListContainer: React.FC<PlanListContainerProps> = (props: PlanListContainerProps) => {
-  const menuItem = [{content: "삭제", onClick:()=> props.onDeleteClick(props.plan.id), isDelete: true}];
-  // const [menuItems, setMenuItems] = useState<any[]>(menuItem);
 
 
   return (
         <S.Container past={props.past}>
-          <S.LeftContainer past={props.past}/>
-            <Menu item={menuItem} />
+          <S.LeftContainer past={props.past}>
+            {props.plan.postId && <FaMapSigns size="1.5rem" color={props.past? "#808080" : "#89711B"}/>}
+          </S.LeftContainer>
           <S.RightContainer>
             <S.Title past={props.past}>{props.plan.planName}</S.Title>
             <S.Location past={props.past}>

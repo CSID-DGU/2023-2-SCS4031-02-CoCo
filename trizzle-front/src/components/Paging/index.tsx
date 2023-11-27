@@ -19,8 +19,14 @@ const PageButtonContainer:React.FC<{children:React.ReactNode}> = ({children}) =>
 
 const Paging: React.FC<PagingProps> = (props: PagingProps) => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [, setItems] = useState<any[]>([]);
   const [currentItems, setCurrentItems] = useState(props.items.slice(0, props.perPage));
   const totalPages = Math.ceil(props.items.length / props.perPage);
+
+  useEffect(() => {
+    setItems(props.items);
+    setCurrentItems(props.items.slice(0, props.perPage));
+  }, [props]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);

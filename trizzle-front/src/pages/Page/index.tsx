@@ -86,6 +86,8 @@ export const SearchLayout:React.FC<{children: React.ReactNode, selectTab:any}> =
     navigate(`${tab.URL}`);
   };
 
+  const searchResult = region === "전체" ? `${keyword}에 대한 검색 결과입니다` : `${region} ${keyword} 대한 검색 결과입니다`;
+
   return (
     <Page headersProps={{ isHome: false }}>
       <SearchBar type="normal" value={keyword} region={region}/>
@@ -101,10 +103,7 @@ export const SearchLayout:React.FC<{children: React.ReactNode, selectTab:any}> =
       </S.RegionContainer>
       )} */}
         <S.SearchContainer>
-          <S.SearchText>
-            {region}
-          </S.SearchText>
-        에 대한 검색 결과입니다.
+          {searchResult}
       </S.SearchContainer>
         {children}
       </Page>

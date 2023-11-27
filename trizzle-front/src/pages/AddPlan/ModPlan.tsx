@@ -118,7 +118,9 @@ const EditPlanPage:React.FC = () => {
 
       if(state.error) {console.error(state.error)}
       else if(state.data){
-      if(state.data && state.data.message === "save success") {navigate(`/myfeed/plans/${state.data.planId}`) }
+      if(state.data && state.data.message === "save success") {
+        setPlaceList([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]);
+        navigate(`/myfeed/plans/${state.data.planId}`) }
       else{
         setLoadingData(state.data);
         setPlaceList(state.data.content);

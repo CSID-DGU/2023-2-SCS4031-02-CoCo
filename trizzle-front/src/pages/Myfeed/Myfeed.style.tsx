@@ -43,7 +43,8 @@ export const PlanListContainer = styled.div`
   height: auto;
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-between
+  justify-content: flex-start;
+  gap: 2.75rem;
 `
 
 export const PlaceListContainer = styled.div`
@@ -94,7 +95,8 @@ export const PostContainer = styled.div`
   display: flex;
   margin: 2rem 0 5rem 0;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 2.75rem;
 `
 
 export const ReviewContainer = styled.div`

@@ -1,5 +1,6 @@
 export type MenuProps = {
   item: ItemProps[];
+  onClick?: () => void;
 }
 
 type ItemProps = {

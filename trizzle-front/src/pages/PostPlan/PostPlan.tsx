@@ -103,74 +103,74 @@ const PostPlan: React.FC = () => {
       <Page headersProps={{ isHome: false }}>
         <SearchBar type="normal" />
 
-        <S.InforFirstContainer>
-          <div>{title}</div>
-          {isMe ?
+      <S.InforFirstContainer>
+        <div>{title}</div>
+        {isMe ?
             <>
               <Menu item={menuItems} />
             </> :
             <IconButton icon="bookmark" type="post" contentId={data.id} filled={isBookmark} />
           }
-        </S.InforFirstContainer>
+      </S.InforFirstContainer>
+      <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              작성일자
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.post.postRegistrationDate.slice(0, 10)}
-            </S.InforInputContainer>
-          </S.HorizontalFirstStartContainer>
+          <S.InforContainer>
+            작성일자
+          </S.InforContainer>
+          <S.InforInputContainer>
+          {data.post.postRegistrationDate.slice(0,10)}
+          </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
+      </S.HorizontalFirstStartContainer>
+      <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              여행 기간
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {startDate} ~ {endDate}
-            </S.InforInputContainer>
-          </S.HorizontalFirstStartContainer>
+          <S.InforContainer>
+            여행 기간
+          </S.InforContainer>
+          <S.InforInputContainer>
+            {startDate} ~ {endDate}
+          </S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
+      </S.HorizontalFirstStartContainer>
+      <S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              여행 테마
-            </S.InforContainer>
-            <S.Content>
-              {thema.map((thema: any, index: number) => (
-                <S.ThemaBadge key={index}>{thema[0].name}</S.ThemaBadge>
-              ))}
-            </S.Content>
-          </S.HorizontalFirstStartContainer>
+          <S.InforContainer>
+            여행 테마
+          </S.InforContainer>
+          <S.Content>
+            {thema.map((thema: any) => (
+              <S.ThemaBadge key={thema.id}>{thema[0].name}</S.ThemaBadge>
+            ))}
+          </S.Content>
         </S.HorizontalFirstStartContainer>
+      </S.HorizontalFirstStartContainer>
 
-        <S.HorizontalContainer>
-          <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              조회수
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.post.views}
-            </S.InforInputContainer>
-          </S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              추천수
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.post.likeCount}
-            </S.InforInputContainer>
-          </S.HorizontalFirstStartContainer>
-          <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              북마크수
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.post.bookmarkCount}
-            </S.InforInputContainer>
-          </S.HorizontalFirstStartContainer>
-        </S.HorizontalContainer>
+      <S.HorizontalContainer>
+        <S.HorizontalFirstStartContainer>
+          <S.InforContainer>
+            조회
+          </S.InforContainer>
+          <S.InforInputContainer>
+            {data.post.views}
+          </S.InforInputContainer>
+        </S.HorizontalFirstStartContainer>
+        <S.HorizontalFirstStartContainer>
+          <S.InforContainer>
+            좋아요
+          </S.InforContainer>
+          <S.InforInputContainer>
+            {data.post.likeCount}
+          </S.InforInputContainer>
+        </S.HorizontalFirstStartContainer>
+        <S.HorizontalFirstStartContainer>
+          <S.InforContainer>
+            북마크
+          </S.InforContainer>
+          <S.InforInputContainer>
+            {data.post.bookmarkCount}
+          </S.InforInputContainer>
+        </S.HorizontalFirstStartContainer>
+      </S.HorizontalContainer>
 
         <S.MapAndDayPlanContainer>
           {dayPlan && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={placeCenter.center} page="detail" width="50%" />}
@@ -196,6 +196,7 @@ const PostPlan: React.FC = () => {
           </S.HorizontalFirstStartContainer>
           <CommentSection page='post' postId={data.id} />
         </S.CommentContainer>
+
 
         {/* <S.RecommendContainer>
         <S.RecommendText>

@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { MyfeedLayout } from "../Page";
-import PlanCard from "../../components/PlanCard";
-import PlaceCard from "../../components/PlaceCard";
 import { useAsync } from "../../utils/API/useAsync";
 import Tabs from "../../components/Tabs";
 import NullList from "../../components/NullList";
 import * as S from "./Bookmark.style";
+import Paging from "../../components/Paging";
 
 
 const Bookmark: React.FC = () => {
@@ -42,18 +41,14 @@ const Bookmark: React.FC = () => {
       <Tabs tabs={tabs} selectedTab={tab} onClick={(tab) => {setTab(tab)}} type="roundButton"/>
       {tab.id === "post" ? (
         <S.PostContainer>
-        {planList.length === 0 ? <NullList content="북마크한 일정이 없습니다." /> : (
-          planList.map((plan: any) => (
-            <PlanCard {...plan} key={plan.id}/>
-          ))
-        )}
+        {planList.length === 0 ? <NullList content="북마크한 일정이 없습니다." /> : 
+          <Paging items={planList} perPage={9} type="horizontalPlan"/>
+        }
         </S.PostContainer>
       ) : (
         <S.ReviewContainer>
         {placeList.length === 0 ? <NullList content="북마크한 리뷰가 없습니다" /> : (
-        placeList.map((place: any) => (
-          <PlaceCard {...place} key={place.id}/>
-        ))
+          <Paging items={placeList} perPage={9} type="verticalReview"/>
       )}
     </S.ReviewContainer>
       )}

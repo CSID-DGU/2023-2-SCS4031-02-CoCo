@@ -15,6 +15,22 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
   const [value, setValue] = useState<string>("");
   const [disabled, setDisabled] = useState<boolean>(true);
   const [childCommentOpen, setChildCommentOpen] = useState<boolean>(false);
+  const registration = new Date(props.commentData.commentData.commentRegistrationDate);
+  const now = new Date();
+  const diff = Math.floor((now.getTime() - registration.getTime()) / 1000 / 60);
+
+  let diffDate = "";
+  if(diff < 60) {
+    diffDate = `${diff}분`;
+  } else if(diff < 60 * 24) {
+    diffDate = `${Math.floor(diff / 60)}시간`
+  } else if(diff < 60 * 24 * 30) {
+    diffDate = `${Math.floor(diff / 60 / 24)}일`;
+  } else if(diff < 60 * 24 * 30 * 12) {
+    diffDate = `${Math.floor(diff / 60 / 24 / 30)}달`;
+  } else {
+    diffDate = `${Math.floor(diff / 60 / 24 / 30 / 12)}년`;
+  }
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -23,8 +39,6 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
   const onChild = () => {
     setChildCommentOpen(!childCommentOpen);
   }
-
-  const onHandleSubmit = () => {};
 
   useEffect(() => {
     if(value !== "") setDisabled(false);
@@ -42,10 +56,16 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
 
     setMenuItems(menuItem);
   }
-
-
-  
   }, []);
+
+  const onChildSubmit = () => {
+    if(props.onChildSubmit) {
+      props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId);
+      setValue("");
+    } else {
+      return;
+    }
+  }
     
     if(props.commentData.commentData && props.commentData.commentData.deleted){
       return (
@@ -70,7 +90,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           <S.PostCommentContent>
             <S.PostCommentContentHeader>
               {props.commentData.nickname}
-              <S.PostCommentContentDate>{props.commentData.commentData.commentRegistrationDate}</S.PostCommentContentDate>
+              <S.PostCommentContentDate>{diffDate} 전</S.PostCommentContentDate>
             </S.PostCommentContentHeader>
             <S.PostCommentContentBody>
               {props.commentData.commentData.commentContent}
@@ -88,13 +108,15 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
           </S.PostCommentContent>
         </S.PostCommentContainer>
           {childCommentOpen &&
+          <S.ChildCommentContainer>
                   <CommentInput
                   placeholder="댓글 입력..."
                   value={value}
                   onChange={onChange}
-                  onSubmit={() => props.onChildSubmit?props.onChildSubmit(props.commentData.commentData.id, value, props.commentData.commentData.postId, props.commentData.commentData.reviewId) : onHandleSubmit()}
+                  onSubmit={onChildSubmit}
                   disabled={disabled}
-            />
+                  />
+            </S.ChildCommentContainer>
                 }
         </>
       )
@@ -103,7 +125,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
 
 const Comments:React.FC<CommentsProps> = (props: CommentsProps) => { 
   const [childOpen, setChildOpen] = useState<boolean>(false);
-  const [childComments, setChildComments] = useState<any>(props.commentData.childComment);
+  const [childComments, setChildComments] = useState<any>([]);
 
   const onMoreButtonClick = () => {
     setChildOpen(!childOpen);
@@ -111,7 +133,7 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
 
   useEffect(() => {
     setChildComments(props.commentData.childComment);
-  }, [])
+  }, [props])
   return (
     <>
     {props.commentData.childComment && props.commentData.childComment.length > 0 ? (

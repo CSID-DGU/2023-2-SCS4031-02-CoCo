@@ -29,6 +29,10 @@ const PlanDetail: React.FC = () => {
   },[state]);
 
   const onDeleteClick = () => {
+    if(data.postId && data.postId !== null) {
+      alert("게시글이 존재하는 여행 계획은 삭제할 수 없습니다. 게시글을 삭제한 뒤 다시 시도해주세요.");
+      return;
+    }
     fetchData(`/api/plans/myplans/${planId.id}`, "DELETE");
   }
 

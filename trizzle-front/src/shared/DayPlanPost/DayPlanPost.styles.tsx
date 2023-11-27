@@ -18,12 +18,16 @@ export const DayContainer = styled.div`
 `
 
 export const PlaceContainer = styled.div<{ type?: boolean }>`
-${(props) => props.type ? 'display: flex; justify-content: center; align-items: center; gap: 1rem;' : ''}
   margin: 1rem;
   width: 28rem;
   height: 8rem;
   border: 1.5px solid #FFDC61;
   border-radius: 1rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
 `
 
 export const KeywordContainer = styled.div<{ type?: boolean }>`
@@ -62,7 +66,7 @@ export const PalceText = styled.div`
 `
 
 export const ThreeDotsButton = styled.button`
-  position: relative;
+  position: absolute;
   top: 0;
   left: 25.5rem;
   margin: 0.2rem 0 0 0;
@@ -174,8 +178,8 @@ export const ToggleButtonContainer = styled.div`
   font-size: 0.8rem;
   cursor: pointer;
 
-  position: relative;
-  top: 0;
+  position: absolute;
+  top: 1.5rem;
   left: -5rem;
 `
 

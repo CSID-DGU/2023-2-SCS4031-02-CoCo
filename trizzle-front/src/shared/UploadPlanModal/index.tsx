@@ -20,7 +20,8 @@ const UploadPlanModal: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps
       console.log(state.error);
       setPlanData([]);
     } else if (state.data) {
-      setPlanData(state.data);
+      const past = state.data.filter((value: any) => {return new Date(value.planEndDate) < new Date()});
+      setPlanData(past);
     }
   }, [state]);
 

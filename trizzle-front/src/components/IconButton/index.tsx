@@ -15,11 +15,12 @@ const IconButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
   }
 
   const onBookmark = () => {
-    fetchData(`/api/${props.type}/${props.contentId}/bookmark`, "POST");
+    fetchData(`/api/${props.type}/${props.contentId}/bookmarks`, "POST");
   };
 
   useEffect(() => {
     if(state.error) {
+      console.log(state.error);
       alert("로그인이 필요합니다.");
     } else if(state.data){
       if(state.data.message === "add like success" || state.data.message === "add bookmark success") {
