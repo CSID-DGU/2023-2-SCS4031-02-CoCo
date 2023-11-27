@@ -36,22 +36,26 @@ public class ReviewService {
     private String secretKey;
 
     public Review insertReview(Review review, String accountId) {
-        review.setAccountId(accountId);
-        LocalDateTime dateTime = LocalDateTime.now();
-        review.setReviewRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        if (review.getId() == null) {
+            review.setAccountId(accountId);
+            LocalDateTime dateTime = LocalDateTime.now();
+            review.setReviewRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
+        }
 
         Place place = review.getPlace();
         Optional<Place> existingPlace = placeService.findByPlaceId(place.getId());
         if (!existingPlace.isPresent()) {    // place정보가 db에 없다면 저장
             placeService.savePlace(place);
         }
+        /*elasticSearch 위해*/
         Review insert = reviewRepository.save(review);
-        ElasticReview elasticReview = new ElasticReview();
-        elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
-                insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
-                insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
-        elasticReviewRepository.save(elasticReview);
-
+        if (!review.isReviewSecret()) { //공개 review만 검색가능하게 저장되도록
+            ElasticReview elasticReview = new ElasticReview();
+            elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
+                    insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
+                    insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
+            elasticReviewRepository.save(elasticReview);
+        }
         return insert;
     }
 
@@ -59,6 +63,8 @@ public class ReviewService {
         Optional<Review> reviewOptional = reviewRepository.findById((reviewId));
         if (reviewOptional.isPresent()) {   // reviewId에 해당하는 review가 있을 경우
             Review review = reviewOptional.get();
+            review.increaseViewCounts();    //조회수 증가
+            reviewRepository.save(review);
             User reviewUser = userService.searchUser(review.getAccountId());
             ReviewDto reviewDto = new ReviewDto();
             reviewDto.setReview(review);

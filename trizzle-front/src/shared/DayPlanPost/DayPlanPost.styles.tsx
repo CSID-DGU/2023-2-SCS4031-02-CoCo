@@ -30,6 +30,21 @@ export const PlaceContainer = styled.div<{ type?: boolean }>`
   gap: 1rem;
 `
 
+export const KeywordContainer = styled.div<{ type?: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
+export const KeywordAddress = styled.div`
+  width: 5rem;
+  max-width: 100%;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #5B5B5B;
+  white-space: pre-line;
+`
+
 export const PlaceAddress = styled.div`
   width: 100%;
   max-width: 100%;
@@ -116,10 +131,8 @@ export const PlaceImage = styled.img`
   width: 30%;
   height: 100%;
   background-color: #FFECAA;
-  border-top-left-radius: 0.75rem;
-  border-bottom-left-radius: 0.75rem;
-  position: relative;
-  top: -1.2rem;
+  border-top-left-radius: 0.9rem;
+  border-bottom-left-radius: 0.9rem;
 `
 
 export const PlaceInfo = styled.div`

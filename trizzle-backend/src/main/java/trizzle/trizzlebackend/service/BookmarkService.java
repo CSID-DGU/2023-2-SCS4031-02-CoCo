@@ -52,7 +52,7 @@ public class BookmarkService {
                     /* 북마크 누르면 count 1 증가 */
                     Post post = postService.findPost(contentId);
                     post.increaseBookmarks();
-                    postRepository.save(post);
+                    postService.insertPost(post, accountId);
                     break;
 
                 case "review":
@@ -67,7 +67,7 @@ public class BookmarkService {
                     /* 북마크 누르면 count 1 증가 */
                     Review review = reviewService.findReview(contentId);
                     review.increaseBookmarks();
-                    reviewRepository.save(review);
+                    reviewService.insertReview(review, accountId);
                     break;
             }
             return "add bookmark success";
@@ -78,14 +78,14 @@ public class BookmarkService {
                     /* 북마크 취소하면 count 1 감소 */
                     Post post = postService.findPost(contentId);
                     post.decreaseBookmarks();
-                    postRepository.save(post);
+                    postService.insertPost(post, accountId);
                     break;
 
                 case "review":
                     /* 북마크 취소하면 count 1 감소 */
                     Review review = reviewService.findReview(contentId);
                     review.decreaseBookmarks();
-                    reviewRepository.save(review);
+                    reviewService.insertReview(review, accountId);
                     break;
             }
             return "delete bookmark success";

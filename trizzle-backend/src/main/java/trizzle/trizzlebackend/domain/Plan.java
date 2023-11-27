@@ -23,6 +23,15 @@ public class Plan {
     private String planLocation;
     private List<String> planThema;
     private List<Day> content;
+    private String postId;
+
+    public String getPostId() {
+        return postId;
+    }
+
+    public void setPostId(String postId) {
+        this.postId = postId;
+    }
 
     public String getAccountId() {
         return accountId;

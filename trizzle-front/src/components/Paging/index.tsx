@@ -76,6 +76,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
               startDate={item.plan.planStartDate}
               endDate={item.plan.planEndDate}
               region={item.plan.planLocation}
+              placeCenter={[item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y]}
               thema={item.plan.planThema}
               thumbnail={item.thumbnail?item.thumbnail:""}
               />
