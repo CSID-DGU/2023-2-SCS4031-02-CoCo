@@ -24,6 +24,7 @@ const DefaultBody = styled.div`
   padding: 0 8rem;
   @media screen and (max-width: 767px) {
     width: 100%;
+    padding: 0 1rem;
   }
 `
 

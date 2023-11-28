@@ -109,7 +109,7 @@ const PostPlan: React.FC = () => {
             <>
               <Menu item={menuItems} />
             </> :
-            <IconButton icon="bookmark" type="post" contentId={data.id} filled={isBookmark} />
+            <IconButton icon="bookmark" type="post" contentId={data.post.id} filled={isBookmark} />
           }
       </S.InforFirstContainer>
       <S.HorizontalFirstStartContainer>
