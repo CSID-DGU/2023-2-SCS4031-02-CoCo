@@ -35,7 +35,7 @@ public class FestivalService {
     }
 
     public List<Festival> findFestival() {
-        List<Festival> allFestivals = festivalRepository.findByContentIdIsNotNull();
+        List<Festival> allFestivals = festivalRepository.findByHomepageIsNotNull();
         List<Festival> randomFestivals = new ArrayList<>();
         List<Festival> copyAllFestivals = new ArrayList<>(allFestivals);
 
