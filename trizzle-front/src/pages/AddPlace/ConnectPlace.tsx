@@ -18,7 +18,7 @@ export default function ConnectPlace() {
   const [planDataContent, setPlanDataContent] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
   const [secretValue, setSecretValue] = useState<boolean>(false);
-  const [visitDate, setVisitDate] = useState<any>(new Date());
+  const [visitDate, setVisitDate] = useState<Date | string>(new Date());
   const [place, setPlace] = useState<any>({ placeName: planInfor.placeId });
   const [contents, setContents] = useState<string>('');
   const [isPlusPlaceModal, setIsPlusPlaceModal] = useState<boolean>(false);
@@ -74,18 +74,15 @@ export default function ConnectPlace() {
   useEffect(() => {
     if (planDataContent.length !== 0) {
       const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
+      const formatDate = new Date(planData.planStartDate);
+      const date = new Date(formatDate.setDate(formatDate.getDate() + (dayValue - 1)));
+      setVisitDate(date.toISOString().slice(0, 10));
+      
       const placeInfor = planDataContent[(dayValue - 1)].placeList.filter((item: any) => item.id === planInfor.placeId) || [];
       setPlace(placeInfor[0]);
     }
   }, [planDataContent, planInfor.planDay, planInfor.placeId]);
 
-  useEffect(() => {
-    if (planData.length !== 0 && planInfor.planDay !== '0') {
-      const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
-      const formatDate = new Date(planData.planStartDate);
-      setVisitDate( formatDate.setDate(formatDate.getDate() + (dayValue - 1)));
-    }
-  }, [planData, planInfor.planDay]);
 
   const onSave = () => {
     if (title === '') {
@@ -99,13 +96,10 @@ export default function ConnectPlace() {
       return;
     }
 
-    const date = new Date(visitDate);
-    const formattedDate = date.toISOString().slice(0, 10);
-
     // 정보 보내기
     const result = {
       reviewTitle: title,
-      visitDate: formattedDate,
+      visitDate: visitDate,
       place: place,
       reviewContent: contents,
       reviewContentText: contentsText,

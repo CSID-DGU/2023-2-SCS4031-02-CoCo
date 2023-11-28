@@ -16,7 +16,7 @@ type DayPlanProps = {
   isPlan: boolean;
   isPost?: boolean;
   onPostClick?: () => void;
-  onDeleteClick: (place:any, day:number, index:number) => void;
+  onDeleteClick: (day:number, index:number) => void;
   onDayDeleteClick: (day:any) => void;
 }
 
@@ -24,79 +24,84 @@ type DayPlanProps = {
 const DayPlan: React.FC<DayPlanProps> = (props: DayPlanProps) => {
   const onPlaceDragEnd = useOnPlaceDragEnd();
   const placeList = useRecoilValue(PlanListState);
-  // const [open, setOpen] = useState<boolean[]>([]);
 
-  // useEffect(() => {
-  //   let array = [];
-
-  //   for(let i=0; i<placeList.length; i++) {
-  //     array.push(false);
-  //   };
-  //   setOpen(array);
-  // },[placeList]);
-
-  // const onOpen = (index:number) => {
-  //   const newOpen = open.map((_, idx) => {
-  //     if(idx === index) return !open[idx];
-  //     else return open[idx];
-  // })
-  // setOpen(newOpen);
-  // }
-
-  // const onDayDelete = (day:number) => {
-  //   props.onDayDeleteClick(day)
-  // }
-
-
-
-  return(
+  return (
     <DragDropContext onDragEnd={(result) => onPlaceDragEnd(result, placeList)}>
       <HorizontalScrollContainer moveDistance={200}>
-        {placeList.map((dayPlan) => (
-          <S.DayPlanContainer>
-            <S.DayPlanTitle>{dayPlan.day}일차
-            <Menu item={[{ content: "삭제", onClick: () => props.onDayDeleteClick(dayPlan.day), isDelete: true }]} />
-                {/* <AiOutlineEllipsis size="1.5rem" className='menu' onClick={() => {
-                  onOpen(index);
-                }}/>
-              {open[index] && (
-                <S.MenuContainer>
-                    <S.MenuItem delete={true} onClick={() => { props.onDayDeleteClick(dayPlan.day); onOpen(index) }}>삭제</S.MenuItem>
-                </S.MenuContainer>
+        {placeList.map((dayPlan, index) => (
+          <Droppable droppableId={`${dayPlan.day}`} key={index} type="ITEM">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                key={`${dayPlan.day}`}
+              >
+                <S.DayPlanContainer key={index}>
+                  <S.DayPlanTitle>
+                    {dayPlan.day}일차
+                    <Menu
+                      item={[
+                        {
+                          content: "삭제",
+                          onClick: () => props.onDayDeleteClick(dayPlan.day),
+                          isDelete: true,
+                        },
+                      ]}
+                    />
+                  </S.DayPlanTitle>
+                  {dayPlan.placeList.length > 0 &&
+                    dayPlan.placeList.map((place: any, index: number) => (
+                      <Draggable
+                        draggableId={`${dayPlan.day}-${index}`}
+                        index={index}
+                        key={`${dayPlan.day}-${index}`}
+                      >
+                        {(provided) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                          >
+                            <DayPlace
+                              key={`${dayPlan.day}-${index}`}
+                              place={place}
+                              day={dayPlan.day}
+                              isPlan={props.isPlan}
+                              isPost={props.isPost}
+                              onPostClick={props.onPostClick}
+                              index={index}
+                              onDeleteClick={(day, index) =>
+                                props.onDeleteClick(day, index)
+                              }
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    ))}
 
-              )} */}
-            </S.DayPlanTitle>
-            {dayPlan.placeList.length > 0 && dayPlan.placeList.map((place:any, index:number) => (
-              <Droppable droppableId={`${dayPlan.day}-${index}`} key={index} type="ITEM">
-                {(provided) => (
-                  <div ref={provided.innerRef} {...provided.droppableProps} style={{width: "100%", height:"auto"}} key={`${dayPlan.day}-${index}`}>
-                    <Draggable draggableId={`${dayPlan.day}-${index}`} index={index} key={`${dayPlan.day}-${index}`}>
-                      {(provided) => (
-                        <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} >
-                          <DayPlace key={`${dayPlan.day}-${index}`} place={place} day={dayPlan.day} isPlan={props.isPlan} isPost={props.isPost} onPostClick={props.onPostClick} index={index} onDeleteClick={(place, day, index) => props.onDeleteClick(place, day, index)}/>
-                        </div>
-                      )}
-                    </Draggable>
-                  </div>
-                )}
-              </Droppable>
-            ))
-            }
-            <Droppable droppableId={`${dayPlan.day}-${dayPlan.placeList.length}`} key={dayPlan.placeList.length} type="ITEM">
-              {(provided) => (
-                <div ref={provided.innerRef} {...provided.droppableProps} style={{width: "100%"}}>
                   <S.PlusButtonContainer>
-                    <S.AddButton onClick={() => props.onPlaceClick(dayPlan.day)} type="button">장소 추가</S.AddButton>
-                    <S.AddButton onClick={() => props.onKeywordClick(dayPlan.day)} type="button">키워드 추가</S.AddButton>
+                    <S.AddButton
+                      onClick={() => props.onPlaceClick(dayPlan.day)}
+                      type="button"
+                    >
+                      장소 추가
+                    </S.AddButton>
+                    <S.AddButton
+                      onClick={() => props.onKeywordClick(dayPlan.day)}
+                      type="button"
+                    >
+                      키워드 추가
+                    </S.AddButton>
                   </S.PlusButtonContainer>
-                </div>
-              )}
-            </Droppable>
-          </S.DayPlanContainer>
+                </S.DayPlanContainer>
+                
+              </div>
+            )}
+          </Droppable>
         ))}
       </HorizontalScrollContainer>
     </DragDropContext>
-  )
+  );
 };
 
 export default DayPlan;

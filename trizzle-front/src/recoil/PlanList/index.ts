@@ -61,11 +61,15 @@ const onPlaceDragEnd = (result:any, planList:any) => {
   
   if(!result.destination) return planList;
   const {source, destination} = result;
-  const sourceDay = source.droppableId.split('-')[0];
-  const destinationDay = destination.droppableId.split('-')[0];
-  const sourceIndex = source.droppableId.split('-')[1];
-  const destinationIndex = destination.droppableId.split('-')[1];
+  const sourceDay = source.droppableId;
+  const destinationDay = destination.droppableId;
+  const sourceIndex = source.index;
+  const destinationIndex = destination.index;
   const place = planList[Number(sourceDay)-1].placeList[sourceIndex];
+  const draggableId = result.draggableId;
+  if(draggableId === "day") {
+    console.log(result);
+    return planList;}
 
   if(sourceDay === destinationDay && sourceIndex === destinationIndex) {
     return planList;

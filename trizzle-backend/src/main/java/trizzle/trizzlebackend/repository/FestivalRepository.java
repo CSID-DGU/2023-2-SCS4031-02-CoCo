@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface FestivalRepository extends MongoRepository<Festival, Long> {
     Festival findByContentId(String contentId);
-    List<Festival> findByContentIdIsNotNull();
+    List<Festival> findByHomepageIsNotNull();
 }

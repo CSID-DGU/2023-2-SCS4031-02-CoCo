@@ -40,9 +40,7 @@ const Home = () => {
           <HorizontalScrollContainer moveDistance={355} type="main">
             {festivalLists !== null && festivalLists.map((festival:any, index:number) => {
               return (
-                <a href={festival.hompage} target="_blank" rel="noreferrer" key={index} style={{textDecoration:"none"}}>
                   <FestivalCard key={index} festival={festival}/>
-                </a>
               )
             })}
           </HorizontalScrollContainer>
