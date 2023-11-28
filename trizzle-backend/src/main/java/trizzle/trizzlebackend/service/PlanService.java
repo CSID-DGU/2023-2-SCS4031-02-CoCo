@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.domain.Day;
 import trizzle.trizzlebackend.domain.Place;
 import trizzle.trizzlebackend.domain.Plan;
+import trizzle.trizzlebackend.repository.PlanRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -18,6 +19,7 @@ import java.util.*;
 public class PlanService {
 
     private final MongoRepository<Plan, String> mongoRepository;
+    private final PlanRepository planRepository;
     private final PlaceService placeService;
     private final MongoTemplate mongoTemplate;
 
@@ -68,6 +70,11 @@ public class PlanService {
         Query query = new Query(Criteria.where("accountId").is(accountId));
         List<Plan> myPlans = mongoTemplate.find(query, Plan.class);
         return myPlans;
+    }
+
+    public List<Plan> findMyNotPostPlan(String accountId) {
+        List<Plan> plans = planRepository.findByAccountIdAndPostIdIsNull(accountId);
+        return plans;
     }
 
     public void deletePlan(String planId) {

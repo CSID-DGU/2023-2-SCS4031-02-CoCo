@@ -142,6 +142,11 @@ public class PostService {
         return myPosts;
     }
 
+    public List<Post> findNotSecretPosts(String accountId) {
+        List<Post> publicPosts = postRepository.findByAccountIdAndPostSecret(accountId, false);
+        return publicPosts;
+    }
+
     public void deletePost(String postId) {
         elasticPostRepository.deleteById(postId);
         postRepository.deleteById(postId);
