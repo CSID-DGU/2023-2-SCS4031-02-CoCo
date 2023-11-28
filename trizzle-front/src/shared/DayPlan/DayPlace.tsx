@@ -18,7 +18,7 @@ type DayPlaceProps = {
   secret?: boolean;
   index: number;
   onPostClick?: () => void;
-  onDeleteClick?: (place: any, day: number, index: number) => void;
+  onDeleteClick?: (day: number, index: number) => void;
 }
 
 const KeywordList: { keyword: string; src: string; }[] = [
@@ -48,11 +48,11 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
       const keywordSrc = KeywordList.filter((key) => props.place.keyword === key.keyword);
       setKeyword(keywordSrc);
       if (props.onDeleteClick) {
-        setMenuItem([{ content: "삭제", onClick: () => { props.onDeleteClick && props.onDeleteClick(props.place, props.day, props.index) } }]);
+        setMenuItem([{ content: "삭제", onClick: () => { props.onDeleteClick && props.onDeleteClick(props.day, props.index) } }]);
       }
     } else {
       if (props.isPlan && props.onDeleteClick) {
-        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick && props.onDeleteClick(props.place, props.day, props.index), isDelete: true }]);
+        setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick && props.onDeleteClick(props.day, props.index), isDelete: true }]);
       } else if (props.isPost && props.isPost === true) {
         setMenuItem([{ content: "게시글로 이동", onClick: onPostClick, isDelete: false }]);
       } else {
