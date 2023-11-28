@@ -42,7 +42,7 @@ export const DayPlanTitle = styled.div`
 `
 
 export const PlaceContainer = styled.div`
-  width: 100%;
+  width: 12rem;
   height: 6rem;
   display: flex;
   border: 1.5px solid #EBB700;
