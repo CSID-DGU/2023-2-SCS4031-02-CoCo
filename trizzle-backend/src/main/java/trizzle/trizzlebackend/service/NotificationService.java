@@ -56,6 +56,7 @@ public class NotificationService {
                     .count(notifications.size())
                     .contentId(notification.getContentId())
                     .content(notification.getContent())
+                    .notificationRegistrationDate(notification.getNotificationRegistrationDate())
                     .build();
 
             response.add(notificationDto);
@@ -68,11 +69,12 @@ public class NotificationService {
         return notificationRepositiory.findById(id);
     }
 
-    public String updateNotification(String notificationId) {
-        Notification notification = findById(notificationId);
-        notification.setNotificationCheck(true);
-        notificationRepositiory.save(notification);
-
+    public String updateNotification(String accountId) {
+        List<Notification> notifications = findUserNotification(accountId);
+        for(Notification notification: notifications) {
+            notification.setNotificationCheck(true);
+            notificationRepositiory.save(notification);
+        }
         return "success";
     }
 

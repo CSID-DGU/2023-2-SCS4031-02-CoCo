@@ -6,6 +6,7 @@ import lombok.Setter;
 import trizzle.trizzlebackend.domain.Notification;
 import trizzle.trizzlebackend.domain.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -17,4 +18,5 @@ public class NotificationDto {
     private String contentId;
     private String content;
     private Integer count;
+    private LocalDateTime notificationRegistrationDate;
 }

@@ -119,4 +119,14 @@ public class UserContoller {
             return ResponseEntity.ok().body(response);
         }
     }
+
+    @GetMapping("/notification/check")
+    public ResponseEntity checkNotification(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        String message = notificationService.updateNotification(accountId);
+
+        return ResponseEntity.ok().body("{\"message\": \"" + message + "\"}");
+    }
 };
