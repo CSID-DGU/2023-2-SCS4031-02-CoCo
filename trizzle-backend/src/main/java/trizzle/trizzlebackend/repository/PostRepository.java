@@ -10,5 +10,7 @@ public interface PostRepository extends MongoRepository<Post, String> {
 
     List<Post> findTop4ByPostSecretOrderByLikeCountDesc(boolean postSecret);
 
+    List<Post> findByAccountIdAndPostSecret(String accountId, boolean postSecret);
+
     Post findByIdAndAccountId(String postId, String accountId);
 };

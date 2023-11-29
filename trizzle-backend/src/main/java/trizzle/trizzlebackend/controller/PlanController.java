@@ -65,6 +65,16 @@ public class PlanController {
                 .body(myPlans);
     }
 
+    @GetMapping("/myplans/nonpost")
+    public ResponseEntity getMyandNotPostPlan(HttpServletRequest request){
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        List<Plan> plans = planService.findMyNotPostPlan(accountId);
+
+        return ResponseEntity.ok().body(plans);
+    }
+
     @DeleteMapping("/myplans/{planId}") // 일정 삭제하기
     public ResponseEntity deleteMyPlan(@PathVariable("planId") String planId, HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);

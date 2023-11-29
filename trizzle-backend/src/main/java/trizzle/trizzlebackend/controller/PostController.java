@@ -101,7 +101,7 @@ public class PostController {
 
     @GetMapping("/otherposts/{accountId}")
     public ResponseEntity getOtherPosts(@PathVariable("accountId") String accountId) {
-        List<Post> posts = postService.findMyPosts(accountId);
+        List<Post> posts = postService.findNotSecretPosts(accountId);
         return ResponseEntity.ok()
                 .body(posts);
     }

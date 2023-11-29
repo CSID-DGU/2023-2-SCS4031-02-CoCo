@@ -133,6 +133,11 @@ public class ReviewService {
         return myReviews;
     }
 
+    public List<Review> findPublicReview(String accountId) {
+        List<Review> publicReviews = reviewRepository.findByAccountIdAndReviewSecret(accountId, false);
+        return publicReviews;
+    }
+
     public void deleteReview(String reviewId) {
         elasticReviewRepository.deleteById(reviewId);
         reviewRepository.deleteById(reviewId);

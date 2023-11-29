@@ -65,10 +65,10 @@ public class UserContoller {
         }
         ;
         User userData = userService.searchUser(account);
-        List<Post> userPosts = postService.findMyPosts(account).stream()
+        List<Post> userPosts = postService.findNotSecretPosts(account).stream()
                 .limit(3)
                 .collect(Collectors.toList());
-        List<Review> userReviews = reviewService.findMyReviews(account).stream()
+        List<Review> userReviews = reviewService.findPublicReview(account).stream()
                 .limit(3)
                 .collect(Collectors.toList());
         response.put("profile", userData);

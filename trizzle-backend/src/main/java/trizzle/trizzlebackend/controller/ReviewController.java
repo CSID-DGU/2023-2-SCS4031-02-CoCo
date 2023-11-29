@@ -74,7 +74,7 @@ public class ReviewController {
 
     @GetMapping("/otherreviews/{accountId}")
     public ResponseEntity getOtherReviews(@PathVariable("accountId") String accountId) {
-        List<Review> reviews = reviewService.findMyReviews(accountId);
+        List<Review> reviews = reviewService.findPublicReview(accountId);
         return ResponseEntity.ok()
                 .body(reviews);
     }
