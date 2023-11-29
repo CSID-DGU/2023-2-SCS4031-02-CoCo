@@ -32,9 +32,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Map<String, String> getHeaderUserInfo(String accountId) {
+    public Map<String, Object> getHeaderUserInfo(String accountId) {
         User user = searchUser(accountId);
-        Map<String, String> response = new HashMap<>();
+        Map<String, Object> response = new HashMap<>();
         response.put("profileImg", user.getProfileImage());
         response.put("id", user.getAccountId());
         return response;

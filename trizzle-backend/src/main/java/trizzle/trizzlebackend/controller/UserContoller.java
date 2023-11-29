@@ -3,6 +3,7 @@ package trizzle.trizzlebackend.controller;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Post;
 import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.domain.User;
+import trizzle.trizzlebackend.dto.response.NotificationDto;
+import trizzle.trizzlebackend.service.NotificationService;
 import trizzle.trizzlebackend.service.PostService;
 import trizzle.trizzlebackend.service.ReviewService;
 import trizzle.trizzlebackend.service.UserService;
@@ -22,25 +25,17 @@ import java.util.stream.Collectors;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/user")
 public class UserContoller {
 
     private final UserService userService;
     private final PostService postService;
     private final ReviewService reviewService;
+    private final NotificationService notificationService;
 
     @Value("${jwt.secret}")
     private String secretKey;
-
-
-    public UserContoller(
-            UserService userService,
-            PostService postService,
-            ReviewService reviewService) {
-        this.userService = userService;
-        this.postService = postService;
-        this.reviewService = reviewService;
-    };
 
     @GetMapping("")
     public ResponseEntity searchUser(HttpServletRequest request) {
@@ -118,7 +113,9 @@ public class UserContoller {
                     .body("{\"message\": \"" + message + "\"}");
         } else {
             String account = JwtUtil.getAccountId(token, secretKey);
-            Map<String, String> response = userService.getHeaderUserInfo(account);
+            List<NotificationDto> notificationDtos = notificationService.responseNotification(account);
+            Map<String, Object> response = userService.getHeaderUserInfo(account);
+            response.put("noti", notificationDtos);
             return ResponseEntity.ok().body(response);
         }
     }

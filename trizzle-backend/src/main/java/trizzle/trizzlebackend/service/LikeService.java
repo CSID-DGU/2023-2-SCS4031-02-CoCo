@@ -24,6 +24,7 @@ public class LikeService {
     private final ReviewRepository reviewRepository;
     private final CommentService commentService;
     private final CommentRepository commentRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public String convertLike(String type, String contentId, String accountId) {
@@ -43,6 +44,11 @@ public class LikeService {
             Like like = null;
             LocalDateTime dateTime = LocalDateTime.now();  // 현재시간을 등록시간으로 저장
 
+            Notification notification = new Notification();
+            notification.setSendAccountId(accountId);
+            notification.setContentId(contentId);
+            notification.setNotificationType(type + "-like");
+
             switch (type) {
                 case "post":
                     like = Like.builder()
@@ -51,12 +57,19 @@ public class LikeService {
                             .likeRegistrationDate(dateTime)
                             .type("post")
                             .build();
-                    likeRepository.save(like);  // 좋아요 저장
+                    Like lk = likeRepository.save(like);  // 좋아요 저장
 
                     /* 좋아요 누르면 count 1 증가 */
                     Post post = postService.findPost(contentId);
                     post.increaseLikes();
                     postService.insertPost(post, accountId);
+
+                    notification.setReceiveAccountId(post.getAccountId());
+                    notification.setContent(post.getPostTitle());
+                    notification.setForeignId(lk.getId());
+
+                    notificationService.insertNotification(notification);
+
                     break;
 
                 case "review":
@@ -66,12 +79,19 @@ public class LikeService {
                             .likeRegistrationDate(dateTime)
                             .type("review")
                             .build();
-                    likeRepository.save(like);  // 좋아요 저장
+                    Like lk2 = likeRepository.save(like);  // 좋아요 저장
 
                     /* 좋아요 누르면 count 1 증가 */
                     Review review = reviewService.findReview(contentId);
                     review.increaseLikes();
                     reviewService.insertReview(review, accountId);
+
+                    notification.setReceiveAccountId(review.getAccountId());
+                    notification.setContent(review.getReviewTitle());
+                    notification.setForeignId(lk2.getId());
+
+                    notificationService.insertNotification(notification);
+
                     break;
 
                 case "comment":
@@ -92,6 +112,7 @@ public class LikeService {
             return "add like success";
 
         } else {    // 좋아요 있다면 삭제
+            notificationService.deleteNotification(existingLike.getId());
             likeRepository.delete(existingLike);
 
             switch (type) {
@@ -100,6 +121,7 @@ public class LikeService {
                     Post post = postService.findPost(contentId);
                     post.decreaseLikes();
                     postService.insertPost(post, accountId);
+
                     break;
 
                 case "review":

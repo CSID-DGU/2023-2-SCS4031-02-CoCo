@@ -2,30 +2,33 @@ package trizzle.trizzlebackend.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Comment;
+import trizzle.trizzlebackend.domain.Notification;
+import trizzle.trizzlebackend.domain.Post;
+import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.error.TokenError;
-import trizzle.trizzlebackend.service.CommentService;
-import trizzle.trizzlebackend.service.UserService;
+import trizzle.trizzlebackend.service.*;
 
 import java.util.*;
 
 @RestController
+@RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
+    private final NotificationService notificationService;
+    private final PostService postService;
+    private final ReviewService reviewService;
     private final UserService userService;
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public CommentController(CommentService commentService, UserService userService) {
-        this.commentService = commentService;
-        this.userService = userService;
-    };
 
     @PostMapping("/api/comments")
     public ResponseEntity postComment(@RequestBody Comment comment, HttpServletRequest request) {
@@ -37,12 +40,15 @@ public class CommentController {
             Map<String, Object> response = new HashMap<>();
             response.put("message", "success");
             List<Object> comments = new ArrayList<>();
+
             if(com.getReviewId() == null) {
                 comments = commentService.findByPost(com.getPostId(), accountId);
+
             } else {
                 comments = commentService.findByReview(com.getReviewId(), accountId);
             }
             response.put("comments", comments);
+
             return ResponseEntity.ok().body(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred.");
