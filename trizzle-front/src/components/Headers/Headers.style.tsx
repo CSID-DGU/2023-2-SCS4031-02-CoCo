@@ -32,6 +32,7 @@ export const HeaderIconText = styled.div`
   display: flex;
   align-items: center;
   margin-right: 1.75rem;
+  position: relative;
 `
 
 export const HeaderText = styled.div`
@@ -53,4 +54,66 @@ export const AlarmBadge = styled.div`
   font-size: 1rem;
   font-weight: 600;
   color: #fff;
+`
+export const NotificationContainer = styled.div`
+  width: 30rem;
+  height: auto;
+  max-height: 30rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  background-color: #ffffff;
+  position: absolute;
+  z-index:5;
+  top: 2.8rem;
+  right: -7rem;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+`
+
+export const NotificationItem = styled.div`
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content:flex-start;
+  padding: 1rem 1rem;
+  gap: 1rem;
+  border-bottom: 1px solid #E0E0E0;
+`
+
+export const Verticalcontainer = styled.div`
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: first-start;
+  align-items: first-start;
+  gap: 0.5rem;
+`
+
+export const NotificationText = styled.div`
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content:flex-start;
+  font-size: 0.9rem;
+  font-weight: 400;
+  cursor: pointer;
+  &:hover {
+    background-color: #F5F5F5;
+    border-radius: 0.5rem;
+    font-style: underline;
+  }
+`
+
+export const NotificationDate = styled.div`
+  width: auto;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content:flex-start;
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #9E9E9E;
 `
