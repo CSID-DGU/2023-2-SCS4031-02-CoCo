@@ -8,17 +8,21 @@ import logo from "../../assets/logo/Logo.svg"
 import homeLogo from "../../assets/logo/homeLogo.svg"
 import MainLogin from "../../pages/LoginPage/MainLogin";
 import { useAsync } from "../../utils/API/useAsync";
+import Notifications from "./Notification";
 
 const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
   let headerContent;
   const location = useLocation();
   const [isLogin, setIsLogin] = useState<boolean>(false);
   const [state, _] = useAsync({ url: "/api/user/header" });
+  const [state2, fetchData] = useAsync({ url: "" });
   const isHome = props.isHome || false;
   const [isLoginModal, setIsLoginModal] = useState<boolean>(false);
   const [modalType, setModalType] = useState<string>('로그인');
   const [userData, setUserData] = useState<any>({});
   const [propsData, setPropsData] = useState<any>(null);
+  const [isNotiOpen, setIsNotiOpen] = useState<boolean>(false);
+  const [notiCount, setNotiCount] = useState<number>(0);
 
   useEffect(() => {
     if(state.error) {
@@ -36,12 +40,23 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       else {
         setIsLogin(true);
         setUserData(state.data);
+        setNotiCount(state.data.noti.length);
         sessionStorage.setItem("accountId", state.data.id);
         sessionStorage.setItem("profileImg", state.data.profileImg);
       }
     }
   }
   }, [state]);
+
+  useEffect(() => {
+    if(state2.error) {
+      console.log(state2.error);
+    } else if(state2.data) {
+      if(state2.data.message === "success") {
+        setNotiCount(0);
+      }
+    }
+  }, [state2]);
 
   if (isLogin) {
     if (location.pathname.includes('/myfeed/plans/')) {
@@ -88,6 +103,21 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
     }
   }, []);
 
+  const onClickNoti = () => {
+    if(userData.noti && userData.noti.length !== 0) {
+      if(isNotiOpen) {
+        setIsNotiOpen(!isNotiOpen);
+        return;
+      }else {
+        setIsNotiOpen(!isNotiOpen);
+        fetchData(`/api/user/notification/check`);
+        return;
+      }
+    } else {
+      return;
+    }
+  };
+
   if(propsData !== null) {
   return (
     <>
@@ -109,9 +139,12 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
             </S.HeaderIconText>
             <S.HeaderIconText>
               <AiOutlineBell size="1.1rem" />
-              <S.HeaderText>알림</S.HeaderText>
-              {props.alarmCount && props.alarmCount !== 0 && (
-                <S.AlarmBadge>{props.alarmCount}</S.AlarmBadge>
+              <S.HeaderText onClick={onClickNoti}>알림</S.HeaderText>
+              {userData.noti && userData.noti.length !== 0 && (
+                <S.AlarmBadge>{notiCount}</S.AlarmBadge>
+              )}
+              {isNotiOpen && (
+                <Notifications notiList={userData.noti} />
               )}
             </S.HeaderIconText>
             <Link to="/myfeed">

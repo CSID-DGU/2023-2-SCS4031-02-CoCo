@@ -3,11 +3,10 @@ package trizzle.trizzlebackend.service;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.controller.CommentController;
-import trizzle.trizzlebackend.domain.Comment;
-import trizzle.trizzlebackend.domain.Post;
-import trizzle.trizzlebackend.domain.User;
+import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.repository.CommentRepository;
 import trizzle.trizzlebackend.repository.PostRepository;
 
@@ -24,14 +23,14 @@ public class CommentService {
     //게시글 서비스 올라오면 그것도 가져옴
     private final PostService postService;
     private final ReviewService reviewService;
-    private final MongoTemplate mongoTemplate;
+    private final NotificationService notificationService;
 
-    public CommentService(CommentRepository commentRepository, UserService userService, PostService postService, ReviewService reviewService, MongoTemplate mongoTemplate) {
+    public CommentService(CommentRepository commentRepository, UserService userService, PostService postService, ReviewService reviewService, NotificationService notificationService) {
         this.commentRepository = commentRepository;
         this.userService = userService;
         this.postService = postService;
         this.reviewService = reviewService;
-        this.mongoTemplate = mongoTemplate;
+        this.notificationService = notificationService;
     }
 
     public Comment insertComment(Comment comment, String accountId) {
@@ -41,13 +40,49 @@ public class CommentService {
         comment.setCommentLike(0); //좋아요 0개
         comment.setFix(false);
         comment.setDeleted(false);
+        Comment com = commentRepository.save(comment);
 
-        return commentRepository.save(comment);
+        Notification notification = new Notification();
+        notification.setSendAccountId(accountId);
+        notification.setForeignId(com.getId());
+
+        if(comment.getPostId() == null) {
+            notification.setContentId(comment.getReviewId());
+            Review review = reviewService.findReview(comment.getReviewId());
+            notification.setReceiveAccountId(review.getAccountId());
+            notification.setContent(review.getReviewTitle());
+            notification.setNotificationType("review-comment");
+            if(comment.getParentId() != null) {
+                Notification notification1 = notification;
+                Comment comment1 = findComment(comment.getParentId());
+                notification1.setReceiveAccountId(comment1.getAccountId());
+                notification1.setNotificationType("review-comment-reply");
+                notificationService.insertNotification(notification1);
+            }
+        } else {
+            notification.setContentId(comment.getPostId());
+            Post post = postService.findPost(comment.getPostId());
+            notification.setReceiveAccountId(post.getAccountId());
+            notification.setContent(post.getPostTitle());
+            notification.setNotificationType("post-comment");
+            if(comment.getParentId() != null) {
+                Notification notification1 = notification;
+                Comment comment1 = findComment(comment.getParentId());
+                notification1.setReceiveAccountId(comment1.getAccountId());
+                notification1.setNotificationType("post-comment-reply");
+                notificationService.insertNotification(notification1);
+            }
+        }
+
+        notificationService.insertNotification(notification);
+
+        return com;
     };
 
     public Comment deleteComment(Comment comment) {
         comment.setDeleted(true);
         comment.setCommentContent("");
+        notificationService.deleteNotification(comment.getId());
         //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직 추가
         return commentRepository.save(comment);
     };
