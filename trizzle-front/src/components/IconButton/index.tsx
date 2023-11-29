@@ -12,6 +12,7 @@ const IconButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
 
   const onLike = () => {
     fetchData(`/api/${props.type}/${props.contentId}/likes`, "POST");
+
   }
 
   const onBookmark = () => {
@@ -24,8 +25,10 @@ const IconButton: React.FC<IconButtonProps> = (props: IconButtonProps) => {
       alert("로그인이 필요합니다.");
     } else if(state.data){
       if(state.data.message === "add like success" || state.data.message === "add bookmark success") {
+        props.setCount(props.count + 1);
         setIsFilled(true);
       } else if(state.data.message === "delete like success" || state.data.message === "delete bookmark success") {
+        props.setCount(props.count - 1);
         setIsFilled(false);      }
     }
   },[state]);

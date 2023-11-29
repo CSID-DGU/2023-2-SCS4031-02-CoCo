@@ -20,6 +20,8 @@ export default function PostPlace() {
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
   const [reviewUser, setReviewUser] = useState<any>(null);
   const [isMe, setIsMe] = useState<boolean>(false);
+  const [likeCount, setLikeCount] = useState<number>(0);
+  const [bookmarkCount, setBookmarkCount] = useState<number>(0);
   const [menuItems, setMenuItems] = useState<any[]>([{
     content: "삭제", onClick: () => {
       alert("게시글을 삭제하시겠습니까?")
@@ -44,6 +46,8 @@ export default function PostPlace() {
         setIsLike(state.data.isLike);
         setIsBookmark(state.data.isBookmark);
         setReviewUser(state.data.reviewUser);
+        setLikeCount(state.data.review.likeCount);
+        setBookmarkCount(state.data.review.bookmarkCount);
         if (state.data.reviewUser.accountId === sessionStorage.getItem("accountId")) {
           setIsMe(true);
         }
@@ -68,12 +72,20 @@ export default function PostPlace() {
 
         <S.InforFirstContainer>
           <div>{data.reviewTitle}</div>
-          {isMe ?
-          <>
-          <Menu item={menuItems}/>
-        </>:
-        <IconButton icon="bookmark" type="review" contentId={data.id} filled={isBookmark} />
-      }
+          {isMe ? (
+            <>
+              <Menu item={menuItems} />
+            </>
+          ) : (
+            <IconButton
+              icon="bookmark"
+              type="review"
+              contentId={data.id}
+              filled={isBookmark}
+              count={bookmarkCount}
+              setCount={(count: number) => setBookmarkCount(count)}
+            />
+          )}
         </S.InforFirstContainer>
         <S.HorizontalFirstStartContainer>
           <S.HorizontalFirstStartContainer>
@@ -84,52 +96,29 @@ export default function PostPlace() {
           </S.HorizontalFirstStartContainer>
           <S.HorizontalFirstStartContainer style={{ margin: "0 0 0 5rem" }}>
             <S.InforContainer>방문일자</S.InforContainer>
-            <S.InforInputContainer >
-              {data.visitDate}
-            </S.InforInputContainer>
+            <S.InforInputContainer>{data.visitDate}</S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            장소명
-          </S.InforContainer>
-          <S.InforInputContainer>
-            {data.place.placeName}
-          </S.InforInputContainer>
+          <S.InforContainer>장소명</S.InforContainer>
+          <S.InforInputContainer>{data.place.placeName}</S.InforInputContainer>
         </S.HorizontalFirstStartContainer>
         {data.postName != null && (
           <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              장소명
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.postName}
-            </S.InforInputContainer>
+            <S.InforContainer>장소명</S.InforContainer>
+            <S.InforInputContainer>{data.postName}</S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
         )}
-
         <S.HorizontalFirstStartContainer>
           <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              조회
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.views}
-            </S.InforInputContainer>
+            <S.InforContainer>조회</S.InforContainer>
+            <S.InforInputContainer>{data.viewCount}</S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
-          <S.InforContainer>
-            좋아요
-          </S.InforContainer>
-          <S.InforInputContainer>
-            {data.likeCount}
-          </S.InforInputContainer>
+          <S.InforContainer>좋아요</S.InforContainer>
+          <S.InforInputContainer>{likeCount}</S.InforInputContainer>
           <S.HorizontalFirstStartContainer>
-            <S.InforContainer>
-              북마크
-            </S.InforContainer>
-            <S.InforInputContainer>
-              {data.bookmarkCount}
-            </S.InforInputContainer>
+            <S.InforContainer>북마크</S.InforContainer>
+            <S.InforInputContainer>{bookmarkCount}</S.InforInputContainer>
           </S.HorizontalFirstStartContainer>
         </S.HorizontalFirstStartContainer>
         <S.HorizontalLine />
@@ -139,7 +128,11 @@ export default function PostPlace() {
           dangerouslySetInnerHTML={{ __html: data.reviewContent }}
         />
 
-        <UserPreview accountId={reviewUser.accountId} nickName={reviewUser.nickname} keyword={reviewUser.thema} />
+        <UserPreview
+          accountId={reviewUser.accountId}
+          nickName={reviewUser.nickname}
+          keyword={reviewUser.thema}
+        />
 
         <S.CommentContainer>
           <S.HorizontalFirstStartContainer>
@@ -149,11 +142,17 @@ export default function PostPlace() {
             </S.CommentText>
             <S.CommentText>
               좋아요
-              <IconButton icon="like" type="review" contentId={data.id} filled={isLike} />
+              <IconButton
+                icon="like"
+                type="review"
+                contentId={data.id}
+                filled={isLike}
+                count={likeCount}
+                setCount={(count: number) => setLikeCount(count)}
+              />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          <CommentSection page='review' postId={data.id} />
-
+          <CommentSection page="review" postId={data.id} />
         </S.CommentContainer>
 
         {/* <S.RecommendContainer>
