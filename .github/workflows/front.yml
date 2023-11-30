@@ -17,16 +17,17 @@ jobs:
       - uses: actions/setup-node@v4.0.0
       - name: Debug step
         run: echo "Debug information here"
-      - name: front Build and deploy
+      - name : yarn berry set
         run: |
           cd trizzle-front
-          echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           rm -rf .yarnrc.yml
-          npm cache clean --force
-          npm install -g yarn@3.6.1
+          npm install -g yarn
           yarn set version 3.6.1
-          npm install
-          yarn add
+          yarn install
+          
+      - name: front Build and deploy
+        run: |
+          echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           yarn build
         env:
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
