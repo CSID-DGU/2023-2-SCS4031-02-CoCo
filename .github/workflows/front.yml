@@ -64,5 +64,6 @@ jobs:
       - name : yarn build
         run: |
           cd trizzle-front
+          yarn install
           yarn build
       
