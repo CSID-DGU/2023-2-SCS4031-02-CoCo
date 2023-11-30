@@ -15,9 +15,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v4.0.0
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Debug step
         run: echo "Debug information here"
-      - name : yarn berry set and build
+      - name : yarn berry set
         run: |
           cd trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
@@ -27,6 +31,9 @@ jobs:
           yarn set version 3.6.1
           yarn
           yarn install
+          yarn build
+      - name : yarn build
+        run: |
           yarn build
         env:
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
