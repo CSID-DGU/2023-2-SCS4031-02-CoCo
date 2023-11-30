@@ -92,4 +92,4 @@ jobs:
         # arguments: build
       run : |
         cd trizzle-backend
-        ./gradlew clean build
+        ./gradlew clean bootJar
