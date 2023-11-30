@@ -30,6 +30,13 @@ jobs:
           corepack enable
           corepack prepare yarn@3.6.1 --activate
           yarn set version 3.6.1
+        env:
+          VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name : front file dir
+        run: |
+          ls -l
           
       - name: Get cache dir path
         id: yarn-cache-dir-path
@@ -55,6 +62,4 @@ jobs:
         run: |
           cd trizzle-front
           yarn build
-        env:
-          VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      
