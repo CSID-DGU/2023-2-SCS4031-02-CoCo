@@ -25,6 +25,7 @@ jobs:
           corepack enable
           corepack prepare yarn@3.6.1 --activate
           yarn set version 3.6.1
+          yarn
           yarn install
           npm install
           yarn build
