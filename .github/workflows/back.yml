@@ -9,11 +9,11 @@ name: BackEnd CI
 
 on:
   push:
-    branches: [ "Test_Back" ]
-    paths:
-      - 'trizzle-backend/**'
+    branches: [ "develop" ]
+    # paths:
+      # - 'trizzle-backend/**'
   pull_request:
-    branches: [ "Test_Back" ]
+    branches: [ "develop" ]
   workflow_dispatch:
 
 jobs:
