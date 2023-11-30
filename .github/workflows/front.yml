@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-node@v4.0.0
       - uses: actions/cache@v2
         with:
-          path: '**/node_modules'
+          path: '**/.yarn'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
       - name: Debug step
         run: echo "Debug information here"
