@@ -29,8 +29,8 @@ jobs:
       - name: front Build and deploy
         run: |
           cd trizzle-front
-          yarn install
-          npm install
+          npm install --force
+          yarn install --check-files
           yarn add
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           yarn build
