@@ -36,6 +36,7 @@ jobs:
 
       - name : front file dir
         run: |
+          cd trizzle-front
           ls -l
           
       - name: Get cache dir path
