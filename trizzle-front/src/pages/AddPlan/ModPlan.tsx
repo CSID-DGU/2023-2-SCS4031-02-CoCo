@@ -107,7 +107,8 @@ const EditPlanPage:React.FC = () => {
       planEndDate: endDate,
       planLocation: region.name,
       planThema: themaNames,
-      content: placeList
+      content: placeList,
+      postId : loadingData.postId
     }
     const json = JSON.stringify(data);
     const url = `/api/plans/${planId.id}`;
@@ -142,6 +143,7 @@ const EditPlanPage:React.FC = () => {
         }));
       }};
     }, [state])
+
   if(loadingData !== null) {
   return (
     <Page headersProps={{isHome:false}}>

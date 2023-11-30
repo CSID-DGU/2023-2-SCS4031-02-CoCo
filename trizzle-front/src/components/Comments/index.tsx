@@ -16,6 +16,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [childCommentOpen, setChildCommentOpen] = useState<boolean>(false);
   const registration = new Date(props.commentData.commentData.commentRegistrationDate);
+  const [likeCount, setLikeCount] = useState<number>(props.commentData.commentData.likeCount);
   const now = new Date();
   const diff = Math.floor((now.getTime() - registration.getTime()) / 1000 / 60);
 
@@ -96,7 +97,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
               {props.commentData.commentData.commentContent}
             </S.PostCommentContentBody>
             <S.PostCommentContentFooter>
-              <IconButton icon="like" type="comment" contentId={props.commentData.commentData.id} filled={props.commentData.isLike ? props.commentData.isLike : false} />
+              <IconButton icon="like" type="comment" contentId={props.commentData.commentData.id} filled={props.commentData.isLike ? props.commentData.isLike : false} count={likeCount} setCount={setLikeCount}/>
               <S.PostCommentContentFooterLike>{props.commentData.commentData.likeCount}</S.PostCommentContentFooterLike>
               {props.commentData.commentData.parentId === null ? (
                 <S.PostCommentContentFooterReply onClick={() => onChild()}>답글</S.PostCommentContentFooterReply>       
