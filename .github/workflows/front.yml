@@ -58,7 +58,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd trizzle-front
-          yarn
+          yarn install --frozen-lockfile
             
       - name : yarn build
         run: |
