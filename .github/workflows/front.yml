@@ -19,7 +19,7 @@ jobs:
         run: |
           ls -l
           pwd
-          cd ../../trizzle-front
+          cd /home/runner/work/2023-2-SCS4031-02-CoCo/2023-2-SCS4031-02-CoCo/trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           rm -rf .yarnrc.yml
           yarn set version 3.6.1
