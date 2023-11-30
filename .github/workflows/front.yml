@@ -28,6 +28,7 @@ jobs:
           
       - name: front Build and deploy
         run: |
+          cd trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           yarn build
         env:
