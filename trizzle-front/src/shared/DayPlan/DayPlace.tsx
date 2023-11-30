@@ -62,7 +62,7 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
   }, [props.place, props.day, props.index, props.onDeleteClick, props.isPlan, props.isPost, props.id]);
 
 
-  if (props.place.hasOwnProperty('placeName')) {
+  if (props.place.hasOwnProperty('placeName') && props.place.placeName !== null) {
     return (
       <S.PlaceContainer>
         {menuItem.length !== 0 &&
