@@ -14,13 +14,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v4.0.0
-      - uses: actions/cache@v2
+      - name: Setup Node 18.16.x
+        uses: actions/setup-node@v2
         with:
-          path: '**/.yarn'
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          node-version: '18.16.x'
+          cache: 'yarn'
       - name: Debug step
         run: echo "Debug information here"
+        
       - name : yarn berry set
         run: |
           cd trizzle-front
@@ -29,9 +30,27 @@ jobs:
           corepack enable
           corepack prepare yarn@3.6.1 --activate
           yarn set version 3.6.1
-          yarn
-          yarn install
-          yarn build
+          
+      - name: Get cache dir path
+        id: yarn-cache-dir-path
+        run: echo "CACHE_DIR=$(yarn config get cacheFolder)" >> $GITHUB_OUTPUT
+      
+      - name: Yarn cache
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.CACHE_DIR }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-${{ steps.set-version.outputs.YARN_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-
+      
+      - name: Install dependencies
+        run: |
+          CACHE_HIT="${{ steps.yarn-cache.outputs.cache-hit }}"
+          NODE_MODULES_EXISTS=$(test -d "node_modules" && echo "true" || echo "false")
+          if [[ "$CACHE_HIT" != 'true' || "$NODE_MODULES_EXISTS" == 'false' ]]; then
+            yarn install
+            
       - name : yarn build
         run: |
           yarn build
