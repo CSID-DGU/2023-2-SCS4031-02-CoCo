@@ -66,11 +66,11 @@ jobs:
         echo "allow.origin=${{ secrets.ALLOW_ORIGIN }}" > src/main/resources/application-oauth.properties
     
     - name: Create application-tourapi.properties
-        run: |
-          echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" > src/main/resources/application-toruapi.properties
-          echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" > src/main/resources/application-toruapi.properties
-          echo "tourapi.get.detailinfo.url=${{ secrets.TOURAPI_GET_DETAILINFO_URL }}" > src/main/resources/application-toruapi.properties
-          echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" > src/main/resources/application-toruapi.properties
+      run: |
+        echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" > src/main/resources/application-toruapi.properties
+        echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" > src/main/resources/application-toruapi.properties
+        echo "tourapi.get.detailinfo.url=${{ secrets.TOURAPI_GET_DETAILINFO_URL }}" > src/main/resources/application-toruapi.properties
+        echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" > src/main/resources/application-toruapi.properties
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
