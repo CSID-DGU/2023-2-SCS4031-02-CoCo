@@ -113,7 +113,7 @@ export const DayPlanPostContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   width: 45%;
   height: 34rem;
   border: 2px solid #FFDC61;
@@ -214,4 +214,17 @@ export const RecommendContainer = styled.div`
 export const RecommendText = styled.div`
   font-size: 2.5rem;
   font-weight: bold;
+`
+
+export const CopyPlan = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1rem 0.5rem 0;
+`
+
+export const CopyPlanText = styled.button`
+  margin: 0 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
 `
