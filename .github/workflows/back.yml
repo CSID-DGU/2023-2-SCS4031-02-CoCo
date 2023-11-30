@@ -1,0 +1,82 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: BackEnd CI
+
+on:
+  push:
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: mv
+      run: |
+        cd trizzle-backend
+
+    - name: Create application-awsS3.properties 
+      run: |
+        echo "cloud.aws.credentials.access-key=${{ secrets.AWS_ACCESS_KEY }}" > src/main/resources/application-awsS3.properties
+        echo "cloud.aws.credentials.secret-key=${{ secrets.AWS_SECRET_KEY }}" > src/main/resources/application-awsS3.properties
+        echo "cloud.aws.region.static=${{ secrets.AWS_REGION_STATIC }}" > src/main/resources/application-awsS3.properties
+        echo "cloud.aws.s3.bucket=${{ secrets.AWS_S3_BUCKET }}" > src/main/resources/application-awsS3.properties
+        echo "cloud.aws.stack.auto=${{ secrets.AWS_STACK_AUTO }}" > src/main/resources/application-awsS3.properties
+        echo "cloud.aws.cloufront.url=${{ secrets.AWS_CLOUDFRONT_URL }}" > src/main/resources/application-awsS3.properties
+
+    - name: Create application-mongodb.properties
+      run: |
+        echo "spring.data.mongodb.uri=${{ secrets.DB_URL }}" > src/main/resources/application-mongodb.properties
+        echo "spring.data.mongodb.database=${{ secrets.DB_NAME }}" > src/main/resources/application-mongodb.properties
+
+    - name: Create application-oauth.properties
+      run: |
+        echo "oauth.google.client-id=${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}" > src/main/resources/application-oauth.properties
+        echo "oauth.google.client-secret=${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}" > src/main/resources/application-oauth.properties
+        echo "oauth.google.redirect-uri=${{ secrets.OAUTH_GOOGLE_REDIRECT_URI }}" > src/main/resources/application-oauth.properties
+        echo "oauth.google.scope=${{ secrets.OAUTH_GOOGLE_SCOPE }}" > src/main/resources/application-oauth.properties
+        echo "oauth.google.token-uri=${{ secrets.OAUTH_GOOGLE_TOKEN_URI }}" > src/main/resources/application-oauth.properties
+        echo "oauth.google.resource-uri=${{ secrets.OAUTH_GOOGLE_RESOURCE_URI }}" > src/main/resources/application-oauth.properties
+        echo "oauth.google.client-authorize=${{ secrets.OAUTH_GOOGLE_CLIENT_AUTHORIZE }}" > src/main/resources/application-oauth.properties
+
+        echo "oauth.kakao.client-authorize=${{ secrets.OAUTH_KAKAO_CLIENT_AUTHORIZE }}" > src/main/resources/application-oauth.properties
+        echo "oauth.kakao.client-id=${{ secrets.OAUTH_KAKAO_CLIENT_ID }}" > src/main/resources/application-oauth.properties
+        echo "oauth.kakao.client-secret=${{ secrets.OAUTH_KAKAO_CLIENT_SECRET }}" > src/main/resources/application-oauth.properties
+        echo "oauth.kakao.redirect-uri=${{ secrets.OAUTH_KAKAO_REDIRECT_URI }}" > src/main/resources/application-oauth.properties
+        echo "oauth.kakao.token-uri=${{ secrets.OAUTH_KAKAO_TOKEN_URI }}" > src/main/resources/application-oauth.properties
+        echo "oauth.kakao.resource-uri=${{ secrets.OAUTH_KAKAO_RESOURCE_URI  }}" > src/main/resources/application-oauth.properties
+
+        echo "jwt.secret=${{ secrets.JWT_SECRET }}" > src/main/resources/application-oauth.properties
+        echo "allow.origin=${{ secrets.ALLOW_ORIGIN }}" > src/main/resources/application-oauth.properties
+    
+    - name: Create application-tourapi.properties
+        run: |
+          echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" > src/main/resources/application-toruapi.properties
+          echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" > src/main/resources/application-toruapi.properties
+          echo "tourapi.get.detailinfo.url=${{ secrets.TOURAPI_GET_DETAILINFO_URL }}" > src/main/resources/application-toruapi.properties
+          echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" > src/main/resources/application-toruapi.properties
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+
+    - name: Build with Gradle
+      # uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      # with:
+        # arguments: build
+      run : ./gradlew clean build
