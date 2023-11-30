@@ -14,6 +14,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v4.0.0
+        with:
+          -node-version : 20.7.0
       - name: Debug step
         run: echo "Debug information here"
       - name: front Build and deploy
