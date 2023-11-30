@@ -39,8 +39,8 @@ const AddPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      if (state.data.message === "save success") navigate(`/post/plan/${state.data.postId}`);
-      else if (state.data.message === "update success") console.log("update review");
+      if (state.data.message === "save success" && state.data.postId) navigate(`/post/plan/${state.data.postId}`);
+      else if (state.data.message === "update success" && state.data.reviewId) console.log();
       else setData(state.data);
     }
   }, [state]);
@@ -51,7 +51,6 @@ const AddPostPlan: React.FC = () => {
       setStartDate(data.planStartDate);
       setEndDate(data.planEndDate);
       setRegions(data.planLocation);
-      // console.log(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)));
       setPrevThema(data.planThema.map((value: string) => tripThema.filter((item: any) => item.name === value)[0]));
       setDayPlan(data.content);
       setSelectedDayPlan(data.content);
@@ -120,8 +119,8 @@ const AddPostPlan: React.FC = () => {
     });
     setDayPlan(newArray);
     const reviewData = { ...review, reviewSecret: false, planId: data.id }
-    console.log(JSON.stringify(review));
-    fetchData(`/api/reviews/${review.id}`, 'PUT', review);
+    const json = JSON.stringify(reviewData);
+    fetchData(`/api/reviews/${review.id}`, 'PUT', json);
   }
 
   const onSave = (type: string) => {

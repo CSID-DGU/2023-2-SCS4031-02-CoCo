@@ -40,10 +40,9 @@ const ModPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      console.log(state.data);
-      if (state.data.message === "update success" && state.data.postId) {
-        navigate(`/post/plan/${state.data.postId}`);
-      } else setData(state.data);
+      if (state.data.message === "update success" && state.data.postId) navigate(`/post/plan/${state.data.postId}`);
+      else if (state.data.message === "update success" && state.data.reviewId) console.log();
+      else setData(state.data);
     }
   }, [state]);
 
