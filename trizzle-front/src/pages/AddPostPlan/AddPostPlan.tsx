@@ -119,7 +119,7 @@ const AddPostPlan: React.FC = () => {
       return place;
     });
     setDayPlan(newArray);
-    const reviewData = { ...review, reviewSecret: false, planId: data.id }
+    // const reviewData = { ...review, reviewSecret: false, planId: data.id }
     console.log(JSON.stringify(review));
     fetchData(`/api/reviews/${review.id}`, 'PUT', review);
   }
