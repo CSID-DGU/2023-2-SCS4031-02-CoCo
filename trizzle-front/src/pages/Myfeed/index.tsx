@@ -38,7 +38,7 @@ const Myfeed = () => {
   else {
   return (
     <MyfeedLayout isMe={isMe}>
-      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={["김희진", "김희진", "김희진"]} following={["김희진", "김희진", "김희진"]} isMe={isMe} planCount={1} placeCount={4}
+      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={[{nickname:"김희진", accountId: "gjiewgjl", profileImage:""}]} following={[{nickname:"김희진", accountId: "gjiewgjl", profileImage:""}, {nickname:"김희진", accountId: "gjiewgjl", profileImage:""}]} isMe={isMe}
       src={userData.profileImage}
       />
       <S.HorizontalContainer>
