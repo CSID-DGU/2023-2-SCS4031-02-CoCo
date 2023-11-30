@@ -46,10 +46,12 @@ jobs:
       
       - name: Install dependencies
         run: |
+          cd trizzle-front
           yarn install
             
       - name : yarn build
         run: |
+          cd trizzle-front
           yarn build
         env:
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
