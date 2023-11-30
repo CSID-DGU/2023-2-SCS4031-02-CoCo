@@ -3,10 +3,10 @@ name : front-test
 on:
   push:
     branches:
-      - development
+      - develop
   pull_request:
     branches:
-      - development
+      - develop
 
 jobs:
   deploy:
