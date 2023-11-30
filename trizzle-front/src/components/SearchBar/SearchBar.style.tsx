@@ -13,6 +13,11 @@ export const Container = styled.div<{type:string}>`
   top:4.5rem;
   left:0;
   z-index: ${({type}) => type === "main" ? "100" : "100"};
+  @media screen and (max-width:767px){
+    padding: 0 1rem;
+    
+    
+  }
 `
 
 export const InputContainer = styled.div`
