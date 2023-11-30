@@ -15,8 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v4.0.0
-        with:
-          -node-version : 20.7.0
       - name: Debug step
         run: echo "Debug information here"
       - name: front Build and deploy
@@ -24,6 +22,7 @@ jobs:
           cd trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           rm -rf .yarnrc.yml
+          npm cache clean --force
           npm install -g yarn@3.6.1
           yarn set version 3.6.1
           npm install
