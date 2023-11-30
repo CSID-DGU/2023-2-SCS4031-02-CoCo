@@ -17,7 +17,7 @@ jobs:
         run: echo "Debug information here"
       - name: front Build and deploy
         run: |
-          cd trizzle-front
+          cd ../trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           rm -rf .yarnrc.yml
           yarn set version 3.6.1
