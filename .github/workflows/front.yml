@@ -21,7 +21,8 @@ jobs:
         run: |
           cd trizzle-front
           rm -rf .yarnrc.yml
-          npm install -g yarn
+          corepack enable
+          corepack prepare yarn@3.6.1 --activate
           yarn set version 3.6.1
           yarn install
           
