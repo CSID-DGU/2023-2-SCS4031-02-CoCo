@@ -89,7 +89,7 @@ const SearchPlan = () => {
               key={index}
               userId={plan.accountId}
               planId={plan.id}
-              thumbnail={plan.thumbnail ? plan.thumbnail : ""}
+              thumbnail={plan.thumnail ? plan.thumnail : ""}
               title={plan.postTitle}
               region={plan.plan.planLocation}
               placeCenter={plan.plan.content[0].placeList[0].keyword === null ? [plan.plan.content[0].placeList[0].x, plan.plan.content[0].placeList[0].y] : plan.plan.planLocation}
