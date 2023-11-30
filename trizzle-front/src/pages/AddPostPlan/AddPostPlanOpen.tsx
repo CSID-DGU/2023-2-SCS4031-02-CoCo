@@ -171,7 +171,7 @@ const AddPostPlanOpen: React.FC = () => {
         </S.UploadContainer>
         
       <div style={{ height: "10rem" }} />
-      {isUploadPlanModal && <UploadPlanModal onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} onClickedPlan={(plan: any) => uploadPlanData(plan)} />}
+      {isUploadPlanModal && <UploadPlanModal title="일정 불러오기" onclose={() => setIsUploadPlanModal(!isUploadPlanModal)} onClickedPlan={(plan: any) => uploadPlanData(plan)} />}
     </Page >
   )
 }

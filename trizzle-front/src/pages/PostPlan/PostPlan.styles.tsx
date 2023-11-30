@@ -113,7 +113,7 @@ export const DayPlanPostContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-end;
   width: 45%;
   height: 34rem;
   border: 2px solid #FFDC61;
@@ -214,4 +214,32 @@ export const RecommendContainer = styled.div`
 export const RecommendText = styled.div`
   font-size: 2.5rem;
   font-weight: bold;
+`
+
+export const CopyPlanContainer = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+
+export const FlexEndContainer = styled.button`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+`
+
+export const CopyPlan = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0.5rem 0;
+`
+
+export const CopyPlanText = styled.button`
+  margin: 0 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
 `

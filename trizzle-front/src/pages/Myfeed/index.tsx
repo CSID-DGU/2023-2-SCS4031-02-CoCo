@@ -63,7 +63,7 @@ const Myfeed = () => {
           thumbnail={item.thumbnail? item.thumbnail : ""} 
           likeCount={item.likeCount? item.likeCount : 0} 
           commentCount={item.commentCount? item.commentCount : 0}
-          placeCenter={[item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y]}
+          placeCenter={item.plan.content[0].placeList[0].keyword === null ? [item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y] : item.plan.planLocation}
           planId={item.id} 
           thema={item.plan.planThema} 
           userId={item.accountId}/>

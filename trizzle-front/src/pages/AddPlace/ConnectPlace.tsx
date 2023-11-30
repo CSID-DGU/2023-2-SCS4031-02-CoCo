@@ -112,7 +112,6 @@ export default function ConnectPlace() {
     const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
     if (response) {
       const json = JSON.stringify(result);
-      console.log(json);
       fetchData('/api/reviews', "POST", json);
     }
   }

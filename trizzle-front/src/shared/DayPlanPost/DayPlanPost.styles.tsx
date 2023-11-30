@@ -178,6 +178,26 @@ export const ToggleButtonContainer = styled.div`
   font-size: 0.8rem;
   cursor: pointer;
 
+  position: relative;
+  top: 0;
+  left: -4.9rem;
+`
+
+export const ToggleButtonContainer2 = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0.5rem;
+  width: 7rem;
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+
+  color: #9E9E9E;
+  font-size: 0.8rem;
+  cursor: pointer;
+
   position: absolute;
   top: 1.5rem;
   left: -5rem;

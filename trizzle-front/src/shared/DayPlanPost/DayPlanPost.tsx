@@ -9,6 +9,7 @@ import trans from "../../assets/keywords/trans.svg"
 import rest from "../../assets/keywords/rest.svg"
 import shopping from "../../assets/keywords/shopping.svg"
 import NullList from "../../components/NullList";
+import Menu from "../../components/Menu";
 
 type DayPlanPostProps = {
   type?: string;
@@ -28,7 +29,7 @@ const KeywordList: { keyword: string; src: string; }[] = [
 
 const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
   const [data, setData] = useState<any>([]);
-  const [isDdetailOpen, setIsDdetailOpen] = useState<any>([])
+  const [isDdetailOpen, setIsDdetailOpen] = useState<any>([]);
 
   const openAndCloseDetail = (idx: number, innerIdx: number) => {
     const newArray = [...isDdetailOpen];
@@ -177,7 +178,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                           <S.ThreeDotsButton onClick={() => openAndCloseDetail(index, innerIndex)}>
                             <PiDotsThree size={25} />
                             {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
-                              <S.ToggleButtonContainer>
+                              <S.ToggleButtonContainer2>
                                 <S.ToggleButtonOption onClick={() => {
                                   if (props.onNewPostPlace) {
                                     props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
@@ -194,7 +195,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                                 }}>
                                   리뷰 불러오기
                                 </S.ToggleButtonOption>
-                              </S.ToggleButtonContainer>
+                              </S.ToggleButtonContainer2>
                             }
                           </S.ThreeDotsButton>
                           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

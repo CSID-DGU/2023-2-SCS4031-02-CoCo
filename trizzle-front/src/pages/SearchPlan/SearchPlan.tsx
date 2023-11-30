@@ -65,7 +65,6 @@ const SearchPlan = () => {
         setPlanList((prev: any) => [...prev, ...state.data.content]);
       }
       setAllPlanList(state.data);
-      console.log("gld:", state.data);
     }
   }, [state]);
 
