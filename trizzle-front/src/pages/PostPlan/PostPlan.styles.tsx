@@ -216,11 +216,26 @@ export const RecommendText = styled.div`
   font-weight: bold;
 `
 
+export const CopyPlanContainer = styled.button`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
+
+export const FlexEndContainer = styled.button`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+`
+
 export const CopyPlan = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0 1rem 0.5rem 0;
+  margin: 0 0.5rem 0;
 `
 
 export const CopyPlanText = styled.button`

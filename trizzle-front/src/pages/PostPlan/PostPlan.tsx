@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { LuCopyPlus } from "react-icons/lu";
+import { IoArrowBackOutline } from "react-icons/io5";
 import * as S from './PostPlan.styles';
 import Page from "../Page";
 import DayPlanPost from "../../shared/DayPlanPost/DayPlanPost";
@@ -30,6 +31,7 @@ const PostPlan: React.FC = () => {
   const [likeCount, setLikeCount] = useState<number>(0);
   const [bookmarkCount, setBookmarkCount] = useState<number>(0);
   const [isCopyPlan, setIsCopyPlan] = useState<boolean>(false);
+  const [isCopyPlanModal, setIsCopyPlanModal] = useState<boolean>(false);
   const [placeCenter, setPlaceCenter] = useState<any>({ center: { lat: 0, lng: 0 } });
 
   const [isLike, setIsLike] = useState<boolean>(false);
@@ -52,7 +54,7 @@ const PostPlan: React.FC = () => {
       if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
       if (state.data.message && state.data.message === "save success") {
         const response = window.confirm("일정을 복사한 내 일정으로 이동하시겠습니까?");
-        if (response) navigate(`/myfeed/plans/${state.data.planId}`)
+        if (response) navigate(`/myfeed/plans`)
       }
       else setData(state.data);
     }
@@ -60,8 +62,7 @@ const PostPlan: React.FC = () => {
 
   useEffect(() => {
     if (data !== null) {
-      console.log(data);
-      setTitle(data.post.plan.planName);
+      setTitle(data.post.postTitle);
       setStartDate(data.post.plan.planStartDate);
       setEndDate(data.post.plan.planEndDate);
       setRegions(data.post.plan.planLocation);
@@ -85,6 +86,7 @@ const PostPlan: React.FC = () => {
   }, [data]);
 
   useEffect(() => {
+    setIsCopyPlan(false);
     if (selectDay === 0) {
       setSelectedDayPlan(dayPlan);
     } else if (selectDay <= dayPlan.length) {
@@ -118,6 +120,16 @@ const PostPlan: React.FC = () => {
     });
     const json = JSON.stringify(newPlan);
     fetchData(`/api/plans/${newPlan.id}`, 'PUT', json);
+  }
+
+  const copyNewPlanData = () => {
+    const newData = { ...data.post.plan };
+    delete newData.id;
+    delete newData.accountId;
+    delete newData.planRegistrationDate;
+    newData.planName = data.post.postTitle + "_복사본";
+    const json = JSON.stringify(newData);
+    fetchData(`/api/plans`, "POST", json);
   }
 
   if (dayPlan !== null) {
@@ -196,17 +208,41 @@ const PostPlan: React.FC = () => {
             />
           )}
           <S.DayPlanPostContainer>
-            {selectDay === 0 ?
+            {selectDay === 0 ? (isCopyPlan ?
+              <S.CopyPlanContainer>
+                <IoArrowBackOutline onClick={() => setIsCopyPlan(!isCopyPlan)} />
+                <S.FlexEndContainer>
+                  <S.CopyPlan onClick={copyNewPlanData} >
+                    <S.CopyPlanText>새 일정으로 추가</S.CopyPlanText>
+                  </S.CopyPlan>
+                  <S.CopyPlan onClick={() => setIsCopyPlanModal(!isCopyPlanModal)} >
+                    <S.CopyPlanText> 기존 일정에 복사</S.CopyPlanText>
+                  </S.CopyPlan>
+                </S.FlexEndContainer>
+              </S.CopyPlanContainer>
+              :
               <S.CopyPlan onClick={() => setIsCopyPlan(!isCopyPlan)} >
                 <LuCopyPlus />
                 <S.CopyPlanText>전체일정복사</S.CopyPlanText>
               </S.CopyPlan>
+            ) : (isCopyPlan ?
+              <S.CopyPlanContainer>
+                <IoArrowBackOutline onClick={() => setIsCopyPlan(!isCopyPlan)} />
+                <S.FlexEndContainer>
+                  <S.CopyPlan onClick={copyNewPlanData} >
+                    <S.CopyPlanText>새 일정 추가</S.CopyPlanText>
+                  </S.CopyPlan>
+                  <S.CopyPlan onClick={() => setIsCopyPlanModal(!isCopyPlanModal)} >
+                    <S.CopyPlanText> 기존 일정에 복사</S.CopyPlanText>
+                  </S.CopyPlan>
+                </S.FlexEndContainer>
+              </S.CopyPlanContainer>
               :
               <S.CopyPlan onClick={() => setIsCopyPlan(!isCopyPlan)} >
                 <LuCopyPlus />
                 <S.CopyPlanText>{selectDay}일차 일정복사</S.CopyPlanText>
               </S.CopyPlan>
-            }
+            )}
             <S.DayPlanPostInnerContainer>
               <DayPlanPost
                 type="post"
@@ -215,7 +251,7 @@ const PostPlan: React.FC = () => {
               />
             </S.DayPlanPostInnerContainer>
           </S.DayPlanPostContainer>
-        </S.MapAndDayPlanContainer>
+        </S.MapAndDayPlanContainer >
 
         <UserPreview
           accountId={planUser.accountId}
@@ -243,14 +279,13 @@ const PostPlan: React.FC = () => {
           </S.HorizontalFirstStartContainer>
           <CommentSection page="post" postId={data.post.id} />
         </S.CommentContainer>
-        {isCopyPlan && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlan(!isCopyPlan)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} />}
-
+        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} />}
         {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.
         </S.RecommendText>
       </S.RecommendContainer> */}
-      </Page>
+      </Page >
     );
   }
 }
