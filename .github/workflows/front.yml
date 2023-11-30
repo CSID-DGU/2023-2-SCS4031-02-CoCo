@@ -17,7 +17,7 @@ jobs:
         run: echo "Debug information here"
       - name: front Build and deploy
         run: |
-          pwd
+          ls -al
           # cd ~/home/runner/work/2023-2-SCS4031-02-CoCo/2023-2-SCS4031-02-CoCo/trizzle-front
           # echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
           # rm -rf .yarnrc.yml
