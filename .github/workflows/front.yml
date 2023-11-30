@@ -21,7 +21,7 @@ jobs:
         run: |
           cd trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
-          rm -rf .yarnrc.yml node_modules yarn.lock
+          rm -rf .yarnrc.yml
           corepack enable
           corepack prepare yarn@3.6.1 --activate
           yarn set version 3.6.1
