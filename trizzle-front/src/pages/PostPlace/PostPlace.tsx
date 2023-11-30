@@ -28,7 +28,7 @@ export default function PostPlace() {
       fetchData(`/api/reviews/myreviews/${placeId.id}`, "DELETE");
     }, isDelete: true
   }]);
-
+  
   const placeId = useParams<{ id: string }>();
   const [state, fetchData] = useAsync({ url: `/api/reviews/${placeId.id}` });
 
@@ -41,7 +41,6 @@ export default function PostPlace() {
         alert("삭제되었습니다");
         navigate("/myfeed");
       } else {
-        // console.log(state.data.review.reviewSecret);
         setData(state.data.review);
         setIsLike(state.data.isLike);
         setIsBookmark(state.data.isBookmark);
@@ -59,7 +58,7 @@ export default function PostPlace() {
     if (data !== null) {
       if (data.reviewSecret) {
         const NewArray = [...menuItems];
-        NewArray.push({ content: "수정", onClick: () => { navigate(`/post/places/${placeId.id}/modify`) }, isDelete: false });
+        NewArray.push({ content: "수정", onClick: () => { navigate(`/post/places/modify/${placeId.id}`) }, isDelete: false });
         setMenuItems(NewArray);
       }
     }

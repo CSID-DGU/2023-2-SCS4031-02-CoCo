@@ -49,6 +49,7 @@ const PostPlan: React.FC = () => {
 
   useEffect(() => {
     if (state.error) {
+      console.error(state.error);
       alert("데이터를 불러오는 데 실패했습니다");
     } else if (state.data) {
       if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
