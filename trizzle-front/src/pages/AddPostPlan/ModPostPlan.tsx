@@ -18,10 +18,10 @@ const ModPostPlan: React.FC = () => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [regions, setRegions] = useState<string>('서울특별시');
-  const [prevThema, ] = useState<any>([]);
+  const [prevThema,] = useState<any>([]);
   const [thema, setThema] = useState<any>([]);
   const [dayPlan, setDayPlan] = useState<any>(null);
-  const [, setSecret] = useState<boolean>(true);
+  // const [, setSecret] = useState<boolean>(true);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);
@@ -41,7 +41,7 @@ const ModPostPlan: React.FC = () => {
       console.error(state.error);
     } else if (state.data) {
       console.log(state.data);
-      if (state.data.message === "update success" && state.data.reviewId) {
+      if (state.data.message === "update success" && state.data.postId) {
         navigate(`/post/plan/${state.data.postId}`);
       } else setData(state.data);
     }
@@ -72,7 +72,7 @@ const ModPostPlan: React.FC = () => {
   useEffect(() => {
     if (selectedDayPlan !== null) {
       const rePlace = selectedDayPlan[0].placeList;
-      if (rePlace.length !== 0  && rePlace[0].keyword === null) {
+      if (rePlace.length !== 0 && rePlace[0].keyword === null) {
         const newCenter = { center: { lat: rePlace[0].y, lng: rePlace[0].x } };
         setPlaceCenter(newCenter);
       } else {
@@ -128,33 +128,28 @@ const ModPostPlan: React.FC = () => {
   const onSave = (type: string) => {
     const newArray = thema.map((value: any) => value.name);
     if (type === "save") {
-      setSecret(false);
-      data.content = dayPlan;
-      data.planThema = newArray;
-      const ResultData = {
-        postTitle: title,
-        postSecret: false,
-        plan: { ...data },
-        thumnail: thumnail,
-      }
+      data.post.plan.content = dayPlan;
+      data.post.plan.planThema = newArray;
+      data.post.postTitle = title;
+      data.post.postSecret = false;
+      data.post.thumnail = thumnail;
+      const ResultData = { ...data }
 
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
         const json = JSON.stringify(ResultData);
-        fetchData(`/api/posts`, 'PUT', json);
+        fetchData(`/api/posts/${ResultData.id}`, 'PUT', json);
       }
     } else if (type === "secret") {
-      setSecret(true);
-      data.content = dayPlan;
-      data.planThema = newArray;
-      const ResultData = {
-        postTitle: title,
-        postSecret: true,
-        plan: { ...data }
-      }
+      data.post.plan.content = dayPlan;
+      data.post.plan.planThema = newArray;
+      data.post.postTitle = title;
+      data.post.postSecret = true;
+      data.post.thumnail = thumnail;
+      const ResultData = { ...data.post }
 
       const json = JSON.stringify(ResultData);
-      fetchData(`/api/posts`, 'PUT', json);
+      fetchData(`/api/posts/${ResultData.id}`, 'PUT', json);
     }
   }
 
@@ -244,11 +239,6 @@ const ModPostPlan: React.FC = () => {
     imageHandler();
   }, [file]);
 
-  useEffect(()=>{
-    console.log("썸네일 들어옴?", thumnail);
-  },[thumnail]);
-
-  
   return (
     <Page headersProps={{ isHome: false }}>
       {thumnail !== null ? (
