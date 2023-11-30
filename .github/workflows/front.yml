@@ -38,6 +38,7 @@ jobs:
         run: |
           cd trizzle-front
           ls -al
+          yarn -v
           
       # - name: Get cache dir path
       #   id: yarn-cache-dir-path
