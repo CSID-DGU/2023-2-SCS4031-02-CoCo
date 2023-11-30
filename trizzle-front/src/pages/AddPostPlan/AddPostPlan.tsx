@@ -147,7 +147,8 @@ const AddPostPlan: React.FC = () => {
       const ResultData = {
         postTitle: title,
         postSecret: true,
-        plan: { ...data }
+        plan: { ...data },
+        thumnail: thumnail,
       }
 
       const json = JSON.stringify(ResultData);
