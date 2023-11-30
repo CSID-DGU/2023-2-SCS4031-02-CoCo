@@ -82,7 +82,9 @@ jobs:
         echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" > src/main/resources/application-toruapi.properties
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: |
+        cd trizzle-backend
+        chmod +x gradlew
 
     - name: Build with Gradle
       # uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
