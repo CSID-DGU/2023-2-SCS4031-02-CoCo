@@ -14,6 +14,7 @@ on:
       - 'trizzle-backend/**'
   pull_request:
     branches: [ "Test_Back" ]
+  workflow_dispatch:
 
 jobs:
   build:
