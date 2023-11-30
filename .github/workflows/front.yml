@@ -19,13 +19,13 @@ jobs:
         run: |
           ls -l
           pwd
-          cd /home/runner/work/2023-2-SCS4031-02-CoCo/2023-2-SCS4031-02-CoCo/trizzle-front
-          echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
-          rm -rf .yarnrc.yml
-          yarn set version 3.6.1
-          npm install
-          yarn add
-          yarn build
+          cd ~/home/runner/work/2023-2-SCS4031-02-CoCo/2023-2-SCS4031-02-CoCo/trizzle-front
+          # echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
+          # rm -rf .yarnrc.yml
+          # yarn set version 3.6.1
+          # npm install
+          # yarn add
+          # yarn build
         env:
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
