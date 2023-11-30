@@ -36,7 +36,7 @@ jobs:
 
     - name: Create application-awsS3.properties 
       run: |
-        ls src/main/resources/
+        ls 
         touch src/main/resources/application-awsS3.properties
         echo "cloud.aws.credentials.access-key=${{ secrets.AWS_ACCESS_KEY }}" > src/main/resources/application-awsS3.properties
         echo "cloud.aws.credentials.secret-key=${{ secrets.AWS_SECRET_KEY }}" > src/main/resources/application-awsS3.properties
