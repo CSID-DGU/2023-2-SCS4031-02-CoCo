@@ -9,7 +9,7 @@ const StaticMaps: React.FC<StaticMaspProps> = (props: StaticMaspProps) => {
 
   useEffect(() => {
     if (typeof props.center === "string") {
-      setPlaceCenter(koreaRegions.filter((region) => {return region.name === props.center })[0].center)
+      setPlaceCenter(koreaRegions.filter((region) => {return region.name === props.center })[0].center);
     } else {
       setPlaceCenter({ lat: props.center[1], lng: props.center[0] });
     }
