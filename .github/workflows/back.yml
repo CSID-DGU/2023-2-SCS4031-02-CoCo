@@ -11,7 +11,7 @@ on:
   push:
     branches: [ "Test_Back" ]
     paths:
-      - 'back/**'
+      - 'trizzle-backend/**'
   pull_request:
     branches: [ "Test_Back" ]
 
