@@ -77,6 +77,11 @@ public class PlanService {
         return plans;
     }
 
+    public List<Plan> findMyPlanByLocation(String accountId, String location) {
+        List<Plan> plans = planRepository.findByAccountIdAndPlanLocationAndPostIdIsNull(accountId, location);
+        return plans;
+    }
+
     public void deletePlan(String planId) {
         mongoRepository.deleteById(planId);
     }
