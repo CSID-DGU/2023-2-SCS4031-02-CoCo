@@ -1,16 +1,15 @@
 package trizzle.trizzlebackend.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import trizzle.trizzlebackend.controller.CommentController;
 import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.repository.CommentRepository;
 import trizzle.trizzlebackend.repository.LikeRepository;
-import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -29,6 +28,7 @@ public class CommentService {
     private final NotificationService notificationService;
     private final LikeRepository likeRepository;
 
+    @Transactional
     public Comment insertComment(Comment comment, String accountId) {
         comment.setAccountId(accountId);
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -37,6 +37,20 @@ public class CommentService {
         comment.setFix(false);
         comment.setDeleted(false);
         Comment com = commentRepository.save(comment);
+        /*게시글에 댓글 개수 추가 */
+        if (com.getReviewId() == null) {
+            Post post = postService.findPost((com.getPostId()));
+            if (post != null) {
+                post.increaseCommentCounts();
+                postService.insertPost(post, accountId);
+            }
+        } else {
+            Review review = reviewService.findReview(com.getReviewId());
+            if (review != null) {
+                review.increaseCommentCounts();
+                reviewService.insertReview(review, accountId);
+            }
+        }
 
         Notification notification = new Notification();
         notification.setSendAccountId(accountId);
@@ -75,9 +89,23 @@ public class CommentService {
         return com;
     };
 
-    public Comment deleteComment(Comment comment) {
+    public Comment deleteComment(Comment comment, String accountId) {
         comment.setDeleted(true);
         comment.setCommentContent("");
+        /*게시글에 댓글 개수 감소 */
+        if (comment.getReviewId() == null) {
+            Post post = postService.findPost((comment.getPostId()));
+            if (post != null) {
+                post.decreaseCommentCounts();
+                postService.insertPost(post, accountId);
+            }
+        } else {
+            Review review = reviewService.findReview(comment.getReviewId());
+            if (review != null) {
+                review.decreaseCommentCounts();
+                reviewService.insertReview(review, accountId);
+            }
+        }
         notificationService.deleteNotification(comment.getId());
         //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직 추가
         return commentRepository.save(comment);

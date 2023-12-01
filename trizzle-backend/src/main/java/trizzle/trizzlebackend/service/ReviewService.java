@@ -54,7 +54,8 @@ public class ReviewService {
             elasticReview.setLocation(insert.getPlace().getAddressName());
             elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
                     insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
-                    insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
+                    insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText(),
+                    insert.getCommentCount());
             elasticReviewRepository.save(elasticReview);
         }
         return insert;
