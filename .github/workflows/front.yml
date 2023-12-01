@@ -18,7 +18,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18.16.x'
-          cache: 'yarn'
+          # cache: 'yarn'
       - name: Debug step
         run: echo "Debug information here"
         
@@ -26,10 +26,10 @@ jobs:
         run: |
           cd trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
-          # rm -rf .yarnrc.yml
-          # corepack enable
-          # corepack prepare yarn@3.6.1 --activate
-          # yarn set version 3.6.1
+          rm -rf .yarnrc.yml
+          corepack enable
+          corepack prepare yarn@3.6.1 --activate
+          yarn set version 3.6.1
         env:
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
