@@ -44,4 +44,13 @@ public class FollowController {
         List<FollowUserDto> followers = followService.findFollowers(accountId);
         return ResponseEntity.ok(followers);
     }
+
+    @GetMapping("/followee")
+    public ResponseEntity getFolloweeList(HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+        List<FollowUserDto> followee = followService.findFollowee(accountId);
+        return ResponseEntity.ok(followee);
+    }
 }

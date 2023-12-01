@@ -20,6 +20,9 @@ public class FollowService {
     private final UserRepository userRepository;
 
     public boolean convertFollow(String followerId, String followeeId) {
+        if (followerId.equals(followeeId)) {
+            return false;
+        }
         Follow existingFollow = followRepository.findByFollowerIdAndFolloweeId(followerId, followeeId); // follow 기록 있는지 확인
 
         if (existingFollow == null) {
@@ -58,5 +61,28 @@ public class FollowService {
             }
         }
         return followers;
+    }
+    
+    /*내가 팔로우 한 사람들(팔로잉 목록) 불러오기*/
+    public List<FollowUserDto> findFollowee(String accountId) {
+        List<Follow> follows = followRepository.findByFollowerId(accountId);    // 내가 팔로우 한 기록들 찾음
+        List<FollowUserDto> followee = new ArrayList<>();
+
+        if (follows.isEmpty()) {
+            return null;
+        }
+
+        for (Follow follow : follows) {
+            User user = userRepository.findByAccountId(follow.getFolloweeId()); // 내가 팔로우 한 사람(팔로잉)
+            if (user != null) {
+                FollowUserDto followUserDto = FollowUserDto.builder()
+                        .accountId(user.getAccountId())
+                        .nickname(user.getNickname())
+                        .profileImage(user.getProfileImage())
+                        .build();
+                followee.add(followUserDto);
+            }
+        }
+        return followee;
     }
 }
