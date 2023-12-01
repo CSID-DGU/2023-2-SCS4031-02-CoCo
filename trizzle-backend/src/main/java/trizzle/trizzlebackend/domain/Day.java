@@ -1,9 +1,14 @@
 package trizzle.trizzlebackend.domain;
 
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
 import java.util.List;
 
 public class Day {
     private int day;
+
+    @Field(type= FieldType.Object)
     private List<Place> placeList;
 
     public List<Place> getPlaceList() {
