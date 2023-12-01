@@ -25,7 +25,10 @@ const PlanCard: React.FC<PlanCardProps> = (props: PlanCardProps) => {
             <S.LikeCount>{props.commentCount}</S.LikeCount>
           </S.LikeContainer>
         </S.Thumbnail>
-        <S.Title>{props.title}</S.Title>
+        <S.TitleContainer>
+          {props.postSecret && props.postSecret === true && <S.Secret>(임시저장)</S.Secret>}
+        <S.Title secret={props.postSecret? props.postSecret : false}>{props.title}</S.Title>
+        </S.TitleContainer>
         <S.Date>{props.startDate} ~ {props.endDate}</S.Date>
         <S.ThemaContainer>
           {props.thema.map((item, index) => (

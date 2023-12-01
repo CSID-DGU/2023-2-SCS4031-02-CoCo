@@ -15,7 +15,9 @@ const PlaceCard: React.FC<PlaceCardProps> = (props: PlaceCardProps) => {
             <BiSolidMap size="1.3rem" color="#FFE500" />
             <S.Site>{props.placeName}</S.Site>
           </S.HorizontalContainer>
-          <S.Title>{props.postTitle}</S.Title>
+          <S.Title>
+            {props.reviewSecret && props.reviewSecret === true && <S.Secret>(임시저장)</S.Secret>}
+            {props.postTitle}</S.Title>
           <S.Site>{props.userName} | {props.postDate}</S.Site>
           <S.Content>{props.postContent.length > 30 ? props.postContent.slice(0,30) : props.postContent}</S.Content>
         </S.LeftContainer>

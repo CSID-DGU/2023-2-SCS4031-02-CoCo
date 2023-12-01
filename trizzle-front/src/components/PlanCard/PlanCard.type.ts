@@ -9,5 +9,6 @@ export type PlanCardProps = {
   endDate: string;
   likeCount: number;
   commentCount: number;
+  postSecret?: boolean;
   thema: string[];
 };
