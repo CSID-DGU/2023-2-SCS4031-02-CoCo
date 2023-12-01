@@ -78,7 +78,8 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
               region={item.plan.planLocation}
               placeCenter={item.plan.content[0].placeList[0].keyword === null ? [item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y] : item.plan.planLocation}
               thema={item.plan.planThema}
-              thumbnail={item.thumbnail?item.thumbnail:""}
+              thumbnail={item.thumnail?item.thumnail:""}
+              postSecret={item.postSecret}
               />
             </div>
           ))}
@@ -144,7 +145,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
       <S.VerticalContainer style={{marginTop:"2rem"}}>
         <S.VerticalCenterContainer style={{gap:"2rem"}}>
         {currentItems.map((item) => 
-          <PlaceCard key={item.id} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText? item.reviewContentText : ""} src={item.thumbnail} postId={item.id}/>
+          <PlaceCard key={item.id} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText? item.reviewContentText : ""} src={item.thumbnail} postId={item.id} reviewSecret={item.reviewSecret}/>
         )}
         <PageButtonContainer>
           {renderPageNumbers()}

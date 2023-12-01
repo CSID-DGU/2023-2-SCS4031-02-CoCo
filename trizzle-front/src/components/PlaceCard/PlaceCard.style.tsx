@@ -67,6 +67,8 @@ export const Title = styled.div`
   font-size: 1.5rem;
   font-weight: 400;
   color: #525252;
+  display: flex;
+  align-items: flex-end;
 `
 
 export const Content = styled.div`
@@ -78,4 +80,13 @@ export const Content = styled.div`
   font-weight: 400;
   color: #747474;
   white-space: pre-line;
+`
+
+export const Secret = styled.div`
+  width: auto;
+  height: auto;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8F8F8F;
+  margin-right: 0.5rem;
 `
