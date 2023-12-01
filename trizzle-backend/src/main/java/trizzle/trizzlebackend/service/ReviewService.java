@@ -51,6 +51,7 @@ public class ReviewService {
         Review insert = reviewRepository.save(review);
         if (!review.isReviewSecret()) { //공개 review만 검색가능하게 저장되도록
             ElasticReview elasticReview = new ElasticReview();
+            elasticReview.setLocation(insert.getPlace().getAddressName());
             elasticReview.setData(insert.getId(), insert.getAccountId(), insert.getReviewTitle(), insert.getReviewRegistrationDate(),
                     insert.getVisitDate(), insert.getPlace(), insert.getReviewContent(), insert.getPlanId(), insert.getPostId(),
                     insert.getPostName(), insert.getThumbnail(), insert.isReviewSecret(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getReviewContentText());
@@ -115,6 +116,17 @@ public class ReviewService {
 
     public Page<ElasticReview> findAllReview(Pageable pageable) {
         Page<ElasticReview> reviews = elasticReviewRepository.findAll(pageable);
+        return reviews;
+    }
+
+    public Page<ElasticReview>  searchReviewByKeyword(String location, String keyword, Pageable pageable) {
+        Page<ElasticReview> reviews;
+        if(location.equals("전체")) {
+            reviews = elasticReviewRepository.searchByReviewTitleOrReviewContentText(keyword, pageable);
+        } else {
+            reviews = elasticReviewRepository.searchByLocationAndReviewTitleOrReviewContentText(location, keyword, pageable);
+        }
+
         return reviews;
     }
 

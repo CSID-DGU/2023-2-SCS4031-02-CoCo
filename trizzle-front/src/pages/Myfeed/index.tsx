@@ -23,9 +23,12 @@ const Myfeed = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(state.error) {
-      alert("로그인이 필요합니다");
-      navigate("/");
+    if(state.error || state.data === null) {
+      if(id) navigate("/404");
+      else {
+        alert("로그인이 필요합니다");
+        navigate("/");
+      }
     }
     if (state.data) {
       setPlan(state.data.posts);
@@ -38,7 +41,7 @@ const Myfeed = () => {
   else {
   return (
     <MyfeedLayout isMe={isMe}>
-      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={["김희진", "김희진", "김희진"]} following={["김희진", "김희진", "김희진"]} isMe={isMe} planCount={1} placeCount={4}
+      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={[{nickname:"김희진", accountId: "gjiewgjl", profileImage:""}]} following={[{nickname:"김희진", accountId: "gjiewgjl", profileImage:""}, {nickname:"김희진", accountId: "gjiewgjl", profileImage:""}]} isMe={isMe}
       src={userData.profileImage}
       />
       <S.HorizontalContainer>

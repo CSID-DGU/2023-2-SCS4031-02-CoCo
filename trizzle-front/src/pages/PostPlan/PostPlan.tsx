@@ -49,15 +49,16 @@ const PostPlan: React.FC = () => {
 
   useEffect(() => {
     if (state.error) {
-      console.error(state.error);
-      alert("데이터를 불러오는 데 실패했습니다");
+      navigate("/404");
     } else if (state.data) {
       if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
-      if (state.data.message && state.data.message === "save success") {
+      else if (state.data.message && state.data.message === "save success") {
         const response = window.confirm("일정을 복사한 내 일정으로 이동하시겠습니까?");
         if (response) navigate(`/myfeed/plans`)
       }
       else setData(state.data);
+    } else {
+      navigate("/404");
     }
   }, [state]);
 
@@ -280,7 +281,7 @@ const PostPlan: React.FC = () => {
           </S.HorizontalFirstStartContainer>
           <CommentSection page="post" postId={data.post.id} />
         </S.CommentContainer>
-        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} />}
+        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} region={regions}/>}
         {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.

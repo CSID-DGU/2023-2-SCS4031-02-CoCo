@@ -10,5 +10,6 @@ import java.util.List;
 public interface PlanRepository extends MongoRepository<Plan, String> {
 
     List<Plan> findByAccountIdAndPostIdIsNull(String accountId);
+    List<Plan> findByAccountIdAndPlanLocationAndPostIdIsNull(String accountId, String planLocation);
 
 }

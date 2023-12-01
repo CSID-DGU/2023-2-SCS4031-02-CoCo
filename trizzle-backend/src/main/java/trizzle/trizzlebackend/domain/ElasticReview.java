@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import trizzle.trizzlebackend.domain.Place;
 
 import java.time.LocalDate;
@@ -17,21 +19,29 @@ public class ElasticReview {
     @Id
     private String id;
     private String accountId;
+    @Field(type= FieldType.Text)
     private String reviewTitle;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime reviewRegistrationDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate visitDate;
+    @Field(type= FieldType.Object)
     private Place place;
     private String reviewContent;
     private boolean reviewSecret;
+    @Field(type= FieldType.Text)
     private String reviewContentText;
     private String planId;
     private String postId;
+    @Field(type= FieldType.Text)
     private String postName;
     private String thumbnail;
     private Integer likeCount;
     private Integer bookmarkCount;
+    @Field(type= FieldType.Text)
+    private String location;
+
+
     public void increaseLikes() {   // 좋아요 수 증가
         this.likeCount++;
     }

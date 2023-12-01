@@ -85,15 +85,25 @@ export const LikeCount = styled.div`
   margin-right: 0.5rem;
   margin-left: 0.2rem;
 `
-export const Title = styled.div`
-  width: 100%;
+export const Title = styled.div<{secret?:boolean}>`
+  width: ${props => props.secret ? '70%' : '100%'};
   height: auto;
   font-size: 1.5rem;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+`
+
+export const TitleContainer = styled.div`
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
   margin: 1rem 0 0.5rem 1rem;
+  gap: 0.5rem;
 `
 
 export const Date = styled.div`
@@ -127,6 +137,12 @@ export const Thema = styled.div`
   background-color: #FFECAA;
 `
 
-
+export const Secret = styled.div`
+  width: auto;
+  height: auto;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #8F8F8F;
+`
 
 

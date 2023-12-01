@@ -8,6 +8,7 @@ import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Plan;
 import trizzle.trizzlebackend.service.PlanService;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,11 +67,12 @@ public class PlanController {
     }
 
     @GetMapping("/myplans/nonpost")
-    public ResponseEntity getMyandNotPostPlan(HttpServletRequest request){
+    public ResponseEntity getMyandNotPostPlan(@RequestParam(value = "region", required = false) String region,HttpServletRequest request){
         String token = JwtUtil.getAccessTokenFromCookie(request);
         String accountId = JwtUtil.getAccountId(token, secretKey);
-
-        List<Plan> plans = planService.findMyNotPostPlan(accountId);
+        List<Plan> plans = new ArrayList<>();
+        if(region == null) plans = planService.findMyNotPostPlan(accountId);
+        else plans = planService.findMyPlanByLocation(accountId, region);
 
         return ResponseEntity.ok().body(plans);
     }

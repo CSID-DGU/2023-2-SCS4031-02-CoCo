@@ -52,7 +52,7 @@ public class PostService {
         if (!insert.isPostSecret()) { // 공개 post만 검색가능하게 저장되도록
             ElasticPost elasticPost= new ElasticPost();
             elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
-                    insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount());
+                    insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getThumnail());
             elasticPostRepository.save(elasticPost);
         }
         return insert;
@@ -120,6 +120,21 @@ public class PostService {
         Page<ElasticPost> elasticPost = elasticPostRepository.findAll(pageable);
         return elasticPost;
     };
+
+    public Page<ElasticPost> searchElasticPost(String location, String keyword, Pageable pageable) {
+        Page<ElasticPost> posts;
+        if(location.equals("전체")) {
+            posts = elasticPostRepository.searchByPostTitleOrPlanContaining(keyword, pageable);
+        } else {
+            posts = elasticPostRepository.searchByPostTitleOrPlanContainingAndPlanPlanLocation(keyword, location, pageable);
+        }
+
+//        if(posts.isEmpty()) {
+//            if(location.equals("전체")) posts = findAllPost(pageable);
+//            else posts = elasticPostRepository.findByPlanPlanLocation(location, pageable);
+//        }
+        return posts;
+    }
 
 
     public Post findPost(String postId) {

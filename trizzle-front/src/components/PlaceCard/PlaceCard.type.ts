@@ -6,4 +6,5 @@ export type PlaceCardProps = {
   postTitle: string;
   postDate: string;
   postContent: string;
+  reviewSecret?: boolean;
 };
