@@ -1,5 +1,6 @@
 package trizzle.trizzlebackend.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.controller.CommentController;
 import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.repository.CommentRepository;
+import trizzle.trizzlebackend.repository.LikeRepository;
 import trizzle.trizzlebackend.repository.PostRepository;
 
 import java.time.LocalDateTime;
@@ -16,6 +18,7 @@ import java.util.*;
 import static org.springframework.data.mongodb.core.aggregation.AddFieldsOperation.addField;
 
 @Service
+@RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -24,14 +27,7 @@ public class CommentService {
     private final PostService postService;
     private final ReviewService reviewService;
     private final NotificationService notificationService;
-
-    public CommentService(CommentRepository commentRepository, UserService userService, PostService postService, ReviewService reviewService, NotificationService notificationService) {
-        this.commentRepository = commentRepository;
-        this.userService = userService;
-        this.postService = postService;
-        this.reviewService = reviewService;
-        this.notificationService = notificationService;
-    }
+    private final LikeRepository likeRepository;
 
     public Comment insertComment(Comment comment, String accountId) {
         comment.setAccountId(accountId);
@@ -97,7 +93,12 @@ public class CommentService {
         String accountId = comment.getAccountId();
         String profileImg = userService.searchUser(accountId).getProfileImage();
         String userNick = userService.searchUser(accountId).getNickname();
+        Like like = likeRepository.findByCommentIdAndAccountId(comment.getId(), myAccount);
         Boolean isMe = false;
+        Boolean isLike;
+        if(like == null) isLike = false;
+        else isLike = true;
+
         //isLiked랑 postAccountId도 추가해줘야 함
         if (profileImg == null) profileImg = "";
         if (myAccount.equals(accountId)) isMe = true;
@@ -107,6 +108,7 @@ public class CommentService {
         newComment.put("isMe", isMe);
         newComment.put("nickname", userNick);
         newComment.put("postAccountId", postAccountId);
+        newComment.put("isLike", isLike);
 
         return newComment;
     }
