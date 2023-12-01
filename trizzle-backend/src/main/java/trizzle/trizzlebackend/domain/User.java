@@ -18,6 +18,8 @@ public class User {
     private List<String> thema;
 
     private String profileImage;
+    private int followingCount;
+    private int followerCount;
 
     public String getId() {
         return id;
@@ -89,5 +91,37 @@ public class User {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public int getFollowingCount() {
+        return followingCount;
+    }
+
+    public void setFollowingCount(int followingCount) {
+        this.followingCount = followingCount;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public void increaseFollowingCount() {
+        this.followingCount++;
+    }
+
+    public void decreaseFollowingCount() {
+        this.followingCount--;
+    }
+
+    public void increaseFollowerCount() {
+        this.followerCount++;
+    }
+
+    public void decreaseFollowerCount() {
+        this.followerCount--;
     }
 }

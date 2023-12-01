@@ -24,6 +24,8 @@ public class FollowService {
             return false;
         }
         Follow existingFollow = followRepository.findByFollowerIdAndFolloweeId(followerId, followeeId); // follow 기록 있는지 확인
+        User follower = userRepository.findByAccountId(followerId);
+        User followee = userRepository.findByAccountId(followeeId);
 
         if (existingFollow == null) {
             LocalDateTime dateTime = LocalDateTime.now();
@@ -33,9 +35,21 @@ public class FollowService {
                     .followeeId(followeeId)
                     .build();
             followRepository.save(follow);
+            /*나의 팔로잉 수 증가 */
+            follower.increaseFollowingCount();
+            userRepository.save(follower);
+            /*내가 팔로우한 사람의 팔로워 수 증가 */
+            followee.increaseFollowerCount();
+            userRepository.save(followee);
             return true;
-        } else {
+        } else { // 팔로우 취소
             followRepository.delete(existingFollow);
+            /*나의 팔로잉 수 감소*/
+            follower.decreaseFollowingCount();
+            userRepository.save(follower);
+            /*내가 팔로우 취소한 사람의 팔로워 수 감소*/
+            followee.decreaseFollowerCount();
+            userRepository.save(followee);
             return false;
         }
     }
