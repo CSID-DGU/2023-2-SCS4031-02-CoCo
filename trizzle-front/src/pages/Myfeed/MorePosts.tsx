@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { MyfeedLayout } from "../Page";
 import Paging from "../../components/Paging";
 import { useAsync } from "../../utils/API/useAsync";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import * as S from "./Myfeed.style";
 
 const MorePosts = () => {
@@ -10,8 +10,16 @@ const MorePosts = () => {
   const [plan, setPlan] = useState<any>(null);
   const url = id? `/api/posts/otherposts/${id}` : "/api/posts/myposts";
   const [state, _] = useAsync({url: url});
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if(state.error || state.data === null) {
+      if(id) navigate("/404");
+      else {
+        alert("로그인이 필요합니다");
+        navigate("/");
+      }
+    }
     if (state.data) {
       setPlan(state.data);
     }

@@ -16,10 +16,8 @@ const PlanList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(state.error) {
-      console.error(state.error);
-      alert("데이터를 불러올 수 없습니다. 잠시 후 다시 접속해주세요");
-      return;
+    if(state.error || state.data === null) {
+      navigate("/404");
     } else if(state.data) {
 
       let data;
