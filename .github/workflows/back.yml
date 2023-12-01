@@ -8,15 +8,15 @@
 name: BackEnd CI
 
 on:
-  push:
-    paths:
-    - 'trizzle-backend/**'  
+  # push:
+    # paths:
+    # - 'trizzle-backend/**'  
     # branches: [ "develop" ]
 
   pull_request:
     paths:
     - 'trizzle-backend/**'
-    # branches: [ "develop" ]
+    branches: [ "develop" ]
   workflow_dispatch:
 
 jobs:
