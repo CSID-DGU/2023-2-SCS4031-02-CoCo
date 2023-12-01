@@ -9,11 +9,15 @@ name: BackEnd CI
 
 on:
   push:
-    branches: [ "Test_Back" ]
     paths:
-      - 'trizzle-backend/**'
+    - 'trizzle-backend/**'  
+    # branches: [ "develop" ]
+
   pull_request:
-    branches: [ "Test_Back" ]
+    paths:
+    - 'trizzle-backend/**'
+    # branches: [ "develop" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -35,6 +39,7 @@ jobs:
 
     - name: Create application-awsS3.properties 
       run: |
+        cd trizzle-backend
         touch src/main/resources/application-awsS3.properties
         echo "cloud.aws.credentials.access-key=${{ secrets.AWS_ACCESS_KEY }}" > src/main/resources/application-awsS3.properties
         echo "cloud.aws.credentials.secret-key=${{ secrets.AWS_SECRET_KEY }}" > src/main/resources/application-awsS3.properties
@@ -45,12 +50,14 @@ jobs:
 
     - name: Create application-mongodb.properties
       run: |
+        cd trizzle-backend
         touch src/main/resources/application-mongodb.properties
         echo "spring.data.mongodb.uri=${{ secrets.DB_URL }}" > src/main/resources/application-mongodb.properties
         echo "spring.data.mongodb.database=${{ secrets.DB_NAME }}" > src/main/resources/application-mongodb.properties
 
     - name: Create application-oauth.properties
       run: |
+        cd trizzle-backend
         touch src/main/resources/application-oauth.properties
         echo "oauth.google.client-id=${{ secrets.OAUTH_GOOGLE_CLIENT_ID }}" > src/main/resources/application-oauth.properties
         echo "oauth.google.client-secret=${{ secrets.OAUTH_GOOGLE_CLIENT_SECRET }}" > src/main/resources/application-oauth.properties
@@ -70,6 +77,7 @@ jobs:
     
     - name: Create application-tourapi.properties
       run: |
+        cd trizzle-backend
         touch src/main/resources/application-toruapi.properties
         echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" > src/main/resources/application-toruapi.properties
         echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" > src/main/resources/application-toruapi.properties
@@ -77,10 +85,14 @@ jobs:
         echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" > src/main/resources/application-toruapi.properties
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: |
+        cd trizzle-backend
+        chmod +x gradlew
 
     - name: Build with Gradle
       # uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       # with:
         # arguments: build
-      run : ./gradlew clean build
+      run : |
+        cd trizzle-backend
+        ./gradlew clean bootJar
