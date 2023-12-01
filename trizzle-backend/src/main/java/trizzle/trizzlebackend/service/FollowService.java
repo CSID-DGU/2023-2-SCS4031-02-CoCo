@@ -1,7 +1,11 @@
 package trizzle.trizzlebackend.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Follow;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.dto.follow.FollowUserDto;
@@ -19,6 +23,10 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    @Transactional
     public boolean convertFollow(String followerId, String followeeId) {
         if (followerId.equals(followeeId)) {
             return false;
@@ -98,5 +106,17 @@ public class FollowService {
             }
         }
         return followee;
+    }
+
+    public boolean isFollow(String followeeId, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String followerId = JwtUtil.getAccountId(token, secretKey);
+
+        Follow follow = followRepository.findByFollowerIdAndFolloweeId(followerId, followeeId);
+        if (follow == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

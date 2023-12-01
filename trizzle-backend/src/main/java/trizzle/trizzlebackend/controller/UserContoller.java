@@ -13,10 +13,7 @@ import trizzle.trizzlebackend.domain.Post;
 import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.dto.response.NotificationDto;
-import trizzle.trizzlebackend.service.NotificationService;
-import trizzle.trizzlebackend.service.PostService;
-import trizzle.trizzlebackend.service.ReviewService;
-import trizzle.trizzlebackend.service.UserService;
+import trizzle.trizzlebackend.service.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +30,7 @@ public class UserContoller {
     private final PostService postService;
     private final ReviewService reviewService;
     private final NotificationService notificationService;
+    private final FollowService followService;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -66,9 +64,11 @@ public class UserContoller {
         List<Review> userReviews = reviewService.findPublicReview(account).stream()
                 .limit(3)
                 .collect(Collectors.toList());
+        boolean isFollow = followService.isFollow(account, request);    // 내가 팔로우 한 사람인지 여부
         response.put("profile", userData);
         response.put("posts", userPosts);
         response.put("reviews", userReviews);
+        response.put("isFollow", isFollow);
 
         return ResponseEntity.ok().body(response);
     };
