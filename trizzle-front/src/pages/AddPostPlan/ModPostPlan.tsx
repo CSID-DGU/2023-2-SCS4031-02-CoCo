@@ -21,7 +21,6 @@ const ModPostPlan: React.FC = () => {
   const [prevThema,] = useState<any>([]);
   const [thema, setThema] = useState<any>([]);
   const [dayPlan, setDayPlan] = useState<any>(null);
-  // const [, setSecret] = useState<boolean>(true);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);

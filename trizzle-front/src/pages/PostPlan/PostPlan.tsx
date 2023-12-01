@@ -110,11 +110,11 @@ const PostPlan: React.FC = () => {
     }
   }, [selectedDayPlan]);
 
-  const copyPlanData = (plan: any[]) => {
+  const copyPlanData = (plan: any) => {
     const newPlan = plan;
     const newPlanList = [...newPlan.content];
     let dayNumber = newPlanList.length + 1;
-    selectedDayPlan.map((item: object) => {
+    selectedDayPlan.map((item: any) => {
       newPlanList.push({ day: dayNumber, placeList: item.placeList })
       dayNumber = dayNumber + 1;
       newPlan.content = newPlanList;

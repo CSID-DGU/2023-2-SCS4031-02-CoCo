@@ -9,7 +9,6 @@ import trans from "../../assets/keywords/trans.svg"
 import rest from "../../assets/keywords/rest.svg"
 import shopping from "../../assets/keywords/shopping.svg"
 import NullList from "../../components/NullList";
-import Menu from "../../components/Menu";
 
 type DayPlanPostProps = {
   type?: string;
