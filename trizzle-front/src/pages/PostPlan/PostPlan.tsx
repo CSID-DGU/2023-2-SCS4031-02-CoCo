@@ -280,7 +280,7 @@ const PostPlan: React.FC = () => {
           </S.HorizontalFirstStartContainer>
           <CommentSection page="post" postId={data.post.id} />
         </S.CommentContainer>
-        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} />}
+        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} region={regions}/>}
         {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.

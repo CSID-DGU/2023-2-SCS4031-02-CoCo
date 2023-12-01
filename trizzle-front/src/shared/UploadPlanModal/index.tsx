@@ -7,6 +7,7 @@ import Paging from "../../components/Paging";
 import NullList from "../../components/NullList";
 
 type ScretDropdownPorps = {
+  region: string;
   title: string;
   onclose: () => void;
   onClickedPlan: (value: any) => void;
@@ -14,7 +15,7 @@ type ScretDropdownPorps = {
 
 const UploadPlanModal: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps) => {
   const [planData, setPlanData] = useState<any>([]);
-  const [state, _] = useAsync({ url: '/api/plans/myplans/nonpost' });
+  const [state, _] = useAsync({ url: `/api/plans/myplans/nonpost?region=${props.region}` });
 
   useEffect(() => {
     if (state.error) {
