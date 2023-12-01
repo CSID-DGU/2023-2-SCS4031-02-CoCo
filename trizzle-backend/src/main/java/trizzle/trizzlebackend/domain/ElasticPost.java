@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 import trizzle.trizzlebackend.domain.Plan;
 
 import java.time.LocalDateTime;
@@ -41,7 +42,7 @@ public class ElasticPost {
     }
 
     public void setData(String id, String accountId, String postTitle, LocalDateTime postRegistrationDate,
-                        boolean postSecret, Plan plan, Integer likeCount, Integer bookmarkCount) {
+                        boolean postSecret, Plan plan, Integer likeCount, Integer bookmarkCount, String thumnail) {
         this.id = id;
         this.accountId = accountId;
         this.postTitle = postTitle;
@@ -50,5 +51,6 @@ public class ElasticPost {
         this.plan = plan;
         this.likeCount = likeCount;
         this.bookmarkCount = bookmarkCount;
+        this.thumnail = thumnail;
     }
 }
