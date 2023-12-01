@@ -2,6 +2,8 @@ package trizzle.trizzlebackend.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -20,8 +22,14 @@ public class Plan {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private LocalDate planEndDate;
     private String planName;
+
+    @Field(type= FieldType.Text)
     private String planLocation;
+
+    @Field(type= FieldType.Text)
     private List<String> planThema;
+
+    @Field(type= FieldType.Object)
     private List<Day> content;
     private String postId;
 

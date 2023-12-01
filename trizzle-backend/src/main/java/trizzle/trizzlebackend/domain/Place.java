@@ -1,6 +1,8 @@
 package trizzle.trizzlebackend.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
@@ -10,18 +12,23 @@ public class Place {
     @Id
     private String id;
     private String placeId;
+
+    @Field(type= FieldType.Text)
     private String placeName;
     private String categoryName;
     private String categoryGroupCode;
     private String categoryGroupName;
     private String phone;
+    @Field(type= FieldType.Text)
     private String addressName;
+    @Field(type= FieldType.Text)
     private String roadAddressName;
     private double x;
     private double y;
     private String placeKeyword;
     private String placeUrl;
     private double distance;
+    @Field(type= FieldType.Text)
     private String keyword;
     private Review review;
 
