@@ -7,6 +7,7 @@ import Paging from "../../components/Paging";
 import NullList from "../../components/NullList";
 
 type ScretDropdownPorps = {
+  title: string;
   onclose: () => void;
   onClickedPlan: (value: any) => void;
 }
@@ -31,7 +32,7 @@ const UploadPlanModal: React.FC<ScretDropdownPorps> = (props: ScretDropdownPorps
   }
 
   return (
-    <Modal title="일정 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
+    <Modal title={props.title} styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
       <S.UploadModalContainer>
         {planData.length === 0 ? (
           <NullList content="불러올 일정이 없습니다" />

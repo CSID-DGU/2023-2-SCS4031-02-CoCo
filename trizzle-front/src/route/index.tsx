@@ -22,48 +22,50 @@ import Bookmark from '../pages/Bookmark';
 import FQA from '../pages/FQA';
 import PersonalInformationPage from '../pages/PersonalInformationPage';
 import ModPostPlan from '../pages/AddPostPlan/ModPostPlan';
+import Page404 from '../pages/Page404/Page404';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:id" element={<Home />} />
-        <Route path="/post/places/add" element={<AddPlacePage />} />
-        <Route path="/post/places/:id/modify" element={<AddPlacePage />} />
-        <Route path="/mypage/plans/add" element={<AddPlanPage />} />
-        <Route path="/mypage/plans/edit/:id" element={<EditPlanPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/:id" element={<Home />} />
+          <Route path="/post/places/add" element={<AddPlacePage />} />
+          <Route path="/post/places/modify/:id" element={<AddPlacePage />} />
+          <Route path="/mypage/plans/add" element={<AddPlanPage />} />
+          <Route path="/mypage/plans/edit/:id" element={<EditPlanPage />} />
 
-        <Route path='/search/:region/places' element={<SearchPlace />} />
-        <Route path='/search/:region/plans' element={<SearchPlan />} />
+          <Route path='/search/:region/places' element={<SearchPlace />} />
+          <Route path='/search/:region/plans' element={<SearchPlan />} />
 
-        <Route path='/post/plans/add' element={<AddPostPlanOpen />} />
-        <Route path='/post/plans/add/:id' element={<AddPostPlan />} />
-        <Route path='/post/plans/modify/:id' element={<ModPostPlan />} />
-        <Route path="/post/places/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
-        <Route path="/post/plans/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
-        <Route path='/post/plan/:id' element={<PostPlan />} />
+          <Route path='/post/plans/add' element={<AddPostPlanOpen />} />
+          <Route path='/post/plans/add/:id' element={<AddPostPlan />} />
+          <Route path='/post/plans/modify/:id' element={<ModPostPlan />} />
+          <Route path="/post/places/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
+          <Route path="/post/plans/add/:planDay/:planId/:placeId" element={<ConnectPlace />} />
+          <Route path='/post/plan/:id' element={<PostPlan />} />
 
-        <Route path="/post/places/:id" element={<PostPlace />} />
+          <Route path="/post/places/:id" element={<PostPlace />} />
 
-        <Route path="/myfeed" element={<Myfeed />} />
-        <Route path="/myfeed/posts" element={<MorePosts />} />
-        <Route path="/myfeed/reviews" element={<MoreReviews />} />
-        <Route path="/myfeed/plans" element={<PlanList />} />
-        <Route path="/myfeed/plans/:id" element={<PlanDetail />} />
-        <Route path="/myfeed/info" element={<UserInfoEdit />} />
-        <Route path="/feed/:id" element={<Myfeed />} />
-        <Route path="/feed/posts/:id" element={<MorePosts />} />
-        <Route path="/feed/reviews/:id" element={<MoreReviews />} />
-        <Route path="/myfeed/bookmarks" element={<Bookmark />} />
+          <Route path="/myfeed" element={<Myfeed />} />
+          <Route path="/myfeed/posts" element={<MorePosts />} />
+          <Route path="/myfeed/reviews" element={<MoreReviews />} />
+          <Route path="/myfeed/plans" element={<PlanList />} />
+          <Route path="/myfeed/plans/:id" element={<PlanDetail />} />
+          <Route path="/myfeed/info" element={<UserInfoEdit />} />
+          <Route path="/feed/:id" element={<Myfeed />} />
+          <Route path="/feed/posts/:id" element={<MorePosts />} />
+          <Route path="/feed/reviews/:id" element={<MoreReviews />} />
+          <Route path="/myfeed/bookmarks" element={<Bookmark />} />
 
-        <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
-        <Route path="/login/oauth2/code/Google" element={<GoogleRedirectPage />} />
+          <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
+          <Route path="/login/oauth2/code/Google" element={<GoogleRedirectPage />} />
 
+          <Route path='/help' element={<FQA />} />
+          <Route path='/information/service' element={<></>} />
+          <Route path='/information/personal' element={<PersonalInformationPage />} />
 
-        <Route path='/help' element={<FQA />} />
-        <Route path='/information/service' element={<></>} />
-        <Route path='/information/personal' element={<PersonalInformationPage />} />
+          <Route path='/404' element={<Page404 />} />
       </Routes>
     </BrowserRouter>
   );

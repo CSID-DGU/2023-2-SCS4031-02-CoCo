@@ -40,7 +40,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
       else {
         setIsLogin(true);
         setUserData(state.data);
-        setNotiCount(state.data.noti.length);
+        setNotiCount(state.data.noti?.length || 0);
         sessionStorage.setItem("accountId", state.data.id);
         sessionStorage.setItem("profileImg", state.data.profileImg);
       }

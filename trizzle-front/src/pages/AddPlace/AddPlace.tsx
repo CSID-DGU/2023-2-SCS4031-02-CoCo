@@ -31,13 +31,9 @@ export default function AddPlacePage() {
       console.error(state.error);
     } else if (state.data) {
       if (placeId.id) {
-        setData(state.data);
-        if (state.data.message === "update success") {
-          navigate(`/post/places/${state.data.reviewId}`);
-        }
-      } else if (state.data.message === "save success") {
-        navigate(`/post/places/${state.data.reviewId}`);
-      }
+        if (state.data.message === "update success") navigate(`/post/places/${state.data.reviewId}`);
+        else setData(state.data);
+      } else if (state.data.message === "save success") navigate(`/post/places/${state.data.reviewId}`);
     }
   }, [state]);
 
@@ -62,21 +58,34 @@ export default function AddPlacePage() {
 
     const formattedDate = visitDate.toISOString().slice(0, 10);
 
-    // 정보 보내기
-    const ResultData = {
-      reviewTitle: title,
-      visitDate: formattedDate,
-      place: place,
-      reviewContent: contents,
-      reviewContentText: contentsText,
-      reviewSecret: secretValue,
-      thumbnail: representImage,
+    if (placeId.id) {
+      const ResultData = {
+        ...data.review,
+        accountId: data.review.accountId,
+        reviewTitle: title,
+        visitDate: formattedDate,
+        place: place,
+        reviewContent: contents,
+        reviewContentText: contentsText,
+        reviewSecret: secretValue,
+        thumbnail: representImage,
+      }
+      const json = JSON.stringify(ResultData);
+      fetchData(`/api/reviews/${placeId.id}`, "PUT", json);
+    } else {
+      // 정보 보내기
+      const ResultData = {
+        reviewTitle: title,
+        visitDate: formattedDate,
+        place: place,
+        reviewContent: contents,
+        reviewContentText: contentsText,
+        reviewSecret: secretValue,
+        thumbnail: representImage,
+      }
+      const json = JSON.stringify(ResultData);
+      fetchData('/api/reviews', "POST", json);
     }
-
-    const json = JSON.stringify(ResultData);
-
-    if (placeId.id) fetchData(`/api/reviews/${placeId.id}`, "PUT", json);
-    else fetchData('/api/reviews', "POST", json);
   }
 
   return (

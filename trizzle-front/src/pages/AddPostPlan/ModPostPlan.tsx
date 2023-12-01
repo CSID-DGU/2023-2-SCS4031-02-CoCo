@@ -21,7 +21,6 @@ const ModPostPlan: React.FC = () => {
   const [prevThema,] = useState<any>([]);
   const [thema, setThema] = useState<any>([]);
   const [dayPlan, setDayPlan] = useState<any>(null);
-  // const [, setSecret] = useState<boolean>(true);
   const [selectedDayPlan, setSelectedDayPlan] = useState<any>(null);
   const [selectDay, setSelectDay] = useState<number>(0);
   const [file, setFile] = useState<File | null>(null);
@@ -40,10 +39,9 @@ const ModPostPlan: React.FC = () => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      console.log(state.data);
-      if (state.data.message === "update success" && state.data.postId) {
-        navigate(`/post/plan/${state.data.postId}`);
-      } else setData(state.data);
+      if (state.data.message === "update success" && state.data.postId) navigate(`/post/plan/${state.data.postId}`);
+      else if (state.data.message === "update success" && state.data.reviewId) console.log();
+      else setData(state.data);
     }
   }, [state]);
 
