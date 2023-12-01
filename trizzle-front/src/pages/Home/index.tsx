@@ -1,5 +1,6 @@
 import Page from "../Page";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./Home.style";
 import HomePlanSlider from "../../shared/HomePlanSlider";
 import SearchBar from "../../components/SearchBar";
@@ -13,10 +14,11 @@ const Home = () => {
   const [topPlanLists, setTopPlanLists] = useState<any>(null);
   const [leastPlanLists, setLeastPlanLists] = useState<any>(null);
   const [state,] = useAsync({url: "/api/posts/home"})
+  const navigate = useNavigate();
 
 
   useEffect(() => {
-    if(state.error) console.log(state.error);
+    if(state.error) navigate("/404");
     else if(state.data) {
       setTopPlanLists(state.data.top4);
       setLeastPlanLists(state.data.least.content);

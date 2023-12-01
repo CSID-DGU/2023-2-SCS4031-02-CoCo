@@ -49,15 +49,16 @@ const PostPlan: React.FC = () => {
 
   useEffect(() => {
     if (state.error) {
-      console.error(state.error);
-      alert("데이터를 불러오는 데 실패했습니다");
+      navigate("/404");
     } else if (state.data) {
       if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
-      if (state.data.message && state.data.message === "save success") {
+      else if (state.data.message && state.data.message === "save success") {
         const response = window.confirm("일정을 복사한 내 일정으로 이동하시겠습니까?");
         if (response) navigate(`/myfeed/plans`)
       }
       else setData(state.data);
+    } else {
+      navigate("/404");
     }
   }, [state]);
 

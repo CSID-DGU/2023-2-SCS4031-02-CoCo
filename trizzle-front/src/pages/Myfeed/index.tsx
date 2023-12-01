@@ -23,9 +23,12 @@ const Myfeed = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(state.error) {
-      alert("로그인이 필요합니다");
-      navigate("/");
+    if(state.error || state.data === null) {
+      if(id) navigate("/404");
+      else {
+        alert("로그인이 필요합니다");
+        navigate("/");
+      }
     }
     if (state.data) {
       setPlan(state.data.posts);

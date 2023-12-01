@@ -34,8 +34,7 @@ export default function PostPlace() {
 
   useEffect(() => {
     if (state.error) {
-      console.error(state.error);
-      alert("데이터를 불러오는 데 실패했습니다");
+      navigate("/404");
     } else if (state.data) {
       if (state.data.message && state.data.message === "delete success") {
         alert("삭제되었습니다");
@@ -51,6 +50,8 @@ export default function PostPlace() {
           setIsMe(true);
         }
       }
+    } else {
+      navigate("/404");
     }
   }, [state]);
 

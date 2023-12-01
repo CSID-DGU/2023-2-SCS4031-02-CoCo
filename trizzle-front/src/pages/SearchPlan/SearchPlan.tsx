@@ -5,18 +5,24 @@ import { useAsync } from "../../utils/API/useAsync";
 import { SearchLayout } from "../Page";
 import PlanCard from "../../components/PlanCard";
 import DropdownMenu from "../../components/DropdownMenu";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+import NullList from "../../components/NullList";
 // import { tripThema } from "../../utils/Data/tripThema";
 // import { IoIosSearch } from "react-icons/io";
 
 
 
 const SearchPlan = () => {
+  const {region} = useParams<any>();
+  const {search} = useLocation();
+  const navigate = useNavigate();
+
   const [allPlanList, setAllPlanList] = useState<any>(null);
   const [planList, setPlanList] = useState<any[]>([]);
   const [sort, setSort] = useState<any>({ name: "최신순", id: "new" });
   // const [thema, setThema] = useState<any[]>([]);
   const [page, setPage] = useState<number>(0);
-  const [state, fetchData] = useAsync({ url: `/api/posts/search?page=${page}&sort=${sort.id}`, method: 'GET' });
+  const [state, fetchData] = useAsync({ url: `/api/posts/search?page=${page}&sort=${sort.id}&keyword=${search}&region=${region}`, method: 'GET' });
 
   // const onThemaBadgeClick = (select: any) => {
   //   const itemExists = thema.some((item) => item.id === select.id);
@@ -51,7 +57,7 @@ const SearchPlan = () => {
   }, []);
 
   useEffect(() => {
-    fetchData(`/api/posts/search?page=${page}&sort=${sort.id}`);
+    fetchData(`/api/posts/search?page=${page}&sort=${sort.id}&keyword=${search}&region=${region}`);
   }, [page]);
 
   useEffect(() => {
@@ -59,6 +65,7 @@ const SearchPlan = () => {
   }, [sort]);
 
   useEffect(() => {
+    if (state.error || state.data === null) navigate("/404");
     if (state.data) {
       if (page === 0) setPlanList(state.data.content);
       else {
@@ -83,7 +90,7 @@ const SearchPlan = () => {
           </S.MenuContainer>
         </S.FilterContainer>
         <S.PlanCardContainer>
-          {planList.length !== 0 && planList.map((plan: any, index: number) => (
+          {planList.length !== 0 ? planList.map((plan: any, index: number) => (
             <PlanCard
               key={index}
               userId={plan.accountId}
@@ -97,7 +104,9 @@ const SearchPlan = () => {
               likeCount={plan.likeCount === null ? 0 : plan.likeCount}
               commentCount={plan.commentCount ? plan.commentCount : 0}
               thema={plan.plan.planThema} />
-          ))}
+          )) :
+            <NullList content="검색 결과가 없습니다." />
+          }
         </S.PlanCardContainer>
       </S.SearchResultContainer>
     </SearchLayout>
