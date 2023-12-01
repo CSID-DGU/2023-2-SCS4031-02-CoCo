@@ -14,22 +14,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Setup Node 18.16.x
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18.16.x'
-          # cache: 'yarn'
-      - name: Debug step
-        run: echo "Debug information here"
+      # - name: Setup Node 18.16.x
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '18.16.x'
+      #     # cache: 'yarn'
+      # - name: Debug step
+      #   run: echo "Debug information here"
         
       - name : yarn berry set
         run: |
           cd trizzle-front
           echo "VITE_KAKAO_API_KEY=${{ secrets.VITE_KAKAO_API_KEY }}" >> .env
-          rm -rf .yarnrc.yml
-          corepack enable
-          corepack prepare yarn@3.6.1 --activate
-          yarn set version 3.6.1
+          # rm -rf .yarnrc.yml
+          # corepack enable
+          # corepack prepare yarn@3.6.1 --activate
+          # yarn set version 3.6.1
         env:
           VITE_KAKAO_API_KEY: ${{ secrets.VITE_KAKAO_API_KEY }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
@@ -39,20 +39,20 @@ jobs:
           cd trizzle-front
           ls -al
           
-      - name: Get cache dir path
-        id: yarn-cache-dir-path
-        run: echo "CACHE_DIR=$(yarn config get cacheFolder)" >> $GITHUB_ENV
+      # - name: Get cache dir path
+      #   id: yarn-cache-dir-path
+      #   run: echo "CACHE_DIR=$(yarn config get cacheFolder)" >> $GITHUB_ENV
       
-      - name: Yarn cache
-        uses: actions/cache@v2
-        id: yarn-cache
-        with:
-          path: |
-            ${{ steps.yarn-cache-dir-path.outputs.CACHE_DIR }}
-            trizzle-front/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('trizzle-front/yarn.lock') }}-${{ steps.set-version.outputs.YARN_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-${{ hashFiles('trizzle-front/yarn.lock') }}-
+      # - name: Yarn cache
+      #   uses: actions/cache@v2
+      #   id: yarn-cache
+      #   with:
+      #     path: |
+      #       ${{ steps.yarn-cache-dir-path.outputs.CACHE_DIR }}
+      #       trizzle-front/.yarn/cache
+      #     key: ${{ runner.os }}-yarn-${{ hashFiles('trizzle-front/yarn.lock') }}-${{ steps.set-version.outputs.YARN_VERSION }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-yarn-${{ hashFiles('trizzle-front/yarn.lock') }}-
       
       - name: Install dependencies
         run: |
