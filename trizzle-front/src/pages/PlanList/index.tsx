@@ -16,7 +16,7 @@ const PlanList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(state.error || state.data === null) {
+    if(state.error) {
       navigate("/404");
     } else if(state.data) {
 

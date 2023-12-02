@@ -13,7 +13,7 @@ const MorePosts = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(state.error || state.data === null) {
+    if(state.error) {
       if(id) navigate("/404");
       else {
         alert("로그인이 필요합니다");

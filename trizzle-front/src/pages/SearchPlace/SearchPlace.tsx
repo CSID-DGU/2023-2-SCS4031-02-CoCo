@@ -51,7 +51,7 @@ const SearchPlace = () => {
 
 
   useEffect(() => {
-    if ( state.error || state.data === null) navigate("/404");
+    if ( state.error) navigate("/404");
     if (state.data) {
       if(page === 0) setReview(state.data.content);
       else{

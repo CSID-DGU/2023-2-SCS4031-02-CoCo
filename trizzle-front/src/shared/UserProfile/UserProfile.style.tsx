@@ -54,6 +54,7 @@ export const FollowText = styled.div`
   font-size: 1.1rem;
   font-weight: 600;
   color: #000;
+  cursor: pointer;
 `
 
 export const TripThemaTitle = styled.div`
