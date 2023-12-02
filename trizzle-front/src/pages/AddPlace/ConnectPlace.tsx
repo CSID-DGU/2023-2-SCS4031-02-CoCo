@@ -60,7 +60,7 @@ export default function ConnectPlace() {
         });
         const newArray2 = { ...planData, content: newArray };
         delete newArray2.id;
-        fetchData(`/api/plans/${planInfor.planId}`, "PUT", newArray2);
+        fetchData(`/api/plans/${planInfor.planId}`, "PUT", JSON.stringify(newArray2));
 
         opener.location.reload();
         window.close();
