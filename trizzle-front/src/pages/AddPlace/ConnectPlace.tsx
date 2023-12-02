@@ -58,8 +58,9 @@ export default function ConnectPlace() {
           // 찾지 못한 경우 해당 객체를 그대로 반환합니다.
           return place;
         });
-        setPlanData({ ...planData, content: newArray });
-        fetchData(`/api/plans/${planInfor.planId}`, "PUT", planData);
+        const newArray2 = { ...planData, content: newArray };
+        delete newArray2.id;
+        fetchData(`/api/plans/${planInfor.planId}`, "PUT", newArray2);
 
         opener.location.reload();
         window.close();
