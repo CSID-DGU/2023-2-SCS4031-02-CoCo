@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.WebUtils;
 import trizzle.trizzlebackend.Utils.JwtUtil;
+import trizzle.trizzlebackend.domain.Follow;
 import trizzle.trizzlebackend.domain.Post;
 import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.domain.User;
+import trizzle.trizzlebackend.dto.follow.FollowUserDto;
 import trizzle.trizzlebackend.dto.response.NotificationDto;
 import trizzle.trizzlebackend.service.*;
 
@@ -49,12 +51,14 @@ public class UserContoller {
     public ResponseEntity getFeedData(@PathVariable("accountId") String accountId, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
         String account = new String();
+        boolean isFollow = false;
         if (accountId.equals("my")) {
             String token = JwtUtil.getAccessTokenFromCookie(request);
             account = JwtUtil.getAccountId(token, secretKey);
 
         } else {
             account = accountId;
+            isFollow = followService.isFollow(account, request);    // 내가 팔로우 한 사람인지 여부
         }
         ;
         User userData = userService.searchUser(account);
@@ -64,11 +68,15 @@ public class UserContoller {
         List<Review> userReviews = reviewService.findPublicReview(account).stream()
                 .limit(3)
                 .collect(Collectors.toList());
-        boolean isFollow = followService.isFollow(account, request);    // 내가 팔로우 한 사람인지 여부
+        List<FollowUserDto> followee = followService.findFollowee(account);
+        List<FollowUserDto> followers = followService.findFollowers(account);
+
         response.put("profile", userData);
         response.put("posts", userPosts);
         response.put("reviews", userReviews);
         response.put("isFollow", isFollow);
+        response.put("followers", followers);
+        response.put("followees", followee);
 
         return ResponseEntity.ok().body(response);
     };

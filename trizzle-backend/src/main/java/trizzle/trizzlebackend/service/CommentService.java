@@ -89,6 +89,7 @@ public class CommentService {
         return com;
     };
 
+    @Transactional
     public Comment deleteComment(Comment comment, String accountId) {
         comment.setDeleted(true);
         comment.setCommentContent("");
