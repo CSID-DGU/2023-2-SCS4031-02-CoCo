@@ -16,14 +16,20 @@ const Myfeed = () => {
   const [userData, setUserData] = useState<any>(null);
   const [plan, setPlan] = useState<any[]>([]);
   const [place, setPlace] = useState<any[]>([]);
+  const [followee, setFollowee] = useState<any[]>([]);
+  const [follower, setFollower] = useState<any[]>([]);
   const isMe = (id && id !== sessionStorage.getItem("accountId"))? false : true;
   console.log(isMe);
   const url = id ? `/api/user/feed/${id}` : "/api/user/feed/my";
   const [state, _] = useAsync({url: url});
+  const [state2, fetchData] = useAsync({url: ""});//follow
+
   const navigate = useNavigate();
+  const [isFollow, setIsFollow] = useState<boolean>(false);
 
   useEffect(() => {
-    if(state.error || state.data === null) {
+    console.log(state);
+    if(state.error) {
       if(id) navigate("/404");
       else {
         alert("로그인이 필요합니다");
@@ -34,15 +40,36 @@ const Myfeed = () => {
       setPlan(state.data.posts);
       setPlace(state.data.reviews);
       setUserData(state.data.profile);
+      setIsFollow(state.data.isFollow);
+      if(state.data.followees && state.data.followees!==null) setFollowee(state.data.followees);
+      else setFollowee([]);
+      if(state.data.followers && state.data.followers!==null) setFollower(state.data.followers);
+      else setFollower([]);
     }
   },[state]);
+
+  const onFollow = () => {
+    const followee = {
+      followeeId: id,
+    }
+    fetchData(`/api/follows`, "POST", followee);
+  }
+
+
+  useEffect(() => {
+    if(state2.error) {
+      alert("error");
+    } else if(state2.data) {
+      setIsFollow(state2.data.isFollow);
+    }
+  }, [state2]);
 
   if(userData === null) return (<div>로딩중</div>)
   else {
   return (
     <MyfeedLayout isMe={isMe}>
-      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={[{nickname:"김희진", accountId: "gjiewgjl", profileImage:""}]} following={[{nickname:"김희진", accountId: "gjiewgjl", profileImage:""}, {nickname:"김희진", accountId: "gjiewgjl", profileImage:""}]} isMe={isMe}
-      src={userData.profileImage}
+      <UserProfile nickName={userData.nickname} keyword={userData.thema} follower={follower} following={followee} isMe={isMe} onFollowClick={() => onFollow()}
+      src={userData.profileImage} isFollow={isFollow}
       />
       <S.HorizontalContainer>
         <S.ListTitle>{!isMe? `${userData.nickname}님이 공유한 일정` : <>나의 여행 일정 목록

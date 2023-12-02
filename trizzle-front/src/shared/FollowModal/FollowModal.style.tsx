@@ -44,7 +44,7 @@ export const ItemText = styled.div`
   cursor: pointer;
 `
 
-export const FollowButton = styled.div<{type:string}>`
+export const FollowButton = styled.div<{type:boolean}>`
   width: auto;
   height: auto;
   padding: 0.5rem 1rem;
@@ -52,18 +52,18 @@ export const FollowButton = styled.div<{type:string}>`
   position: absolute;
   right: 1rem;
   top: 0.5rem;
-  background-color: ${props => props.type === "follow" ? "black" : "#ffffff"};
-  border: ${props => props.type === "follow" ? "none" : "1px solid #bdbdbd"};
+  background-color: ${props => props.type === false ? "black" : "#ffffff"};
+  border: ${props => props.type === false ? "none" : "1px solid #bdbdbd"};
   font-size: 1rem;
   font-weight: 400;
-  color: ${props => props.type === "follow" ? "#ffffff" : "#000000"};
+  color: ${props => props.type === false ? "#ffffff" : "#000000"};
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   &:hover {
-    color: ${props => props.type !== "follow" && "red" };
-    border-color: ${props => props.type !== "follow" && "red" };
-    background-color: ${props => props.type !== "follow" && "#fff4f4" };
+    color: ${props => props.type !== false && "red" };
+    border-color: ${props => props.type !== false && "red" };
+    background-color: ${props => props.type !== false && "#fff4f4" };
   }
 `

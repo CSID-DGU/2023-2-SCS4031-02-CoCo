@@ -22,6 +22,7 @@ export default function PostPlace() {
   const [isMe, setIsMe] = useState<boolean>(false);
   const [likeCount, setLikeCount] = useState<number>(0);
   const [bookmarkCount, setBookmarkCount] = useState<number>(0);
+  const [commentCount, setCommentCount] = useState<number>(0);
   const [menuItems, setMenuItems] = useState<any[]>([{
     content: "삭제", onClick: () => {
       alert("게시글을 삭제하시겠습니까?")
@@ -46,12 +47,11 @@ export default function PostPlace() {
         setReviewUser(state.data.reviewUser);
         setLikeCount(state.data.review.likeCount);
         setBookmarkCount(state.data.review.bookmarkCount);
+        setCommentCount(state.data.review.commentCount);
         if (state.data.reviewUser.accountId === sessionStorage.getItem("accountId")) {
           setIsMe(true);
         }
       }
-    } else {
-      navigate("/404");
     }
   }, [state]);
 
@@ -138,7 +138,7 @@ export default function PostPlace() {
           <S.HorizontalFirstStartContainer>
             <S.CommentText>
               댓글
-              <S.CommentTextNumber>{data.comments}</S.CommentTextNumber>
+              <S.CommentTextNumber>{commentCount}</S.CommentTextNumber>
             </S.CommentText>
             <S.CommentText>
               좋아요
@@ -152,7 +152,7 @@ export default function PostPlace() {
               />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          <CommentSection page="review" postId={data.id} />
+          <CommentSection page="review" postId={data.id} commentCount={commentCount} setCommentCount={(count:number) => setCommentCount(count)}/>
         </S.CommentContainer>
 
         {/* <S.RecommendContainer>

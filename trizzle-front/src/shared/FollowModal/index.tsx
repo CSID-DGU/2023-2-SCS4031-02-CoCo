@@ -11,24 +11,13 @@ const FollowModal: React.FC<FollowModalProps> = (props: FollowModalProps) => {
   const [tab, setTab] = useState<any>(props.tab);
   const [followerList, setFollowerList] = useState<follow[]>(props.followerList);
   const [followingList, setFollowingList] = useState<follow[]>(props.followingList);
-  const [state, ] = useAsync({url:""});
   const tabItems = [{name: "팔로워", URL:"follower"}, {name:"팔로잉", URL:"following"}];
-  const navigate = useNavigate();
-
-  // const onFollowCancel = (accountId: string) => {
-  //   fetchData(`/api/follows/${accountId}`, "DELETE"); 
-  // }
-
-  // const onFollow = (accountId: string) => {
-  //   fetchData(`/api/follows/${accountId}`, "POST"); 
-  // }
+  
 
   useEffect(() => {
     setFollowerList(props.followerList);
     setFollowingList(props.followingList);
   },[props]);
-
-  useEffect(() => {}, [state]);
 
   return (
     <Modal title="팔로워/팔로잉" styleProps={{width:"40rem", height:"40rem"}} onCloseClick={props.setOpened}>
@@ -37,27 +26,54 @@ const FollowModal: React.FC<FollowModalProps> = (props: FollowModalProps) => {
         {tab.name === "팔로워" ? (
           <S.SubContainer>
             {followerList.map((follower, index) => (
-              <S.ItemContainer key={index} onClick={() => navigate(`/feed/${follower.accountId}`)}>
-                <ProfileImage src={follower.profileImage} type="small"/>
-                <S.ItemText>{follower.nickname}</S.ItemText>
-                <S.FollowButton type="follow" onClick={() => console.log("팔로우")}>팔로우</S.FollowButton>
-              </S.ItemContainer>
+              <ItemContainer key={index} follow={follower} />
             ))}
           </S.SubContainer>
         ): (
           <S.SubContainer>
             {followingList.map((follower, index) => (
-              <S.ItemContainer key={index} onClick={() => navigate(`/feed/${follower.accountId}`)}>
-                <ProfileImage src={follower.profileImage} type="small"/>
-                <S.ItemText>{follower.nickname}</S.ItemText>
-                <S.FollowButton type="follower" onClick={() => console.log("팔로우 취소")}>취소</S.FollowButton>
-              </S.ItemContainer>
+              <ItemContainer key={index} follow={follower} />
             ))}
           </S.SubContainer>
         )}
       </S.Container>
     </Modal>
   )
+}
+
+const ItemContainer:React.FC<{follow:follow}> = ({follow}) => {
+  const [state, fetchData] = useAsync({url:""});
+  const [isFollow, setIsFollow] = useState<boolean>(follow.follow);
+  const navigate = useNavigate();
+  console.log(follow);
+
+  const onFollow = (accountId: string) => {
+    const followData = {
+      followeeId: accountId,
+    }
+    fetchData(`/api/follows`, "POST", followData); 
+  }
+
+  useEffect(() => {
+    setIsFollow(follow.follow);
+  }, [follow]);
+
+  useEffect(() => {
+    if(state.error) {
+      alert("error");
+    } else if(state.data) {
+      setIsFollow(state.data.isFollow);
+    }
+  }, [state]);
+
+  return (
+    <S.ItemContainer >
+      <ProfileImage src={follow.profileImage} type="small"/>
+      <S.ItemText onClick={() => navigate(`/feed/${follow.accountId}`)}>{follow.nickname}</S.ItemText>
+      <S.FollowButton type={isFollow} onClick={() => onFollow(follow.accountId)}>{isFollow ? "취소" : "팔로우"}</S.FollowButton>
+    </S.ItemContainer>
+  )
+
 }
 
 export default FollowModal;

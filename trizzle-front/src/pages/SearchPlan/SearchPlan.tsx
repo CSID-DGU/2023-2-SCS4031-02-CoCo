@@ -65,7 +65,7 @@ const SearchPlan = () => {
   }, [sort]);
 
   useEffect(() => {
-    if (state.error || state.data === null) navigate("/404");
+    if (state.error ) navigate("/404");
     if (state.data) {
       if (page === 0) setPlanList(state.data.content);
       else {

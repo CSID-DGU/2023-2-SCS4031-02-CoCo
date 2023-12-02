@@ -9,6 +9,7 @@ export interface follow {
   accountId: string;
   profileImage: string;
   nickname: string;
+  follow: boolean;
 }
 
 interface tab {

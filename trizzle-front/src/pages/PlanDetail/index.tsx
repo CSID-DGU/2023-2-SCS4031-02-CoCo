@@ -17,7 +17,7 @@ const PlanDetail: React.FC = () => {
 
 
   useEffect(() => {
-    if(state.error || state.data === null) {
+    if(state.error ) {
       navigate("/404");
     }else if(state.data) {
       if(state.data.message === "delete success") navigate('/myfeed/plans');

@@ -11,4 +11,5 @@ public class FollowUserDto {
     private String accountId;
     private String nickname;
     private String profileImage;
+    private boolean isFollow;
 }

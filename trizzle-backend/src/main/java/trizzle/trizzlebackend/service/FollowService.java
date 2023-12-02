@@ -74,10 +74,15 @@ public class FollowService {
         for (Follow follow : follows) {
             User user = userRepository.findByAccountId(follow.getFollowerId()); // 나를 팔로우 한 사람(팔로워)
             if (user != null) {
+                Follow existingFollow = followRepository.findByFollowerIdAndFolloweeId(accountId, user.getAccountId());
+                boolean isFollow;
+                if (existingFollow == null) isFollow=false;
+                else isFollow=true;
                 FollowUserDto followUserDto = FollowUserDto.builder()
                         .accountId(user.getAccountId())
                         .nickname(user.getNickname())
                         .profileImage(user.getProfileImage())
+                        .isFollow(isFollow)
                         .build();
                 followers.add(followUserDto);
             }
@@ -101,6 +106,7 @@ public class FollowService {
                         .accountId(user.getAccountId())
                         .nickname(user.getNickname())
                         .profileImage(user.getProfileImage())
+                        .isFollow(true)
                         .build();
                 followee.add(followUserDto);
             }
@@ -110,13 +116,17 @@ public class FollowService {
 
     public boolean isFollow(String followeeId, HttpServletRequest request) {
         String token = JwtUtil.getAccessTokenFromCookie(request);
-        String followerId = JwtUtil.getAccountId(token, secretKey);
+        if(token != null) {
+            String followerId = JwtUtil.getAccountId(token, secretKey);
 
-        Follow follow = followRepository.findByFollowerIdAndFolloweeId(followerId, followeeId);
-        if (follow == null) {
+            Follow follow = followRepository.findByFollowerIdAndFolloweeId(followerId, followeeId);
+            if (follow == null) {
+                return false;
+            } else {
+                return true;
+            }
+        }else {
             return false;
-        } else {
-            return true;
         }
     }
 }

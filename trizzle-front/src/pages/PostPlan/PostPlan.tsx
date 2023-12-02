@@ -33,6 +33,7 @@ const PostPlan: React.FC = () => {
   const [isCopyPlan, setIsCopyPlan] = useState<boolean>(false);
   const [isCopyPlanModal, setIsCopyPlanModal] = useState<boolean>(false);
   const [placeCenter, setPlaceCenter] = useState<any>({ center: { lat: 0, lng: 0 } });
+  const [commentCount, setCommentCount] = useState<number>(0);
 
   const [isLike, setIsLike] = useState<boolean>(false);
   const [isBookmark, setIsBookmark] = useState<boolean>(false);
@@ -74,6 +75,8 @@ const PostPlan: React.FC = () => {
       setPlanUser(data.postUser);
       setBookmarkCount(data.post.bookmarkCount);
       setLikeCount(data.post.likeCount);
+      setCommentCount(data.post.commentCount);
+      console.log(data.post);
       if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
         setIsMe(true);
       }
@@ -272,7 +275,7 @@ const PostPlan: React.FC = () => {
           <S.HorizontalFirstStartContainer>
             <S.CommentText>
               댓글
-              <S.CommentTextNumber></S.CommentTextNumber>
+              <S.CommentTextNumber>{commentCount}</S.CommentTextNumber>
             </S.CommentText>
             <S.CommentText>
               좋아요
@@ -286,7 +289,7 @@ const PostPlan: React.FC = () => {
               />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          <CommentSection page="post" postId={data.post.id} />
+          <CommentSection page="post" postId={data.post.id} commentCount={commentCount} setCommentCount={(commentCount:number) => setCommentCount(commentCount)}/>
         </S.CommentContainer>
         {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} region={regions} />}
         {/* <S.RecommendContainer>

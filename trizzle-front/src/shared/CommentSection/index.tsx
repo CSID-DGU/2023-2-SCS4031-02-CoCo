@@ -60,7 +60,9 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
       if(state.error) console.log(state.error);
       if(state.data) {
         let data;
-        if(state.data.message === "success") data=state.data.comments;
+        if(state.data.message === "success") {
+          props.setCommentCount(props.commentCount + 1);
+          data=state.data.comments;}
         else data = state.data;
         setCommentList(data);
       }
