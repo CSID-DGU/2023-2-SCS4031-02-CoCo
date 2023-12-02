@@ -23,7 +23,6 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
   const [Data, setData] = useState<string>('');
   const [thumbnailImages, setThumbnailImages] = useState<string[]>([]);
   const [clickedImage, setClickedImage] = useState<string>('');
-  const [clickedImageHtml, setClickedImageHtml] = useState<string>('');
 
   useEffect(() => {
     const cleanHTML: any = sanitizeHTML(Data);
@@ -138,10 +137,6 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    props.onThumbnailImages(clickedImageHtml);
-  }, [clickedImage]);
-
   // 내용이 변경될 때 호출되는 함수
   const handleContentChange = (htmlContent: string) => {
     const doc = new DOMParser().parseFromString(htmlContent, 'text/html');
@@ -173,13 +168,13 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     } else {
       setThumbnailImages([]);
       setClickedImage('')
-      setClickedImageHtml('')
     }
   };
 
   // 대표 이미지 선택
   const setSelectImage = (idx: number) => {
     setClickedImage(thumbnailImages[idx]);
+    props.onThumbnailImages(thumbnailImages[idx]);
   }
 
   // 텍스트 변환 > html
