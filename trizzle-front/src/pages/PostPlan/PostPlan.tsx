@@ -57,8 +57,6 @@ const PostPlan: React.FC = () => {
         if (response) navigate(`/myfeed/plans`)
       }
       else setData(state.data);
-    } else {
-      navigate("/404");
     }
   }, [state]);
 
@@ -132,6 +130,15 @@ const PostPlan: React.FC = () => {
     newData.planName = data.post.postTitle + "_복사본";
     const json = JSON.stringify(newData);
     fetchData(`/api/plans`, "POST", json);
+  }
+
+  const copyPlan = () => {
+    const isLogin = sessionStorage.getItem('accountId');
+    if (isLogin) {
+      setIsCopyPlan(!isCopyPlan);
+    } else {
+      alert("로그인이 필요한 기능입니다.");
+    }
   }
 
   if (dayPlan !== null) {
@@ -223,7 +230,7 @@ const PostPlan: React.FC = () => {
                 </S.FlexEndContainer>
               </S.CopyPlanContainer>
               :
-              <S.CopyPlan onClick={() => setIsCopyPlan(!isCopyPlan)} >
+              <S.CopyPlan onClick={copyPlan} >
                 <LuCopyPlus />
                 <S.CopyPlanText>전체일정복사</S.CopyPlanText>
               </S.CopyPlan>
@@ -240,7 +247,7 @@ const PostPlan: React.FC = () => {
                 </S.FlexEndContainer>
               </S.CopyPlanContainer>
               :
-              <S.CopyPlan onClick={() => setIsCopyPlan(!isCopyPlan)} >
+              <S.CopyPlan onClick={copyPlan} >
                 <LuCopyPlus />
                 <S.CopyPlanText>{selectDay}일차 일정복사</S.CopyPlanText>
               </S.CopyPlan>
@@ -281,7 +288,7 @@ const PostPlan: React.FC = () => {
           </S.HorizontalFirstStartContainer>
           <CommentSection page="post" postId={data.post.id} />
         </S.CommentContainer>
-        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} region={regions}/>}
+        {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} region={regions} />}
         {/* <S.RecommendContainer>
         <S.RecommendText>
           &#123;검색결과&#125;에 대한 다른 장소 추천 결과 입니다.
