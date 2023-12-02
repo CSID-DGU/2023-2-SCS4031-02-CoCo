@@ -32,6 +32,7 @@ public class Review {
     private int likeCount;
     private int bookmarkCount;
     private int viewCount;
+    private int commentCount;
 
     public void increaseLikes() {   // 좋아요 수 증가
         this.likeCount++;
@@ -49,6 +50,14 @@ public class Review {
     }
     public void increaseViewCounts() {
         this.viewCount++;
+    }
+
+    public void increaseCommentCounts() {
+        this.commentCount++;
+    }
+
+    public void decreaseCommentCounts() {
+        this.commentCount--;
     }
 
 }

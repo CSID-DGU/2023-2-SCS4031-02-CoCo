@@ -52,7 +52,7 @@ public class PostService {
         if (!insert.isPostSecret()) { // 공개 post만 검색가능하게 저장되도록
             ElasticPost elasticPost= new ElasticPost();
             elasticPost.setData(insert.getId(),insert.getAccountId(), insert.getPostTitle(), insert.getPostRegistrationDate(),
-                    insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getThumnail());
+                    insert.isPostSecret(),insert.getPlan(), insert.getLikeCount(), insert.getBookmarkCount(), insert.getThumnail(), insert.getCommentCount());
             elasticPostRepository.save(elasticPost);
         }
         return insert;

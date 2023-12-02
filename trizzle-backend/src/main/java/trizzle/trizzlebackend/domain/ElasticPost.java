@@ -30,6 +30,7 @@ public class ElasticPost {
     private Plan plan;
     private String thumnail;
     private Integer bookmarkCount;
+    private Integer commentCount;
 
     public void increaseLikes() {   // 좋아요 수 증가
         this.likeCount++;
@@ -47,7 +48,7 @@ public class ElasticPost {
     }
 
     public void setData(String id, String accountId, String postTitle, LocalDateTime postRegistrationDate,
-                        boolean postSecret, Plan plan, Integer likeCount, Integer bookmarkCount, String thumnail) {
+                        boolean postSecret, Plan plan, Integer likeCount, Integer bookmarkCount, String thumnail, Integer commentCount) {
         this.id = id;
         this.accountId = accountId;
         this.postTitle = postTitle;
@@ -57,5 +58,6 @@ public class ElasticPost {
         this.likeCount = likeCount;
         this.bookmarkCount = bookmarkCount;
         this.thumnail = thumnail;
+        this.commentCount = commentCount;
     }
 }

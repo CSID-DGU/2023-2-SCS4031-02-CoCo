@@ -40,6 +40,7 @@ public class ElasticReview {
     private Integer bookmarkCount;
     @Field(type= FieldType.Text)
     private String location;
+    private Integer commentCount;
 
 
     public void increaseLikes() {   // 좋아요 수 증가
@@ -59,7 +60,8 @@ public class ElasticReview {
 
     public void setData(String id, String accountId, String reviewTitle, LocalDateTime reviewRegistrationDate,
                    LocalDate visitDate, Place place, String reviewContent, String planId, String postId,
-                   String postName, String thumbnail, boolean reviewSecret, Integer likeCount, Integer bookmarkCount, String reviewContentText){
+                   String postName, String thumbnail, boolean reviewSecret, Integer likeCount, Integer bookmarkCount, String reviewContentText,
+                    Integer commentCount){
         this.id = id;
         this.accountId = accountId;
         this.reviewTitle = reviewTitle;
@@ -75,5 +77,6 @@ public class ElasticReview {
         this.likeCount = likeCount;
         this.bookmarkCount = bookmarkCount;
         this.reviewContentText = reviewContentText;
+        this.commentCount = commentCount;
     }
 }

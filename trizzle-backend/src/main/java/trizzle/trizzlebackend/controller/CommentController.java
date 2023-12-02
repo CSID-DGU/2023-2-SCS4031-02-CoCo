@@ -89,7 +89,7 @@ public class CommentController {
         String accountId = JwtUtil.getAccountId(token, secretKey);
 
         Comment comment = commentService.searchComment(commentId);
-        commentService.deleteComment(comment);
+        commentService.deleteComment(comment, accountId);
 
         List<Object> commentLists;
 
