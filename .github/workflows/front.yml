@@ -83,4 +83,4 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_NAME }}
           key: ${{ secrets.SSH_PEM_KEY }}
-          script: "cd ../test; sudo tar -xzvf dist.tar.gz"
+          script: "cd ../BuildFiles/trizzle-front; sudo tar -xzvf dist.tar.gz"
