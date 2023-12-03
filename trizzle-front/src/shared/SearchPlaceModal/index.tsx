@@ -26,7 +26,7 @@ const AddPlaceModal = (props: props) => {
   const handleSearch = async (keyword: string) => {
     const result: any = await searchKeyword(keyword, 1);
     if (props.region) {
-      const updateResult = result.filter((place: any) => { return place.addressName.slice(0, 2) === props.region.name.slice(0, 2) });
+      const updateResult = result.filter((place: any) => { return place.addressName.slice(0, 2) === props.region.id });
 
       setPlaceList(updateResult);
 

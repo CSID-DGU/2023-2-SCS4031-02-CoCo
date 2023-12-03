@@ -122,45 +122,119 @@ const AddPlanPage:React.FC = () => {
     }, [state])
 
   return (
-    <Page headersProps={{isHome:false}}>
+    <Page headersProps={{ isHome: false }}>
       <S.PageTitleContainer>
         <S.PageTitle>나만의 일정 등록</S.PageTitle>
       </S.PageTitleContainer>
       {/* <form> */}
-        <S.ButtonContainer>
-          {/* <S.Button>임시저장</S.Button> */}
-          <S.Button onClick={onSubmitButtonClick}>저장</S.Button>
-        </S.ButtonContainer>
-        <S.FormContainer>
-          <TextInput name="title" title="제목" placeholder="일정 제목을 입력해주세요." styleProps={{width: "100%"}} id="title" onChange={(event) => setTitle(event.target.value)} value={title}/>
-          <S.HorizontalContainer>
-            <S.SelectTitle>지역</S.SelectTitle>
-            <DropdownMenu name={region.name} items={koreaRegions} onClick={(region) => {setRegion(region); setCenter(region.center)}}/>
-            <S.PlanDateContainer>
-            <S.SelectTitle >여행기간</S.SelectTitle>
-            <DatePicker setStartDate={setStartDate} startDate={startDate}/>
-            <div style={{color:"#7e7e7e", margin:"0 0.5rem 0 0.3rem", fontSize:"1.3rem"}}>~</div>
-            <CustomInput value={endDate} onClick={() => {}}/>
-            </S.PlanDateContainer>
-          </S.HorizontalContainer>
-          <S.HorizontalContainer>
-            <S.SelectTitle>여행테마</S.SelectTitle>
-            <DropdownMenu type="badge" name="여행테마를 선택해주세요" items={tripThema} selectedItem={thema} onClick={(thema) => onThemaBadgeClick(thema)} />
-          </S.HorizontalContainer>
-          <S.HorizontalLine/>
-          </S.FormContainer>
-          <PlanMap selectDay={selectDay} setSelectDay={setSelectDay} placeList={placeList} center={center} isSearchModalOpen={isSearchModalOpen} setIsSearchModalOpen={setIsSearchModalOpen} isKeywordModalOpen={isKeywordModalOpen} setIsKeywordModalOpen={setIsKeywordModalOpen} onDayPlusButtonClick={onDayPlusButtonClick} setAddClickDay={setAddClickDay} page="add"/>
-          
-          <DayPlan isPlan={true} onPlaceClick={(day) => {setAddClickDay(day); setIsSearchModalOpen(!isSearchModalOpen)}} onKeywordClick={(day) => {setAddClickDay(day); setIsKeywordModalOpen(!isKeywordModalOpen)}} onDeleteClick={(day, index) => onDeleteButtonClick( day, index)} onDayDeleteClick={(day) => onDeleteDayClick(day)}/>
-      
+      <S.ButtonContainer>
+        {/* <S.Button>임시저장</S.Button> */}
+        <S.Button onClick={onSubmitButtonClick}>저장</S.Button>
+      </S.ButtonContainer>
+      <S.FormContainer>
+        <TextInput
+          name="title"
+          title="제목"
+          placeholder="일정 제목을 입력해주세요."
+          styleProps={{ width: "100%" }}
+          id="title"
+          onChange={(event) => setTitle(event.target.value)}
+          value={title}
+        />
+        <S.HorizontalContainer>
+          <S.SelectTitle>지역</S.SelectTitle>
+          <DropdownMenu
+            name={region.name}
+            items={koreaRegions}
+            onClick={(re) => {
+              if(placeList.filter((item) => item.placeList.length !== 0).length !== 0 && re.name !== region.name) {
+                if(confirm("지역을 변경하면 기존에 입력한 장소들이 모두 삭제됩니다. 변경하시겠습니까?")) {
+                setPlaceList([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]);
+                setRegion(re);
+                setCenter(re.center);
+                }
+              } else {
+                setRegion(re);
+                setCenter(re.center);
+              }
+            }}
+          />
+          <S.PlanDateContainer>
+            <S.SelectTitle>여행기간</S.SelectTitle>
+            <DatePicker setStartDate={setStartDate} startDate={startDate} />
+            <div
+              style={{
+                color: "#7e7e7e",
+                margin: "0 0.5rem 0 0.3rem",
+                fontSize: "1.3rem",
+              }}
+            >
+              ~
+            </div>
+            <CustomInput value={endDate} onClick={() => {}} />
+          </S.PlanDateContainer>
+        </S.HorizontalContainer>
+        <S.HorizontalContainer>
+          <S.SelectTitle>여행테마</S.SelectTitle>
+          <DropdownMenu
+            type="badge"
+            name="여행테마를 선택해주세요"
+            items={tripThema}
+            selectedItem={thema}
+            onClick={(thema) => onThemaBadgeClick(thema)}
+          />
+        </S.HorizontalContainer>
+        <S.HorizontalLine />
+      </S.FormContainer>
+      <PlanMap
+        selectDay={selectDay}
+        setSelectDay={setSelectDay}
+        placeList={placeList}
+        center={center}
+        isSearchModalOpen={isSearchModalOpen}
+        setIsSearchModalOpen={setIsSearchModalOpen}
+        isKeywordModalOpen={isKeywordModalOpen}
+        setIsKeywordModalOpen={setIsKeywordModalOpen}
+        onDayPlusButtonClick={onDayPlusButtonClick}
+        setAddClickDay={setAddClickDay}
+        page="add"
+      />
+
+      <DayPlan
+        isPlan={true}
+        onPlaceClick={(day) => {
+          setAddClickDay(day);
+          setIsSearchModalOpen(!isSearchModalOpen);
+        }}
+        onKeywordClick={(day) => {
+          setAddClickDay(day);
+          setIsKeywordModalOpen(!isKeywordModalOpen);
+        }}
+        onDeleteClick={(day, index) => onDeleteButtonClick(day, index)}
+        onDayDeleteClick={(day) => onDeleteDayClick(day)}
+      />
 
       {/* </form> */}
 
-      <div style={{height:"10rem"}}/>
-      {isSearchModalOpen && <AddPlaceModal onAddButtonClick={(selectedPlace) => onPlaceAddButtonClick(selectedPlace, addClickDay)} center={region.center} onCloseClick={() => setIsSearchModalOpen(!isSearchModalOpen)} region={region}/>
-      }
-      {isKeywordModalOpen && <KeywordModal onAddButtonClick={(seletedKeyword) => onKeywordAddButtonClick(seletedKeyword, addClickDay)} onCloseClick={() => setIsKeywordModalOpen(!isKeywordModalOpen)}/>
-      }
+      <div style={{ height: "10rem" }} />
+      {isSearchModalOpen && (
+        <AddPlaceModal
+          onAddButtonClick={(selectedPlace) =>
+            onPlaceAddButtonClick(selectedPlace, addClickDay)
+          }
+          center={region.center}
+          onCloseClick={() => setIsSearchModalOpen(!isSearchModalOpen)}
+          region={region}
+        />
+      )}
+      {isKeywordModalOpen && (
+        <KeywordModal
+          onAddButtonClick={(seletedKeyword) =>
+            onKeywordAddButtonClick(seletedKeyword, addClickDay)
+          }
+          onCloseClick={() => setIsKeywordModalOpen(!isKeywordModalOpen)}
+        />
+      )}
     </Page>
   );
 };
