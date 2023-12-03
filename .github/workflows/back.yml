@@ -75,10 +75,10 @@ jobs:
       run: |
         cd trizzle-backend
         touch src/main/resources/application-tourapi.properties
-        echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" >> src/main/resources/application-toruapi.properties
-        echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" >> src/main/resources/application-toruapi.properties
-        echo "tourapi.get.detailinfo.url=${{ secrets.TOURAPI_GET_DETAILINFO_URL }}" >> src/main/resources/application-toruapi.properties
-        echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" >> src/main/resources/application-toruapi.properties
+        echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" >> src/main/resources/application-tourapi.properties
+        echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" >> src/main/resources/application-tourapi.properties
+        echo "tourapi.get.detailinfo.url=${{ secrets.TOURAPI_GET_DETAILINFO_URL }}" >> src/main/resources/application-tourapi.properties
+        echo "tourapi.common.query=${{ secrets.TOURAPI_COMMON_QUERY }}" >> src/main/resources/application-tourapi.properties
 
     - name: Grant execute permission for gradlew
       run: |
@@ -99,7 +99,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}  
         username: ${{ secrets.SERVER_NAME }} 
         key: ${{ secrets.SSH_PEM_KEY }}
-        source: "trizzle-backend"
+        source: "trizzle-backend/build/libs/trizzle-backend-0.0.1-SNAPSHOT.jar"
         target: ${{ secrets.SERVER_PATH }}
 
     - name: execute shell script
