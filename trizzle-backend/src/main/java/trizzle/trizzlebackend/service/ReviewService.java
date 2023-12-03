@@ -175,6 +175,11 @@ public class ReviewService {
         return reviewRepository.findByIdAndAccountId(reviewId, accountId);
     }
 
+    public List<Review> findMyReviewsWithPlaceId(String accountId, String placeId) {
+        List<Review> reviews = reviewRepository.findByAccountIdAndPlaceId(accountId, placeId);
+        return reviews;
+    }
+
     public List<Review> findReviewsWithPlaceId(String placeId) {
         Boolean secret = false;
         List<Review> reviews = reviewRepository.findByPlaceIdAndReviewSecret(placeId, false);
