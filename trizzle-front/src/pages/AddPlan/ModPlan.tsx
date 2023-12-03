@@ -159,7 +159,22 @@ const EditPlanPage:React.FC = () => {
           <TextInput name="title" title="제목" placeholder="일정 제목을 입력해주세요." styleProps={{width: "100%"}} id="title" onChange={(event) => setTitle(event.target.value)} value={title}/>
           <S.HorizontalContainer>
             <S.SelectTitle>지역</S.SelectTitle>
-            <DropdownMenu name={region.name} items={koreaRegions} onClick={(region) => {setRegion(region); setCenter(region.center)}}/>
+            <DropdownMenu
+            name={region.name}
+            items={koreaRegions}
+            onClick={(re) => {
+              if(placeList.filter((item) => item.placeList.length !== 0).length !== 0 && re.name !== region.name) {
+                if(confirm("지역을 변경하면 기존에 입력한 장소들이 모두 삭제됩니다. 변경하시겠습니까?")) {
+                setPlaceList([{day:1, placeList:[]}, {day:2, placeList:[]}, {day:3, placeList:[]}]);
+                setRegion(re);
+                setCenter(re.center);
+                }
+              } else {
+                setRegion(re);
+                setCenter(re.center);
+              }
+            }}
+          />
             <S.PlanDateContainer>
             <S.SelectTitle >여행기간</S.SelectTitle>
             <DatePicker setStartDate={setStartDate} startDate={startDate}/>
