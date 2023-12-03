@@ -6,6 +6,7 @@ import DropdownMenu from "../../components/DropdownMenu";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { useAsync } from "../../utils/API/useAsync";
 import NullList from "../../components/NullList";
+import { koreaRegions } from "../../utils/Data/mapData";
 
 
 
@@ -13,12 +14,13 @@ const SearchPlace = () => {
   const {region} = useParams<any>();
   const {search} = useLocation();
   const navigate = useNavigate();
+  const location = koreaRegions.find((item) => item.name === region)?.id;
 
   const [allReview, setAllReview] = useState<any>(null);
   const [review, setReview] = useState<any[]>([]);
   const [sort, setSort] = useState<any>({name:"최신순"});
   const [page, setPage] = useState<number>(0);
-  const [state, fetchData] = useAsync({url:`/api/reviews/search?sort=${sort.id}&keyword=${search}&region=${region?.slice(0,2)}`, method: 'GET'});
+  const [state, fetchData] = useAsync({url:`/api/reviews/search?sort=${sort.id}&keyword=${search}&region=${location}`, method: 'GET'});
 
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;

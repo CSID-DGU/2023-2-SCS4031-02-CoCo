@@ -7,6 +7,7 @@ import PlanCard from "../../components/PlanCard";
 import DropdownMenu from "../../components/DropdownMenu";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import NullList from "../../components/NullList";
+import { koreaRegions } from "../../utils/Data/mapData";
 // import { tripThema } from "../../utils/Data/tripThema";
 // import { IoIosSearch } from "react-icons/io";
 
@@ -16,13 +17,14 @@ const SearchPlan = () => {
   const {region} = useParams<any>();
   const {search} = useLocation();
   const navigate = useNavigate();
+  const location = koreaRegions.find((item) => item.name === region)?.id;
 
   const [allPlanList, setAllPlanList] = useState<any>(null);
   const [planList, setPlanList] = useState<any[]>([]);
   const [sort, setSort] = useState<any>({ name: "최신순", id: "new" });
   // const [thema, setThema] = useState<any[]>([]);
   const [page, setPage] = useState<number>(0);
-  const [state, fetchData] = useAsync({ url: `/api/posts/search?page=${page}&sort=${sort.id}&keyword=${search}&region=${region}`, method: 'GET' });
+  const [state, fetchData] = useAsync({ url: `/api/posts/search?page=${page}&sort=${sort.id}&keyword=${search}&region=${location}`, method: 'GET' });
 
   // const onThemaBadgeClick = (select: any) => {
   //   const itemExists = thema.some((item) => item.id === select.id);
