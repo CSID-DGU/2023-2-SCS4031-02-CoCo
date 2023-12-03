@@ -31,6 +31,7 @@ public class PostService {
     private final LikeRepository likeRepository;
     private final UserService userService;
     private final PlanService planService;
+    private final PlanRepository planRepository;
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
@@ -162,9 +163,15 @@ public class PostService {
         return publicPosts;
     }
 
-    public void deletePost(String postId) {
+    @Transactional
+    public void deletePost(String accountId, String postId) {
         elasticPostRepository.deleteById(postId);
         postRepository.deleteById(postId);
+        Plan plan = planRepository.findByAccountIdAndPostId(accountId, postId);
+        if (plan != null) { // post와 연동된 plan의 postId 삭제( 연동되지 않았음 표시 위해)
+            plan.setPostId(null);
+            planRepository.save(plan);
+        }
     }
 
     public List<Post> findBookmarkPosts(String accountId) {
