@@ -12,6 +12,8 @@ on:
       - develop
     paths:
       - trizzle-front/**
+      
+  workflow_dispatch:
 
 jobs:
   deploy:
