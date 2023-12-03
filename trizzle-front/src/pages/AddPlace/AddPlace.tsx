@@ -125,7 +125,7 @@ export default function AddPlacePage() {
         </S.FormContainer>
       </form>
       {
-        isPlusPlaceModal && <AddPlaceModal type="place" onAddPlaceClick={(selectedPlace) => { setPlace(selectedPlace); (selectedPlace); setIsPlusPlaceModal(!isPlusPlaceModal) }} center={region.center} onCloseClick={() => setIsPlusPlaceModal(!isPlusPlaceModal)} />
+        isPlusPlaceModal && <AddPlaceModal type="place" onAddPlaceClick={(selectedPlace) => { setPlace(selectedPlace); setIsPlusPlaceModal(!isPlusPlaceModal) }} center={region.center} onCloseClick={() => setIsPlusPlaceModal(!isPlusPlaceModal)} />
       }
     </Page>
   );

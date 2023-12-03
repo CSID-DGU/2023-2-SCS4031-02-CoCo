@@ -101,8 +101,12 @@ export const RegionPlaceText = styled.button`
 
 export const TitleText = styled.button`
   margin: 0 0 0 0.5rem;
+  width: 90%; 
   font-size: 1rem;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `
 
 export const DateText = styled.button`

@@ -31,7 +31,7 @@ const ConnectPlaceModal: React.FC<ConnectPlaceModalPorps> = (props: ConnectPlace
   }
 
   return (
-    <Modal title="일정 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
+    <Modal title="리뷰 불러오기" styleProps={{ width: "45rem", height: "28rem" }} onCloseClick={props.onclose}>
       <S.UploadModalContainer>
         {placeData.length === 0 ? (
           <NullList content="불러올 리뷰가 없습니다" />

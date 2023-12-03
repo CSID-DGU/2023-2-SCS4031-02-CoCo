@@ -86,21 +86,20 @@ export const LikeCount = styled.div`
   margin-left: 0.2rem;
 `
 export const Title = styled.div<{secret?:boolean}>`
-  width: ${props => props.secret ? '70%' : '100%'};
+  width: ${props => props.secret ? '60%' : '90%'};
   height: auto;
   font-size: 1.5rem;
   font-weight: 400;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
 `
 
 export const TitleContainer = styled.div`
   width: 100%;
   height: auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: flex-start;
   margin: 1rem 0 0.5rem 1rem;
   gap: 0.5rem;
