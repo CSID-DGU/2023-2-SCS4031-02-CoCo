@@ -8,7 +8,7 @@ export const Wrapper = styled.div<{type: any}>`
 `
 
 export const HorizontalScrollContainer = styled.div<{type:string}>`
-  width: 100%;
+  width:  ${props => props.type !== "normal" ? "auto" : "100%"};
   max-width: 100%;
   height: auto;
   overflow-x: hidden;
@@ -16,7 +16,6 @@ export const HorizontalScrollContainer = styled.div<{type:string}>`
   overflow-y: hidden;
   display: flex;
   gap: 1.25rem;
-  justify-content: ${props => props.type !== "normal" ? "center" : "flex-start"};
   ::-webkit-scrollbar-thumb {
     width: 0;
   }
