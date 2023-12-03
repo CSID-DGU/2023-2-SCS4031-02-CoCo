@@ -216,7 +216,7 @@ const PostPlan: React.FC = () => {
               setSelectDay={(day: number) => setSelectDay(day)}
               placeList={dayPlan}
               center={placeCenter.center}
-              page="detail"
+              page="post"
               width="50%"
             />
           )}
