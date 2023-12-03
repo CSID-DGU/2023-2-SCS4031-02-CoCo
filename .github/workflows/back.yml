@@ -100,7 +100,7 @@ jobs:
         username: ${{ secrets.SERVER_NAME }} 
         key: ${{ secrets.SSH_PEM_KEY }}
         source: "trizzle-backend/build/libs/trizzle-backend-0.0.1-SNAPSHOT.jar"
-        target: ${{ secrets.SERVER_PATH }}/trizzle-backend/trizzle-backend-0.0.1-SNAPSHOT.jar
+        target: ${{ secrets.SERVER_PATH }}
 
     - name: execute shell script
       uses: appleboy/ssh-action@master
