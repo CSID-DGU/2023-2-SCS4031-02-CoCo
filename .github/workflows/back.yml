@@ -74,7 +74,6 @@ jobs:
     - name: Create application-tourapi.properties
       run: |
         cd trizzle-backend
-        ls
         touch src/main/resources/application-toruapi.properties
         echo "tourapi.secret.key=${{ secrets.TOURAPI_SECRET_KEY }}" >> src/main/resources/application-toruapi.properties
         echo "tourapi.get.festival.url=${{ secrets.TOURAPI_GET_FESTIVAL_URL }}" >> src/main/resources/application-toruapi.properties
@@ -100,7 +99,7 @@ jobs:
         host: ${{ secrets.SERVER_HOST }}  
         username: ${{ secrets.SERVER_NAME }} 
         key: ${{ secrets.SSH_PEM_KEY }}
-        source: "trizzle-backend/build/libs/trizzle-backend-0.0.1-SNAPSHOT.jar"
+        source: "trizzle-backend"
         target: ${{ secrets.SERVER_PATH }}
 
     - name: execute shell script
