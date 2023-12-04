@@ -142,7 +142,7 @@ public class PostController {
     @GetMapping("/home")
     public ResponseEntity getTop4Posts() {
         List<Post> posts = postService.findTop4Posts();
-        Page<ElasticPost> leasts = postService.findRandomPosts();
+        List<Post> leasts = postService.findRandomPosts();
         List<Festival> festivals = festivalService.findFestival();
         Map<String, Object> response = new HashMap<>();
         response.put("top4", posts);

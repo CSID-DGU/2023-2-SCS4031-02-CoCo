@@ -21,7 +21,7 @@ const Home = () => {
     if(state.error) navigate("/404");
     else if(state.data) {
       setTopPlanLists(state.data.top4);
-      setLeastPlanLists(state.data.least.content);
+      setLeastPlanLists(state.data.least);
       setFestivalLists(state.data.festival);
     }
   }, [state]);
