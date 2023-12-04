@@ -54,8 +54,8 @@ const Router = () => {
           <Route path="/myfeed/plans/:id" element={<PlanDetail />} />
           <Route path="/myfeed/info" element={<UserInfoEdit />} />
           <Route path="/feed/:id" element={<Myfeed />} />
-          <Route path="/feed/posts/:id" element={<MorePosts />} />
-          <Route path="/feed/reviews/:id" element={<MoreReviews />} />
+          <Route path="/feed/:id/posts" element={<MorePosts />} />
+          <Route path="/feed/:id/reviews" element={<MoreReviews />} />
           <Route path="/myfeed/bookmarks" element={<Bookmark />} />
 
           <Route path="/login/oauth2/code/kakao" element={<KakaoRedirectPage />} />
