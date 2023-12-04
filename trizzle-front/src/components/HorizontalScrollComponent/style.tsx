@@ -7,8 +7,8 @@ export const Wrapper = styled.div<{type: any}>`
   justify-content: ${props => props.type !== "normal" ? "center" : "flex-start"};
 `
 
-export const HorizontalScrollContainer = styled.div`
-  width: auto;
+export const HorizontalScrollContainer = styled.div<{type:string}>`
+  width:  ${props => props.type !== "normal" ? "auto" : "100%"};
   max-width: 100%;
   height: auto;
   overflow-x: hidden;

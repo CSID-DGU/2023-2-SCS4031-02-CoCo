@@ -43,6 +43,9 @@ const NotificationItem: React.FC<Notification> = (props: Notification) => {
           setContent("당신의 댓글에 답글을 남겼습니다.");
         }
       } 
+    } else if(type[0] === "follow") {
+      setUrl(`/feed/${props.user.accountId}`);
+      setContent("당신을 팔로우하기 시작했습니다.");
     }
   }, []);
 

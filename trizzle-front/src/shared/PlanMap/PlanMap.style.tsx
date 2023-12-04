@@ -30,7 +30,7 @@ export const DaysContainer = styled.div`
 `
 
 export const Day = styled.div<{ isClicked: boolean }>`
-  width: 5.5rem;
+  width: 5.8rem;
   height: 100%;
   border-top-right-radius: 0.5rem;
   border-top-left-radius: 0.5rem;
@@ -43,6 +43,7 @@ export const Day = styled.div<{ isClicked: boolean }>`
   justify-content: center;
   align-items: center;
   border-bottom: none;
+  position: relative;
   cursor: pointer;
 `
 

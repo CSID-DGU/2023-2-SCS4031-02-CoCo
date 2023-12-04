@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.Follow;
+import trizzle.trizzlebackend.domain.Notification;
 import trizzle.trizzlebackend.domain.User;
 import trizzle.trizzlebackend.dto.follow.FollowUserDto;
 import trizzle.trizzlebackend.repository.FollowRepository;
@@ -22,6 +23,7 @@ public class FollowService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -42,13 +44,20 @@ public class FollowService {
                     .followerId(followerId)
                     .followeeId(followeeId)
                     .build();
-            followRepository.save(follow);
+            Follow follow1 = followRepository.save(follow);
             /*나의 팔로잉 수 증가 */
             follower.increaseFollowingCount();
             userRepository.save(follower);
             /*내가 팔로우한 사람의 팔로워 수 증가 */
             followee.increaseFollowerCount();
             userRepository.save(followee);
+            
+            Notification notification = new Notification();
+            notification.setNotificationType("follow");
+            notification.setReceiveAccountId(followeeId);
+            notification.setSendAccountId(followerId);
+            notification.setForeignId(follow1.getId());
+            notificationService.insertNotification(notification);
             return true;
         } else { // 팔로우 취소
             followRepository.delete(existingFollow);
