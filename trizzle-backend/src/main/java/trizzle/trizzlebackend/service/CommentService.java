@@ -108,7 +108,11 @@ public class CommentService {
             }
         }
         notificationService.deleteNotification(comment.getId());
-        //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직 추가
+        //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직
+        List<Like> likes = likeRepository.findByTypeAndCommentId("comment", comment.getId());
+        for (Like like : likes) {
+            likeRepository.delete(like);
+        }
         return commentRepository.save(comment);
     };
 
@@ -149,7 +153,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.isDeleted()) {
+            if(parentId == null) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -179,7 +183,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.isDeleted()) {
+            if(parentId == null) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);

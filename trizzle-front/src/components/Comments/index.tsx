@@ -67,8 +67,7 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
       return;
     }
   }
-    
-    if(props.commentData.commentData && props.commentData.commentData.deleted){
+    if(props.commentData.commentData && props.commentData.commentData.deleted && props.commentData.commentData.parentId === null){
       return (
         <S.PostCommentContainer>
           <S.PostCommentContentBody>
@@ -133,11 +132,14 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
   };
 
   useEffect(() => {
-    setChildComments(props.commentData.childComment);
+    const updateLists = props.commentData.childComment?.filter((childComment:any) => {
+      return !childComment.commentData.deleted
+    });
+    setChildComments(updateLists);
   }, [props])
   return (
     <>
-    {props.commentData.childComment && props.commentData.childComment.length > 0 ? (
+    {childComments > 0 ? (
       <S.ParentCommentContainer>
         <Comment {...props} />
 

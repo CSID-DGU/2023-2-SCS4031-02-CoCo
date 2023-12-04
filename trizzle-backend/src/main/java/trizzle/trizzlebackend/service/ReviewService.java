@@ -65,14 +65,13 @@ public class ReviewService {
         Optional<Review> reviewOptional = reviewRepository.findById((reviewId));
         if (reviewOptional.isPresent()) {   // reviewId에 해당하는 review가 있을 경우
             Review review = reviewOptional.get();
-            review.increaseViewCounts();    //조회수 증가
-            reviewRepository.save(review);
-            User reviewUser = userService.searchUser(review.getAccountId());
-            ReviewDto reviewDto = new ReviewDto();
-            reviewDto.setReview(review);
-            reviewDto.setReviewUser(reviewUser);
 
             if (review.isReviewSecret()) {  // 비공개일 경우 cookie의 accountId와 review의 accountId 비교
+                User reviewUser = userService.searchUser(review.getAccountId());
+                ReviewDto reviewDto = new ReviewDto();
+                reviewDto.setReview(review);
+                reviewDto.setReviewUser(reviewUser);
+
                 String token = JwtUtil.getAccessTokenFromCookie(request);
                 String accountId;
                 if (token == null) {    // token없는 경우 null반환
@@ -86,6 +85,13 @@ public class ReviewService {
                 } else return null;
                 
             } else { // 공개 review일 경우 review 반환
+                review.increaseViewCounts();    //조회수 증가
+                reviewRepository.save(review);
+                User reviewUser = userService.searchUser(review.getAccountId());
+                ReviewDto reviewDto = new ReviewDto();
+                reviewDto.setReview(review);
+                reviewDto.setReviewUser(reviewUser);
+
                 String token = JwtUtil.getAccessTokenFromCookie(request);
                 String accountId;
                 if (token == null) {
@@ -173,6 +179,11 @@ public class ReviewService {
 
     public Review checkMyReview(String reviewId, String accountId) {
         return reviewRepository.findByIdAndAccountId(reviewId, accountId);
+    }
+
+    public List<Review> findMyReviewsWithPlaceId(String accountId, String placeId) {
+        List<Review> reviews = reviewRepository.findByAccountIdAndPlaceId(accountId, placeId);
+        return reviews;
     }
 
     public List<Review> findReviewsWithPlaceId(String placeId) {

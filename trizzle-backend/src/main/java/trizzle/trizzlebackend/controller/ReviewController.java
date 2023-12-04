@@ -136,6 +136,15 @@ public class ReviewController {
     }
 
     @GetMapping("/place/{placeId}")
+    public ResponseEntity myReviewWithPlaceId(@PathVariable("placeId") String placeId, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+        List<Review> reviews = reviewService.findMyReviewsWithPlaceId(accountId, placeId);
+
+        return ResponseEntity.ok(reviews);
+    }
+
+    @GetMapping("/placeReviews/{placeId}")
     public ResponseEntity reviewWithPlaceId(@PathVariable("placeId") String placeId) {
         List<Review> reviews = reviewService.findReviewsWithPlaceId(placeId);
 

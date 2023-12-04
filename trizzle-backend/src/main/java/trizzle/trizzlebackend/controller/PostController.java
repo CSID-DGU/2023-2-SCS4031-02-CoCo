@@ -113,7 +113,7 @@ public class PostController {
         Post post = postService.checkMyPost(postId, accountId);
 
         if (post != null) {
-            postService.deletePost(postId);
+            postService.deletePost(accountId, postId);
             String message = "delete success";
             List<Post> myPosts = postService.findMyPosts(accountId);
 
