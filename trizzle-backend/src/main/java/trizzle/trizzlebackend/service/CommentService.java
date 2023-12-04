@@ -108,7 +108,11 @@ public class CommentService {
             }
         }
         notificationService.deleteNotification(comment.getId());
-        //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직 추가
+        //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직
+        List<Like> likes = likeRepository.findByTypeAndCommentId("comment", comment.getId());
+        for (Like like : likes) {
+            likeRepository.delete(like);
+        }
         return commentRepository.save(comment);
     };
 
