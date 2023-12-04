@@ -100,7 +100,7 @@ const SearchPlan = () => {
               thumbnail={plan.thumnail ? plan.thumnail : ""}
               title={plan.postTitle}
               region={plan.plan.planLocation}
-              placeCenter={plan.plan.content[0].placeList && plan.plan.content[0].placeList[0].keyword === null ? [plan.plan.content[0].placeList[0].x, plan.plan.content[0].placeList[0].y] : plan.plan.planLocation}
+              placeCenter={plan.plan.content[0].placeList[0].keyword === null ? [plan.plan.content[0].placeList[0].x, plan.plan.content[0].placeList[0].y] : plan.plan.planLocation}
               startDate={plan.plan.planStartDate}
               endDate={plan.plan.planEndDate}
               likeCount={plan.likeCount === null ? 0 : plan.likeCount}
