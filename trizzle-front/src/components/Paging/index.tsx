@@ -76,7 +76,7 @@ const Paging: React.FC<PagingProps> = (props: PagingProps) => {
               startDate={item.plan.planStartDate}
               endDate={item.plan.planEndDate}
               region={item.plan.planLocation}
-              placeCenter={item.plan.planLocation}
+              placeCenter={item.plan.content[0].placeList.length !== 0 && item.plan.content[0].placeList[0].keyword === null ? [item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y] : item.plan.planLocation}
               thema={item.plan.planThema}
               thumbnail={item.thumnail?item.thumnail:""}
               postSecret={item.postSecret}
