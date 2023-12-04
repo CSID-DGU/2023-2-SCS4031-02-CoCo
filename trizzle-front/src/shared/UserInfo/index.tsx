@@ -26,6 +26,12 @@ const UserInfo = () => {
   const [ableSubmit, setAbleSubmit] = useState<boolean>(false);
   const [previewURL, setPreviewURL] = useState<string>("");
 
+  const isValidNickname = (nickname: string) => {
+    const nicknameReg = /^[가-힣|a-z|A-Z|0-9|\*]{2,10}$/;
+    return nicknameReg.test(nickname);
+  }
+
+
   useEffect(() => {
     if(state.error) console.error(state.error);
     else {
@@ -91,6 +97,10 @@ const UserInfo = () => {
       themaNames.push(thema.name);
     });
     if(userData !== undefined) {
+      if(!isValidNickname(nickname)) {
+        alert("별명은 2~10자의 한글, 영문, 숫자, *만 사용 가능합니다");
+        return;
+      }
       if(confirm("수정사항을 저장하시겠습니까?")) {
       const submitData = {
         accountId : userData.accountId,
