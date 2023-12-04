@@ -62,7 +62,7 @@ export default function ConnectPlace() {
         fetchData(`/api/plans/${planInfor.planId}`, "PUT", JSON.stringify(newArray2));
 
         opener.location.reload();
-        // window.close();
+        window.close();
       }
       else if (planInfor) {
         setPlanData(state.data);
@@ -109,7 +109,7 @@ export default function ConnectPlace() {
     }
     setResultData(result)
 
-    const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
+    const response = window.confirm('이 리뷰는 일정 게시글 등록과 관계 없이 게시됩니다. 연동하시겠습니까?');
     if (response) {
       const json = JSON.stringify(result);
       fetchData('/api/reviews', "POST", json);
