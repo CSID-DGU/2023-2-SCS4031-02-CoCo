@@ -129,6 +129,7 @@ const PostPlan: React.FC = () => {
     delete newData.accountId;
     delete newData.planRegistrationDate;
     delete newData.thumnail;
+    newData.content = [{day: 1, placeList: selectedDayPlan[0].placeList}];
     newData.planName = data.post.postTitle + "_복사본";
     const json = JSON.stringify(newData);
     fetchData(`/api/plans`, "POST", json);
