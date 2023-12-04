@@ -205,9 +205,8 @@ public class PostService {
         return posts;
     }
 
-    public Page<ElasticPost> findRandomPosts(){
-        Pageable pageable = PageRequest.of(0, 6, Sort.by("postRegistrationDate").descending());
-        Page<ElasticPost> posts = elasticPostRepository.findAll(pageable);
+    public List<Post> findRandomPosts(){
+       List<Post> posts = postRepository.findTop6ByPostSecretOrderByPostRegistrationDateDesc(false);
         return posts;
     }
 }
