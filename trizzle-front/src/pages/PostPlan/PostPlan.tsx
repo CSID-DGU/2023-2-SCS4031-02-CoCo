@@ -76,7 +76,6 @@ const PostPlan: React.FC = () => {
       setBookmarkCount(data.post.bookmarkCount);
       setLikeCount(data.post.likeCount);
       setCommentCount(data.post.commentCount);
-      console.log(data.post);
       if (data.postUser.accountId === sessionStorage.getItem('accountId')) {
         setIsMe(true);
       }
@@ -95,7 +94,6 @@ const PostPlan: React.FC = () => {
     } else if (selectDay <= dayPlan.length) {
       const newArray = [dayPlan[selectDay - 1]];
       setSelectedDayPlan(newArray);
-      console.log(newArray);
     }
   }, [selectDay]);
 
