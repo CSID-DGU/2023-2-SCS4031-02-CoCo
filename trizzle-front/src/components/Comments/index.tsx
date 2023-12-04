@@ -137,12 +137,12 @@ const Comments:React.FC<CommentsProps> = (props: CommentsProps) => {
     });
     setChildComments(updateLists);
   }, [props])
+
   return (
     <>
-    {childComments > 0 ? (
+    {props.commentData.childComment && props.commentData.childComment.length > 0 && childComments.length > 0 ? (
       <S.ParentCommentContainer>
         <Comment {...props} />
-
         {childOpen ? (
           <S.ChildMoreButton onClick={onMoreButtonClick}>
             <AiFillCaretUp size="0.9rem" className="icon"/>
