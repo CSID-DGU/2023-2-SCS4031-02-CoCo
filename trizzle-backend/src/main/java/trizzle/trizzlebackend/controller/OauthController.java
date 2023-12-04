@@ -78,15 +78,9 @@ public class OauthController {
                     .sameSite("None")
                     .httpOnly(true)
                     .secure(true)
-                    .maxAge(3600)
+                    .maxAge(21600)
                     .build();
             response.addHeader("Set-Cookie", cookie.toString());
-
-//            Cookie cookie = new Cookie("accessToken", accessToken);
-//            cookie.setPath("/");
-//            cookie.setMaxAge(3600);
-//            cookie.setSecure(true);
-//            cookie.setHttpOnly(true);
 
             return ResponseEntity.ok()
                     .body("{\"message\": \"" + responseMessage + "\"}");    // {"message":"login access"}
