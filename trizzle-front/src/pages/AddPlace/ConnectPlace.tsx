@@ -59,11 +59,10 @@ export default function ConnectPlace() {
           return place;
         });
         const newArray2 = { ...planData, content: newArray };
-        delete newArray2.id;
         fetchData(`/api/plans/${planInfor.planId}`, "PUT", JSON.stringify(newArray2));
 
         opener.location.reload();
-        window.close();
+        // window.close();
       }
       else if (planInfor) {
         setPlanData(state.data);
