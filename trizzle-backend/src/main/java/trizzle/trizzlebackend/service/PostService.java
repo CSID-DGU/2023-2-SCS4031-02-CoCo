@@ -65,14 +65,13 @@ public class PostService {
         Optional<Post> postOptional = postRepository.findById((postId));
         if (postOptional.isPresent()) {   // postId에 해당하는 post가 있을 경우
             Post post = postOptional.get();
-            post.increaseViewCounts();  // 조회수 증가
-            postRepository.save(post);
-            User postUser = userService.searchUser(post.getAccountId());
-            PostDto postDto = new PostDto();
-            postDto.setPost(post);
-            postDto.setPostUser(postUser);
 
             if (post.isPostSecret()) {  // 비공개일 경우 cookie의 accountId와 post의 accountId 비교
+                User postUser = userService.searchUser(post.getAccountId());
+                PostDto postDto = new PostDto();
+                postDto.setPost(post);
+                postDto.setPostUser(postUser);
+
                 String token = JwtUtil.getAccessTokenFromCookie(request);
                 String accountId;
                 if (token == null) {    // token없는 경우 null반환
@@ -86,6 +85,13 @@ public class PostService {
                 } else return null;
 
             } else { // 공개 post일 경우 post 반환
+                post.increaseViewCounts();  // 조회수 증가
+                postRepository.save(post);
+                User postUser = userService.searchUser(post.getAccountId());
+                PostDto postDto = new PostDto();
+                postDto.setPost(post);
+                postDto.setPostUser(postUser);
+
                 String token = JwtUtil.getAccessTokenFromCookie(request);
                 String accountId;
                 if (token == null) { // token 없다면(로그인 안했다면 post정보만)
