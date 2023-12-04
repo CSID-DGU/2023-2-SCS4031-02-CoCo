@@ -135,7 +135,7 @@ const ModPostPlan: React.FC = () => {
 
       const shouldProceed = window.confirm('게시하시면 다시 수정할 수 없습니다! 정말로 저장하시겠습니까?');
       if (shouldProceed) {
-        const json = JSON.stringify(ResultData);
+        const json = JSON.stringify(ResultData.post);
         fetchData(`/api/posts/${ResultData.id}`, 'PUT', json);
       }
     } else if (type === "secret") {
