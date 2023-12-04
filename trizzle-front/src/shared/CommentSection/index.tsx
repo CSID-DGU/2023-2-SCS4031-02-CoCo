@@ -53,11 +53,9 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
 
   useEffect(() => {
     if(state.error) {
-      console.log(state.error);
+      alert("로그인이 필요합니다")
     }
     else {
-
-      if(state.error) console.log(state.error);
       if(state.data) {
         let data;
         if(state.data.message === "success") {
@@ -68,6 +66,7 @@ const CommentSection: React.FC<CommentSectionProps> = (props: CommentSectionProp
       }
     }
   }, [state]);
+
 
   useEffect(() => {
     const updateLists = commentList.map((comment:any) => {

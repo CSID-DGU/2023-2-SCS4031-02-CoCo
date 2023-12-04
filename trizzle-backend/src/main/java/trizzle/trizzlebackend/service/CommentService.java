@@ -153,7 +153,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.isDeleted()) {
+            if(parentId == null) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
@@ -183,7 +183,7 @@ public class CommentService {
 
         for(Comment comment: comments) { //각 댓글에 profileImg 추가
             String parentId = comment.getParentId();
-            if(parentId == null && !comment.isDeleted()) {
+            if(parentId == null) {
                 Map<String, Object> newComment = commentMap(comment, myAccount, postAccountId);
                 List<Object> child = findByParent(comment.getId(), myAccount, postAccountId);
                 newComment.put("childComment", child);
