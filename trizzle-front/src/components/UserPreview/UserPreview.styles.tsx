@@ -18,6 +18,7 @@ export const HorizontalFirstStartContainer = styled.div`
   justify-content: first-start;
   align-items: center;
   gap: 1rem;
+  padding-left: 1rem;
 `
 export const VerticalFirstStartContainer = styled.div`
   display: flex;

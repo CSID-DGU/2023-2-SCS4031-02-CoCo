@@ -182,7 +182,7 @@ public class ReviewService {
     }
 
     public List<Review> findMyReviewsWithPlaceId(String accountId, String placeId) {
-        List<Review> reviews = reviewRepository.findByAccountIdAndPlaceId(accountId, placeId);
+        List<Review> reviews = reviewRepository.findByAccountIdAndPlaceIdAndPlanIdIsNull(accountId, placeId);
         return reviews;
     }
 

@@ -1,13 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import * as S from './UserPreview.styles';
+import ProfileImage from '../ProfileImage';
 
 interface UserPreviewProps {
+  profileImg: string;
   accountId: string;
   nickName: string;
   keyword: string[];
 }
 
-export default function UserPreview({ accountId, nickName, keyword }: UserPreviewProps) {
+export default function UserPreview({ profileImg, accountId, nickName, keyword }: UserPreviewProps) {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +19,7 @@ export default function UserPreview({ accountId, nickName, keyword }: UserPrevie
       }}
       >
       <S.HorizontalFirstStartContainer>
-        <S.UserImage />
+        <ProfileImage type="small" src={profileImg} />
         <S.VerticalFirstStartContainer>
           <S.UserIdText>
             {nickName}

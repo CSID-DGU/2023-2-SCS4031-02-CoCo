@@ -266,6 +266,7 @@ const PostPlan: React.FC = () => {
         </S.MapAndDayPlanContainer >
 
         <UserPreview
+          profileImg={planUser.profileImage}
           accountId={planUser.accountId}
           nickName={planUser.nickname}
           keyword={planUser.thema}
