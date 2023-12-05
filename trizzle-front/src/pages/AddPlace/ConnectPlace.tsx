@@ -39,7 +39,6 @@ export default function ConnectPlace() {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      console.log(state.data);
       if (state.data.reviewId && state.data.message === "save success") {
         setResultData({ ...resultData, id: state.data.reviewId })
         const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
