@@ -106,16 +106,26 @@ const ModPostPlan: React.FC = () => {
     setConnectPlaceModalData(data);
   }
 
+  const delectConnectPlace = (day: number, data: any) => {
+    const newArray = [...dayPlan];
+    newArray[day - 1].placeList = dayPlan[day - 1].placeList.map((place: any) => {
+      if (place.id === data.id) { return { ...place, review: null }; }
+      return place;
+    });
+    console.log(newArray);
+    setDayPlan(newArray);
+    const reviewData = data.review;
+    reviewData.planId = null;
+    reviewData.postId = null;
+    const json = JSON.stringify(reviewData);
+    fetchData(`/api/reviews/${reviewData.id}`, 'PUT', json);
+  }
+
   //review에 planId 추가해서 디비로 put 보내기
   const connectReview = (review: any) => {
     const newArray = [...dayPlan];
     newArray[ConnectPlaceModalDay - 1].placeList = dayPlan[ConnectPlaceModalDay - 1].placeList.map((place: any) => {
-      // _id와 ConnectPlaceModalData.placeId를 비교하여 객체를 찾습니다.
-      if (place.id === ConnectPlaceModalData.id) {
-        // 객체를 복사하여 reviewId를 추가한 후 반환합니다.
-        return { ...place, review: review };
-      }
-      // 찾지 못한 경우 해당 객체를 그대로 반환합니다.
+      if (place.id === ConnectPlaceModalData.id) { return { ...place, review: review }; }
       return place;
     });
     setDayPlan(newArray);
@@ -283,7 +293,7 @@ const ModPostPlan: React.FC = () => {
         {dayPlan !== null && <PlanMap selectDay={selectDay} setSelectDay={(day: number) => setSelectDay(day)} placeList={dayPlan} center={placeCenter.center} page="detail" width="50%" />}
         <S.DayPlanPostContainer>
           <S.DayPlanPostInnerContainer>
-            <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnetPostPlace={(day: number, data: any) => connectPlace(day, data)} />
+            <DayPlanPost planId={data.id} dayList={selectedDayPlan} selectDay={selectDay} onNewPostPlace={(day: number, data: any) => onPostPlace(day, data)} onConnectPostPlace={(day: number, data: any) => connectPlace(day, data)} onDeleteConnect={(day: number, data: any) => delectConnectPlace(day, data)} />
           </S.DayPlanPostInnerContainer>
         </S.DayPlanPostContainer>
       </S.MapAndDayPlanContainer>
