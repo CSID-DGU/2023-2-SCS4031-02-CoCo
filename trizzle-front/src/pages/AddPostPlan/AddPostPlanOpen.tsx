@@ -168,7 +168,7 @@ const AddPostPlanOpen: React.FC = () => {
       </S.FormContainer>
 
       <S.UploadContainer onClick={() => setIsUploadPlanModal(!isUploadPlanModal)} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-        <S.UploadPlanButton onClick={() => setIsUploadPlanModal(!isUploadPlanModal)} isHovered={isHovered} >일정 불러오기</S.UploadPlanButton>
+        <S.UploadPlanButton onClick={() => setIsUploadPlanModal(!isUploadPlanModal)} isHovered={isHovered}>{region.name} 일정 불러오기</S.UploadPlanButton>
       </S.UploadContainer>
 
       <div style={{ height: "10rem" }} />
