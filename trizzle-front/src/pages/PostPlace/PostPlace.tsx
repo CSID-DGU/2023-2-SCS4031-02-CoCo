@@ -129,6 +129,7 @@ export default function PostPlace() {
         />
 
         <UserPreview
+          profileImg={reviewUser.profileImage}
           accountId={reviewUser.accountId}
           nickName={reviewUser.nickname}
           keyword={reviewUser.thema}
