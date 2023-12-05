@@ -42,7 +42,7 @@ const Headers: React.FC<HeadersProps> = (props: HeadersProps) => {
         setUserData(state.data);
         setNotiCount(state.data.noti?.length || 0);
         sessionStorage.setItem("accountId", state.data.id);
-        sessionStorage.setItem("profileImg", state.data.profileImg);
+        sessionStorage.setItem("profileImg", state.data.profileImg?state.data.profileImg:"");
       }
     }
   }
