@@ -16,7 +16,9 @@ type DayPlanPostProps = {
   dayList: any;
   selectDay: number;
   onNewPostPlace?: (day: number, value: any) => void;
-  onConnetPostPlace?: (day: number, value: any) => void;
+  onConnectPostPlace?: (day: number, value: any) => void;
+  onDeleteConnect?: (day: number, value: any) => void;
+  
 }
 
 const KeywordList: { keyword: string; src: string; }[] = [
@@ -153,12 +155,20 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                                 새 리뷰 작성
                               </S.ToggleButtonOption>
                               <S.ToggleButtonOption onClick={() => {
-                                if (props.onConnetPostPlace) {
-                                  props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                if (props.onConnectPostPlace) {
+                                  props.onConnectPostPlace(plans.day, data[index].placeList[innerIndex]);
                                   openAndCloseDetail(index, innerIndex);
                                 }
                               }}>
                                 리뷰 불러오기
+                              </S.ToggleButtonOption>
+                              <S.ToggleButtonOption onClick={() => {
+                                if (props.onDeleteConnect) {
+                                  props.onDeleteConnect(plans.day, data[index].placeList[innerIndex]);
+                                  openAndCloseDetail(index, innerIndex);
+                                }
+                              }}>
+                                연동 해제
                               </S.ToggleButtonOption>
                             </S.ToggleButtonContainer>
                           }
@@ -187,8 +197,8 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                                   새 리뷰 작성
                                 </S.ToggleButtonOption>
                                 <S.ToggleButtonOption onClick={() => {
-                                  if (props.onConnetPostPlace) {
-                                    props.onConnetPostPlace(plans.day, data[index].placeList[innerIndex]);
+                                  if (props.onConnectPostPlace) {
+                                    props.onConnectPostPlace(plans.day, data[index].placeList[innerIndex]);
                                     openAndCloseDetail(index, innerIndex);
                                   }
                                 }}>
