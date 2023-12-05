@@ -3,7 +3,6 @@ import * as S from "./DayPlan.style";
 import logo from "../../assets/logo/nonTextLogo.svg"
 // import { AiOutlineEllipsis } from "react-icons/ai";
 import Menu from "../../components/Menu";
-import { useNavigate } from "react-router-dom";
 import res from "src/assets/keywords/trans.svg"
 import trans from "../../assets/keywords/trans.svg"
 import rest from "../../assets/keywords/rest.svg"
@@ -29,19 +28,9 @@ const KeywordList: { keyword: string; src: string; }[] = [
 ];
 
 const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
-  const navigate = useNavigate();
   // const [open, setOpen] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<any>(null);
   const [menuItem, setMenuItem] = useState<any[]>([]);
-
-  const handleNavigation = () => {
-    navigate(`/post/places/add/${props.day}/${props.id ? props.id : '' }/${props.place.id}`);
-  };
-
-  const onPostClick = () => {
-    if (props.secret && props.secret === true) navigate(`/post/places/secret/${props.id}`)
-    navigate(`/post/places/secret/${props.id}`)
-  }
 
   useEffect(() => {
     if (props.place.hasOwnProperty('keyword') && props.place.keyword !== null) {
@@ -53,10 +42,6 @@ const DayPlace: React.FC<DayPlaceProps> = (props: DayPlaceProps) => {
     } else {
       if (props.isPlan && props.onDeleteClick) {
         setMenuItem([{ content: "삭제", onClick: () => props.onDeleteClick && props.onDeleteClick(props.day, props.index), isDelete: true }]);
-      } else if (props.isPost && props.isPost === true) {
-        setMenuItem([{ content: "게시글로 이동", onClick: onPostClick, isDelete: false }]);
-      } else {
-        setMenuItem([{ content: "게시글 작성", onClick: handleNavigation, isDelete: false }]);
       }
     }
   }, [props.place, props.day, props.index, props.onDeleteClick, props.isPlan, props.isPost, props.id]);
