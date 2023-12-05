@@ -6,7 +6,7 @@ import TextInput from "../../components/TextInput";
 import AddPlaceModal from "../../shared/SearchPlaceModal";
 import PostInput from "../../shared/PostEditor";
 import ScretDropdown from "../../shared/ScretDropdown";
-import {CustomInput} from "../../components/DatePicker";
+import { CustomInput } from "../../components/DatePicker";
 import { useAsync } from "../../utils/API/useAsync";
 import { koreaRegions } from "../../utils/Data/mapData";
 
@@ -27,19 +27,19 @@ export default function ConnectPlace() {
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
   const [resultData, setResultData] = useState<any>({});
 
-  useEffect(()=>{
+  useEffect(() => {
     if (path.includes('places')) {
       // 
     } else if (path.includes('plans')) {
       // 사용자 선택할 수 있게
     }
-  },[path])
+  }, [path])
 
   useEffect(() => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
-      if (state.data.message === "save success") {
+      if (state.data.reviewId && state.data.message === "save success") {
         setResultData({ ...resultData, id: state.data.reviewId })
         const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
         const newArray = [...planDataContent];
@@ -60,11 +60,10 @@ export default function ConnectPlace() {
         });
         const newArray2 = { ...planData, content: newArray };
         fetchData(`/api/plans/${planInfor.planId}`, "PUT", JSON.stringify(newArray2));
-
+      } else if (state.data.planId) {
         opener.location.reload();
-        // window.close();
-      }
-      else if (planInfor) {
+        window.close();
+      } else if (planInfor) {
         setPlanData(state.data);
         setPlanDataContent(state.data.content);
       }
@@ -77,7 +76,7 @@ export default function ConnectPlace() {
       const formatDate = new Date(planData.planStartDate);
       const date = new Date(formatDate.setDate(formatDate.getDate() + (dayValue - 1)));
       setVisitDate(date.toISOString().slice(0, 10));
-      
+
       const placeInfor = planDataContent[(dayValue - 1)].placeList.filter((item: any) => item.id === planInfor.placeId) || [];
       setPlace(placeInfor[0]);
     }
@@ -109,7 +108,7 @@ export default function ConnectPlace() {
     }
     setResultData(result)
 
-    const response = window.confirm('리뷰 연동 게시글은 나만 보기 설정이 되지 않습니다. 연동하시겠습니까?');
+    const response = window.confirm('이 리뷰는 일정 게시글 등록과 관계 없이 게시됩니다. 연동하시겠습니까?');
     if (response) {
       const json = JSON.stringify(result);
       fetchData('/api/reviews', "POST", json);
@@ -139,7 +138,7 @@ export default function ConnectPlace() {
             </S.HorizontalFirstStartContainer>
             <S.HorizontalFirstStartContainer>
               <S.SelectTitle>방문날짜</S.SelectTitle>
-              <CustomInput value={visitDate} onClick={() => {}}/>
+              <CustomInput value={visitDate} onClick={() => { }} />
             </S.HorizontalFirstStartContainer>
           </S.HorizontalSpaceBetweenContainer>
           {/*게시글 에디터 자리*/}

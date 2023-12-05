@@ -141,7 +141,7 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                           </S.PlaceInfo>
                         </div>
                         <S.ModifyButton onClick={() => openAndCloseDetail(index, innerIndex)}>
-                          수정
+                          변경
                           {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
                             <S.ToggleButtonContainer>
                               <S.ToggleButtonOption onClick={() => {
