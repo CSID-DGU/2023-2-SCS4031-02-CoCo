@@ -45,7 +45,7 @@ const ItemContainer:React.FC<{follow:follow}> = ({follow}) => {
   const [state, fetchData] = useAsync({url:""});
   const [isFollow, setIsFollow] = useState<boolean>(follow.follow);
   const navigate = useNavigate();
-  console.log(follow);
+  const myAccountId = sessionStorage.getItem("accountId");
 
   const onFollow = (accountId: string) => {
     const followData = {
@@ -70,7 +70,9 @@ const ItemContainer:React.FC<{follow:follow}> = ({follow}) => {
     <S.ItemContainer >
       <ProfileImage src={follow.profileImage} type="small"/>
       <S.ItemText onClick={() => navigate(`/feed/${follow.accountId}`)}>{follow.nickname}</S.ItemText>
+      {myAccountId !== follow.accountId && 
       <S.FollowButton type={isFollow} onClick={() => onFollow(follow.accountId)}>{isFollow ? "취소" : "팔로우"}</S.FollowButton>
+      }
     </S.ItemContainer>
   )
 
