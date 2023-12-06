@@ -80,7 +80,9 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
         <>
         <S.PostCommentContainer>
           {menuItems.length > 0 && <Menu item={menuItems}/>}
-          <ProfileImage type='small' src={props.commentData.profileImg}/>
+          <Link to={`/feed/${props.commentData.commentData.accountId}`}>
+            <ProfileImage type='small' src={props.commentData.profileImg}/>
+          </Link>
           <S.PostCommentContent>
             <S.PostCommentContentHeader>
               {props.commentData.nickname}
