@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.ElasticPost;
 import trizzle.trizzlebackend.domain.ElasticReview;
+import trizzle.trizzlebackend.domain.Plan;
 import trizzle.trizzlebackend.domain.Review;
 import trizzle.trizzlebackend.dto.response.ReviewDto;
 import trizzle.trizzlebackend.service.ReviewService;
@@ -149,5 +150,18 @@ public class ReviewController {
         List<Review> reviews = reviewService.findReviewsWithPlaceId(placeId);
 
         return ResponseEntity.ok(reviews);
+    }
+
+    /*review 연동*/
+    @PutMapping("/connect/{reviewId}")
+    public ResponseEntity reviewConnect(@PathVariable("reviewId") String reviewId, @RequestBody Plan plan, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+
+        String message = reviewService.reviewConnect(plan, reviewId, accountId);
+
+        return ResponseEntity.ok()
+                .body("{\"message\": \"" + message + "\"}");
     }
 }

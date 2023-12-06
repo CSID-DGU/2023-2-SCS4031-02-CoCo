@@ -229,6 +229,28 @@ public class ReviewService {
         return reviews;
     }
 
+    public String reviewConnect(Plan plan, String reviewId, String accountId) {
+        /*review 연동 된 것 plan에 반영*/
+        Plan existingPlan = planRepository.findByIdAndAccountId(plan.getId(), accountId);
+        if (existingPlan != null) {
+            existingPlan.setContent(plan.getContent());
+            planRepository.save(existingPlan);
+
+            /* review에 planId 추가*/
+            Review review = reviewRepository.findByIdAndAccountId(reviewId, accountId);
+            if (review != null) {
+                review.setPlanId(existingPlan.getId());
+                reviewRepository.save(review);
+            } else {
+                return "connect fail";
+            }
+        } else {
+            return "connect fail";
+        }
+
+        return "connect";
+    }
+
     private void planUpdateReviewToNull(Plan plan, String reviewId) {
         if (plan != null) {
             /*plan의 review 정보 삭제*/
