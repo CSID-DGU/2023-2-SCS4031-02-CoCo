@@ -32,6 +32,10 @@ public class PostService {
     private final UserService userService;
     private final PlanService planService;
     private final PlanRepository planRepository;
+    private final CommentRepository commentRepository;
+    private final ReviewRepository reviewRepository;
+
+
     @Autowired
     private ElasticPostRepository elasticPostRepository;
     @Value("${jwt.secret}")
@@ -176,7 +180,50 @@ public class PostService {
         Plan plan = planRepository.findByAccountIdAndPostId(accountId, postId);
         if (plan != null) { // post와 연동된 plan의 postId 삭제( 연동되지 않았음 표시 위해)
             plan.setPostId(null);
+            List<Review> reviews = new ArrayList<>();
+            /*plan의 review 정보 삭제*/
+            for (Day day : plan.getContent()) { //content의 날짜(day)에 따라
+                for (Place place : day.getPlaceList()) {    // place 항목을 확인
+                    if (place.getId() != null && place.getReview() != null) { // keyword아닌 place이고 review가 있다면
+                        reviews.add(place.getReview());
+                        place.setReview(null);
+                    }
+                }
+            }
             planRepository.save(plan);
+            /*review의 planId null*/
+            for (Review review : reviews) {
+                Optional<Review> nonPlanReview = reviewRepository.findById(review.getId());
+                if (nonPlanReview.isPresent()) {
+                    Review saveReview = nonPlanReview.get();
+                    review.setPlanId(null);
+                    reviewRepository.save(review);
+                }
+            }
+        }
+        /* 댓글의 좋아요 정보 삭제 & 댓글 삭제*/
+        List<Comment> comments = commentRepository.findByPostId(postId);    // post에 해당하는 댓글들
+        if (comments != null) {
+            for (Comment comment : comments) {
+                deleteLikesByCommentId(comment.getId());    // 댓글에 따른 좋아요 정보 삭제
+                commentRepository.delete(comment);                      // 댓글 삭제
+            }
+        }
+
+        /* 북마크 삭제 */
+        List<Bookmark> bookmarks = bookmarkRepository.findByPostId(postId);
+        if (bookmarks != null) {
+            for (Bookmark bookmark : bookmarks) {
+                bookmarkRepository.delete(bookmark);
+            }
+        }
+
+        /* 좋아요 삭제*/
+        List<Like> likes = likeRepository.findByPostId(postId);
+        if (likes != null) {
+            for (Like like : likes) {
+                likeRepository.delete(like);
+            }
         }
     }
 
@@ -208,5 +255,14 @@ public class PostService {
     public List<Post> findRandomPosts(){
        List<Post> posts = postRepository.findTop6ByPostSecretOrderByPostRegistrationDateDesc(false);
         return posts;
+    }
+
+    private void deleteLikesByCommentId(String commentId) {
+        List<Like> likes = likeRepository.findByTypeAndCommentId("comment", commentId);
+        if (likes != null) {
+            for (Like like : likes) {
+                likeRepository.delete(like);
+            }
+        }
     }
 }
