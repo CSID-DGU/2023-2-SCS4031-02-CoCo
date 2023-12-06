@@ -90,6 +90,7 @@ export const PostCommentContentFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-left: -1rem;
 `
 export const PostCommentContentFooterLike = styled.div`
   width: auto;
@@ -125,6 +126,7 @@ export const Fixed = styled.div`
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-left: 1.5rem;
 `
 
 export const MyCommentContainer = styled.div`

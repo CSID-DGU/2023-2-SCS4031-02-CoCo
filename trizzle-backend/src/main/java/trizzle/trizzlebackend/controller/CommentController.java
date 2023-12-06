@@ -111,7 +111,7 @@ public class CommentController {
     }
 
 
-    @PatchMapping("/api/{type}/comments/fix/{commentId}")
+    @PatchMapping("/api/{type}/{postId}/comments/{commentId}")
     public ResponseEntity fixComment(@PathVariable("type") String type,@PathVariable("commentId") String commentId, HttpServletRequest request) {
         Comment comment = commentService.fixComment(commentId);
         String token = JwtUtil.getAccessTokenFromCookie(request);
