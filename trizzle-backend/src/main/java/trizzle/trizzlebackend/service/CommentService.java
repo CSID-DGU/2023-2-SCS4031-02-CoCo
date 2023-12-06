@@ -109,10 +109,7 @@ public class CommentService {
         }
         notificationService.deleteNotification(comment.getId());
         //좋아요 테이블에서 해당 댓글에 좋아요 누른거 모두 삭제 로직
-        List<Like> likes = likeRepository.findByTypeAndCommentId("comment", comment.getId());
-        for (Like like : likes) {
-            likeRepository.delete(like);
-        }
+        deleteLikesByCommentId(comment.getId());
         return commentRepository.save(comment);
     };
 
@@ -212,6 +209,16 @@ public class CommentService {
     public Comment findComment(String id) {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         return optionalComment.orElse(null);
+    }
+
+    /*댓글의 좋아요 삭제*/
+    private void deleteLikesByCommentId(String commentId) {
+        List<Like> likes = likeRepository.findByTypeAndCommentId("comment", commentId);
+        if (likes != null) {
+            for (Like like : likes) {
+                likeRepository.delete(like);
+            }
+        }
     }
 
 }

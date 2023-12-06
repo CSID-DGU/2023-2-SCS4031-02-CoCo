@@ -25,7 +25,6 @@ export default function ConnectPlace() {
   const [contentsText, setContentsText] = useState<string>('');
   const region: any = koreaRegions[0];
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
-  const [resultData, setResultData] = useState<any>({});
 
   useEffect(() => {
     if (path.includes('places')) {
@@ -40,7 +39,8 @@ export default function ConnectPlace() {
       console.error(state.error);
     } else if (state.data) {
       if (state.data.reviewId && state.data.message === "save success") {
-        setResultData({ ...resultData, id: state.data.reviewId })
+        fetchData(`/api/reviews/${state.data.reviewId}`);
+      } else if(state.data.review) {
         const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
         const newArray = [...planDataContent];
 
@@ -53,14 +53,14 @@ export default function ConnectPlace() {
           // _id와 ConnectPlaceModalData.placeId를 비교하여 객체를 찾습니다.
           if (place.id === planInfor.placeId) {
             // 객체를 복사하여 reviewId를 추가한 후 반환합니다.
-            return { ...place, review: resultData };
+            return { ...place, review: state.data.review };
           }
           // 찾지 못한 경우 해당 객체를 그대로 반환합니다.
           return place;
         });
         const newArray2 = { ...planData, content: newArray };
-        fetchData(`/api/plans/${planInfor.planId}`, "PUT", JSON.stringify(newArray2));
-      } else if (state.data.planId) {
+        fetchData(`/api/reviews/connect/${state.data.review.id}`, "PUT", JSON.stringify(newArray2));
+      } else if (state.data.message === "connect") {
         opener.location.reload();
         window.close();
       } else if (planInfor) {
@@ -106,8 +106,6 @@ export default function ConnectPlace() {
       thumbnail: representImage,
       planId: planInfor.planId,
     }
-    setResultData(result)
-
     const response = window.confirm('이 리뷰는 일정 게시글 등록과 관계 없이 게시됩니다. 연동하시겠습니까?');
     if (response) {
       const json = JSON.stringify(result);

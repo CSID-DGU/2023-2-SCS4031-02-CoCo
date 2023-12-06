@@ -14,4 +14,6 @@ public interface PlanRepository extends MongoRepository<Plan, String> {
 
     Plan findByAccountIdAndPostId(String accountId, String postId);
 
+    Plan findByIdAndAccountId(String id, String accountId);
+
 }
