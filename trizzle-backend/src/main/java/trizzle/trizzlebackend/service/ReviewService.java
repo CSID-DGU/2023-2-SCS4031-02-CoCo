@@ -6,15 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.dto.response.ReviewDto;
-import trizzle.trizzlebackend.repository.BookmarkRepository;
-import trizzle.trizzlebackend.repository.ElasticReviewRepository;
-import trizzle.trizzlebackend.repository.LikeRepository;
-import trizzle.trizzlebackend.repository.ReviewRepository;
+import trizzle.trizzlebackend.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,6 +29,9 @@ public class ReviewService {
     private final BookmarkRepository bookmarkRepository;
     private final LikeRepository likeRepository;
     private final UserService userService;
+    private final PlanRepository planRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -157,9 +157,46 @@ public class ReviewService {
         return publicReviews;
     }
 
-    public void deleteReview(String reviewId) {
+    public void deleteReview(String reviewId, String accountId) {
         elasticReviewRepository.deleteById(reviewId);
-        reviewRepository.deleteById(reviewId);
+        Review review = reviewRepository.findByIdAndAccountId(reviewId, accountId);
+
+        if (review != null) {
+            Optional<Plan> existingPlan = planRepository.findById(review.getPlanId());
+            Plan plan = existingPlan.get();
+            /* plan의 review정보 삭제 */
+            planUpdateReviewToNull(plan, reviewId);
+
+            /* post의 review정보 삭제 */
+            if (plan.getPostId() != null) {
+                postUpdateReviewToNull(plan.getPostId(), reviewId);
+            }
+        }
+        /* 댓글의 좋아요 정보 삭제 & 댓글 삭제*/
+        List<Comment> comments = commentRepository.findByReviewId(reviewId);
+        if (comments != null) {
+            for (Comment comment : comments) {
+                deleteLikesByCommentId(comment.getId());
+                commentRepository.delete(comment);
+            }
+        }
+
+        /* 북마크 삭제 */
+        List<Bookmark> bookmarks = bookmarkRepository.findByReviewId(reviewId);
+        if (bookmarks != null) {
+            for (Bookmark bookmark : bookmarks) {
+                bookmarkRepository.delete(bookmark);
+            }
+        }
+        reviewRepository.delete(review);
+
+        /* 좋아요 삭제*/
+        List<Like> likes = likeRepository.findByReviewId(reviewId);
+        if (likes != null) {
+            for (Like like : likes) {
+                likeRepository.delete(like);
+            }
+        }
     }
 
     public List<Review> findBookmarkReviews(String accountId) {
@@ -192,4 +229,50 @@ public class ReviewService {
         return reviews;
     }
 
+    private void planUpdateReviewToNull(Plan plan, String reviewId) {
+        if (plan != null) {
+            /*plan의 review 정보 삭제*/
+            for (Day day : plan.getContent()) { //content의 날짜(day)에 따라
+                for (Place place : day.getPlaceList()) {    // place 항목을 확인
+                    if (place.getId() != null && place.getReview() != null) { // keyword아닌 place이고 review가 있다면
+                        if (place.getReview().getId().equals(reviewId)) {   // reviewId와 일치하는 review null로
+                            place.setReview(null);
+                        }
+
+                    }
+                }
+            }
+        }
+        planRepository.save(plan);
+    }
+
+    private void postUpdateReviewToNull(String postId, String reviewId) {
+        Optional<Post> existingPost = postRepository.findById(postId);
+        Post post = existingPost.get();
+        Plan plan = post.getPlan();
+        if (plan != null) {
+            /*plan의 review 정보 삭제*/
+            for (Day day : plan.getContent()) { //content의 날짜(day)에 따라
+                for (Place place : day.getPlaceList()) {    // place 항목을 확인
+                    if (place.getId() != null && place.getReview() != null) { // keyword아닌 place이고 review가 있다면
+                        if (place.getReview().getId().equals(reviewId)) {   // reviewId와 일치하는 review null로
+                            place.setReview(null);
+                        }
+
+                    }
+                }
+            }
+        }
+        post.setPlan(plan);
+        postRepository.save(post);
+    }
+
+    private void deleteLikesByCommentId(String commentId) {
+        List<Like> likes = likeRepository.findByTypeAndCommentId("comment", commentId);
+        if (likes != null) {
+            for (Like like : likes) {
+                likeRepository.delete(like);
+            }
+        }
+    }
 }

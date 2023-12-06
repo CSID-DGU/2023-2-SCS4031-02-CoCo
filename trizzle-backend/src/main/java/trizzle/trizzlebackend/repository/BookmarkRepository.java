@@ -10,4 +10,6 @@ public interface BookmarkRepository extends MongoRepository<Bookmark, String> {
     List<Bookmark> findByAccountIdAndType(String accountId, String type);
 
     List<Bookmark> findByPostId(String postId);
+
+    List<Bookmark> findByReviewId(String reviewId);
 }

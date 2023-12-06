@@ -109,7 +109,7 @@ public class ReviewController {
         Review review = reviewService.checkMyReview(reviewId, accountId);
 
         if (review != null) {
-            reviewService.deleteReview(reviewId);
+            reviewService.deleteReview(reviewId, accountId);
             String message = "delete success";
             List<Review> myReviews = reviewService.findMyReviews(accountId);
 
