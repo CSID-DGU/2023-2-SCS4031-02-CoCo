@@ -251,6 +251,35 @@ public class ReviewService {
         return "connect";
     }
 
+    public String reviewDisconnect(Plan plan, String reviewId, String accountId) {
+        /*review 연동해제 된 것 plan에 반영*/
+        Plan existingPlan = planRepository.findByIdAndAccountId(plan.getId(), accountId);
+        if (existingPlan != null) {
+            existingPlan.setContent(plan.getContent());
+            planRepository.save(existingPlan);
+
+            /* postId null 아니라면(post연동된 일정이라면) post의 해당 review null로*/
+            if (plan.getPostId() != null) {
+                Post post = postRepository.findByIdAndAccountId(plan.getPostId(), accountId);
+                post.setPlan(existingPlan);
+                postRepository.save(post);
+            }
+
+            /* review에 planId null로 (연동해제)*/
+            Review review = reviewRepository.findByIdAndAccountId(reviewId, accountId);
+            if (review != null) {
+                review.setPlanId(null);
+                reviewRepository.save(review);
+            } else {
+                return "disconnect fail";
+            }
+        } else {
+            return "disconnect fail";
+        }
+
+        return "disconnect";
+        }
+
     private void planUpdateReviewToNull(Plan plan, String reviewId) {
         if (plan != null) {
             /*plan의 review 정보 삭제*/

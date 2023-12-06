@@ -164,4 +164,16 @@ public class ReviewController {
         return ResponseEntity.ok()
                 .body("{\"message\": \"" + message + "\"}");
     }
+
+    @PutMapping("/disconnect/{reviewId}")
+    public ResponseEntity reviewDisconnect(@PathVariable("reviewId") String reviewId, @RequestBody Plan plan, HttpServletRequest request) {
+        String token = JwtUtil.getAccessTokenFromCookie(request);
+        String accountId = JwtUtil.getAccountId(token, secretKey);
+
+
+        String message = reviewService.reviewDisconnect(plan, reviewId, accountId);
+
+        return ResponseEntity.ok()
+                .body("{\"message\": \"" + message + "\"}");
+    }
 }
