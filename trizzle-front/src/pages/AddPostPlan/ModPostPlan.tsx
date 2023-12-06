@@ -40,7 +40,8 @@ const ModPostPlan: React.FC = () => {
       console.error(state.error);
     } else if (state.data) {
       if (state.data.message === "update success" && state.data.postId) navigate(`/post/plan/${state.data.postId}`);
-      else if (state.data.message === "update success" && state.data.reviewId) console.log();
+      else if (state.data.message === "connect" || state.data.message === "disconnect") console.log();
+      else if (state.data.message === "connect fail" || state.data.message === "disconnect fail") alert("실패했습니다. 잠시 후 다시 시도해주세요");
       else setData(state.data);
     }
   }, [state]);
@@ -106,19 +107,18 @@ const ModPostPlan: React.FC = () => {
     setConnectPlaceModalData(data);
   }
 
-  const delectConnectPlace = (day: number, data: any) => {
+  const delectConnectPlace = (day: number, da: any) => {
     const newArray = [...dayPlan];
     newArray[day - 1].placeList = dayPlan[day - 1].placeList.map((place: any) => {
-      if (place.id === data.id) { return { ...place, review: null }; }
+      if (place.id === da.id) { return { ...place, review: null }; }
       return place;
     });
-    console.log(newArray);
     setDayPlan(newArray);
-    const reviewData = data.review;
-    reviewData.planId = null;
-    reviewData.postId = null;
-    const json = JSON.stringify(reviewData);
-    fetchData(`/api/reviews/${reviewData.id}`, 'PUT', json);
+    const reviewData = da.review;
+    const submitPlan = { ...data, content: newArray };
+    const json = JSON.stringify(submitPlan);
+    setData(submitPlan);
+    fetchData(`/api/reviews/disconnect/${reviewData.id}`, 'PUT', json);
   }
 
   //review에 planId 추가해서 디비로 put 보내기
@@ -129,8 +129,10 @@ const ModPostPlan: React.FC = () => {
       return place;
     });
     setDayPlan(newArray);
-    const reviewData = { ...review, reviewSecret: false, planId: data.id }
-    fetchData(`/api/reviews/${review.id}`, 'PUT', reviewData);
+    const submitPlan = { ...data, content: newArray };
+    setData(submitPlan);
+    const json = JSON.stringify(submitPlan);
+    fetchData(`/api/reviews/connect/${review.id}`, 'PUT', json);
   }
 
   const onSave = (type: string) => {
