@@ -79,18 +79,20 @@ const Comment:React.FC<CommentsProps> = (props: CommentsProps) => {
       return (
         <>
         <S.PostCommentContainer>
-          {props.commentData.commentData.fix && 
+          {menuItems.length > 0 && <Menu item={menuItems}/>}
+          <Link to={`/feed/${props.commentData.commentData.accountId}`}>
+            <ProfileImage type='small' src={props.commentData.profileImg}/>
+          </Link>
+          <S.PostCommentContent>
+            <S.PostCommentContentHeader>
+              {props.commentData.nickname}
+              <S.PostCommentContentDate>{diffDate} 전</S.PostCommentContentDate>
+              {props.commentData.commentData.fix && 
           <S.Fixed>
             <BsFillPinAngleFill size="0.8rem" color="#C5C5C5"/>
             고정됨
           </S.Fixed>
         }
-          {menuItems.length > 0 && <Menu item={menuItems}/>}
-          <ProfileImage type='small' src={props.commentData.profileImg}/>
-          <S.PostCommentContent>
-            <S.PostCommentContentHeader>
-              {props.commentData.nickname}
-              <S.PostCommentContentDate>{diffDate} 전</S.PostCommentContentDate>
             </S.PostCommentContentHeader>
             <S.PostCommentContentBody>
               {props.commentData.commentData.commentContent}
