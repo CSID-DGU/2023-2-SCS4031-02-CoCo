@@ -130,10 +130,10 @@ public class ReviewService {
     public Page<ElasticReview>  searchReviewByKeyword(String location, String keyword, Pageable pageable) {
         Page<ElasticReview> reviews;
         if(location.equals("전체") ) {
-            reviews = elasticReviewRepository.searchByReviewTitleOrReviewContentText(keyword, pageable);
-        } else {
-            reviews = elasticReviewRepository.searchByLocationAndReviewTitleOrReviewContentText(location, keyword, pageable);
-
+                reviews = elasticReviewRepository.searchByReviewTitleOrReviewContentText(keyword, pageable);
+        }  else {
+            reviews = elasticReviewRepository.searchByReviewTitleOrReviewContentTextAndLocation(keyword, location, pageable);
+//            reviews = elasticReviewRepository.searchByLocation(location, pageable);
         }
 
         return reviews;

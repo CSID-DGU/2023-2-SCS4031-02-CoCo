@@ -89,8 +89,9 @@ const SearchPlan = () => {
           </S.FilterButton> */}
           </S.MenuContainer>
         </S.FilterContainer>
+        {planList.length !== 0 ?
         <S.PlanCardContainer>
-          {planList.length !== 0 ? planList.map((plan: any, index: number) => (
+          {planList.map((plan: any, index: number) => (
             <PlanCard
               key={index}
               userId={plan.accountId}
@@ -104,10 +105,11 @@ const SearchPlan = () => {
               likeCount={plan.likeCount === null ? 0 : plan.likeCount}
               commentCount={plan.commentCount ? plan.commentCount : 0}
               thema={plan.plan.planThema} />
-          )) :
-            <NullList content="검색 결과가 없습니다." />
-          }
+          ))}
         </S.PlanCardContainer>
+        :
+        <NullList content="검색 결과가 없습니다." />
+      }
       </S.SearchResultContainer>
     </SearchLayout>
   )
