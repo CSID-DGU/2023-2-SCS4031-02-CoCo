@@ -142,36 +142,13 @@ const DayPlanPost: React.FC<DayPlanPostProps> = (props: DayPlanPostProps) => {
                             <S.PlacePostName>{place.review.place.placeName}</S.PlacePostName>
                           </S.PlaceInfo>
                         </div>
-                        <S.ModifyButton onClick={() => openAndCloseDetail(index, innerIndex)}>
-                          변경
-                          {isDdetailOpen[index] && isDdetailOpen[index][innerIndex] &&
-                            <S.ToggleButtonContainer>
-                              <S.ToggleButtonOption onClick={() => {
-                                if (props.onNewPostPlace) {
-                                  props.onNewPostPlace(plans.day, data[index].placeList[innerIndex]);
-                                  openAndCloseDetail(index, innerIndex);
-                                }
-                              }}>
-                                새 리뷰 작성
-                              </S.ToggleButtonOption>
-                              <S.ToggleButtonOption onClick={() => {
-                                if (props.onConnectPostPlace) {
-                                  props.onConnectPostPlace(plans.day, data[index].placeList[innerIndex]);
-                                  openAndCloseDetail(index, innerIndex);
-                                }
-                              }}>
-                                리뷰 불러오기
-                              </S.ToggleButtonOption>
-                              <S.ToggleButtonOption onClick={() => {
+                        <S.ModifyButton onClick={() => {
                                 if (props.onDeleteConnect) {
                                   props.onDeleteConnect(plans.day, data[index].placeList[innerIndex]);
                                   openAndCloseDetail(index, innerIndex);
                                 }
                               }}>
-                                연동 해제
-                              </S.ToggleButtonOption>
-                            </S.ToggleButtonContainer>
-                          }
+                          연동 해제
                         </S.ModifyButton>
                       </S.PlacePostNoneContainer>
                     ) : (
