@@ -50,7 +50,7 @@ const PostPlan: React.FC = () => {
 
   useEffect(() => {
     if (state.error) {
-      navigate("/404");
+      // navigate("/404");
     } else if (state.data) {
       if (state.data.message && state.data.message === "delete success") navigate("/myfeed");
       else if (state.data.message && state.data.message === "save success") {
@@ -115,10 +115,15 @@ const PostPlan: React.FC = () => {
     const newPlanList = [...newPlan.content];
     let dayNumber = newPlanList.length + 1;
     selectedDayPlan.map((item: any) => {
-      newPlanList.push({ day: dayNumber, placeList: item.placeList })
+      const placeList = item.placeList.map((place: any) => {
+        if (place.review) delete place.review;
+        return place
+      })
+      newPlanList.push({ day: dayNumber, placeList: placeList})
       dayNumber = dayNumber + 1;
       newPlan.content = newPlanList;
     });
+    console.log(newPlan);
     const json = JSON.stringify(newPlan);
     fetchData(`/api/plans/${newPlan.id}`, 'PUT', json);
   }
@@ -129,7 +134,17 @@ const PostPlan: React.FC = () => {
     delete newData.accountId;
     delete newData.planRegistrationDate;
     delete newData.thumnail;
-    newData.content = [{day: 1, placeList: selectedDayPlan[0].placeList}];
+
+    const newContent = selectedDayPlan.map((item:any) => {
+        return {
+          day: item.day,
+          placeList: item.placeList.map((place:any) => {
+          if(place.review) delete place.review;
+          return place
+        }
+      )}
+      })
+    newData.content = newContent;
     newData.planName = data.post.postTitle + "_복사본";
     const json = JSON.stringify(newData);
     fetchData(`/api/plans`, "POST", json);
