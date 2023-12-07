@@ -62,9 +62,6 @@ const SearchPlace = () => {
     }
   }, [state]);
 
-  console.log(allReview);
-  console.log(location)
-
   if(allReview === null) return (<div>loading...</div>);
 
   return (
@@ -78,7 +75,7 @@ const SearchPlace = () => {
       </S.FilterContainer>
         {review.length !== 0 ? review.map((item, index) => (
           <S.PlaceCardContainer key={index}>
-            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate} postTitle={item.reviewTitle} postContent={item.reviewContentText} src={item.thumbnail} postId={item.id}/>
+            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate?.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText} src={item.thumbnail} postId={item.id}/>
           </S.PlaceCardContainer>
         )) : 
           <NullList content="검색 결과가 없습니다."/>

@@ -38,7 +38,7 @@ public class ElasticReview {
     private String thumbnail;
     private Integer likeCount;
     private Integer bookmarkCount;
-    @Field(type= FieldType.Text)
+    @Field(type= FieldType.Auto)
     private String location;
     private Integer commentCount;
 

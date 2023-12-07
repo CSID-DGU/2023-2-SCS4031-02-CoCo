@@ -13,7 +13,7 @@ public class Place {
     private String id;
     private String placeId;
 
-    @Field(type= FieldType.Text)
+    @Field(type= FieldType.Auto)
     private String placeName;
     private String categoryName;
     private String categoryGroupCode;
