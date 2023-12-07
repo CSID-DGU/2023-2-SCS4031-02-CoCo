@@ -13,7 +13,7 @@ import { koreaRegions } from "../../utils/Data/mapData";
 export default function ConnectPlace() {
   const path = window.location.pathname;
   const planInfor = useParams<{ planDay: string, planId: string, placeId: string }>();
-  const [state, fetchData] = useAsync({ url: `/api/plans/${planInfor.planId}` });
+  const [state, fetchData] = useAsync(path.includes('modifiedPlans') ? { url: `/api/posts/${planInfor.planId}` } : { url: `/api/plans/${planInfor.planId}` });
   const [planData, setPlanData] = useState<any>({});
   const [planDataContent, setPlanDataContent] = useState<any>([]);
   const [title, setTitle] = useState<string>('');
@@ -27,20 +27,13 @@ export default function ConnectPlace() {
   const [representImage, setRepresentImage] = useState<string>(''); // 대표이미지
 
   useEffect(() => {
-    if (path.includes('places')) {
-      // 
-    } else if (path.includes('plans')) {
-      // 사용자 선택할 수 있게
-    }
-  }, [path])
-
-  useEffect(() => {
     if (state.error) {
       console.error(state.error);
     } else if (state.data) {
+      console.log(state.data);
       if (state.data.reviewId && state.data.message === "save success") {
         fetchData(`/api/reviews/${state.data.reviewId}`);
-      } else if(state.data.review) {
+      } else if (state.data.review) {
         const dayValue = parseInt(planInfor.planDay ? planInfor.planDay : '1', 10);
         const newArray = [...planDataContent];
 
@@ -59,13 +52,19 @@ export default function ConnectPlace() {
           return place;
         });
         const newArray2 = { ...planData, content: newArray };
-        fetchData(`/api/reviews/connect/${state.data.review.id}`, "PUT", JSON.stringify(newArray2));
+        const json = JSON.stringify(newArray2);
+        fetchData(`/api/reviews/connect/${state.data.review.id}`, "PUT", json);
       } else if (state.data.message === "connect") {
         opener.location.reload();
         window.close();
       } else if (planInfor) {
-        setPlanData(state.data);
-        setPlanDataContent(state.data.content);
+        if (path.includes('modifiedPlans')) {
+          setPlanData(state.data.post.plan);
+          setPlanDataContent(state.data.post.plan.content);
+        } else {
+          setPlanData(state.data);
+          setPlanDataContent(state.data.content);
+        }
       }
     }
   }, [state]);

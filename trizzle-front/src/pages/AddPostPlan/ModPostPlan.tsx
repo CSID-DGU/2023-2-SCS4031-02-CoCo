@@ -98,7 +98,7 @@ const ModPostPlan: React.FC = () => {
   };
 
   const onPostPlace = (day: number, placeData: any) => {
-    window.open(`/post/plans/add/${day}/${planId.id}/${placeData.id}`, '_blank');
+    window.open(`/post/modifiedPlans/add/${day}/${data.post.id}/${placeData.id}`, '_blank');
   }
 
   const connectPlace = (day: number, data: any) => {
