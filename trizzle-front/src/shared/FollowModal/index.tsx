@@ -5,7 +5,6 @@ import Tabs from "../../components/Tabs";
 import ProfileImage from "../../components/ProfileImage";
 import Modal from "../../components/Modal";
 import { useNavigate } from "react-router-dom";
-import { useAsync } from "../../utils/API/useAsync";
 
 const FollowModal: React.FC<FollowModalProps> = (props: FollowModalProps) => {
   const [tab, setTab] = useState<any>(props.tab);
