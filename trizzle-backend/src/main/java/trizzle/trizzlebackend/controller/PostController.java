@@ -72,9 +72,10 @@ public class PostController {
                 break;
         }
 
-        Page<ElasticPost> posts = postService.findAllPost(pageable);
+        Page<ElasticPost> posts = postService.searchElasticPost(region, keyword, pageable);
         return ResponseEntity.ok().body(posts);
     }
+
 
     @PutMapping("/{postId}")
     public ResponseEntity updatePost(@RequestBody Post post, @PathVariable("postId") String id, HttpServletRequest request) {
