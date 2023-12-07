@@ -116,8 +116,8 @@ const ModPostPlan: React.FC = () => {
     setDayPlan(newArray);
     const reviewData = da.review;
     const submitPlan = { ...data, content: newArray };
-    const json = JSON.stringify(submitPlan);
     setData(submitPlan);
+    const json = JSON.stringify(submitPlan.post.plan);
     fetchData(`/api/reviews/disconnect/${reviewData.id}`, 'PUT', json);
   }
 
@@ -131,7 +131,7 @@ const ModPostPlan: React.FC = () => {
     setDayPlan(newArray);
     const submitPlan = { ...data, content: newArray };
     setData(submitPlan);
-    const json = JSON.stringify(submitPlan);
+    const json = JSON.stringify(submitPlan.post.plan);
     fetchData(`/api/reviews/connect/${review.id}`, 'PUT', json);
   }
 
