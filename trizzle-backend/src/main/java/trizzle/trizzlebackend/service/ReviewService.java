@@ -2,6 +2,7 @@ package trizzle.trizzlebackend.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -128,10 +129,11 @@ public class ReviewService {
 
     public Page<ElasticReview>  searchReviewByKeyword(String location, String keyword, Pageable pageable) {
         Page<ElasticReview> reviews;
-        if(location.equals("전체")) {
+        if(location.equals("전체") ) {
             reviews = elasticReviewRepository.searchByReviewTitleOrReviewContentText(keyword, pageable);
         } else {
             reviews = elasticReviewRepository.searchByLocationAndReviewTitleOrReviewContentText(location, keyword, pageable);
+
         }
 
         return reviews;

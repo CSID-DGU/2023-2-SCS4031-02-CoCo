@@ -54,7 +54,7 @@ const NotificationItem: React.FC<Notification> = (props: Notification) => {
   }
   return (
     <S.NotificationItem onClick={() => navigate(url)}>
-      <ProfileImage src={props.user.profileImage} type="small" />
+      <ProfileImage src={props.user.profileImage? props.user.profileImage : ""} type="small" />
       <S.Verticalcontainer>
         <S.NotificationText>
           {props.count >1 ? <span style={{fontWeight:"500"}}>{props.user.nickname}님 외 {props.count-1}이</span> : <span style={{fontWeight:"500"}}>{props.user.nickname}님이</span> }

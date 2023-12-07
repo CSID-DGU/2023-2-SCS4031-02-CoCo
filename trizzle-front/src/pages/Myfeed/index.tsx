@@ -19,7 +19,6 @@ const Myfeed = () => {
   const [followee, setFollowee] = useState<any[]>([]);
   const [follower, setFollower] = useState<any[]>([]);
   const isMe = (id && id !== sessionStorage.getItem("accountId"))? false : true;
-  console.log(isMe);
   const url = id ? `/api/user/feed/${id}` : "/api/user/feed/my";
   const [state, _] = useAsync({url: url});
   const [state2, fetchData] = useAsync({url: ""});//follow
@@ -28,7 +27,6 @@ const Myfeed = () => {
   const [isFollow, setIsFollow] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(state);
     if(state.error) {
       if(id) navigate("/404");
       else {
@@ -90,7 +88,7 @@ const Myfeed = () => {
           title={item.postTitle} 
           startDate={item.plan.planStartDate.slice(0,10)} 
           endDate={item.plan.planEndDate.slice(0,10)} 
-          thumbnail={item.thumbnail? item.thumbnail : ""} 
+          thumbnail={item.thumnail? item.thumnail : ""} 
           likeCount={item.likeCount? item.likeCount : 0} 
           commentCount={item.commentCount? item.commentCount : 0}
           placeCenter={item.plan.content[0].placeList[0].keyword === null ? [item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y] : item.plan.planLocation}

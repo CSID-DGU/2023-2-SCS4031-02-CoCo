@@ -54,6 +54,9 @@ export default function AddPlacePage() {
     } else if (new Date() < visitDate) {
       alert("아직 지나지 않은 날짜입니다");
       return;
+    } else if(visitDate === ''){
+      alert("날짜를 입력해주세요.");
+      return;
     }
 
     const formattedDate = visitDate.toISOString().slice(0, 10);

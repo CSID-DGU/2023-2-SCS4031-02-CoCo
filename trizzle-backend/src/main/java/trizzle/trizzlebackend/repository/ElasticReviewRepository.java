@@ -11,7 +11,13 @@ public interface ElasticReviewRepository extends ElasticsearchRepository<Elastic
     @Query("{\"bool\": {\"should\": [{\"match\": {\"reviewTitle\": \"?0\"}}, {\"match\": {\"reviewContent\": \"?0\"}}]}}")
     Page<ElasticReview> searchByReviewTitleOrReviewContentText(String keyword, Pageable pageable);
 
-    @Query("{\"bool\": {\"must\": [{\"match\": {\"location\": \"?0\"}}, {\"should\": [{\"match\": {\"reviewTitle\": \"?1\"}}, {\"match\": {\"reviewContent\": \"?1\"}}]}]}}")
+    @Query("{\"bool\": {\"must\": [" +
+            "{\"match\": {\"location\": \"?0\"}}, " +
+            "{\"bool\": {\"should\": [" +
+            "{\"match\": {\"reviewTitle\": \"?1\"}}, " +
+            "{\"match\": {\"reviewContent\": \"?1\"}}" +
+            "]}}" +
+            "]}}")
     Page<ElasticReview> searchByLocationAndReviewTitleOrReviewContentText(String location, String keyword, Pageable pageable);
 
     void deleteById(String id);

@@ -99,8 +99,9 @@ public class ReviewController {
                 break;
         }
 
-        Page<ElasticReview> posts = reviewService.findAllReview(pageable);
-        return ResponseEntity.ok().body(posts);
+//        Page<ElasticReview> reviews = reviewService.findAllReview(pageable);
+        Page<ElasticReview> reviews = reviewService.searchReviewByKeyword(region,keyword,pageable);
+        return ResponseEntity.ok().body(reviews);
     }
 
     @DeleteMapping("/myreviews/{reviewId}")
