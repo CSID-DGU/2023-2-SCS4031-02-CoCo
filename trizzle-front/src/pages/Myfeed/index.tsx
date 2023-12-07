@@ -88,7 +88,7 @@ const Myfeed = () => {
           title={item.postTitle} 
           startDate={item.plan.planStartDate.slice(0,10)} 
           endDate={item.plan.planEndDate.slice(0,10)} 
-          thumbnail={item.thumbnail? item.thumbnail : ""} 
+          thumbnail={item.thumnail? item.thumnail : ""} 
           likeCount={item.likeCount? item.likeCount : 0} 
           commentCount={item.commentCount? item.commentCount : 0}
           placeCenter={item.plan.content[0].placeList[0].keyword === null ? [item.plan.content[0].placeList[0].x, item.plan.content[0].placeList[0].y] : item.plan.planLocation}
