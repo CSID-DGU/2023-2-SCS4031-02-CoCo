@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import trizzle.trizzlebackend.Utils.JwtUtil;
 import trizzle.trizzlebackend.domain.*;
 import trizzle.trizzlebackend.dto.response.ReviewDto;
@@ -161,16 +161,19 @@ public class ReviewService {
         elasticReviewRepository.deleteById(reviewId);
         Review review = reviewRepository.findByIdAndAccountId(reviewId, accountId);
 
-        if (review != null) {
+        if (review.getPlanId() != null) {
             Optional<Plan> existingPlan = planRepository.findById(review.getPlanId());
-            Plan plan = existingPlan.get();
-            /* plan의 review정보 삭제 */
-            planUpdateReviewToNull(plan, reviewId);
+            if (existingPlan.isPresent()) {
+                Plan plan = existingPlan.get();
+                /* plan의 review정보 삭제 */
+                planUpdateReviewToNull(plan, reviewId);
 
-            /* post의 review정보 삭제 */
-            if (plan.getPostId() != null) {
-                postUpdateReviewToNull(plan.getPostId(), reviewId);
+                /* post의 review정보 삭제 */
+                if (plan.getPostId() != null) {
+                    postUpdateReviewToNull(plan.getPostId(), reviewId);
+                }
             }
+
         }
         /* 댓글의 좋아요 정보 삭제 & 댓글 삭제*/
         List<Comment> comments = commentRepository.findByReviewId(reviewId);
@@ -229,12 +232,20 @@ public class ReviewService {
         return reviews;
     }
 
+    @Transactional
     public String reviewConnect(Plan plan, String reviewId, String accountId) {
         /*review 연동 된 것 plan에 반영*/
         Plan existingPlan = planRepository.findByIdAndAccountId(plan.getId(), accountId);
         if (existingPlan != null) {
             existingPlan.setContent(plan.getContent());
             planRepository.save(existingPlan);
+
+            /* postId null 아니라면(post연동된 일정이라면) post의 plan에 해당 review 추가*/
+            if (existingPlan.getPostId() != null) {
+                Post post = postRepository.findByIdAndAccountId(existingPlan.getPostId(), accountId);
+                post.setPlan(existingPlan);
+                postRepository.save(post);
+            }
 
             /* review에 planId 추가*/
             Review review = reviewRepository.findByIdAndAccountId(reviewId, accountId);
@@ -251,6 +262,7 @@ public class ReviewService {
         return "connect";
     }
 
+    @Transactional
     public String reviewDisconnect(Plan plan, String reviewId, String accountId) {
         /*review 연동해제 된 것 plan에 반영*/
         Plan existingPlan = planRepository.findByIdAndAccountId(plan.getId(), accountId);
@@ -259,8 +271,8 @@ public class ReviewService {
             planRepository.save(existingPlan);
 
             /* postId null 아니라면(post연동된 일정이라면) post의 해당 review null로*/
-            if (plan.getPostId() != null) {
-                Post post = postRepository.findByIdAndAccountId(plan.getPostId(), accountId);
+            if (existingPlan.getPostId() != null) {
+                Post post = postRepository.findByIdAndAccountId(existingPlan.getPostId(), accountId);
                 post.setPlan(existingPlan);
                 postRepository.save(post);
             }

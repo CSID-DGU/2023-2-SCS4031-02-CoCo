@@ -47,6 +47,25 @@ public class PostService {
             post.setPostRegistrationDate(dateTime);   // 일정 등록 시 현재시간을 등록시간으로 저장
         }
 
+        /* post 게시하면 post와 plan에 있는 모든 review secret false로*/
+        if (!post.isPostSecret()) {
+            Plan inPlan = post.getPlan();
+            if (inPlan != null) {
+                /*plan의 review 공개로*/
+                for (Day day : inPlan.getContent()) { //content의 날짜(day)에 따라
+                    for (Place place : day.getPlaceList()) {    // place 항목을 확인
+                        if (place.getId() != null && place.getReview() != null) { // keyword아닌 place이고 review가 있다면
+                            Review review = place.getReview();
+                            review.setReviewSecret(false);
+                            reviewRepository.save(review);
+                            place.setReview(review);
+                        }
+                    }
+                }
+            }
+            post.setPlan(inPlan);   // reviewSecret false로한 plan을 post에 반영
+        }
+
         /*post로 게시한 plan일 경우 plan에 postId 저장하기 위해*/
         Post insert = postRepository.save(post);
         Plan plan = insert.getPlan();
