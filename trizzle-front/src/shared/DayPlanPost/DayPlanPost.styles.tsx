@@ -80,7 +80,7 @@ export const ThreeDotsButton = styled.button`
 
 export const ModifyButton = styled.button`
   margin: 0.5rem 0.5rem 0 0;
-  width: 2rem;
+  width: 5rem;
   font-size: 1rem;
   color: #000000;
   z-index: 100;
