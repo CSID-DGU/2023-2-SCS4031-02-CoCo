@@ -19,7 +19,6 @@ const Myfeed = () => {
   const [followee, setFollowee] = useState<any[]>([]);
   const [follower, setFollower] = useState<any[]>([]);
   const isMe = (id && id !== sessionStorage.getItem("accountId"))? false : true;
-  console.log(isMe);
   const url = id ? `/api/user/feed/${id}` : "/api/user/feed/my";
   const [state, _] = useAsync({url: url});
   const [state2, fetchData] = useAsync({url: ""});//follow
@@ -28,7 +27,6 @@ const Myfeed = () => {
   const [isFollow, setIsFollow] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(state);
     if(state.error) {
       if(id) navigate("/404");
       else {

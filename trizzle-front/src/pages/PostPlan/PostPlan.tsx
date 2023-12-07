@@ -123,7 +123,6 @@ const PostPlan: React.FC = () => {
       dayNumber = dayNumber + 1;
       newPlan.content = newPlanList;
     });
-    console.log(newPlan);
     const json = JSON.stringify(newPlan);
     fetchData(`/api/plans/${newPlan.id}`, 'PUT', json);
   }
