@@ -3,7 +3,6 @@ import { BiCameraOff } from "react-icons/bi";
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ImageResize } from "quill-image-resize-module-ts";
-import DOMPurify from "dompurify";
 
 import * as S from "./PostEditor.styles";
 import axios from "axios";
