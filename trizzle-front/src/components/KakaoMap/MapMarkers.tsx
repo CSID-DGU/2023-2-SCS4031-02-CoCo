@@ -36,7 +36,7 @@ const MapMarkers: React.FC<MarkerProps> = (props: MarkerProps) => {
           src: props.selected ? selected : unselect,
           size: props.selected ? {width:20, height:24.3}:{ width: 20, height: 24.3 },
           options: {
-            alt: `${props.placeInfo.place_name}`}
+            alt: `${props.placeInfo.placeName}`}
           }}
         onClick={props.onClick}
         zIndex={props.selected ? 1 : 0}
