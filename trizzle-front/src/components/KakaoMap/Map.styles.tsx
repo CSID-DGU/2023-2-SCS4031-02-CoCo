@@ -78,3 +78,16 @@ export const InforMap = styled(Map)`
   width: 100%;
   height: 100%;
 `
+
+export const InfoAddress = styled.div`
+  width: 100%;
+  height: 1rem;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #676767;
+  display: flex;
+  align-items: center;
+  &:hover {
+    text-decoration: underline;
+  }
+`
