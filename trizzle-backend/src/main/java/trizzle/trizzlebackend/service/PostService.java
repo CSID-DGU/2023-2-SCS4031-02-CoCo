@@ -34,6 +34,7 @@ public class PostService {
     private final PlanRepository planRepository;
     private final CommentRepository commentRepository;
     private final ReviewRepository reviewRepository;
+    private final ReviewService reviewService;
 
 
     @Autowired
@@ -57,7 +58,7 @@ public class PostService {
                         if (place.getId() != null && place.getReview() != null) { // keyword아닌 place이고 review가 있다면
                             Review review = place.getReview();
                             review.setReviewSecret(false);
-                            reviewRepository.save(review);
+                            reviewService.insertReview(review,accountId);
                             place.setReview(review);
                         }
                     }

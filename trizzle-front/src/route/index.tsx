@@ -23,12 +23,14 @@ import FQA from '../pages/FQA';
 import PersonalInformationPage from '../pages/PersonalInformationPage';
 import ModPostPlan from '../pages/AddPostPlan/ModPostPlan';
 import Page404 from '../pages/Page404/Page404';
+import Landing from '../pages/Landing';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/:id" element={<Home />} />
           <Route path="/post/places/add" element={<AddPlacePage />} />
           <Route path="/post/places/modify/:id" element={<AddPlacePage />} />

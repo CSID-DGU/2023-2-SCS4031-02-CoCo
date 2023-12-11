@@ -20,7 +20,7 @@ const SearchPlace = () => {
   const [review, setReview] = useState<any[]>([]);
   const [sort, setSort] = useState<any>({name:"최신순"});
   const [page, setPage] = useState<number>(0);
-  const [state, fetchData] = useAsync({url:`/api/reviews/search?sort=${sort.id}&keyword=${search}&region=${location}`, method: 'GET'});
+  const [state, fetchData] = useAsync({url:`/api/reviews/search?sort=${sort.id}&keyword=${search}&region=${location===undefined?"전체":location}`, method: 'GET'});
 
   const handleScroll = () => {
     const scrollHeight = document.documentElement.scrollHeight;
@@ -62,8 +62,6 @@ const SearchPlace = () => {
     }
   }, [state]);
 
-
-
   if(allReview === null) return (<div>loading...</div>);
 
   return (
@@ -77,7 +75,7 @@ const SearchPlace = () => {
       </S.FilterContainer>
         {review.length !== 0 ? review.map((item, index) => (
           <S.PlaceCardContainer key={index}>
-            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText} src={item.thumbnail} postId={item.id}/>
+            <PlaceCard key={index} placeName={item.place.placeName} userName={item.accountId} postDate={item.reviewRegistrationDate?.slice(0,10)} postTitle={item.reviewTitle} postContent={item.reviewContentText} src={item.thumbnail} postId={item.id}/>
           </S.PlaceCardContainer>
         )) : 
           <NullList content="검색 결과가 없습니다."/>

@@ -30,16 +30,16 @@ export type InfoWindowProps = {
 
 export type PlaceInfoList = {
   id: string;
-  place_name: string;
-  category_name: string;
-  category_group_code: string;
-  category_group_name: string;
+  placeName: string;
+  categoryName: string;
+  categoryGroupCode: string;
+  categoryGroupName: string;
   phone: string;
-  address_name: string;
-  road_address_name: string;
+  addressName: string;
+  roadAddressName: string;
   x: string;
   y: string;
-  place_url: string;
+  placeUrl: string;
 };
 
 export type PlaceList = {

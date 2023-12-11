@@ -15,7 +15,15 @@ public interface ElasticPostRepository extends ElasticsearchRepository<ElasticPo
     @Query("{\"bool\": {\"should\": [{\"match\": {\"postTitle\": \"?0\"}}, {\"match\": {\"plan.planThema\": \"?0\"}}]}}")
     Page<ElasticPost> searchByPostTitleOrPlanContaining(String keyword, Pageable pageable);
 
-    @Query("{\"bool\": {\"should\": [{\"match\": {\"postTitle\": \"?0\"}}, {\"match\": {\"plan.planThema\": \"?0\"}}]}}")
+    @Query("{\"bool\": {\"should\": [" +
+            "{\"bool\": {\"must\": [" +
+            "{\"match\": {\"plan.planLocation\": \"?1\"}}, " +
+            "{\"bool\": {\"should\": [" +
+            "{\"match\": {\"postTitle\": \"?0\"}}, " +
+            "{\"match\": {\"plan.planThema\": \"?0\"}}" +
+            "]}}" +
+            "]}}" +
+            "]}}")
     Page<ElasticPost> searchByPostTitleOrPlanContainingAndPlanPlanLocation(String keyword, String location, Pageable pageable);
 
     Page<ElasticPost> findByPlanPlanLocation(String location, Pageable pageable);
