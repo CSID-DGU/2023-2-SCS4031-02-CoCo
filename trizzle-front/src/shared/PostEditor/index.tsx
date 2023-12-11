@@ -3,7 +3,6 @@ import { BiCameraOff } from "react-icons/bi";
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { ImageResize } from "quill-image-resize-module-ts";
-import DOMPurify from "dompurify";
 
 import * as S from "./PostEditor.styles";
 import axios from "axios";
@@ -25,12 +24,7 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
   const [clickedImage, setClickedImage] = useState<string>('');
 
   useEffect(() => {
-    const cleanHTML: any = sanitizeHTML(Data);
-    handleContentChange(cleanHTML); // 변환해서 editor에 넣기
-  }, []);
-
-  useEffect(() => {
-    setData(props.prevData);
+    handleContentChange(props.prevData);
   }, [props.prevData]);
 
   const imageHandler = async () => {
@@ -176,12 +170,6 @@ export const PostInput: React.FC<PostInputProps> = (props: PostInputProps) => {
     setClickedImage(thumbnailImages[idx]);
     props.onThumbnailImages(thumbnailImages[idx]);
   }
-
-  // 텍스트 변환 > html
-  const sanitizeHTML = (dirtyHTML: string) => {
-    const cleanHTML = DOMPurify.sanitize(dirtyHTML);
-    return { __html: cleanHTML };
-  };
 
   return (
     <div className="editorContainer">

@@ -119,7 +119,7 @@ const PostPlan: React.FC = () => {
         if (place.review) delete place.review;
         return place
       })
-      newPlanList.push({ day: dayNumber, placeList: placeList})
+      newPlanList.push({ day: dayNumber, placeList: placeList })
       dayNumber = dayNumber + 1;
       newPlan.content = newPlanList;
     });
@@ -133,16 +133,17 @@ const PostPlan: React.FC = () => {
     delete newData.accountId;
     delete newData.planRegistrationDate;
     delete newData.thumnail;
-
-    const newContent = selectedDayPlan.map((item:any) => {
-        return {
-          day: item.day,
-          placeList: item.placeList.map((place:any) => {
-          if(place.review) delete place.review;
+    let dayNumber = 0;
+    const newContent = selectedDayPlan.map((item: any) => {
+      dayNumber = dayNumber + 1;
+      return {
+        day: dayNumber,
+        placeList: item.placeList.map((place: any) => {
+          if (place.review) delete place.review;
           return place
-        }
-      )}
-      })
+        })}
+
+    })
     newData.content = newContent;
     newData.planName = data.post.postTitle + "_복사본";
     const json = JSON.stringify(newData);
@@ -304,7 +305,7 @@ const PostPlan: React.FC = () => {
               />
             </S.CommentText>
           </S.HorizontalFirstStartContainer>
-          <CommentSection page="post" postId={data.post.id} commentCount={commentCount} setCommentCount={(commentCount:number) => setCommentCount(commentCount)}/>
+          <CommentSection page="post" postId={data.post.id} commentCount={commentCount} setCommentCount={(commentCount: number) => setCommentCount(commentCount)} />
         </S.CommentContainer>
         {isCopyPlanModal && <UploadPlanModal title="추가할 일정" onclose={() => setIsCopyPlanModal(!isCopyPlanModal)} onClickedPlan={(plan: any[]) => copyPlanData(plan)} region={regions} />}
         {/* <S.RecommendContainer>

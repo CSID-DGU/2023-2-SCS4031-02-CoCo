@@ -3,7 +3,7 @@ import * as S from "./DayPlan.style";
 import logo from "../../assets/logo/nonTextLogo.svg"
 // import { AiOutlineEllipsis } from "react-icons/ai";
 import Menu from "../../components/Menu";
-import res from "src/assets/keywords/trans.svg"
+import res from "../../assets/keywords/res.svg"
 import trans from "../../assets/keywords/trans.svg"
 import rest from "../../assets/keywords/rest.svg"
 import shopping from "../../assets/keywords/shopping.svg"
